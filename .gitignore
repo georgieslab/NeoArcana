@@ -4,6 +4,7 @@
 .env.*
 
 # API keys and secrets
+app.yaml
 *.pem
 *.key
 **/tarot-433417-81a148e4ac53.json
