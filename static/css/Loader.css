@@ -1,0 +1,134 @@
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(240, 240, 240);
+  z-index: 1000;
+  transition: opacity 1s ease-out, visibility 1s ease-out;
+}
+
+.loader.fade-out {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.loader-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background-color: black;
+  border-radius: 50%;
+  animation: moveToCenter 0.8s linear forwards;
+}
+
+@keyframes moveToCenter {
+  0% {
+    transform: translate(var(--startX), var(--startY));
+  }
+  100% {
+    transform: translate(0, 0);
+  }
+}
+
+.sphere {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: black;
+  border-radius: 50%;
+  animation: growSphere 6.5s ease-in-out forwards;
+}
+@keyframes growSphere {
+  0% {
+      transform: scale(1);
+  }
+  20% {
+      transform: scale(30);
+  }
+  50% {
+      transform: scale(5);
+  }
+  100% {
+      transform: scale(200);
+  }
+}
+#canvas_container {
+  opacity: 0;
+  transition: opacity 1s ease-in;
+}
+#canvas_container.fade-in {
+  opacity: 1;
+}
+
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(240, 240, 240);
+  z-index: 1000;
+  transition: opacity 1s ease-out, visibility 1s ease-out;
+  overflow: hidden; /* Add this to prevent scrollbars */
+}
+
+.loader-particle {
+  position: absolute;
+  width: 4px;
+  height: 4px;
+  background-color: black;
+  border-radius: 50%;
+  transform: translate(var(--startX), var(--startY));
+  animation: moveToCenter 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+  pointer-events: none;
+}
+
+@keyframes moveToCenter {
+  0% {
+    transform: translate(var(--startX), var(--startY));
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+}
+
+.sphere {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background-color: black;
+  border-radius: 50%;
+  animation: growSphere 6.5s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+  z-index: 1; /* Ensure sphere is above particles */
+}
+
+.loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: rgb(240, 240, 240) !important; /* Force white-ish background */
+  z-index: 1000;
+  transition: opacity 1s ease-out, visibility 1s ease-out;
+  /* Force light mode */
+  color-scheme: light;
+  -webkit-color-scheme: light;
+  forced-color-adjust: none;
+}

@@ -1,0 +1,278 @@
+{
+  "project_map": {
+    "8k photo of an elegantly modern apartment interior, featuring a minimalist white wall and a large 50x70cm framed The Magician tarot poster, with a mystical purple ambient light creating soft shadows and subtle  (1).png": null,
+    "Dockerfile": null,
+    "api_debug.py": null,
+    "app.py": null,
+    "app.yaml": null,
+    "assets/": {
+      "images/": {
+        "desktop-view.jpg": null,
+        "early-adopter-poster.jpg": null,
+        "lovers-tarot.jpg": null,
+        "mobile-app-view.jpg": null
+      }
+    },
+    "client_secret_1045313635820-a46ug9eiiquffm32p2vth3fhu12matm8.apps.googleusercontent.com.json": null,
+    "cloudbuild.yaml": null,
+    "instructions.txt": null,
+    "magic.png": null,
+    "main.py": null,
+    "manifest.json": null,
+    "map_project.py": null,
+    "package-lock.json": null,
+    "package.json": null,
+    "requirements.in": null,
+    "requirements.txt": null,
+    "service-worker.js": null,
+    "setup.py": null,
+    "static/": {
+      "__init__.py": null,
+      "components/": {
+        "shared/": {
+          "languageUtils.js": null
+        }
+      },
+      "css/": {
+        "CosmicButton.css": null,
+        "Loader.css": null,
+        "README.md": null,
+        "galaxy_bg.css": null,
+        "mail.css": null,
+        "modules/": {
+          "nfc.css": null,
+          "shared/": {
+            "form-elements.css": null
+          },
+          "step0.css": null,
+          "step1-trial.css": null,
+          "trial-step2.css": null
+        }
+      },
+      "icons/": {
+        "back.svg": null,
+        "calendar.svg": null,
+        "chat.svg": null,
+        "check.svg": null,
+        "chevron.svg": null,
+        "close.svg": null,
+        "clover.svg": null,
+        "color.svg": null,
+        "compass.svg": null,
+        "date.svg": null,
+        "email.svg": null,
+        "eye.svg": null,
+        "favicon.ico": null,
+        "future.svg": null,
+        "gender.svg": null,
+        "icon-192x192.png": null,
+        "icon-512x512.png": null,
+        "instagram.svg": null,
+        "interests.svg": null,
+        "key.svg": null,
+        "language.svg": null,
+        "location.svg": null,
+        "lucky.svg": null,
+        "mail.svg": null,
+        "mute.svg": null,
+        "name.svg": null,
+        "restart.svg": null,
+        "send.svg": null,
+        "share.svg": null,
+        "star.svg": null,
+        "twitter.svg": null,
+        "unmute.svg": null,
+        "user.svg": null
+      },
+      "images/": {
+        "avatars/": {
+          "placeholder.jpg": null
+        },
+        "bg_main.jpg": null,
+        "card-back.jpg": null,
+        "cards/": {
+          "card-back.jpg": null,
+          "chariot.jpg": null,
+          "death.jpg": null,
+          "devil.jpg": null,
+          "emperor.jpg": null,
+          "empress.jpg": null,
+          "fallback-card.jpg": null,
+          "fool.jpg": null,
+          "hanged_man.jpg": null,
+          "hermit.jpg": null,
+          "hierophant.jpg": null,
+          "high_priestess.jpg": null,
+          "judgement.jpg": null,
+          "justice.jpg": null,
+          "lovers.jpg": null,
+          "magician.jpg": null,
+          "moon.jpg": null,
+          "star.jpg": null,
+          "strength.jpg": null,
+          "sun.jpg": null,
+          "temperance.jpg": null,
+          "tower.jpg": null,
+          "wheel_of_fortune.jpg": null,
+          "world.jpg": null
+        },
+        "chariot.jpg": null,
+        "death.jpg": null,
+        "devil.jpg": null,
+        "emperor.jpg": null,
+        "empress.jpg": null,
+        "features/": {
+          "framed-poster.jpg": null,
+          "nfc-interaction.jpg": null,
+          "profile-customization.jpg": null
+        },
+        "fool.jpg": null,
+        "hanged_man.jpg": null,
+        "hermit.jpg": null,
+        "hierophant.jpg": null,
+        "high_priestess.jpg": null,
+        "judgment.jpg": null,
+        "justice.jpg": null,
+        "logo.png": null,
+        "lovers.jpg": null,
+        "magician.jpg": null,
+        "moon.jpg": null,
+        "screens/": {
+          "card-reveal.png": null,
+          "main.png": null,
+          "nfc-tap.png": null,
+          "reading.png": null
+        },
+        "star.jpg": null,
+        "strength.jpg": null,
+        "sun.jpg": null,
+        "temperance.jpg": null,
+        "texture1.png": null,
+        "texture2.png": null,
+        "texture4.png": null,
+        "textureStar.png": null,
+        "texturenucleus.jpg": null,
+        "tower.jpg": null,
+        "wheel_of_fortune.jpg": null,
+        "world.jpg": null
+      },
+      "service-worker.js": null,
+      "sound/": {
+        "cosmicnoise.mp3": null
+      },
+      "src/": {
+        "TarotApp.css": null,
+        "TarotApp.js": null,
+        "__init__.py": null,
+        "api/": {
+          "__init__.py": null,
+          "admin_routes.py": null,
+          "claude_tarot_api.py": null,
+          "firebase_init.py": null,
+          "firestore_signup.py": null,
+          "get_new_card.py": null,
+          "get_three_cards.py": null,
+          "language_config.py": null,
+          "logging_config.py": null,
+          "manage_posters.py": null,
+          "monitoring.py": null,
+          "nfc_cache.py": null,
+          "nfc_firestore.py": null,
+          "nfc_monitoring.py": null,
+          "nfc_rate_limiter.py": null,
+          "nfc_routes.py": null,
+          "nfc_validation.py": null,
+          "poster_manager.py": null,
+          "poster_routes.py": null,
+          "promo_codes.py": null,
+          "reading_cache.py": null,
+          "tarot_cards.py": null
+        },
+        "components/": {
+          "AudioButton.js": null,
+          "ChatInterface.js": null,
+          "ColorPicker.js": null,
+          "CosmicButton.js": null,
+          "DateInput.js": null,
+          "DevPanel.js": null,
+          "ErrorBoundary.js": null,
+          "GenderSelect.js": null,
+          "InteractiveCardViewer.js": null,
+          "InterestsPicker.js": null,
+          "LanguageSelect.js": null,
+          "Loader.js": null,
+          "NFCFlow/": {
+            "NFCLoader.js": null,
+            "NFCStep2.js": null,
+            "NFCUserRegistration.js": null,
+            "RegistrationFlow.js": null,
+            "WelcomeScreen.js": null,
+            "cosmic-load.js": null,
+            "nfcDataHandler.js": null
+          },
+          "NFCWindow.js": null,
+          "OptimizedCardImage.js": null,
+          "PremiumCodeManager.js": null,
+          "PremiumFeatures.js": null,
+          "PremiumOverlay.js": null,
+          "PremiumThreeCardReading.js": null,
+          "ReadingHistory.js": null,
+          "languageConfig.js": null,
+          "premium/": {
+            "PremiumStep2.js": null,
+            "PremiumStep3.js": null
+          },
+          "step0.js": null,
+          "step1Premium.js": null,
+          "step1Trial.js": null,
+          "step4.js": null,
+          "step5.js": null,
+          "test.js": null,
+          "trial/": {
+            "TrialStep2.js": null,
+            "TrialStep3.js": null
+          },
+          "zodiacMessages.js": null
+        },
+        "galaxy_bg.js": null,
+        "shuffle_animation.js": null,
+        "utils/": {
+          "CardManager.js": null
+        }
+      }
+    },
+    "tarot-433417-81a148e4ac53.json": null,
+    "tarot_app.egg-info/": {
+      "PKG-INFO": null,
+      "SOURCES.txt": null,
+      "dependency_links.txt": null,
+      "requires.txt": null,
+      "top_level.txt": null
+    },
+    "templates/": {
+      "PLAN.HTML": null,
+      "Reveal.html": null,
+      "react.html": null
+    },
+    "tests/": {
+      "__init__.py": null,
+      "test_nfc_system.py": null
+    }
+  },
+  "generated_at": "2025-01-15 16:18:42",
+  "root_directory": "C:\\Users\\georg\\georgiescoding\\Tarot",
+  "ignored_directories": [
+    "node_modules",
+    "__pycache__",
+    ".venv",
+    ".git",
+    ".idea",
+    "build",
+    "data",
+    "logs",
+    "venv",
+    "dist",
+    "temp",
+    "tmp"
+  ]
+}

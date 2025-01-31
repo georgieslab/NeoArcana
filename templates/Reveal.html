@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Minimal Card Reveal</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #0ae916;
+            overflow: hidden;
+        }
+
+        .recording-container {
+            width: 400px;
+            height: 600px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .card {
+            width: 300px;
+            height: 450px;
+            position: relative;
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .card.animate {
+            animation: cardFlip 1.2s ease-out forwards;
+        }
+
+        .card-face {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .card-back {
+            background: #d9d9d9;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .card-front {
+            background: #ffffff;
+            transform: rotateY(180deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .uploaded-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        @keyframes cardFlip {
+            0% {
+                transform: rotateY(0);
+            }
+            
+            
+            100% {
+                transform: rotateY(1620deg);
+            }
+        }
+
+        .sparkles {
+            position: absolute;
+            width: 300px;
+            height: 450px;
+            top: 0;
+            left: 0;
+            pointer-events: none;
+            overflow: hidden;
+        }
+
+        .sparkle {
+            position: absolute;
+            width: 5px;
+            height: 5px;
+            background: radial-gradient(circle, rgba(255,255,255,1), transparent);
+            opacity: 0;
+            animation: sparkleEffect 1.5s ease-in-out forwards;
+        }
+
+        @keyframes sparkleEffect {
+            0% {
+                opacity: 1;
+                transform: scale(0.5);
+            }
+            100% {
+                opacity: 0;
+                transform: scale(1.5) translate(0, -50px);
+            }
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 100;
+        }
+
+        .button {
+            background: #4a90e2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="recording-container">
+        <div class="card" id="card">
+            <div class="card-face card-back">
+                <img id="backImage" class="uploaded-image" alt="Back Design">
+            </div>
+            <div class="card-face card-front">
+                <img id="frontImage" class="uploaded-image" alt="Front Design">
+            </div>
+        </div>
+        <div class="sparkles" id="sparkles"></div>
+    </div>
+
+    <div class="controls">
+        <input type="file" id="frontUpload" accept="image/*" style="display: none;">
+        <input type="file" id="backUpload" accept="image/*" style="display: none;">
+        <button class="button" onclick="document.getElementById('frontUpload').click()">Upload Front</button>
+        <button class="button" onclick="document.getElementById('backUpload').click()">Upload Back</button>
+        <button class="button" onclick="revealCard()">Reveal Card</button>
+    </div>
+
+    <script>
+        const card = document.getElementById('card');
+        const sparklesContainer = document.getElementById('sparkles');
+
+        function revealCard() {
+            card.classList.remove('animate');
+            void card.offsetWidth;
+            card.classList.add('animate');
+            generateSparkles();
+        }
+
+        function generateSparkles() {
+            sparklesContainer.innerHTML = '';
+            for (let i = 0; i < 30; i++) {
+                const sparkle = document.createElement('div');
+                sparkle.className = 'sparkle';
+                sparkle.style.left = `${Math.random() * 100}%`;
+                sparkle.style.top = `${Math.random() * 100}%`;
+                sparklesContainer.appendChild(sparkle);
+                sparkle.style.animationDelay = `${Math.random()}s`;
+            }
+
+            setTimeout(() => {
+                sparklesContainer.innerHTML = '';
+            }, 1500);
+        }
+
+        function handleImageUpload(input, side) {
+            const file = input.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById(side + 'Image').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
+
+        document.getElementById('frontUpload').addEventListener('change', function() {
+            handleImageUpload(this, 'front');
+        });
+
+        document.getElementById('backUpload').addEventListener('change', function() {
+            handleImageUpload(this, 'back');
+        });
+
+        card.addEventListener('click', revealCard);
+    </script>
+</body>
+</html>

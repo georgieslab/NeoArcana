@@ -1,0 +1,177 @@
+.cosmic-button0 {
+  background: rgba(255, 255, 255, 0.2);
+  border: none;
+  padding: 10px 20px;
+  margin: 10px 0;
+  border-radius: 25px; /* Soft pill shape */
+  font-size: 1.2em;
+  color: #fff;
+  cursor: pointer;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+.cosmic-button {
+  position: relative;
+  padding: 11px 30px;
+  font-size: 19px;
+  font-weight: bold;
+  color: #adaddd;
+  background: rgba(46, 46, 56, 0.3);
+  border: none;
+  border: 2px solid #e6dfff36;
+  border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    backdrop-filter: blur(5px);
+    box-shadow: 0 0 10px rgba(165, 154, 209, 0.3);
+    margin: 12px 0;
+    display: block;
+    width: 100%;
+    max-width: 300px;
+    max-height: 48px;
+}
+
+.cosmic-button::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #e5e0fd, #A59AD1, #5b5087);
+  border: 2px solid rgba(255, 1, 107, 0.072);
+  z-index: -1;
+  filter: blur(10px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.cosmic-button:hover {
+  color: #141C28; /* Changed to Midnight Sky for better contrast on hover */
+  box-shadow: 0 0 20px rgba(165, 154, 209, 0.5); /* Increased glow on hover */
+}
+
+.cosmic-button:hover::before {
+  opacity: 1;
+}
+
+.cosmic-button:active {
+  transform: scale(0.98);
+}
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(161, 97, 244, 0.497);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(193, 97, 244, 0.048);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(206, 156, 253, 0.137);
+  }
+}
+
+.cosmic-button:hover {
+  animation: pulse 2s infinite;
+}
+
+.particle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--size);
+  height: var(--size);
+  background-color: white;
+  border-radius: 50%;
+  pointer-events: none;
+  opacity: 0;
+  animation: moveParticle var(--duration) ease-out forwards;
+}
+
+@keyframes moveParticle {
+  0% {
+    transform: translate(var(--x), var(--y));
+    opacity: 0;
+  }
+  20% {
+    opacity: 1;
+  }
+  100% {
+    transform: translate(0, 0);
+    opacity: 0;
+  }
+}
+
+.star {
+  position: absolute;
+  font-size: 0.8em;
+  color: #FFFFFF;
+  opacity: 0.7;
+  pointer-events: none;
+  animation: twinkle 1.9s infinite ease-in-out;
+}
+
+.star:nth-child(1) {
+  top: 20%;
+  left: 10%;
+}
+
+.star:nth-child(2) {
+  top: 50%;
+  right: 20%;
+}
+
+.star:nth-child(3) {
+  bottom: 20%;
+  left: 15%;
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: 0.7; }
+  50% { opacity: 0; }
+  75% { opacity: 0.4; }
+}
+
+.cosmic-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+
+
+.input:focus {
+  background-color: rgba(255, 255, 255, 0.2);
+  outline: none;
+}
+
+.input::placeholder {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.cosmic-button1::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  border-radius: inherit;
+  background: var(--cosmic-gradient);
+  opacity: 0;
+  z-index: -1;
+  filter: blur(10px);
+  animation: pulseGlow 3s ease-in-out infinite;
+}
+
+@keyframes pulseGlow {
+  0%, 100% {
+    opacity: 0.2;
+    transform: scale(0.95);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(1.05);
+  }
+}
+

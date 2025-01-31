@@ -1,0 +1,20 @@
+{
+  "name": "Cosmic NFC",
+  "short_name": "Cosmic",
+  "start_url": "https://app.neoarcana.cloud",
+  "display": "standalone",
+  "background_color": "#0a0a1f",
+  "theme_color": "#A59AD1",
+  "icons": [
+    {
+      "src": "/static/icons/icon-192x192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/static/icons/icon-512x512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}

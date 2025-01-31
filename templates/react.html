@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <link rel="manifest" href="/manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#A59AD1">
+    <link rel="apple-touch-icon" href="/static/icons/icon-192x192.png">v
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#000000">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta charset="UTF-8">
+    <title>NeoArcana</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" href="/static/icons/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" href="/static/icons/favicon.ico" type="image/x-icon">
+
+    <!-- CSS Files -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/Loader.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/galaxy_bg.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='src/TarotApp.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/CosmicButton.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/step0.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/step1-trial.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/trial-step2.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/nfc.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/shared/form-elements.css') }}">
+    
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
+
+    <!-- Scripts -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
+</head>
+<body>
+    <div id="loader-container"></div>
+    <div id="canvas_container"></div>
+    <div id="root"></div>
+
+    <!-- Core Scripts -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js"></script>
+    <script src="{{ url_for('static', filename='src/galaxy_bg.js') }}"></script>
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    
+    <!-- Shared Components -->
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/OptimizedCardImage.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/LanguageSelect.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/DevPanel.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/CosmicButton.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/ChatInterface.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/InteractiveCardViewer.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/InterestsPicker.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/DateInput.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/zodiacMessages.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/GenderSelect.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/ColorPicker.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/AudioButton.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/Loader.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/languageConfig.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/nfcDataHandler.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/NFCUserRegistration.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/NFCStep2.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/cosmic-load.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/WelcomeScreen.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/RegistrationFlow.js') }}"></script>
+
+
+    
+    <!-- Trial Components -->
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/trial/TrialStep2.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/trial/TrialStep3.js') }}"></script>
+    
+    <!-- Premium Components -->
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/premium/PremiumStep2.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/premium/PremiumStep3.js') }}"></script>
+    
+    <!-- Core Flow Components -->
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/step0.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/step1Trial.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/step1Premium.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/step4.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/step5.js') }}"></script>
+    <script src="/static/src/components/threecardreveal.js"></script>
+    <script src="/static/src/components/threecardreading.js"></script>
+    
+    <!-- Main App -->
+    <script src="{{ url_for('static', filename='src/shuffle_animation.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/TarotApp.js') }}"></script>
+
+    <script>
+        // Initialize the window.initialState if not already set
+        window.initialState = {{ initial_state | tojson | safe if initial_state else '{}' }};
+        console.log('Initial State:', window.initialState); // For debugging
+    </script>
+    
+    <script type="text/babel">
+        ReactDOM.render(React.createElement(window.TarotApp), document.getElementById('root'));
+    </script>
+</body>
+</html>

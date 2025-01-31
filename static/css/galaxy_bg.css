@@ -1,0 +1,106 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    background-color: #000000;
+}
+
+#canvas_container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.aurora-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+    z-index: -2;
+    pointer-events: none;
+}
+
+.aurora {
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background-image: 
+        radial-gradient(ellipse at center, transparent 0%, #000000 100%),
+        linear-gradient(45deg, 
+            rgba(255, 255, 0, 0.5) 0%, 
+            rgba(255, 255, 0, 0.2) 25%, 
+            transparent 50%,
+            rgba(255, 255, 0, 0.2) 75%, 
+            rgba(255, 255, 0, 0.5) 100%
+        );
+    animation: aurora-animation 20s infinite linear;
+    opacity: 0.8;
+    mix-blend-mode: screen;
+}
+
+.aurora:nth-child(2) {
+    animation-duration: 30s;
+    opacity: 0.5;
+    background-image: 
+        radial-gradient(ellipse at center, transparent 0%, #000000 100%),
+        linear-gradient(-45deg, 
+            rgba(255, 255, 0, 0.5) 0%, 
+            rgba(255, 255, 0, 0.2) 25%, 
+            transparent 50%,
+            rgba(255, 255, 0, 0.2) 75%, 
+            rgba(255, 255, 0, 0.5) 100%
+        );
+}
+
+.aurora:nth-child(3) {
+    animation-duration: 25s;
+    animation-direction: reverse;
+    opacity: 0.3;
+}
+
+@keyframes aurora-animation {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+
+#root {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.content {
+    position: relative;
+    z-index: 2;
+}
+
+#canvas_container {
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+#canvas_container.loaded {
+    opacity: 1;
+}

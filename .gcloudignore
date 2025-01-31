@@ -1,0 +1,30 @@
+# Explicitly ignore lib directory
+lib/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.py[cod]
+*$py.class
+
+# Environment directories
+myenv/
+venv/
+env/
+
+# Development
+.git/
+.gitignore
+*.log
+.env
+.vscode/
+.idea/
+
+# Cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Discovery cache
+googleapiclient/discovery_cache/

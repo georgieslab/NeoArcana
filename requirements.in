@@ -1,0 +1,6 @@
+Flask
+google-cloud-aiplatform
+google-cloud-firestore
+python-dotenv
+gunicorn
+vertexai
