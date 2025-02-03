@@ -1,9 +1,19 @@
 {
+  "name": "tarot-app",
+  "version": "1.0.0",
   "dependencies": {
-    "@react-oauth/google": "^0.12.1",
-    "framer-motion": "^11.3.31",
-    "react": "^18.3.1",
-    "react-dom": "^18.3.1",
-    "simplex-noise": "^4.0.3"
+    "@react-oauth/google": "^0.11.1",
+    "framer-motion": "^10.16.4",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "simplex-noise": "^4.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.22.11",
+    "@babel/preset-env": "^7.22.10",
+    "@babel/preset-react": "^7.22.5",
+    "@babel/plugin-transform-optional-chaining": "^7.22.5",
+    "@babel/plugin-transform-react-jsx": "^7.22.5",
+    "babel-loader": "^9.1.3"
   }
 }

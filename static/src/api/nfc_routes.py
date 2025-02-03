@@ -10,7 +10,9 @@ import random
 import string
 import time
 from google.cloud import firestore
-
+from .claude_tarot_api import api_handler
+from anthropic import Anthropic
+client = Anthropic()
 
 # Load environment variables first
 load_dotenv()
@@ -22,7 +24,7 @@ logging.basicConfig(level=logging.INFO)
 # Import database and core dependencies
 try:
     from .firebase_init import db
-    from .claude_tarot_api import api_handler
+
     from .nfc_firestore import (
         register_nfc_user,
         get_nfc_user,
@@ -196,8 +198,8 @@ def translate_reading():
 
         try:
             # Use Claude API to translate the reading content
-            response = api_handler.client.messages.create(
-                model=api_handler.model,
+            response = client.messages.create(
+    model="claude-3-5-sonnet-20241022",
                 max_tokens=1024,
                 messages=[{
                     "role": "user", 
@@ -312,7 +314,6 @@ async def get_weekly_reading():
     
 @nfc_routes.route('/daily_affirmation', methods=['POST'])
 def daily_affirmation():
-    """Enhanced daily affirmation endpoint with better error handling"""
     try:
         data = request.get_json()
         logger.info(f"Received daily affirmation request: {data}")
@@ -342,17 +343,8 @@ def daily_affirmation():
                 "cached": True
             })
 
-        # Validate user data structure
-        required_fields = ['name', 'zodiacSign', 'language']
-        missing_fields = [field for field in required_fields if not user_data.get(field)]
-        if missing_fields:
-            return jsonify({
-                "success": False,
-                "error": f"Missing required fields: {', '.join(missing_fields)}"
-            }), 400
-
         try:
-            # Generate new reading
+            # Use the existing single card reading method
             reading = api_handler.get_single_card_reading(
                 name=user_data.get('name'),
                 zodiac_sign=user_data.get('zodiacSign'),
@@ -365,26 +357,20 @@ def daily_affirmation():
             # Cache the new reading
             reading_cache.cache_reading(nfc_id, user_data.get('language', 'en'), reading)
             
-            logger.info(f"Successfully generated new reading for {nfc_id}")
             return jsonify({
                 "success": True,
-                "data": reading,
-                "cached": False
+                "data": reading
             })
 
         except Exception as reading_error:
             logger.error(f"Error generating reading: {reading_error}")
-            return jsonify({
-                "success": False,
-                "error": "Failed to generate reading",
-                "details": str(reading_error)
-            }), 500
+            raise
 
     except Exception as e:
         logger.error(f"Error in daily_affirmation: {str(e)}")
         return jsonify({
             "success": False,
-            "error": "Internal server error",
+            "error": "Failed to generate reading",
             "details": str(e)
         }), 500
 
@@ -607,94 +593,42 @@ def delete_nfc_code():
 
 @nfc_routes.route('/register', methods=['POST'])
 def register():
-    """Register a new NFC user with enhanced validation"""
     try:
-        if not request.is_json:
-            return jsonify({"error": "Request must be JSON"}), 400
-            
         data = request.get_json()
-        logger.info(f"Received registration data: {data}")
-        
-        poster_code = data.get('posterCode')
-        if not poster_code:
-            return jsonify({"error": "No poster code provided"}), 400
+        logger.info(f"Registration data received: {data}")
 
-        # Start a transaction
-        transaction = db.transaction()
-        
-        @firestore.transactional
-        def register_in_transaction(transaction):
-            # Get valid poster reference
-            poster_ref = db.collection('valid_posters').document(poster_code)
-            poster = poster_ref.get(transaction=transaction)
-            
-            if not poster.exists:
-                return {"error": "Invalid poster code"}, 400
-                
-            poster_data = poster.to_dict()
-            if poster_data.get('is_registered'):
-                return {"error": "Poster already registered"}, 409
-                
-            # Generate NFC ID
-            nfc_id = f"nfc_{poster_code}"
-            
-            # Structure user data
-            user_data = {
-                'nfc_id': nfc_id,
-                'poster_code': poster_code,
-                'registration_date': datetime.now().isoformat(),
-                'user_data': {
-                    'name': data.get('name'),
-                    'dateOfBirth': data.get('dateOfBirth'),
-                    'zodiacSign': data.get('zodiacSign', ''),
-                    'preferences': {
-                        'color': data.get('color', {
-                            'name': 'Cosmic Purple',
-                            'value': '#A59AD1'
-                        }),
-                        'numbers': {
-                            'favoriteNumber': str(data.get('numbers', {}).get('favoriteNumber', '')),
-                            'luckyNumber': str(data.get('numbers', {}).get('luckyNumber', '')),
-                            'guidanceNumber': str(data.get('numbers', {}).get('guidanceNumber', ''))
-                        },
-                        'interests': data.get('interests', []),
-                        'gender': data.get('gender', ''),
-                        'language': data.get('language', 'en')
-                    }
-                },
-                'last_reading_date': None,
-                'status': 'active'
+        # Structure user data properly
+        user_data = {
+            'name': data.get('name'),
+            'dateOfBirth': data.get('dateOfBirth'),
+            'zodiacSign': data.get('zodiacSign'),
+            'preferences': {
+                'color': data.get('preferences', {}).get('color'),
+                'interests': data.get('preferences', {}).get('interests', []),
+                'language': data.get('preferences', {}).get('language', 'en'),
+                'numbers': data.get('preferences', {}).get('numbers', {}),
+                'gender': data.get('preferences', {}).get('gender', '')
             }
-            
-            # Update poster to mark as registered
-            transaction.update(poster_ref, {
-                'is_registered': True,
-                'registration_date': datetime.now().isoformat(),
-                'nfc_id': nfc_id
-            })
-            
-            # Create user document
-            user_ref = db.collection('nfc_users').document(nfc_id)
-            transaction.set(user_ref, user_data)
-            
-            return {
-                "success": True,
-                "nfc_id": nfc_id,
-                "data": user_data
-            }, 200
-        
-        # Execute transaction
-        result, status_code = register_in_transaction(transaction)
+        }
+
+        logger.info(f"Structured user data: {user_data}")
+
+        result, status_code = register_nfc_user(
+            data.get('posterCode'),
+            user_data
+        )
+
         logger.info(f"Registration complete with status {status_code}: {result}")
+
         return jsonify(result), status_code
-        
+
     except Exception as e:
         logger.error(f"Registration error: {str(e)}")
         return jsonify({
             "error": str(e),
             "success": False
         }), 500
-
+        
 @nfc_routes.route('/update_user/<nfc_id>', methods=['PUT'])
 def update_user(nfc_id):
     try:

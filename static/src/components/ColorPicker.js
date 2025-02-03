@@ -3,13 +3,11 @@ const ColorPicker = ({ selectedColor, onColorChange }) => {
   const pickerRef = React.useRef(null);
   const isMobile = window.innerWidth <= 768;
 
-  // Default color if none is selected
   const defaultColor = {
     name: 'Cosmic Purple',
     value: '#A59AD1'
   };
 
-  // Use provided color or default
   const currentColor = selectedColor || defaultColor;
 
   const colors = [
@@ -95,7 +93,7 @@ const ColorPicker = ({ selectedColor, onColorChange }) => {
       </div>
 
       {isOpen && (
-        <>
+        <React.Fragment>
           {isMobile && (
             <div 
               className="cosmic-backdrop"
@@ -139,7 +137,7 @@ const ColorPicker = ({ selectedColor, onColorChange }) => {
               ))}
             </div>
           </div>
-        </>
+        </React.Fragment>
       )}
     </div>
   );

@@ -4,32 +4,10 @@ const InterestsPicker = ({ selectedInterests, onInterestsChange }) => {
   const isMobile = window.innerWidth <= 768;
 
   const interests = [
-    "Spirituality",
-    "Career",
-    "Love",
-    "Health",
-    "Family",
-    "Travel",
-    "Money",
-    "Education",
-    "Personal Growth",
-    "Creativity",
-    "Relationships",
-    "Life Purpose"
+    "Spirituality", "Career", "Love", "Health",
+    "Family", "Travel", "Money", "Education",
+    "Personal Growth", "Creativity", "Relationships", "Life Purpose"
   ];
-
-  React.useEffect(() => {
-    if (isMobile && isOpen) {
-      // Only prevent scroll on mobile
-      document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
-    }
-
-    return () => {
-      document.body.style.overflow = '';
-    };
-  }, [isOpen, isMobile]);
 
   React.useEffect(() => {
     const handleClickOutside = (event) => {
@@ -70,69 +48,34 @@ const InterestsPicker = ({ selectedInterests, onInterestsChange }) => {
         aria-haspopup="true"
         aria-expanded={isOpen}
       >
-        <img 
-          src="/static/icons/interests.svg" 
-          alt="Interests" 
-          className="input-icon" 
-        />
         <span className="label-text">
           {selectedInterests.length === 0 
             ? 'Select Your Interests' 
-            : `${selectedInterests.length} Selected`}
+            : `${selectedInterests.length} Interests Selected`}
         </span>
-        <img 
-          src="/static/icons/star.svg" 
-          alt="" 
-          className={`cosmic-msd-label-icon ${isOpen ? 'open' : ''}`}
-          aria-hidden="true"
-        />
+        <div className={`cosmic-msd-label-icon ${isOpen ? 'open' : ''}`}>
+          ▼
+        </div>
       </div>
 
       {isOpen && (
-        <>
-          {isMobile && (
-            <div 
-              className="cosmic-backdrop"
-              onClick={() => setIsOpen(false)}
-            />
-          )}
-          <div className="cosmic-msd-options-container">
-            {isMobile && (
-              <div className="cosmic-msd-options-header">
-                <h3>Select Your Interests</h3>
-                <button 
-                  className="cosmic-msd-close"
-                  onClick={() => setIsOpen(false)}
-                  aria-label="Close menu"
-                >
-                  ×
-                </button>
-              </div>
-            )}
-            <div className="cosmic-msd-options-grid">
-              {interests.map((interest) => (
-                <div
-                  key={interest}
-                  className={`cosmic-msd-option ${selectedInterests.includes(interest) ? 'selected' : ''}`}
-                  onClick={() => toggleInterest(interest)}
-                  role="checkbox"
-                  aria-checked={selectedInterests.includes(interest)}
-                  tabIndex={0}
-                >
-                  <span className="option-text">{interest}</span>
-                  {selectedInterests.includes(interest) && (
-                    <img 
-                      src="/static/icons/check.svg" 
-                      alt="" 
-                      className="option-check"
-                      aria-hidden="true"
-                    />
-                  )}
-                </div>
-              ))}
-            </div>
-          </div>
-        </>
+        <div className="cosmic-msd-options">
+          {interests.map((interest) => (
+            <label 
+              key={interest}
+              className="cosmic-msd-options-option"
+            >
+              <input
+                type="checkbox"
+                className="cosmic-msd-options-checkbox"
+                checked={selectedInterests.includes(interest)}
+                onChange={() => toggleInterest(interest)}
+              />
+              {interest}
+              <span className="cosmic-checkbox-custom"></span>
+            </label>
+          ))}
+        </div>
       )}
 
       {selectedInterests.length > 0 && (

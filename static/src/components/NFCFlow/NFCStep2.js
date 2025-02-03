@@ -1,13 +1,21 @@
 const NFCStep2 = ({ userData }) => {
   console.log('NFCStep2 received userData:', userData);
 
-  // State Management
   const [selectedLanguage, setSelectedLanguage] = React.useState(() => {
-    return localStorage.getItem('nfc_preferred_language') || 
-           (userData && userData.user_data && userData.user_data.preferences ? 
-           userData.user_data.preferences.language || 'en' : 'en');
-  });
+    return (userData && 
+            userData.user_data && 
+            userData.user_data.preferences && 
+            userData.user_data.preferences.language) || 'en';
+  })
 
+  // Add logging to debug language handling
+  React.useEffect(() => {
+    console.log('Selected language:', selectedLanguage);
+    console.log('User preferences:', 
+      userData && userData.user_data && userData.user_data.preferences
+    );
+  }, [selectedLanguage, userData]);
+  
   const [isVisible, setIsVisible] = React.useState(false);
   const [showInstruction, setShowInstruction] = React.useState(false);
   const [showCard, setShowCard] = React.useState(false);
@@ -25,17 +33,19 @@ const NFCStep2 = ({ userData }) => {
   const mounted = React.useRef(true);
 
   React.useEffect(() => {
-    return () => {
-      mounted.current = false;
-    };
-  }, []);
+    if (userData && userData.nfc_id) {
+      console.log('NFCStep2 mounted with userData:', userData);
+      fetchDailyReading();
+    } else {
+      console.log('Missing required userData:', userData);
+    }
+  }, [userData]);
 
   const handleLanguageChange = async (e) => {
     const newLanguage = e.target.value;
     setSelectedLanguage(newLanguage);
     localStorage.setItem('nfc_preferred_language', newLanguage);
 
-    // Only translate if we have existing reading
     if (readingData.cardImage) {
       try {
         setLoading(true);
@@ -48,9 +58,9 @@ const NFCStep2 = ({ userData }) => {
             reading: readingData,
             targetLanguage: newLanguage,
             userData: {
-              nfc_id: userData.nfc_id,
-              name: userData.user_data.name || '',
-              zodiacSign: userData.user_data.zodiacSign || ''
+              nfc_id: userData && userData.nfc_id,
+              name: userData && userData.user_data && userData.user_data.name || '',
+              zodiacSign: userData && userData.user_data && userData.user_data.zodiacSign || ''
             }
           })
         });
@@ -80,27 +90,58 @@ const NFCStep2 = ({ userData }) => {
     }
   };
 
+  React.useEffect(() => {
+    if (userData && userData.nfc_id) {
+      console.log('NFCStep2: Fetching daily reading for user:', userData);
+      fetchDailyReading();
+    }
+  }, [userData]);
+
+  const validateUserData = (data) => {
+    console.log('Validating user data:', data);
+    if (!data || !data.nfc_id) {
+      console.error('Missing nfc_id');
+      return false;
+    }
+    if (!data.user_data || !data.user_data.name) {
+      console.error('Missing user_data.name');
+      return false;
+    }
+    return true;
+  };
+  
+  // Update the useEffect
+  React.useEffect(() => {
+    if (userData) {
+      if (validateUserData(userData)) {
+        console.log('Valid userData found, fetching reading');
+        fetchDailyReading();
+      } else {
+        setError('Invalid user data provided');
+      }
+    }
+  }, [userData]);
+  
   const fetchDailyReading = async () => {
     if (!userData || !mounted.current) return;
-
+  
     try {
       setLoading(true);
+      setError(null); // Clear any previous errors
+  
+      // Format user data
       const formattedData = {
         userData: {
-          nfc_id: userData.nfc_id || '',
-          name: userData.user_data.name || '',
-          zodiacSign: userData.user_data.zodiacSign || '',
-          language: selectedLanguage,
-          preferences: {
-            numbers: userData.user_data.preferences?.numbers || {},
-            interests: userData.user_data.preferences?.interests || [],
-            color: userData.user_data.preferences?.color || null
-          }
+          nfc_id: userData.nfc_id,
+          name: userData.user_data.name,
+          zodiacSign: userData.user_data.zodiacSign,
+          language: userData.user_data.preferences.language,
+          preferences: userData.user_data.preferences
         }
       };
-
-      console.log('Sending formatted data:', formattedData);
-
+  
+      console.log('Sending reading request:', formattedData);
+  
       const response = await fetch('/api/nfc/daily_affirmation', {
         method: 'POST',
         headers: {
@@ -108,49 +149,45 @@ const NFCStep2 = ({ userData }) => {
         },
         body: JSON.stringify(formattedData)
       });
-
+  
       if (!response.ok) {
-        throw new Error('Failed to get daily reading');
+        const errorData = await response.json();
+        throw new Error(errorData.error || 'Failed to get daily reading');
       }
-
+  
       const data = await response.json();
       
       if (mounted.current && data.success) {
-        setReadingData({
-          ...data.data,
-          originalLanguage: selectedLanguage
-        });
-
-        if (window.zoomBackground) {
-          window.zoomBackground(1.3, 2000);
-        }
-
+        setReadingData(data.data);
+        // Trigger the display sequence
         setIsVisible(true);
-        await new Promise(resolve => setTimeout(resolve, 500));
-        setShowInstruction(true);
-        setShowZodiacMessage(true);
-        await new Promise(resolve => setTimeout(resolve, 500));
-        setShowCard(true);
+        setTimeout(() => {
+          setShowCard(true);
+          setTimeout(() => {
+            setShowZodiacMessage(true);
+            setTimeout(() => {
+              setShowInstruction(true);
+            }, 500);
+          }, 500);
+        }, 500);
       }
     } catch (error) {
-      console.error('Error loading daily reading:', error);
-      if (mounted.current) {
-        setError('Unable to load your cosmic reading. Please try again.');
-      }
+      console.error('NFCStep2: Error loading daily reading:', error);
+      setError('Unable to load your cosmic reading. Please try again.');
     } finally {
       if (mounted.current) {
         setLoading(false);
       }
     }
   };
-
-  // Initial reading fetch
+  
+  // Add useEffect cleanup
   React.useEffect(() => {
-    if (userData && userData.nfc_id && !showThreeCard) {
-      fetchDailyReading();
-    }
-  }, [userData, selectedLanguage]);
-
+    const cleanup = () => {
+      mounted.current = false;
+    };
+    return cleanup;
+  }, []);
   if (error) {
     return React.createElement('div', {
       className: 'nfc-step2-container'
@@ -182,45 +219,7 @@ const NFCStep2 = ({ userData }) => {
   return React.createElement('div', {
     className: `nfc-step2-container ${isVisible ? 'nfc-fade-in' : ''}`
   }, [
-    // Reading Type Selector
-    React.createElement('div', {
-      key: 'reading-selector',
-      className: 'reading-type-selector'
-    }, [
-      React.createElement('button', {
-        key: 'daily',
-        className: 'cosmic-button active',
-        onClick: fetchDailyReading
-      }, 'Daily Reading'),
-      React.createElement('button', {
-        key: 'weekly',
-        className: 'cosmic-button',
-        onClick: () => setShowThreeCard(true)
-      }, 'Weekly 3-Card Reading')
-    ]),
-
-    // Language selector
-    React.createElement('div', {
-      key: 'language-selector',
-      className: 'nfc-language-selector'
-    }, 
-      React.createElement('select', {
-        value: selectedLanguage,
-        onChange: handleLanguageChange,
-        className: 'nfc-language-select'
-      }, [
-        React.createElement('option', { key: 'en', value: 'en' }, 'English'),
-        React.createElement('option', { key: 'ka', value: 'ka' }, 'ქართული'),
-        React.createElement('option', { key: 'ru', value: 'ru' }, 'Русский'),
-        React.createElement('option', { key: 'es', value: 'es' }, 'Español'),
-        React.createElement('option', { key: 'fr', value: 'fr' }, 'Français'),
-        React.createElement('option', { key: 'de', value: 'de' }, 'Deutsch'),
-        React.createElement('option', { key: 'zh', value: 'zh' }, '中文'),
-        React.createElement('option', { key: 'ja', value: 'ja' }, '日本語'),
-        React.createElement('option', { key: 'ko', value: 'ko' }, '한국어')
-      ])
-    ),
-
+    
     // Welcome message
     React.createElement('h1', {
       key: 'title',
@@ -272,6 +271,23 @@ const NFCStep2 = ({ userData }) => {
         key: 'affirmation-text',
         className: 'nfc-affirmation'
       }, readingData.affirmation)
+    ]),
+
+    // Reading Type Selector
+    React.createElement('div', {
+      key: 'reading-selector',
+      className: 'reading-type-selector'
+    }, [
+      React.createElement('button', {
+        key: 'daily',
+        className: 'cosmic-button active',
+        onClick: fetchDailyReading
+      }, 'Daily Reading'),
+      React.createElement('button', {
+        key: 'weekly',
+        className: 'cosmic-button',
+        onClick: () => setShowThreeCard(true)
+      }, 'Weekly 3-Card Reading')
     ]),
 
     // Instruction

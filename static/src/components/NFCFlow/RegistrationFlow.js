@@ -1,12 +1,30 @@
-// In RegistrationFlow.js
 const RegistrationFlow = ({ onRegistrationComplete, onError }) => {
+  const mounted = React.useRef(true);  // Add mounted ref
   const [showWelcome, setShowWelcome] = React.useState(true);
   const [isVerifying, setIsVerifying] = React.useState(false);
   const [error, setError] = React.useState(null);
   const [verifiedPosterCode, setVerifiedPosterCode] = React.useState(null);
 
+  // Add cleanup effect
+  React.useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
+
+  const handleRegistrationComplete = (data) => {
+    if (!mounted.current) return;
+    console.log('Registration completed:', data);
+    // Just handle the success, don't try to update parent state
+    if (onRegistrationComplete) {
+      onRegistrationComplete(data);
+    }
+  };
+
   const handleWelcomeSubmit = async (code) => {
     try {
+      if (!mounted.current) return;
       console.log('RegistrationFlow: Verifying poster code:', code);
       setIsVerifying(true);
       setError(null);
@@ -25,18 +43,25 @@ const RegistrationFlow = ({ onRegistrationComplete, onError }) => {
         throw new Error(data.error || 'Failed to verify code');
       }
 
-      setVerifiedPosterCode(code); // Store the verified code
-      console.log('RegistrationFlow: Poster code verified:', code);
-      setShowWelcome(false);
+      if (mounted.current) {
+        setVerifiedPosterCode(code);
+        console.log('RegistrationFlow: Poster code verified:', code);
+        setShowWelcome(false);
+      }
     } catch (err) {
       console.error('Verification error:', err);
-      setError(err.message);
-      if (onError) onError(err.message);
+      if (mounted.current) {
+        setError(err.message);
+        if (onError) onError(err.message);
+      }
     } finally {
-      setIsVerifying(false);
+      if (mounted.current) {
+        setIsVerifying(false);
+      }
     }
   };
 
+  // Render welcome screen
   if (showWelcome) {
     return React.createElement(WelcomeScreen, {
       onCodeSubmit: handleWelcomeSubmit,
@@ -45,16 +70,19 @@ const RegistrationFlow = ({ onRegistrationComplete, onError }) => {
     });
   }
 
-  // Pass the verified poster code to NFCUserRegistration
+  // Render registration form
   return React.createElement('div', {
     className: 'nfc-registration-flow'
   }, 
     React.createElement(NFCUserRegistration, {
-      posterCode: verifiedPosterCode, // Pass the stored code
-      onComplete: onRegistrationComplete,
+      key: verifiedPosterCode, // Add key to ensure fresh mount
+      posterCode: verifiedPosterCode,
+      onComplete: handleRegistrationComplete,
       onError: (errorMsg) => {
-        setError(errorMsg);
-        setShowWelcome(true);
+        if (mounted.current) {
+          setError(errorMsg);
+          setShowWelcome(true);
+        }
       },
       isSubmitting: isVerifying
     })

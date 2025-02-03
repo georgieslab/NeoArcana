@@ -5,3 +5,4 @@ gcloud run deploy landing-page --source . --platform managed --region us-central
 gcloud run deploy tarot-app --source . --platform managed --region us-central1 --allow-unauthenticated
 
 flask run 
+

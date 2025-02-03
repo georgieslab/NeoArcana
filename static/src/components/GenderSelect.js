@@ -78,7 +78,7 @@ const GenderSelect = ({ selectedGender, onGenderChange }) => {
       </div>
 
       {isOpen && (
-        <>
+        <React.Fragment>
           {isMobile && (
             <div 
               className="cosmic-backdrop"
@@ -121,7 +121,7 @@ const GenderSelect = ({ selectedGender, onGenderChange }) => {
               ))}
             </div>
           </div>
-        </>
+          </React.Fragment>
       )}
     </div>
   );

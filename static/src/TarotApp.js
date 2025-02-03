@@ -418,83 +418,75 @@ if (userDataObj) {
     }, [selectedLanguage]);
     
     // Update handleSubmit
-    // In TarotApp.js, update the handleSubmit function:
-
-const handleSubmit = async (userData) => {
-  setIsSubmitting(true);
-  console.log('Starting handleSubmit with userData:', userData);
-
-  try {
-    // Construct query params - GET requests shouldn't have a body
-    const queryParams = new URLSearchParams({
-      name: userData.name,
-      zodiacSign: calculateZodiacSign(userData.dateOfBirth),
-      isPremium: String(isPremium),
-      language: userData.language,
-      gender: userData.gender || '',
-      interests: JSON.stringify(userData.interests || []),
-      color: JSON.stringify(userData.color || null)
-    });
+    const handleSubmit = async (userData) => {
+      console.log('[Language Flow] Form submitted with language:', userData.language);
+      setIsSubmitting(true);
     
-    console.log('Fetching tarot reading with params:', queryParams.toString());
-    
-    const response = await fetch('/api/get_tarot_reading?' + queryParams);
-
-    if (!response.ok) {
-      const errorText = await response.text();
-      throw new Error(`Reading fetch failed: ${response.status} - ${errorText}`);
+    try {
+      // Submit user data
+      console.log('Submitting user data with language:', userData.language);
+      const userResponse = await fetch('/api/submit_user', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          name: userData.name,
+          dateOfBirth: userData.dateOfBirth,
+          isPremium,
+          language: userData.language  // Make sure language is included
+        })
+      });
+  
+      if (!userResponse.ok) {
+        throw new Error(`User data submission failed: ${userResponse.status}`);
+      }
+  
+      const userDataResponse = await userResponse.json();
+      
+      if (mountedRef.current) {
+        setName(userData.name);
+        setDateOfBirth(userData.dateOfBirth);
+        setZodiacSign(userDataResponse.zodiac_sign);
+        setSelectedLanguage(userData.language);
+      }
+  
+      // Construct the query params with language
+      const queryParams = new URLSearchParams({
+        name: userData.name,
+        zodiacSign: userDataResponse.zodiac_sign,
+        isPremium: String(isPremium),
+        language: userData.language
+      });
+  
+      console.log('Fetching tarot reading with language:', userData.language);
+      
+      const readingResponse = await fetch('/api/get_tarot_reading?' + queryParams);
+  
+      if (!readingResponse.ok) {
+        const errorText = await readingResponse.text();
+        throw new Error(`Reading fetch failed: ${readingResponse.status} - ${errorText}`);
+      }
+  
+      const readingData = await readingResponse.json();
+  
+      if (mountedRef.current) {
+        // Set card data
+        setCardName(readingData.cardName);
+        setCardImage(readingData.cardImage);
+        setInterpretation(readingData.interpretation);
+        // Store language for chat
+        setSelectedLanguage(userData.language);
+        setStep(2);
+      }
+  
+    } catch (error) {
+      console.error('Error in handleSubmit:', error);
+      setError(error.message || 'An error occurred');
+    } finally {
+      if (mountedRef.current) {
+        setIsSubmitting(false);
+      }
     }
-
-    const readingData = await response.json();
-    console.log('Received reading data:', readingData);
-
-    if (!readingData.cards || readingData.cards.length !== 3) {
-      throw new Error('Invalid reading data received');
-    }
-
-    // Set all necessary state
-    setName(userData.name);
-    setZodiacSign(calculateZodiacSign(userData.dateOfBirth));
-    setPremiumCards(readingData.cards);
-    setInterpretation(readingData.interpretation);
-    setSelectedLanguage(userData.language);
-    
-    console.log('Setting state with:', {
-      name: userData.name,
-      zodiacSign: calculateZodiacSign(userData.dateOfBirth),
-      cards: readingData.cards,
-      interpretation: readingData.interpretation
-    });
-
-    setStep(2);
-
-  } catch (error) {
-    console.error('Error in handleSubmit:', error);
-    setError(error.message || 'An error occurred');
-  } finally {
-    setIsSubmitting(false);
-  }
-};
-
-// Add helper function for zodiac sign calculation
-const calculateZodiacSign = (dateStr) => {
-  const date = new Date(dateStr);
-  const month = date.getMonth() + 1;
-  const day = date.getDate();
-
-  if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return "Aries";
-  if ((month === 4 && day >= 20) || (month === 5 && day <= 20)) return "Taurus";
-  if ((month === 5 && day >= 21) || (month === 6 && day <= 20)) return "Gemini";
-  if ((month === 6 && day >= 21) || (month === 7 && day <= 22)) return "Cancer";
-  if ((month === 7 && day >= 23) || (month === 8 && day <= 22)) return "Leo";
-  if ((month === 8 && day >= 23) || (month === 9 && day <= 22)) return "Virgo";
-  if ((month === 9 && day >= 23) || (month === 10 && day <= 22)) return "Libra";
-  if ((month === 10 && day >= 23) || (month === 11 && day <= 21)) return "Scorpio";
-  if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) return "Sagittarius";
-  if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) return "Capricorn";
-  if ((month === 1 && day >= 20) || (month === 2 && day <= 18)) return "Aquarius";
-  return "Pisces";
-};
+  };
 
   const handleNFCSubmit = async (userData) => {
     try {
@@ -641,89 +633,89 @@ const handleCardReveal = React.useCallback(() => {
         </div>
       ))}
 
-{step === 1 && (
-  <React.Fragment>
-    {isNFCUser || isNFCRegistration ? (
-      <RegistrationFlow 
-        onRegistrationComplete={(userData) => {
-          setNfcUserData(userData);
-          setName(userData.name);
-          setZodiacSign(userData.zodiacSign);
-          setStep(2);
-        }}
-        onError={(error) => {
-          setError(error);
-          // Optionally reset registration if needed
-          setIsNFCRegistration(false);
-        }}
-      />
-    ) : isPremium ? (
-      <Step1Premium
-        onComplete={handleSubmit}
-        isSubmitting={isSubmitting}
-        error={error}
-      />
-    ) : (
-      <Step1Trial
-        onComplete={handleSubmit}
-        isSubmitting={isSubmitting}
-        error={error}
-      />
-    )}
-  </React.Fragment>
-)}
+      {step === 1 && (
+        <React.Fragment>
+          {isNFCUser || isNFCRegistration ? (
+            <RegistrationFlow 
+              onRegistrationComplete={(userData) => {
+                console.log('Registration completed in TarotApp:', userData);
+                // No need to set step or modify state
+                // Let NFCUserRegistration handle the success screen
+              }}
+              onError={(error) => {
+                setError(error);
+                setIsNFCRegistration(false);
+              }}
+            />
+          ) : isPremium ? (
+            <Step1Premium
+              onComplete={handleSubmit}
+              isSubmitting={isSubmitting}
+              error={error}
+            />
+          ) : (
+            <Step1Trial
+              onComplete={handleSubmit}
+              isSubmitting={isSubmitting}
+              error={error}
+            />
+          )}
+        </React.Fragment>
+      )}
 
-{step === 2 && (
-  <React.Fragment>
-    {console.log('Rendering Step 2 with:', {
-      name,
-      premiumCards,
-      zodiacSign,
-      isPremium
-    })}
-    {isPremium ? (
-      <PremiumStep2
-        name={name}
-        cardImages={premiumCards || []}
-        handleCardReveal={handleCardReveal}
-        zodiacSign={zodiacSign}
-      />
-    ) : (
-      <TrialStep2
-        name={name}
-        cardImage={cardImage}
-        handleCardReveal={handleCardReveal}
-        zodiacSign={zodiacSign}
-      />
-    )}
-  </React.Fragment>
-)}
+      {step === 2 && (
+          <React.Fragment>
+            {console.log('Step 2 reached, userData:', nfcUserData)}
+            {isNFCUser || isNFCRegistration ? (
+        <NFCStep2
+          name={name}
+          cardImage={cardImage}
+          zodiacSign={zodiacSign}
+          userData={nfcUserData}
+          handleCardReveal={handleCardReveal}
+        />
+            ) : isPremium ? (
+        <PremiumStep2
+          name={name}
+          cardImages={premiumCards}
+          handleCardReveal={handleCardReveal}
+        />
+            ) : (
+        <TrialStep2
+          name={name}
+          cardImage={cardImage}
+          handleCardReveal={handleCardReveal}
+          zodiacSign={zodiacSign}
+        />
+            )}
+          </React.Fragment>
+      )}
 
-{step === 3 && (
-  <React.Fragment>
-    {isNFCUser || isNFCRegistration ? (
-      null // NFC flow doesn't use step 3
-    ) : isPremium ? (
-      <window.PremiumStep3
-        name={name}
-        zodiacSign={zodiacSign}
-        premiumCards={premiumCards}
-        interpretation={interpretation}
-        language={selectedLanguage}
-      />
-    ) : (
-      <window.TrialStep3
-        name={name}
-        zodiacSign={zodiacSign}
-        cardName={cardName}
-        cardImage={cardImage}
-        interpretation={interpretation}
-        language={selectedLanguage}
-        onSignUpPro={handleSignUpPro}
-      />
-    )}
-  </React.Fragment>
-)}
+      {step === 3 && (
+        <React.Fragment>
+          {isNFCUser || isNFCRegistration ? (
+            null // NFC flow doesn't use step 3
+          ) : isPremium ? (
+            <window.PremiumStep3
+              name={name}
+              zodiacSign={zodiacSign}
+              premiumCards={premiumCards}
+              interpretation={interpretation}
+              language={selectedLanguage}
+            />
+          ) : (
+            <window.TrialStep3
+              name={name}
+              zodiacSign={zodiacSign}
+              cardName={cardName}
+              cardImage={cardImage}
+              interpretation={interpretation}
+              language={selectedLanguage}
+              onSignUpPro={handleSignUpPro}
+            />
+          )}
+        </React.Fragment>
+      )}
 
           <AudioButton isMuted={isMuted} toggleMute={toggleMute} />
           

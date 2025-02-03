@@ -18,82 +18,6 @@ else:
 
 db = firestore.Client(project=project_id)
 
-def register_nfc_user(poster_code, user_data):
-    """Register a new NFC user"""
-    try:
-        logger.info(f"Starting registration for poster code: {poster_code}")
-        
-        # Generate NFC ID
-        nfc_id = f"nfc_{poster_code}"
-        
-        # Structure user data
-        user_data = {
-            'nfc_id': nfc_id,
-            'poster_code': poster_code,
-            'registration_date': datetime.now().isoformat(),
-            'user_data': {
-                'name': user_data.get('name'),
-                'dateOfBirth': user_data.get('dateOfBirth'),
-                'zodiacSign': user_data.get('zodiacSign', ''),
-                'preferences': {
-                    'color': user_data.get('color', {
-                        'name': 'Cosmic Purple',
-                        'value': '#A59AD1'
-                    }),
-                    'numbers': {
-                        'favoriteNumber': str(user_data.get('numbers', {}).get('favoriteNumber', '')),
-                        'luckyNumber': str(user_data.get('numbers', {}).get('luckyNumber', '')),
-                        'guidanceNumber': str(user_data.get('numbers', {}).get('guidanceNumber', ''))
-                    },
-                    'interests': user_data.get('interests', []),
-                    'gender': user_data.get('gender', ''),
-                    'language': user_data.get('language', 'en')
-                }
-            },
-            'last_reading_date': None,
-            'status': 'active'
-        }
-
-        # Start a transaction
-        transaction = db.transaction()
-        
-        @firestore.transactional
-        def register_in_transaction(transaction):
-            # Update poster status
-            poster_ref = db.collection('valid_posters').document(poster_code)
-            poster = poster_ref.get(transaction=transaction)
-            
-            if not poster.exists:
-                return {"error": "Invalid poster code"}, 400
-                
-            if poster.get('is_registered'):
-                return {"error": "Poster already registered"}, 409
-                
-            # Create user document
-            user_ref = db.collection('nfc_users').document(nfc_id)
-            
-            # Update poster to mark as registered
-            transaction.update(poster_ref, {
-                'is_registered': True,
-                'registration_date': datetime.now().isoformat(),
-                'nfc_id': nfc_id
-            })
-            
-            # Create user document
-            transaction.set(user_ref, user_data)
-            
-            return {
-                "success": True,
-                "nfc_id": nfc_id,
-                "user_data": user_data
-            }, 200
-        
-        # Execute transaction
-        return register_in_transaction(transaction)
-        
-    except Exception as e:
-        logger.error(f"Registration error: {str(e)}")
-        return {"error": str(e)}, 500    
 def initialize_poster_code(poster_code):
     """Initialize a poster code in the valid_posters collection"""
     try:
@@ -336,11 +260,38 @@ def update_poster_nfc_status(poster_code, is_programmed=True):
         logger.error(f"Error updating NFC status: {e}")
         return False
 
-# In nfc_firestore.py
 def register_nfc_user(poster_code, user_data):
     """Register a new NFC user"""
     try:
-        # Start a transaction
+        nfc_id = f"nfc_{poster_code}"
+        
+        # Structure user data
+        structured_data = {
+            'nfc_id': nfc_id,
+            'poster_code': poster_code,
+            'registration_date': datetime.now().isoformat(),
+            'user_data': {
+                'name': user_data.get('name'),
+                'dateOfBirth': user_data.get('dateOfBirth'),
+                'zodiacSign': user_data.get('zodiacSign', ''),
+                'preferences': user_data.get('preferences', {
+                    'color': {
+                        'name': 'Cosmic Purple',
+                        'value': '#A59AD1'
+                    },
+                    'numbers': {},
+                    'interests': [],
+                    'gender': '',
+                    'language': user_data.get('preferences', {}).get('language', 'en')
+                })
+            },
+            'last_reading_date': None,
+            'status': 'active'
+        }
+
+        # Log the structured data
+        logger.info(f"Structured user data for registration: {structured_data}")
+
         transaction = db.transaction()
         
         @firestore.transactional
@@ -355,10 +306,6 @@ def register_nfc_user(poster_code, user_data):
             if valid_poster.get('is_registered'):
                 return {"error": "Poster already registered"}, 409
                 
-            # Register user
-            nfc_id = f"nfc_{poster_code}"
-            user_ref = db.collection('nfc_users').document(nfc_id)
-            
             # Update poster status
             transaction.update(valid_poster_ref, {
                 'is_registered': True,
@@ -366,23 +313,20 @@ def register_nfc_user(poster_code, user_data):
                 'registered_nfc_id': nfc_id
             })
             
-            # Create user document
-            transaction.set(user_ref, {
-                'nfc_id': nfc_id,
-                'poster_code': poster_code,
-                'registration_date': firestore.SERVER_TIMESTAMP,
-                'user_data': user_data
-            })
+            # Create user document with structured data
+            user_ref = db.collection('nfc_users').document(nfc_id)
+            transaction.set(user_ref, structured_data)
             
             return {
                 "success": True,
-                "nfc_id": nfc_id
+                "nfc_id": nfc_id,
+                "data": structured_data
             }, 200
-            
+        
         return register_in_transaction(transaction)
         
     except Exception as e:
-        logger.error(f"Registration error: {e}")
+        logger.error(f"Registration error: {str(e)}")
         return {"error": str(e)}, 500
 
 def get_last_reading(nfc_id):

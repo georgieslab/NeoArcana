@@ -1,91 +1,36 @@
 const NFCUserRegistration = ({ onComplete, onError, posterCode: initialPosterCode }) => {
-  // State declarations
-  const [error, setError] = React.useState(null);
-  const [formError, setFormError] = React.useState(null);
-  const [isSubmitting, setIsSubmitting] = React.useState(false);
-  const [currentStep, setCurrentStep] = React.useState(1);
+  const mounted = React.useRef(true);
   const [registrationSuccess, setRegistrationSuccess] = React.useState(false);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
+  const [formError, setFormError] = React.useState(null);
+  const [error, setError] = React.useState(null);
+  const [currentStep, setCurrentStep] = React.useState(1);
 
-  console.log('NFCUserRegistration: Initializing with poster code:', initialPosterCode);
+  React.useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+    };
+  }, []);
 
-  const [formData, setFormData] = React.useState(() => ({
-    name: '',
-    dateOfBirth: '',
-    gender: '',
-    color: {
-      name: 'Cosmic Purple',
-      value: '#A59AD1'
-    },
-    interests: [],
-    language: 'en',
-    posterCode: initialPosterCode, // Use the passed poster code
-    futurePlans: '',
-    numbers: {
-      favoriteNumber: '',
-      luckyNumber: '',
-      guidanceNumber: ''
-    }
-  }));
-
-  const handleSubmit = async (e) => {
-    if (e) e.preventDefault();
-    setFormError(null);
-    setIsSubmitting(true);
-    
-    try {
-      console.log('Starting registration process with data:', formData);
-      
-      if (!formData.posterCode && !initialPosterCode) {
-        throw new Error('No poster code provided');
-      }
-
-      const registrationData = {
-        posterCode: formData.posterCode || initialPosterCode,
-        name: formData.name,
-        dateOfBirth: formData.dateOfBirth,
-        zodiacSign: calculateZodiacSign(formData.dateOfBirth),
-        gender: formData.gender,
-        preferences: {
-          color: formData.color,
-          interests: formData.interests,
-          language: formData.language,
-          numbers: formData.numbers
-        }
-      };
-
-      console.log('Submitting registration data:', registrationData);
-
-      const registerResponse = await fetch('/api/nfc/register', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json'
-        },
-        body: JSON.stringify(registrationData)
-      });
-
-      if (!registerResponse.ok) {
-        const errorData = await registerResponse.json();
-        throw new Error(errorData.error || 'Registration failed');
-      }
-
-      const data = await registerResponse.json();
-      console.log('Registration successful:', data);
-      setRegistrationSuccess(true);
-      if (onComplete) {
-        onComplete(data);
-      }
-      
-    } catch (err) {
-      console.error('Registration error:', err);
-      setFormError(err.message || 'Registration failed. Please try again.');
-      if (onError) {
-        onError(err.message);
-      }
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
+  const [formData, setFormData] = React.useState({
+      name: '',
+      dateOfBirth: '',
+      gender: '',
+      color: {
+        name: 'Cosmic Purple',
+        value: '#A59AD1'
+      },
+      interests: [],
+      language: 'en',
+      posterCode: initialPosterCode,
+      futurePlans: '',
+      numbers: {
+        favoriteNumber: '',
+        luckyNumber: '',
+        guidanceNumber: ''
+      }}
+  );
 
   const calculateZodiacSign = (dateStr) => {
     const date = new Date(dateStr);
@@ -106,254 +51,410 @@ const NFCUserRegistration = ({ onComplete, onError, posterCode: initialPosterCod
     return "Pisces";
   };
 
+  const handleSubmit = async (e) => {
+    if (e) e.preventDefault();
+    if (!mounted.current) return;
+    
+    setFormError(null);
+    setIsSubmitting(true);
+  
+    try {
+      const registrationData = {
+        posterCode: formData.posterCode || initialPosterCode,
+        name: formData.name,
+        dateOfBirth: formData.dateOfBirth,
+        zodiacSign: calculateZodiacSign(formData.dateOfBirth),
+        gender: formData.gender,
+        preferences: {
+          color: formData.color,
+          interests: formData.interests,
+          language: formData.language,
+          numbers: formData.numbers,
+        },
+      };
+  
+      const response = await fetch('/api/nfc/register', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(registrationData),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || 'Registration failed');
+      }
+
+      console.log('Registration successful:', data);
+
+      if (mounted.current) {
+        setRegistrationSuccess(true);
+        if (onComplete) {
+          onComplete(data);
+        }
+      }
+
+    } catch (err) {
+      console.error('Registration error:', err);
+      if (mounted.current) {
+        setFormError(err.message || 'Registration failed. Please try again.');
+      }
+    } finally {
+      if (mounted.current) {
+        setIsSubmitting(false);
+      }
+    }
+  };
+
   if (registrationSuccess) {
     return React.createElement('div', {
-      className: 'nfc-registration-container'
+    className: 'nfc-registration-container success-container'
+  }, [
+    React.createElement('h1', {
+      key: 'title',
+      className: 'title cosmic-gradient'
+    }, '✨ Registration Complete! ✨'),
+    
+    React.createElement('div', {
+      key: 'success-content',
+      className: 'success-content'
     }, [
+      React.createElement('p', {
+        key: 'welcome',
+        className: 'cosmic-welcome'
+      }, `Welcome to your cosmic journey, ${formData.name}!`),
+      
       React.createElement('div', {
-        className: 'success-container fade-in',
-        key: 'success-container'
+        key: 'details',
+        className: 'cosmic-details'
+      }, [
+        React.createElement('p', { key: 'color' }, 
+          `Your cosmic color: ${formData.color.name}`
+        ),
+        React.createElement('p', { key: 'zodiac' }, 
+          `Zodiac Sign: ${calculateZodiacSign(formData.dateOfBirth)}`
+        ),
+        React.createElement('p', { key: 'interests' },
+          `Focus Areas: ${formData.interests.join(', ')}`
+        )
+      ]),
+      
+      React.createElement('button', {
+        key: 'home-button',
+        className: 'cosmic-button',
+        onClick: () => window.location.href = '/'
+      }, '✨ Return to Main Menu ✨')
+    ])
+  ]);
+}
+
+  const renderStep1 = () => 
+    React.createElement('div', {
+      className: 'registration-step'
+    }, [
+      React.createElement('h1', {
+        key: 'title',
+        className: 'title cosmic-gradient cosmic-text'
+      }, 'Welcome to Your Cosmic Journey'),
+      
+      React.createElement('div', {
+        key: 'input-container',
+        className: 'input-container'
+      }, [
+        React.createElement('img', {
+          key: 'user-icon',
+          src: '/static/icons/user.svg',
+          alt: 'User',
+          className: 'input-icon'
+        }),
+        React.createElement('input', {
+          key: 'name-input',
+          type: 'text',
+          value: formData.name,
+          onChange: (e) => setFormData({ ...formData, name: e.target.value }),
+          placeholder: 'Your Name',
+          className: 'input',
+          required: true
+        })
+      ]),
+      
+      React.createElement(DateInput, {
+        key: 'date-input',
+        value: formData.dateOfBirth,
+        onChange: (date) => setFormData({ ...formData, dateOfBirth: date })
+      }),
+  
+      React.createElement(GenderSelect, {
+        key: 'gender-select',
+        selectedGender: formData.gender,
+        onGenderChange: (gender) => setFormData({ ...formData, gender })
+      }),
+  
+      React.createElement('button', {
+        key: 'continue-button',
+        className: 'cosmic-glassy-button1',
+        onClick: () => setCurrentStep(2),
+        disabled: !formData.name || !formData.dateOfBirth
+      }, 'Continue Your Journey ✨')
+    ]);
+
+  const renderStep2 = () => 
+      React.createElement('div', {
+        className: 'registration-step'
       }, [
         React.createElement('h1', {
-          className: 'title cosmic-gradient cosmic-text',
-          key: 'success-title'
-        }, 'Registration Complete! ✨'),
+          key: 'title',
+          className: 'title cosmic-gradient cosmic-text'
+        }, 'Choose Your Cosmic Energy'),
+    
         React.createElement('div', {
-          className: 'success-message',
-          key: 'success-message'
+          key: 'premium-fields',
+          className: 'premium-fields'
         }, [
-          React.createElement('p', { key: 'p1' }, 'Your cosmic journey awaits! To receive your daily reading:'),
-          React.createElement('ol', { key: 'instructions' }, [
-            React.createElement('li', { key: 'step1' }, 'Find the NFC chip on your cosmic poster'),
-            React.createElement('li', { key: 'step2' }, 'Tap your phone against it'),
-            React.createElement('li', { key: 'step3' }, 'Receive your personalized cosmic guidance')
-          ]),
-          React.createElement('p', { key: 'p2', className: 'cosmic-text' }, '✨ See you in the stars! ✨')
-        ])
-      ])
-    ]);
-  }
-
-  const renderStep1 = () => (
-    <div className="registration-step">
-      <h1 className="title cosmic-gradient cosmic-text">
-        Welcome to Your Cosmic Journey
-      </h1>
-      
-      <div className="input-container">
-        <img src="/static/icons/user.svg" alt="User" className="input-icon" />
-        <input
-          type="text"
-          value={formData.name}
-          onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-          placeholder="Your Name"
-          className="input"
-          required
-        />
-      </div>
-
-      <DateInput
-        value={formData.dateOfBirth}
-        onChange={(date) => setFormData({ ...formData, dateOfBirth: date })}
-      />
-
-      <GenderSelect
-        selectedGender={formData.gender}
-        onGenderChange={(gender) => setFormData({ ...formData, gender })}
-      />
-
-      <button 
-        className="cosmic-glassy-button1"
-        onClick={() => setCurrentStep(2)}
-        disabled={!formData.name || !formData.dateOfBirth}
-      >
-        Continue Your Journey ✨
-      </button>
-    </div>
-  );
-
-  const renderStep2 = () => (
-    <div className="registration-step">
-      <h1 className="title cosmic-gradient cosmic-text">
-        Choose Your Cosmic Energy
-      </h1>
-
-      <div className="premium-fields">
-        <ColorPicker
-          selectedColor={formData.color}
-          onColorChange={(color) => setFormData({ ...formData, color })}
-        />
-
-        <LanguageSelect
-          selectedLanguage={formData.language}
-          onLanguageChange={(language) => setFormData({ ...formData, language })}
-        />
-
-        <div className="numerology-section">
-          <h3 className="section-title">Your Cosmic Numbers</h3>
+          React.createElement(ColorPicker, {
+            key: 'color-picker',
+            selectedColor: formData.color,
+            onColorChange: (color) => setFormData({ ...formData, color })
+          }),
+    
+          React.createElement(LanguageSelect, {
+            key: 'language-select',
+            selectedLanguage: formData.language,
+            onLanguageChange: (language) => setFormData({ ...formData, language })
+          }),
+    
+          React.createElement('div', {
+            key: 'numerology',
+            className: 'numerology-section'
+          }, [
+            React.createElement('h3', {
+              key: 'numbers-title',
+              className: 'section-title'
+            }, 'Your Cosmic Numbers'),
+    
+            // Number inputs
+            React.createElement('div', {
+              key: 'favorite-number',
+              className: 'input-container'
+            }, [
+              React.createElement('img', {
+                key: 'star-icon',
+                src: '/static/icons/star.svg',
+                alt: 'Favorite',
+                className: 'input-icon'
+              }),
+              React.createElement('input', {
+                key: 'favorite-input',
+                type: 'number',
+                min: '0',
+                max: '99',
+                value: formData.numbers.favoriteNumber,
+                onChange: (e) => setFormData({
+                  ...formData,
+                  numbers: {
+                    ...formData.numbers,
+                    favoriteNumber: e.target.value
+                  }
+                }),
+                placeholder: 'Your Favorite Number (0-99)',
+                className: 'input'
+              })
+            ]),
+    
+            // Lucky number input
+            React.createElement('div', {
+              key: 'lucky-number',
+              className: 'input-container'
+            }, [
+              React.createElement('img', {
+                key: 'clover-icon',
+                src: '/static/icons/clover.svg',
+                alt: 'Lucky',
+                className: 'input-icon'
+              }),
+              React.createElement('input', {
+                key: 'lucky-input',
+                type: 'number',
+                min: '0',
+                max: '99',
+                value: formData.numbers.luckyNumber,
+                onChange: (e) => setFormData({
+                  ...formData,
+                  numbers: {
+                    ...formData.numbers,
+                    luckyNumber: e.target.value
+                  }
+                }),
+                placeholder: 'Your Lucky Number (0-99)',
+                className: 'input'
+              })
+            ]),
+    
+            // Guidance number input
+            React.createElement('div', {
+              key: 'guidance-number',
+              className: 'input-container'
+            }, [
+              React.createElement('img', {
+                key: 'compass-icon',
+                src: '/static/icons/compass.svg',
+                alt: 'Guidance',
+                className: 'input-icon'
+              }),
+              React.createElement('input', {
+                key: 'guidance-input',
+                type: 'number',
+                min: '0',
+                max: '99',
+                value: formData.numbers.guidanceNumber,
+                onChange: (e) => setFormData({
+                  ...formData,
+                  numbers: {
+                    ...formData.numbers,
+                    guidanceNumber: e.target.value
+                  }
+                }),
+                placeholder: 'Your Guidance Number (0-99)',
+                className: 'input'
+              })
+            ])
+          ])
+        ]),
+    
+        React.createElement('div', {
+          key: 'button-container',
+          className: 'button-container'
+        }, [
+          React.createElement('button', {
+            key: 'next-button',
+            className: 'cosmic-glassy-button2',
+            onClick: () => setCurrentStep(3),
+            disabled: !formData.numbers.favoriteNumber || 
+                     !formData.numbers.luckyNumber || 
+                     !formData.numbers.guidanceNumber
+          }, 'Next Step ✨'),
           
-          <div className="input-container">
-            <img src="/static/icons/star.svg" alt="Favorite" className="input-icon" />
-            <input
-              type="number"
-              min="0"
-              max="99"
-              value={formData.numbers.favoriteNumber}
-              onChange={(e) => setFormData({
-                ...formData,
-                numbers: {
-                  ...formData.numbers,
-                  favoriteNumber: e.target.value
-                }
-              })}
-              placeholder="Your Favorite Number (0-99)"
-              className="input"
-            />
-          </div>
+          React.createElement('button', {
+            key: 'back-button',
+            className: 'text-button-cosmic',
+            onClick: () => setCurrentStep(1)
+          }, 'Go Back')
+        ])
+    ]);
 
-          <div className="input-container">
-            <img src="/static/icons/clover.svg" alt="Lucky" className="input-icon" />
-            <input
-              type="number"
-              min="0"
-              max="99"
-              value={formData.numbers.luckyNumber}
-              onChange={(e) => setFormData({
-                ...formData,
-                numbers: {
-                  ...formData.numbers,
-                  luckyNumber: e.target.value
-                }
-              })}
-              placeholder="Your Lucky Number (0-99)"
-              className="input"
-            />
-          </div>
+  const renderStep3 = () => 
+      React.createElement('div', {
+        className: 'registration-step'
+      }, [
+        React.createElement('h1', {
+          key: 'title',
+          className: 'title cosmic-gradient cosmic-text'
+        }, 'Choose Your Cosmic Focus'),
+    
+        React.createElement(InterestsPicker, {
+          key: 'interests-picker',
+          selectedInterests: formData.interests,
+          onInterestsChange: (interests) => setFormData({ ...formData, interests })
+        }),
+    
+        React.createElement('div', {
+          key: 'plans-container',
+          className: 'future-plans-container'
+        }, [
+          React.createElement('textarea', {
+            key: 'plans-input',
+            value: formData.futurePlans,
+            onChange: (e) => setFormData({ ...formData, futurePlans: e.target.value }),
+            placeholder: 'What are your dreams and aspirations for the future? (minimum 25 characters)',
+            className: 'textarea-input',
+            rows: 4,
+            minLength: 25
+          }),
+          React.createElement('div', {
+            key: 'char-count',
+            className: 'character-count'
+          }, `${formData.futurePlans.length}/25 characters`)
+        ]),
+    
+        React.createElement('div', {
+          key: 'button-container',
+          className: 'button-container'
+        }, [
+          React.createElement('button', {
+            key: 'submit-button',
+            className: 'cosmic-glassy-button1',
+            onClick: handleSubmit,
+            disabled: isSubmitting || 
+                     formData.interests.length === 0 || 
+                     formData.futurePlans.length < 25
+          }, isSubmitting ? 'Connecting to the Universe...' : 'Complete Registration ✨'),
+          
+          React.createElement('button', {
+            key: 'back-button',
+            className: 'text-button-cosmic',
+            onClick: () => setCurrentStep(2)
+          }, 'Go Back')
+        ])
+    ]);
 
-          <div className="input-container">
-            <img src="/static/icons/compass.svg" alt="Guidance" className="input-icon" />
-            <input
-              type="number"
-              min="0"
-              max="99"
-              value={formData.numbers.guidanceNumber}
-              onChange={(e) => setFormData({
-                ...formData,
-                numbers: {
-                  ...formData.numbers,
-                  guidanceNumber: e.target.value
-                }
-              })}
-              placeholder="Your Guidance Number (0-99)"
-              className="input"
-            />
-          </div>
-        </div>
-      </div>
 
-      <div className="button-container">
-        <button 
-          className="cosmic-glassy-button2"
-          onClick={() => setCurrentStep(3)}
-          disabled={!formData.numbers.favoriteNumber || 
-                   !formData.numbers.luckyNumber || 
-                   !formData.numbers.guidanceNumber}
-        >
-          Next Step ✨
-        </button>
-        
-        <button 
-          className="text-button-cosmic"
-          onClick={() => setCurrentStep(1)}
-        >
-          Go Back
-        </button>
-      </div>
-    </div>
-  );
-
-  const renderStep3 = () => (
-    <div className="registration-step">
-      <h1 className="title cosmic-gradient cosmic-text">
-        Choose Your Cosmic Focus
-      </h1>
-
-      <InterestsPicker
-        selectedInterests={formData.interests}
-        onInterestsChange={(interests) => setFormData({ ...formData, interests })}
-      />
-
-      <div className="future-plans-container">
-        <textarea
-          value={formData.futurePlans}
-          onChange={(e) => setFormData({ ...formData, futurePlans: e.target.value })}
-          placeholder="What are your dreams and aspirations for the future? (minimum 25 characters)"
-          className="textarea-input"
-          rows={4}
-          minLength={25}
-        />
-        <div className="character-count">
-          {formData.futurePlans.length}/25 characters
-        </div>
-      </div>
-
-      <div className="button-container">
-        <button 
-          className="cosmic-glassy-button1"
-          onClick={handleSubmit}
-          disabled={isSubmitting || 
-                   formData.interests.length === 0 || 
-                   formData.futurePlans.length < 25}
-        >
-          {isSubmitting ? 'Connecting to the Universe...' : 'Complete Registration ✨'}
-        </button>
-        
-        <button 
-          className="text-button-cosmic"
-          onClick={() => setCurrentStep(2)}
-        >
-          Go Back
-        </button>
-      </div>
-    </div>
-  );
-
-  return (
-    <div className="nfc-registration-container">
-      <div className="step-indicator">
-        <div className={`step ${currentStep >= 1 ? 'active' : ''}`}>1</div>
-        <div className={`step ${currentStep >= 2 ? 'active' : ''}`}>2</div>
-        <div className={`step ${currentStep >= 3 ? 'active' : ''}`}>3</div>
-      </div>
-
-      {/* Error display section */}
-      {(error || formError) && (
-        <div className="error-container fade-in">
-          <div className="error-message cosmic-gradient">
-            <p>{error || formError}</p>
-            {(error || formError)?.includes('already registered') && (
-              <button 
-                className="cosmic-glassy-button2"
-                onClick={() => {
-                  setError(null);
-                  setFormError(null);
-                  window.location.reload();
-                }}
-              >
-                Try Different Code ✨
-              </button>
-            )}
-          </div>
-        </div>
-      )}
-      
-      <form onSubmit={(e) => e.preventDefault()} className="registration-form">
-        {currentStep === 1 && renderStep1()}
-        {currentStep === 2 && renderStep2()}
-        {currentStep === 3 && renderStep3()}
-      </form>
-    </div>
-  );
+  return React.createElement('div', {
+    className: 'nfc-registration-container'
+  }, [
+    React.createElement('div', {
+      key: 'step-indicator',
+      className: 'step-indicator'
+    }, [
+      React.createElement('div', {
+        key: 'step1',
+        className: `step ${currentStep >= 1 ? 'active' : ''}`
+      }, '1'),
+      React.createElement('div', {
+        key: 'step2',
+        className: `step ${currentStep >= 2 ? 'active' : ''}`
+      }, '2'),
+      React.createElement('div', {
+        key: 'step3',
+        className: `step ${currentStep >= 3 ? 'active' : ''}`
+      }, '3')
+    ]),
+  
+    // Error display
+    (error || formError) && React.createElement('div', {
+      key: 'error-container',
+      className: 'error-container fade-in'
+    }, 
+      React.createElement('div', {
+        className: 'error-message cosmic-gradient'
+      }, [
+        React.createElement('p', { key: 'error-text' }, error || formError),
+        ((error && error.includes('already registered')) || 
+         (formError && formError.includes('already registered'))) &&
+          React.createElement('button', {
+            key: 'error-button',
+            className: 'cosmic-glassy-button2',
+            onClick: () => {
+              setError(null);
+              setFormError(null);
+              window.location.reload();
+            }
+          }, 'Try Different Code ✨')
+      ])
+    ),
+  
+    // Form
+    React.createElement('form', {
+      key: 'registration-form',
+      onSubmit: (e) => e.preventDefault(),
+      className: 'registration-form'
+    }, [
+      currentStep === 1 ? renderStep1() : null,
+      currentStep === 2 ? renderStep2() : null,
+      currentStep === 3 ? renderStep3() : null
+    ])
+  ]);
 };
 
 window.NFCUserRegistration = NFCUserRegistration;

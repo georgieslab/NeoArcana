@@ -11,15 +11,14 @@ from anthropic import Anthropic
 import json
 import firebase_admin
 from firebase_admin import credentials, firestore
-import datetime
 import time
 import sys
 from flask.cli import with_appcontext
 import click
-from flask import send_from_directory
 
 # Load environment variables first
 load_dotenv()
+client = Anthropic()
 
 # Configure logging
 logging.basicConfig(
@@ -33,11 +32,12 @@ logger = logging.getLogger(__name__)
 # Initialize Flask app
 app = Flask(__name__, static_folder='static', template_folder='templates')
 
-# Production configuration
-#
-
 # Import Firebase and initialize db
 from static.src.api.firebase_init import db
+
+# Initialize Anthropic and Claude API handler
+from static.src.api.claude_tarot_api import create_api_handler
+api_handler = create_api_handler()
 
 # Import and initialize monitoring and validation
 from static.src.api.nfc_monitoring import NFCMonitor
@@ -53,15 +53,16 @@ from static.src.api.admin_routes import init_admin_routes
 admin_routes = init_admin_routes(db, nfc_monitor)
 
 # Import other API modules
-from static.src.api.claude_tarot_api import api_handler
-from static.src.api.firestore_signup import signup_user, save_reading, check_premium_status, save_chat_message
-from static.src.api.nfc_routes import nfc_routes  # Import the existing Blueprint
+from static.src.api.firestore_signup import (
+    signup_user, 
+    save_reading, 
+    check_premium_status, 
+    save_chat_message
+)
+from static.src.api.nfc_routes import nfc_routes
 
 # Register blueprints
 app.register_blueprint(admin_routes, url_prefix='/api/admin')
-
-# Import and register blueprints
-from static.src.api.nfc_routes import nfc_routes
 app.register_blueprint(nfc_routes, url_prefix='/api/nfc')
 
 @app.route('/nfc')
@@ -79,18 +80,83 @@ def handle_nfc():
     logger.info(f"Rendering NFC page with initial state: {initial_state}")
     
     return render_template('react.html', initial_state=initial_state)
-# Also add this route to handle the old URL format
+
 @app.route('/')
 def index():
-    """Handle root route with optional poster code"""
+    """Handle root route with optional parameters"""
+    nfc_id = request.args.get('id')
     poster_code = request.args.get('posterCode')
     
-    if poster_code:
-        # Redirect to /nfc with the poster code
+    if nfc_id:
+        # Pass NFC ID to template for daily reading
+        return render_template('react.html', initial_state={
+            'isNFCUser': True,
+            'nfcId': nfc_id,
+            'step': 2
+        })
+    elif poster_code:
         return redirect(url_for('handle_nfc', posterCode=poster_code))
-    
+        
     return render_template('react.html')
 
+@app.route('/api/nfc/daily_affirmation', methods=['POST'])
+def daily_affirmation():
+    try:
+        data = request.get_json()
+        logger.info(f"Received daily affirmation request: {data}")
+        
+        if not data or 'userData' not in data:
+            return jsonify({
+                "success": False,
+                "error": "No user data provided"
+            }), 400
+
+        user_data = data['userData']
+        nfc_id = user_data.get('nfc_id')
+        language = user_data.get('language') or \
+                  user_data.get('preferences', {}).get('language', 'en')
+        
+        # Get cached reading if it exists
+        cached_reading = reading_cache.get_cached_reading(nfc_id, language)
+        if cached_reading:
+            logger.info(f"Returning cached reading for {nfc_id}")
+            return jsonify({
+                "success": True,
+                "data": cached_reading,
+                "cached": True
+            })
+
+        # Get single card reading using our api_handler
+        reading_data = api_handler.get_single_card_reading(
+            name=user_data.get('name'),
+            zodiac_sign=user_data.get('zodiacSign'),
+            language=language,
+            numbers=user_data.get('preferences', {}).get('numbers', {}),
+            color=user_data.get('preferences', {}).get('color'),
+            interests=user_data.get('preferences', {}).get('interests', [])
+        )
+
+        if not reading_data:
+            return jsonify({
+                "success": False,
+                "error": "Failed to generate reading"
+            }), 500
+
+        # Cache the reading
+        reading_cache.cache_reading(nfc_id, language, reading_data)
+
+        return jsonify({
+            "success": True,
+            "data": reading_data
+        })
+
+    except Exception as e:
+        logger.error(f"Error in daily_affirmation: {str(e)}")
+        return jsonify({
+            "success": False,
+            "error": "Internal server error",
+            "details": str(e)
+        }), 500
 @app.route('/api/nfc/verify_poster', methods=['POST'])
 def verify_poster():
     """Verify if a poster code is valid for registration"""
@@ -141,6 +207,7 @@ def verify_poster():
             "success": False,
             "error": "Failed to verify poster code"
         }), 500   
+
 @app.route('/service-worker.js')
 def service_worker():
     response = make_response(send_from_directory('static', 'service-worker.js'))
@@ -171,9 +238,6 @@ def add_user_data(name, email, birthday, preferences=None):
     
     db.collection("users").add(user_data)
     print(f"User data for {name} added to Firestore successfully!")
-
-add_user_data(name="Georgie A.", email="georgieslab@gmail.com", birthday="1994-10-09")
-
 
 
 def generate_affirmation(user_data):
@@ -208,53 +272,6 @@ def get_zodiac_sign(birthday):
     # Include other zodiac sign calculations here.
     return "Unknown"
 
-# Example Affirmation Generation
-user_data_example = {
-    "name": "Georgie A.",
-    "birthday": "1994-10-09",
-}
-affirmation = generate_affirmation(user_data_example)
-print(affirmation)
-
-def cosmic_card_reveal_animation():
-    """
-    Display a cosmic-themed card reveal animation.
-    """
-    animation_frames = [
-        "✨🌌 Preparing the cosmic energies... 🌌✨",
-        "✨✨ The stars are aligning... ✨✨",
-        "🌠🌠 A cosmic force surrounds your card... 🌠🌠",
-        "💫💫 Magic sparkles fill the air... 💫💫",
-        "🌟✨ The universe reveals your card... ✨🌟"
-    ]
-    for frame in animation_frames:
-        sys.stdout.write("\r" + frame)
-        sys.stdout.flush()
-        time.sleep(1.5)
-    sys.stdout.write("\n")
-
-
-def reveal_card():
-    """
-    Reveal a tarot card with a cosmic animation.
-    """
-    # Step 1: Play cosmic-themed card reveal animation
-    cosmic_card_reveal_animation()
-    
-    # Step 2: Reveal a card (for example, selecting a random card)
-    tarot_cards = [
-        "The Fool", "The Magician", "The High Priestess", "The Empress", 
-        "The Emperor", "The Lovers", "The Chariot", "Strength", "The Hermit"
-    ]
-    revealed_card = random.choice(tarot_cards)
-    
-    # Step 3: Display the revealed card
-    print(f"✨ Your card is: {revealed_card} ✨")
-
-# Example Cosmic Animation during Card Reveal
-reveal_card()
-
-# Import API modules after Flask initialization
 try:
     from static.src.api.claude_tarot_api import api_handler
     from static.src.api.tarot_cards import get_random_cards
@@ -324,8 +341,8 @@ def get_premium_reading(name, zodiac_sign, language, color=None, interests=None)
 
         logger.info(f"Sending premium reading request for {name} with personal details")
         
-        response = api_handler.client.messages.create(
-            model=api_handler.model,
+        response = client.messages.create(
+            model="claude-3-5-sonnet-20241022",
             max_tokens=2048,
             messages=[{"role": "user", "content": prompt}]
         )
@@ -360,8 +377,8 @@ def get_single_card_reading(name, zodiac_sign, language):
         
         Provide a personal and meaningful interpretation that addresses their current situation."""
 
-        response = api_handler.client.messages.create(
-            model=api_handler.model,
+        response = client.messages.create(
+            model="claude-3-5-sonnet-20241022",
             max_tokens=1024,
             messages=[{"role": "user", "content": prompt}]
         )
@@ -500,7 +517,7 @@ def submit_user():
         
         # Calculate zodiac sign
         try:
-            date_obj = datetime.datetime.strptime(data['dateOfBirth'], '%Y-%m-%d')
+            date_obj = datetime.strptime(data['dateOfBirth'], '%Y-%m-%d')
             zodiac_sign = get_zodiac_sign(date_obj)
         except ValueError:
             return jsonify({"error": "Invalid date format"}), 400
@@ -609,8 +626,8 @@ def start_chat():
         if language != 'en':
             try:
                 translate_prompt = f"Translate this message to {language}: {welcome_msg}"
-                response = api_handler.client.messages.create(
-                    model=api_handler.model,
+                response = client.messages.create(
+                    model="claude-3-5-sonnet-20241022",
                     max_tokens=1000,
                     messages=[{"role": "user", "content": translate_prompt}]
                 )
@@ -687,8 +704,8 @@ def chat():
             logger.info(f"Sending request to Claude with {len(claude_messages)} messages")
             
             # Use system parameter separately from messages
-            response = api_handler.client.messages.create(
-                model=api_handler.model,
+            response = client.messages.create(
+               model="claude-3-5-sonnet-20241022",
                 max_tokens=1000,
                 system=system_prompt,  # System prompt as separate parameter
                 messages=claude_messages
@@ -854,15 +871,49 @@ def health_check():
             "status": "unhealthy",
             "error": str(e)
         }), 500
+api_key = os.getenv('ANTHROPIC_API_KEY')
+if 'ANTHROPIC_API_KEY' in os.environ:
+    del os.environ['ANTHROPIC_API_KEY']
+
+# Now load the .env file
+from dotenv import load_dotenv
+load_dotenv(override=True)
+
+@app.route('/test_tarot')
+def test_tarot():
+    try:
+        client = Anthropic()  # Will use key from .env
+        
+        response = client.messages.create(
+            model="claude-3-5-sonnet-20241022",
+            messages=[{
+                "role": "user",
+                "content": "Create a one-card tarot reading focused on personal growth. Include the card name and a short interpretation."
+            }],
+            max_tokens=1000
+        )
+        
+        reading = response.content[0].text
+        
+        return jsonify({
+            "success": True,
+            "reading": reading
+        })
+        
+    except Exception as e:
+        print(f"Error: {str(e)}")
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
+
 
 if __name__ == '__main__':
-    # Get port from environment variable for Cloud Run
     port = int(os.getenv('PORT', 8080))
     
-    # Production server configuration
     app.run(
         host='0.0.0.0',
         port=port,
-        debug=False,  # Disable debug mode in production
-        ssl_context='adhoc'  # Basic SSL support
+        debug=False,
+        ssl_context='adhoc'
     )

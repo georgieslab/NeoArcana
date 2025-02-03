@@ -8,6 +8,8 @@ from .tarot_cards import get_random_cards
 from .language_config import get_language_config
 import time
 
+client = Anthropic()
+
 class ColorDict(TypedDict):
     name: str
     value: str
