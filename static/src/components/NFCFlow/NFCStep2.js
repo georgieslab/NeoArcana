@@ -1,147 +1,257 @@
+// NFCStep2.js - Fixed Positioning with Independent Scrolling
+const CosmicReadingSection = ({ icon, title, content }) => {
+  return React.createElement('div', {
+    className: 'cosmic-section-card'
+  }, [
+    // Section header
+    React.createElement('div', {
+      key: 'header',
+      className: 'cosmic-section-header'
+    }, [
+      React.createElement('img', {
+        key: 'icon',
+        src: `/static/icons/${icon}.svg`,
+        alt: '',
+        'aria-hidden': true,
+        className: 'cosmic-section-icon'
+      }),
+      React.createElement('h3', {
+        key: 'title',
+        className: 'cosmic-section-title'
+      }, title)
+    ]),
+    
+    // Section content
+    React.createElement('div', {
+      key: 'content',
+      className: 'cosmic-section-content'
+    }, content || "The cosmic energies are at work in your life today.")
+  ]);
+};
+
+// Background Stars Component
+const CosmicStars = () => {
+  const stars = Array(20).fill().map((_, i) => 
+    React.createElement('div', {
+      key: `star-${i}`,
+      className: 'cosmic-star',
+      style: {
+        width: `${Math.random() * 3 + 1}px`,
+        height: `${Math.random() * 3 + 1}px`,
+        top: `${Math.random() * 100}%`,
+        left: `${Math.random() * 100}%`,
+        animationDelay: `${Math.random() * 3}s`
+      }
+    })
+  );
+
+  const orbs = Array(3).fill().map((_, i) => 
+    React.createElement('div', {
+      key: `orb-${i}`,
+      className: 'cosmic-floating-orbs',
+      style: {
+        top: `${Math.random() * 80 + 10}%`,
+        left: `${Math.random() * 80 + 10}%`,
+        animationDelay: `${i * 2}s`
+      }
+    })
+  );
+
+  return React.createElement('div', {
+    className: 'cosmic-bg-stars'
+  }, [...stars, ...orbs]);
+};
+
+// Helper functions
+const extractSection = (text, sectionName) => {
+  try {
+    if (!text) return '';
+    
+    // Remove potential "Dear [name]" intro
+    const cleanText = text.includes('Dear') ? 
+      text.substring(text.indexOf('[CARD_READING]')) : text;
+
+    const startMarker = `[${sectionName}]`;
+    const endMarker = `[/${sectionName}]`;
+    
+    // Find section
+    const start = cleanText.indexOf(startMarker);
+    if (start === -1) {
+      // If section not found, try alternate approaches
+      switch(sectionName) {
+        case 'CARD_READING':
+          return formatSection(cleanText.split('[NUMEROLOGY]')[0].replace('[CARD_READING]', ''));
+        case 'NUMEROLOGY':
+          return formatSection(cleanText.split('[AFFIRMATION]')[0].split('[NUMEROLOGY]')[1]);
+        case 'AFFIRMATION':
+          return formatSection(cleanText.split('[AFFIRMATION]')[1]);
+        default:
+          return '';
+      }
+    }
+    
+    const contentStart = start + startMarker.length;
+    const end = cleanText.indexOf(endMarker, contentStart);
+    
+    return formatSection(cleanText.substring(contentStart, end !== -1 ? end : undefined));
+  } catch (e) {
+    console.error(`Error extracting section ${sectionName}:`, e);
+    return '';
+  }
+};
+
+const formatSection = (text) => {
+  if (!text) return '';
+  
+  // Remove any initial labels or colons
+  let cleaned = text.replace(/^[:\s]+/, '');
+  
+  // Remove any "Dear [name]" parts
+  cleaned = cleaned.replace(/^Dear.*?,\s*/, '');
+  
+  // Remove any "here's your reading" type phrases
+  cleaned = cleaned.replace(/here['']s your .*?reading:?\s*/i, '');
+  
+  return cleaned.trim();
+};
+
+// Language translations
+const sectionTranslations = {
+  en: {
+    cardReading: "Card Reading",
+    numerology: "Numerology Insight",
+    affirmation: "Daily Affirmation",
+    instruction: "✨ Come back tomorrow for a new cosmic message ✨",
+    loading: "Loading your cosmic reading...",
+    welcome: "Welcome Back",
+    threeCardReading: "3-Card Reading",
+    psychicReading: "Psychic Reading",
+    comingSoon: "Coming Soon"
+  },
+  ka: {
+    cardReading: "კარტის წაკითხვა",
+    numerology: "ნუმეროლოგიური ჭვრეტა",
+    affirmation: "დღიური აფირმაცია",
+    instruction: "✨ დაბრუნდით ხვალ ახალი კოსმიური გზავნილისთვის ✨",
+    loading: "თქვენი კოსმიური კითხვის ჩატვირთვა...",
+    welcome: "კეთილი დაბრუნება",
+    threeCardReading: "3-კარტიანი კითხვა",
+    psychicReading: "ფსიქიკური კითხვა",
+    comingSoon: "მალე"
+  },
+  ru: {
+    cardReading: "Чтение Карт",
+    numerology: "Нумерологическое Видение",
+    affirmation: "Дневное Утверждение",
+    instruction: "✨ Возвращайтесь завтра за новым космическим посланием ✨",
+    loading: "Загрузка вашего космического чтения...",
+    welcome: "Добро пожаловать",
+    threeCardReading: "3-Карточное Чтение",
+    psychicReading: "Психическое Чтение",
+    comingSoon: "Скоро"
+  }
+};
+
+const getTranslation = (key, language) => {
+  const userLanguage = language || 'en';
+  return (userLanguage in sectionTranslations && key in sectionTranslations[userLanguage]) 
+  ? sectionTranslations[userLanguage][key] 
+  : sectionTranslations.en[key];
+};
+
+// Main component
 const NFCStep2 = ({ userData }) => {
   console.log('NFCStep2 received userData:', userData);
 
+  // Component state
   const [selectedLanguage, setSelectedLanguage] = React.useState(() => {
     return (userData && 
             userData.user_data && 
             userData.user_data.preferences && 
             userData.user_data.preferences.language) || 'en';
-  })
-
-  // Add logging to debug language handling
-  React.useEffect(() => {
-    console.log('Selected language:', selectedLanguage);
-    console.log('User preferences:', 
-      userData && userData.user_data && userData.user_data.preferences
-    );
-  }, [selectedLanguage, userData]);
+  });
   
-  const [isVisible, setIsVisible] = React.useState(false);
-  const [showInstruction, setShowInstruction] = React.useState(false);
-  const [showCard, setShowCard] = React.useState(false);
-  const [showZodiacMessage, setShowZodiacMessage] = React.useState(false);
   const [loading, setLoading] = React.useState(true);
   const [error, setError] = React.useState(null);
-  const [readingData, setReadingData] = React.useState({
-    affirmation: '',
-    cardImage: '',
-    interpretation: '',
-    numerologyInsight: '',
-  });
+  const [readingData, setReadingData] = React.useState(null);
   const [showThreeCard, setShowThreeCard] = React.useState(false);
+  const [pulseCard, setPulseCard] = React.useState(false);
   
+  // Refs
   const mounted = React.useRef(true);
+  const wrapperRef = React.useRef(null);
 
+  // Initialize component with fixed positioning
+  React.useEffect(() => {
+    console.log('NFCStep2 initializing...');
+    
+    // Lock body scroll and position
+    document.body.classList.add('cosmic-reading-active');
+    document.body.style.overflow = 'hidden';
+    document.body.style.height = '100vh';
+    document.body.style.position = 'fixed';
+    document.body.style.width = '100%';
+    
+    // Force initial scroll to top of our wrapper
+    if (wrapperRef.current) {
+      wrapperRef.current.scrollTop = 0;
+    }
+    
+    // Start card pulse effect after loading
+    const pulseTimer = setTimeout(() => {
+      if (mounted.current && !loading) {
+        setPulseCard(true);
+      }
+    }, 3000);
+    
+    return () => {
+      mounted.current = false;
+      clearTimeout(pulseTimer);
+      
+      // Restore body scroll when component unmounts
+      document.body.classList.remove('cosmic-reading-active');
+      document.body.style.overflow = '';
+      document.body.style.height = '';
+      document.body.style.position = '';
+      document.body.style.width = '';
+    };
+  }, [loading]);
+
+  // Force scroll to top on content changes
+  React.useEffect(() => {
+    if (wrapperRef.current) {
+      wrapperRef.current.scrollTop = 0;
+    }
+  }, [loading, showThreeCard, readingData]);
+
+  // Fetch reading data
   React.useEffect(() => {
     if (userData && userData.nfc_id) {
-      console.log('NFCStep2 mounted with userData:', userData);
       fetchDailyReading();
     } else {
-      console.log('Missing required userData:', userData);
+      console.error('Missing userData or nfc_id');
+      setError('User data not available');
+      setLoading(false);
     }
   }, [userData]);
 
-  const handleLanguageChange = async (e) => {
-    const newLanguage = e.target.value;
-    setSelectedLanguage(newLanguage);
-    localStorage.setItem('nfc_preferred_language', newLanguage);
-
-    if (readingData.cardImage) {
-      try {
-        setLoading(true);
-        const response = await fetch('/api/nfc/translate_reading', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            reading: readingData,
-            targetLanguage: newLanguage,
-            userData: {
-              nfc_id: userData && userData.nfc_id,
-              name: userData && userData.user_data && userData.user_data.name || '',
-              zodiacSign: userData && userData.user_data && userData.user_data.zodiacSign || ''
-            }
-          })
-        });
-
-        if (!response.ok) {
-          throw new Error('Translation failed');
-        }
-
-        const translatedData = await response.json();
-        if (mounted.current) {
-          setReadingData(prev => ({
-            ...prev,
-            affirmation: translatedData.affirmation,
-            interpretation: translatedData.interpretation,
-            numerologyInsight: translatedData.numerologyInsight
-          }));
-        }
-      } catch (error) {
-        console.error('Translation error:', error);
-        setSelectedLanguage(readingData.originalLanguage);
-        localStorage.setItem('nfc_preferred_language', readingData.originalLanguage);
-      } finally {
-        if (mounted.current) {
-          setLoading(false);
-        }
-      }
-    }
-  };
-
-  React.useEffect(() => {
-    if (userData && userData.nfc_id) {
-      console.log('NFCStep2: Fetching daily reading for user:', userData);
-      fetchDailyReading();
-    }
-  }, [userData]);
-
-  const validateUserData = (data) => {
-    console.log('Validating user data:', data);
-    if (!data || !data.nfc_id) {
-      console.error('Missing nfc_id');
-      return false;
-    }
-    if (!data.user_data || !data.user_data.name) {
-      console.error('Missing user_data.name');
-      return false;
-    }
-    return true;
-  };
-  
-  // Update the useEffect
-  React.useEffect(() => {
-    if (userData) {
-      if (validateUserData(userData)) {
-        console.log('Valid userData found, fetching reading');
-        fetchDailyReading();
-      } else {
-        setError('Invalid user data provided');
-      }
-    }
-  }, [userData]);
-  
+  // API interaction
   const fetchDailyReading = async () => {
-    if (!userData || !mounted.current) return;
-  
     try {
       setLoading(true);
-      setError(null); // Clear any previous errors
-  
-      // Format user data
+      
       const formattedData = {
         userData: {
           nfc_id: userData.nfc_id,
-          name: userData.user_data.name,
-          zodiacSign: userData.user_data.zodiacSign,
-          language: userData.user_data.preferences.language,
-          preferences: userData.user_data.preferences
+          name: userData.user_data?.name || 'User',
+          zodiacSign: userData.user_data?.zodiacSign || '',
+          language: userData.user_data?.preferences?.language || 'en',
+          preferences: userData.user_data?.preferences || {}
         }
       };
-  
+      
       console.log('Sending reading request:', formattedData);
-  
+      
       const response = await fetch('/api/nfc/daily_affirmation', {
         method: 'POST',
         headers: {
@@ -149,156 +259,318 @@ const NFCStep2 = ({ userData }) => {
         },
         body: JSON.stringify(formattedData)
       });
-  
+      
       if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.error || 'Failed to get daily reading');
+        throw new Error('Failed to fetch reading');
       }
-  
+      
       const data = await response.json();
       
-      if (mounted.current && data.success) {
-        setReadingData(data.data);
-        // Trigger the display sequence
-        setIsVisible(true);
-        setTimeout(() => {
-          setShowCard(true);
-          setTimeout(() => {
-            setShowZodiacMessage(true);
-            setTimeout(() => {
-              setShowInstruction(true);
-            }, 500);
-          }, 500);
-        }, 500);
-      }
-    } catch (error) {
-      console.error('NFCStep2: Error loading daily reading:', error);
-      setError('Unable to load your cosmic reading. Please try again.');
-    } finally {
       if (mounted.current) {
+        console.log('Reading data received:', data);
+        setReadingData(data.data);
+        
+        setTimeout(() => {
+          if (mounted.current) {
+            setLoading(false);
+            // Ensure scroll to top after loading
+            if (wrapperRef.current) {
+              wrapperRef.current.scrollTop = 0;
+            }
+          }
+        }, 1000);
+      }
+    } catch (err) {
+      console.error('Error fetching reading:', err);
+      if (mounted.current) {
+        setError(err.message);
         setLoading(false);
       }
     }
   };
+
+  // User interactions
+  const handleThreeCardRequest = () => {
+    console.log('Three card reading requested');
+    setShowThreeCard(true);
+  };
   
-  // Add useEffect cleanup
-  React.useEffect(() => {
-    const cleanup = () => {
-      mounted.current = false;
+  const handleReturnFromThreeCard = () => {
+    console.log('Returning from three card reading');
+    setShowThreeCard(false);
+    setTimeout(() => {
+      if (wrapperRef.current) {
+        wrapperRef.current.scrollTop = 0;
+      }
+    }, 100);
+  };
+
+  const handleCardClick = () => {
+    setPulseCard(!pulseCard);
+    // Add a subtle haptic feedback simulation
+    if (navigator.vibrate) {
+      navigator.vibrate(50);
+    }
+  };
+
+  // Parse reading sections
+  const parseReading = (text) => {
+    if (!text) return {};
+    return {
+      cardReading: extractSection(text, 'CARD_READING'),
+      numerology: extractSection(text, 'NUMEROLOGY'),
+      affirmation: extractSection(text, 'AFFIRMATION')
     };
-    return cleanup;
-  }, []);
-  if (error) {
+  };
+
+  // Loading state
+  if (loading) {
     return React.createElement('div', {
-      className: 'nfc-step2-container'
+      ref: wrapperRef,
+      className: 'cosmic-reading-wrapper'
     }, [
+      React.createElement(CosmicStars, { key: 'stars' }),
+      
       React.createElement('div', {
-        key: 'error-message',
-        className: 'nfc-error-message'
-      }, React.createElement('p', null, error)),
-      React.createElement('button', {
-        key: 'retry-button',
-        onClick: () => window.location.reload(),
-        className: 'nfc-retry-button'
-      }, 'Try Again ✨')
+        key: 'loading',
+        className: 'cosmic-loading-container'
+      }, [
+        React.createElement('div', {
+          key: 'loader',
+          className: 'cosmic-loader'
+        }, [
+          React.createElement('div', {
+            key: 'ring1',
+            className: 'cosmic-loader-ring'
+          }),
+          React.createElement('div', {
+            key: 'ring2',
+            className: 'cosmic-loader-ring'
+          }),
+          React.createElement('div', {
+            key: 'ring3',
+            className: 'cosmic-loader-ring'
+          }),
+          React.createElement('div', {
+            key: 'core',
+            className: 'cosmic-loader-core'
+          })
+        ]),
+        
+        React.createElement('p', {
+          key: 'loading-text',
+          className: 'cosmic-loading-text'
+        }, getTranslation('loading', selectedLanguage)),
+        
+        React.createElement('p', {
+          key: 'loading-hint',
+          className: 'cosmic-loading-hint'
+        }, 'Connecting with the universal energies...')
+      ])
     ]);
   }
 
-  if (loading) {
-    return React.createElement(CosmicLoader, { type: 'nfc' });
+  // Error state
+  if (error) {
+    return React.createElement('div', {
+      ref: wrapperRef,
+      className: 'cosmic-reading-wrapper'
+    }, [
+      React.createElement(CosmicStars, { key: 'stars' }),
+      
+      React.createElement('div', {
+        key: 'error',
+        className: 'cosmic-error-container'
+      }, [
+        React.createElement('div', {
+          key: 'error-card',
+          className: 'cosmic-error-card'
+        }, [
+          React.createElement('h2', {
+            key: 'error-title',
+            className: 'cosmic-error-title'
+          }, 'Cosmic Disturbance Detected'),
+          
+          React.createElement('p', {
+            key: 'error-message',
+            className: 'cosmic-error-message'
+          }, error),
+          
+          React.createElement('button', {
+            key: 'retry-btn',
+            onClick: fetchDailyReading,
+            className: 'cosmic-btn cosmic-btn-error'
+          }, 'Reconnect with the Cosmos')
+        ])
+      ])
+    ]);
   }
 
+  // Three card reading
   if (showThreeCard) {
-    return React.createElement(ThreeCardReading, {
-      userData: userData,
-      onError: setError,
-      onComplete: () => setShowThreeCard(false)
-    });
+    const ThreeCardComponent = window.ThreeCardReading || window.NFCThreeCardReading;
+    
+    if (ThreeCardComponent) {
+      return React.createElement('div', {
+        ref: wrapperRef,
+        className: 'cosmic-reading-wrapper'
+      }, [
+        React.createElement(ThreeCardComponent, {
+          key: 'three-card',
+          userData: userData,
+          onError: setError,
+          onComplete: handleReturnFromThreeCard
+        })
+      ]);
+    } else {
+      return React.createElement('div', {
+        ref: wrapperRef,
+        className: 'cosmic-reading-wrapper'
+      }, [
+        React.createElement(CosmicStars, { key: 'stars' }),
+        
+        React.createElement('div', {
+          key: 'three-card-fallback',
+          className: 'cosmic-reading-content',
+          style: { textAlign: 'center', paddingTop: '3rem' }
+        }, [
+          React.createElement('h2', {
+            key: 'title',
+            className: 'cosmic-title-main'
+          }, 'Three Card Reading'),
+          
+          React.createElement('p', {
+            key: 'message',
+            className: 'cosmic-instruction'
+          }, 'The Three Card Reading component is not available. Please try again later.'),
+          
+          React.createElement('button', {
+            key: 'back-btn',
+            onClick: handleReturnFromThreeCard,
+            className: 'cosmic-btn cosmic-btn-primary'
+          }, 'Return to Daily Reading')
+        ])
+      ]);
+    }
   }
 
+  // Get user name with fallback
+  const userName = userData && userData.user_data && userData.user_data.name ? 
+    userData.user_data.name : '';
+  
+  const welcomeMessage = userName ? 
+    `${getTranslation('welcome', selectedLanguage)}, ${userName}!` : 
+    getTranslation('welcome', selectedLanguage) + '!';
+
+  // Main reading view
   return React.createElement('div', {
-    className: `nfc-step2-container ${isVisible ? 'nfc-fade-in' : ''}`
+    ref: wrapperRef,
+    className: 'cosmic-reading-wrapper'
   }, [
+    React.createElement(CosmicStars, { key: 'stars' }),
     
-    // Welcome message
-    React.createElement('h1', {
-      key: 'title',
-      className: 'nfc-title'
-    }, userData && userData.user_data && userData.user_data.name ? 
-      `Welcome Back, ${userData.user_data.name}!` : 'Welcome Back!'),
-
-    // Card display
-    showCard && readingData.cardImage && React.createElement('div', {
-      key: 'card-container',
-      className: 'nfc-card-container nfc-fade-in'
-    }, 
-      React.createElement('img', {
-        src: readingData.cardImage,
-        alt: 'Your Daily Card',
-        className: 'nfc-card-image',
-        onError: (e) => {
-          e.target.src = '/static/images/cards/card_back.jpg';
-        }
-      })
-    ),
-
-    // Interpretation
-    showZodiacMessage && readingData.interpretation && React.createElement('div', {
-      key: 'interpretation',
-      className: 'nfc-text-section nfc-fade-in'
-    }, [
-      React.createElement('p', {
-        key: 'interpretation-text',
-        className: 'nfc-interpretation'
-      }, readingData.interpretation),
-      userData && userData.user_data && userData.user_data.zodiacSign && 
-        React.createElement('p', {
-          key: 'zodiac',
-          className: 'nfc-zodiac-sign'
-        }, userData.user_data.zodiacSign)
-    ]),
-
-    // Daily Message
-    readingData.affirmation && React.createElement('div', {
-      key: 'affirmation',
-      className: 'nfc-text-section nfc-fade-in'
-    }, [
-      React.createElement('h2', {
-        key: 'subtitle',
-        className: 'nfc-subtitle'
-      }, 'Your Daily Cosmic Message'),
-      React.createElement('p', {
-        key: 'affirmation-text',
-        className: 'nfc-affirmation'
-      }, readingData.affirmation)
-    ]),
-
-    // Reading Type Selector
     React.createElement('div', {
-      key: 'reading-selector',
-      className: 'reading-type-selector'
+      key: 'content',
+      className: 'cosmic-reading-content'
     }, [
-      React.createElement('button', {
-        key: 'daily',
-        className: 'cosmic-button active',
-        onClick: fetchDailyReading
-      }, 'Daily Reading'),
-      React.createElement('button', {
-        key: 'weekly',
-        className: 'cosmic-button',
-        onClick: () => setShowThreeCard(true)
-      }, 'Weekly 3-Card Reading')
-    ]),
+      // Welcome title
+      React.createElement('h1', {
+        key: 'title',
+        className: 'cosmic-title-main'
+      }, welcomeMessage),
 
-    // Instruction
-    showInstruction && React.createElement('div', {
-      key: 'instruction',
-      className: 'nfc-text-section nfc-fade-in'
-    }, 
+      // Card display
+      readingData && readingData.cardImage && React.createElement('div', {
+        key: 'card-showcase',
+        className: 'cosmic-card-showcase'
+      }, [
+        React.createElement('div', {
+          key: 'card-container',
+          className: `cosmic-card-container ${pulseCard ? 'cosmic-card-glow' : ''}`,
+          onClick: handleCardClick
+        }, [
+          React.createElement('img', {
+            key: 'card-image',
+            src: readingData.cardImage,
+            alt: readingData.cardName || 'Your Daily Card',
+            className: `cosmic-card-image ${pulseCard ? 'cosmic-card-pulse' : ''}`,
+            onError: (e) => {
+              console.error('Error loading card image:', e);
+              e.target.src = '/static/images/cards/card_back.jpg';
+            }
+          })
+        ])
+      ]),
+
+      // Reading sections
+      readingData && readingData.interpretation && React.createElement('div', {
+        key: 'sections',
+        className: 'cosmic-sections-grid'
+      }, [
+        React.createElement(CosmicReadingSection, {
+          key: 'tarot',
+          icon: 'tarot',
+          title: getTranslation('cardReading', selectedLanguage),
+          content: parseReading(readingData.interpretation).cardReading
+        }),
+        React.createElement(CosmicReadingSection, {
+          key: 'numerology',
+          icon: 'numerology',
+          title: getTranslation('numerology', selectedLanguage),
+          content: parseReading(readingData.interpretation).numerology
+        }),
+        React.createElement(CosmicReadingSection, {
+          key: 'affirmation',
+          icon: 'affirmation',
+          title: getTranslation('affirmation', selectedLanguage),
+          content: parseReading(readingData.interpretation).affirmation
+        })
+      ]),
+
+      // Action buttons
+      React.createElement('div', {
+        key: 'actions',
+        className: 'cosmic-actions-container'
+      }, [
+        React.createElement('button', {
+          key: 'three-card-btn',
+          onClick: handleThreeCardRequest,
+          className: 'cosmic-btn cosmic-btn-primary'
+        }, getTranslation('threeCardReading', selectedLanguage)),
+        
+        React.createElement('button', {
+          key: 'coming-soon-btn',
+          disabled: true,
+          className: 'cosmic-btn cosmic-btn-disabled'
+        }, [
+          getTranslation('psychicReading', selectedLanguage),
+          React.createElement('div', {
+            key: 'badge',
+            className: 'cosmic-coming-soon-badge'
+          }, `${getTranslation('comingSoon', selectedLanguage)} 🌒`)
+        ])
+      ]),
+
+      // Instructions
+      React.createElement('div', {
+        key: 'instruction',
+        className: 'cosmic-instruction'
+      }, getTranslation('instruction', selectedLanguage)),
+      
+      // Footer
       React.createElement('p', {
-        className: 'nfc-instruction'
-      }, '✨ Come back tomorrow for a new cosmic message ✨')
-    )
+        key: 'footer',
+        className: 'cosmic-footer'
+      }, [
+        "made w/ 🪄 by ",
+        React.createElement('a', {
+          href: "https://instagram.com/georgieslab",
+          target: "_blank",
+          rel: "noopener noreferrer"
+        }, "georgie"),
+        "."
+      ])
+    ])
   ]);
 };
 

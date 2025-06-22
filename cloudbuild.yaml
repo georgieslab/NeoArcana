@@ -2,20 +2,19 @@ steps:
 # Install dependencies
 - name: 'python:3.9'
   entrypoint: pip
-  args: ['install', '-r', 'requirements.txt', '--user']
+  args: ['install', '-r', 'requirements.txt']
 
-# Decrypt secrets if needed (optional)
-# - name: 'gcr.io/cloud-builders/gcloud'
-#   args:
-#   - kms
-#   - decrypt
-#   - --ciphertext-file=encrypted-credentials.json.enc
-#   - --plaintext-file=credentials.json
-#   - --location=global
-#   - --keyring=my-keyring
-#   - --key=my-key
+# Install Node.js dependencies
+- name: 'node:16'
+  entrypoint: npm
+  args: ['install']
 
-# Set up environment
+# Build frontend assets
+- name: 'node:16'
+  entrypoint: npm
+  args: ['run', 'build']
+
+# Setup environment
 - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
   entrypoint: 'bash'
   args:
@@ -32,7 +31,6 @@ steps:
 
 timeout: '1600s'
 
-# Define your secrets here
 availableSecrets:
   secretManager:
     - versionName: projects/$PROJECT_ID/secrets/anthropic-api-key/versions/latest

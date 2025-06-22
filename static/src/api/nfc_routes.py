@@ -11,17 +11,15 @@ import string
 import time
 from google.cloud import firestore
 from .claude_tarot_api import api_handler
+from.cosmic_utils import calculate_moon_phase, get_current_season, calculate_numerology_day, get_day_energy
 from anthropic import Anthropic
 client = Anthropic()
 
-# Load environment variables first
 load_dotenv()
 
-# Configure logging
 logger = logging.getLogger(__name__)
 logging.basicConfig(level=logging.INFO)
 
-# Import database and core dependencies
 try:
     from .firebase_init import db
 
@@ -37,7 +35,6 @@ except Exception as e:
     logger.error(f"Error importing local modules: {str(e)}")
     raise
 
-# Initialize validation and monitoring
 from .nfc_validation import NFCValidation
 from .nfc_monitoring import NFCMonitor
 
@@ -46,7 +43,6 @@ monitor = NFCMonitor(db)
 rate_limiter = NFCRateLimiter(db)
 reading_cache = NFCReadingCache(db)
 
-# Create Blueprint
 nfc_routes = Blueprint('nfc_routes', __name__)
 
 def generate_unique_poster_code():
@@ -73,7 +69,6 @@ def generate_unique_poster_code():
     
     raise Exception("Failed to generate unique poster code after maximum attempts")
         
-
 def validate_user_data(user_data: Dict) -> tuple[bool, Optional[str], Optional[Dict]]:
     """
     Validate incoming user data and structure it properly.
@@ -131,6 +126,20 @@ def validate_user_data(user_data: Dict) -> tuple[bool, Optional[str], Optional[D
 
     return True, None, structured_data
 
+def getLanguageForClaude(iso_code):
+    """Convert ISO language code to Claude-friendly language name"""
+    language_map = {
+        'ka': 'Georgian',
+        'ru': 'Russian',
+        'es': 'Spanish',
+        'fr': 'French',
+        'de': 'German',
+        'zh': 'Chinese',
+        'ja': 'Japanese',
+        'ko': 'Korean',
+        'en': 'English'
+    }
+    return language_map.get(iso_code, 'English')
 
 @nfc_routes.route('/verify_poster', methods=['POST'])
 def verify_poster():
@@ -177,75 +186,6 @@ def verify_poster():
             "error": "Internal server error"
         }), 500
 
-@nfc_routes.route('/translate_reading', methods=['POST'])
-def translate_reading():
-    """Translate an existing reading to a new language"""
-    try:
-        data = request.get_json()
-        if not data:
-            return jsonify({"error": "No data provided"}), 400
-
-        reading = data.get('reading')
-        target_language = data.get('targetLanguage', 'en')
-        user_data = data.get('userData', {})
-
-        if not reading:
-            return jsonify({"error": "No reading provided"}), 400
-
-        # Don't translate if target language is the same as original
-        if reading.get('originalLanguage') == target_language:
-            return jsonify(reading), 200
-
-        try:
-            # Use Claude API to translate the reading content
-            response = client.messages.create(
-    model="claude-3-5-sonnet-20241022",
-                max_tokens=1024,
-                messages=[{
-                    "role": "user", 
-                    "content": f"""Translate this tarot reading to {target_language}. 
-                    Maintain the mystical and personal tone. This is for {user_data.get('name', 'the user')}, 
-                    a {user_data.get('zodiacSign', '')} sign.
-
-                    Affirmation: {reading.get('affirmation', '')}
-                    
-                    Interpretation: {reading.get('interpretation', '')}
-                    
-                    Numerology Insight: {reading.get('numerologyInsight', '')}
-                    """
-                }]
-            )
-
-            translations = response.content[0].text.split('\n\n')
-            
-            # Extract translations while maintaining mystical tone
-            translated_reading = {
-                'cardImage': reading['cardImage'],  # Keep original image
-                'affirmation': next((t for t in translations if 'Affirmation' in t), '').replace('Affirmation:', '').strip(),
-                'interpretation': next((t for t in translations if 'Interpretation' in t), '').replace('Interpretation:', '').strip(),
-                'numerologyInsight': next((t for t in translations if 'Numerology' in t), '').replace('Numerology Insight:', '').strip(),
-                'originalLanguage': target_language
-            }
-
-            # Cache the translation
-            cache_key = f"{user_data.get('nfc_id')}_{target_language}_translation"
-            reading_cache.cache_reading(user_data.get('nfc_id'), target_language, translated_reading)
-
-            return jsonify(translated_reading), 200
-
-        except Exception as translation_error:
-            logger.error(f"Translation error: {translation_error}")
-            return jsonify({
-                "error": "Translation failed",
-                "details": str(translation_error)
-            }), 500
-
-    except Exception as e:
-        logger.error(f"Error in translate_reading: {str(e)}")
-        return jsonify({
-            "error": "Failed to process translation request",
-            "details": str(e)
-        }), 500
 @nfc_routes.route('/weekly_reading', methods=['POST'])  
 async def get_weekly_reading():
     """Get weekly 3-card reading"""
@@ -326,45 +266,75 @@ def daily_affirmation():
 
         user_data = data['userData']
         nfc_id = user_data.get('nfc_id')
+        language = user_data.get('language') or \
+                  user_data.get('preferences', {}).get('language', 'en')
         
-        if not nfc_id:
+        # Get current cosmic data
+        current_date = datetime.now()
+        moon_phase = calculate_moon_phase(current_date)
+        season = get_current_season(current_date)
+        day_energy = get_day_energy(current_date)
+        numerology_day = calculate_numerology_day(current_date)
+        
+        # Temporarily disable cache for testing
+        cached_reading = None
+
+        # Enhanced prompt structure
+        prompt = f"""Create a deeply personalized tarot reading for {user_data.get('name')}, 
+        who is a {user_data.get('zodiacSign')} born under today's {moon_phase} moon in {season}.
+        
+        Cosmic Timing:
+        - Moon Phase: {moon_phase}
+        - Season: {season}
+        - Day Energy: {day_energy.get('energy')} ({day_energy.get('planet')} Day)
+        - Numerological Day: {numerology_day}
+        
+        Personal Energy:
+        - Color Connection: {user_data.get('preferences', {}).get('color', {}).get('name', 'Cosmic Purple')}
+        - Life Path Focus: {', '.join(user_data.get('preferences', {}).get('interests', []))}
+        - Personal Numbers: {user_data.get('preferences', {}).get('numbers', {})}
+
+        Critical Instructions:
+        1. Respond ENTIRELY in {getLanguageForClaude(language)} language
+        2. Structure the reading with these EXACT markers:
+        
+        [CARD_READING]
+        (Card interpretation connecting cosmic timing with personal path)
+        [/CARD_READING]
+        
+        [NUMEROLOGY_INSIGHT]
+        (Brief insight connecting their personal numbers with today's {numerology_day} energy)
+        [/NUMEROLOGY_INSIGHT]
+        
+        [DAILY_AFFIRMATION]
+        (Powerful affirmation drawing from their zodiac and current cosmic energy)
+        [/DAILY_AFFIRMATION]
+        
+        Maintain a mystical yet practical tone throughout."""
+
+        # Get single card reading
+        reading_data = api_handler.get_single_card_reading(
+            name=user_data.get('name'),
+            zodiac_sign=user_data.get('zodiacSign'),
+            language=language,
+            numbers=user_data.get('preferences', {}).get('numbers', {}),
+            color=user_data.get('preferences', {}).get('color'),
+            interests=user_data.get('preferences', {}).get('interests', [])
+        )
+
+        if not reading_data:
             return jsonify({
                 "success": False,
-                "error": "No NFC ID provided"
-            }), 400
+                "error": "Failed to generate reading"
+            }), 500
 
-        # Get cached reading if exists
-        cached_reading = reading_cache.get_cached_reading(nfc_id, user_data.get('language', 'en'))
-        if cached_reading:
-            logger.info(f"Returning cached reading for {nfc_id}")
-            return jsonify({
-                "success": True,
-                "data": cached_reading,
-                "cached": True
-            })
+        # Cache the reading
+        reading_cache.cache_reading(nfc_id, language, reading_data)
 
-        try:
-            # Use the existing single card reading method
-            reading = api_handler.get_single_card_reading(
-                name=user_data.get('name'),
-                zodiac_sign=user_data.get('zodiacSign'),
-                language=user_data.get('language', 'en'),
-                numbers=user_data.get('preferences', {}).get('numbers', {}),
-                color=user_data.get('preferences', {}).get('color'),
-                interests=user_data.get('preferences', {}).get('interests', [])
-            )
-
-            # Cache the new reading
-            reading_cache.cache_reading(nfc_id, user_data.get('language', 'en'), reading)
-            
-            return jsonify({
-                "success": True,
-                "data": reading
-            })
-
-        except Exception as reading_error:
-            logger.error(f"Error generating reading: {reading_error}")
-            raise
+        return jsonify({
+            "success": True,
+            "data": reading_data
+        })
 
     except Exception as e:
         logger.error(f"Error in daily_affirmation: {str(e)}")
@@ -549,6 +519,7 @@ def manage_poster_codes():
             "success": False,
             "error": str(e)
         }), 500
+
 @nfc_routes.route('/admin/delete_code', methods=['POST'])
 def delete_nfc_code():
     try:
@@ -664,6 +635,112 @@ def update_user(nfc_id):
     except Exception as e:
         logger.error(f"Error updating user: {str(e)}")
         return jsonify({"error": str(e)}), 500
+
+@nfc_routes.route('/admin/posters', methods=['POST'])
+def admin_manage_posters():
+    """
+    Admin endpoint for managing NFC poster codes
+    - Generate new poster codes
+    - List existing poster codes
+    - Delete unused poster codes
+    """
+    try:
+        # Verify admin key
+        if request.headers.get('X-Admin-Key') != os.getenv('ADMIN_KEY'):
+            logger.warning("Unauthorized attempt to access admin endpoint")
+            return jsonify({"error": "Unauthorized"}), 401
+            
+        data = request.get_json()
+        if not data:
+            return jsonify({"error": "No data provided"}), 400
+            
+        action = data.get('action')
+        logger.info(f"Admin poster management: {action}")
+        
+        if action == 'add':
+            # Generate a unique code if not provided
+            poster_code = data.get('poster_code') or generate_unique_poster_code()
+            
+            # Create batch info from request data
+            batch_info = data.get('batch_info', {})
+            
+            # Add the poster code
+            poster_ref = db.collection('valid_posters').document(poster_code)
+            poster_data = {
+                'created_at': datetime.now(),
+                'is_registered': False,
+                'nfc_programmed': True,
+                'owner': batch_info.get('owner', ''),
+                'rebust': batch_info.get('rebust', ''),
+                'nfc_id': f"nfc_{poster_code}"
+            }
+            
+            poster_ref.set(poster_data)
+            
+            logger.info(f"Successfully created poster with code: {poster_code}")
+            
+            return jsonify({
+                "success": True,
+                "poster_code": poster_code,
+                "data": poster_data
+            })
+                
+        elif action == 'list':
+            # List all valid poster codes
+            valid_posters = db.collection('valid_posters').stream()
+            posters = []
+            for doc in valid_posters:
+                poster_data = doc.to_dict()
+                poster_data['poster_code'] = doc.id
+                posters.append(poster_data)
+            
+            return jsonify(posters)
+
+        elif action == 'delete':
+            # Delete a poster code if it's not registered
+            poster_code = data.get('poster_code')
+            if not poster_code:
+                return jsonify({
+                    "success": False,
+                    "error": "No poster code provided for deletion"
+                }), 400
+
+            poster_ref = db.collection('valid_posters').document(poster_code)
+            poster = poster_ref.get()
+            
+            if not poster.exists:
+                return jsonify({
+                    "success": False,
+                    "error": "Poster code not found"
+                }), 404
+                
+            poster_data = poster.to_dict()
+            if poster_data.get('is_registered'):
+                return jsonify({
+                    "success": False,
+                    "error": "Cannot delete a registered poster"
+                }), 400
+                
+            poster_ref.delete()
+            logger.info(f"Successfully deleted poster: {poster_code}")
+            
+            return jsonify({
+                "success": True,
+                "message": f"Poster {poster_code} deleted successfully"
+            })
+                
+        else:
+            return jsonify({
+                "success": False,
+                "error": "Invalid action specified"
+            }), 400
+            
+    except Exception as e:
+        logger.error(f"Error in admin_manage_posters: {e}")
+        return jsonify({
+            "success": False,
+            "error": str(e)
+        }), 500
 
 @nfc_routes.route('/user/<nfc_id>', methods=['GET'])
 def get_user(nfc_id):

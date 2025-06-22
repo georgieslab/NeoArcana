@@ -1,0 +1,204 @@
+/* Cosmic Glassy Buttons CSS
+ * A collection of stylish, animated glassy buttons with hover effects
+ * For NeoArcana Tarot Application
+ */
+
+/* Define the angle property for animations */
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* Common properties for all cosmic-glassy-buttons */
+.cosmic-glassy-button1,
+.cosmic-glassy-button2,
+.cosmic-glassy-button3,
+.cosmic-glassy-button4 {
+  max-width: 284px !important;
+  width: 100% !important;
+  min-height: 55px;
+  padding: 10px 30px;
+  font-size: 18px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  overflow: hidden;
+  position: relative;
+  -webkit-backdrop-filter: blur(5px);
+  backdrop-filter: blur(5px);
+  background-color: rgba(46, 46, 56, 0.3);
+  margin: 8px 0 !important;
+}
+
+/* Common hover effects */
+.cosmic-glassy-button1:hover,
+.cosmic-glassy-button2:hover,
+.cosmic-glassy-button3:hover,
+.cosmic-glassy-button4:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(165, 154, 209, 0.3);
+  background: #000;
+}
+
+/* Common active state */
+.cosmic-glassy-button1:active,
+.cosmic-glassy-button2:active,
+.cosmic-glassy-button3:active,
+.cosmic-glassy-button4:active {
+  transform: scale(0.98);
+}
+
+/* Common ::before pseudo-element base styles */
+.cosmic-glassy-button1::before,
+.cosmic-glassy-button2::before,
+.cosmic-glassy-button3::before,
+.cosmic-glassy-button4::before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 220px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  padding: 3px;
+  border-radius: 25px;
+  animation: spin2 3s linear infinite;
+  filter: blur(10px);
+}
+
+/* Common ::before hover state */
+.cosmic-glassy-button1:hover::before,
+.cosmic-glassy-button2:hover::before,
+.cosmic-glassy-button3:hover::before,
+.cosmic-glassy-button4:hover::before {
+  opacity: 1;
+}
+
+/* Button 1 (Purple) */
+.cosmic-glassy-button1 {
+  border: 1.5px solid #9ea5ffde;
+  color: #CEC7F2;
+  background: linear-gradient(135deg, rgb(17 10 44 / 30%), rgb(97 160 244 / 30%));
+  box-shadow: 0 0 10px rgba(165, 154, 209, 0.3);
+}
+
+.cosmic-glassy-button1::before {
+  background-image: conic-gradient(from var(--angle), rgba(0, 255, 184, 0), rgba(165, 154, 209, 0.3));
+}
+
+.cosmic-glassy-button1:hover {
+  color: #e2ddff;
+  animation: pulse1 2s infinite;
+  box-shadow: 0 0 20px rgba(181, 166, 255, 0.5);
+}
+
+/* Button 2 (Orange) */
+.cosmic-glassy-button2 {
+  border: 1.5px solid #ff8c3b;
+  color: #ff8c3b;
+  font-weight: 550 !important;
+  box-shadow: 0 0 10px rgba(255, 140, 59, 0.3);
+}
+
+.cosmic-glassy-button2::before {
+  background-image: conic-gradient(from var(--angle), rgba(0, 255, 184, 0), rgba(164, 43, 0, 0.3), rgba(150, 206, 124, 0));
+}
+
+.cosmic-glassy-button2:hover {
+  color: #ff8c3b;
+  animation: pulseOrange 2s infinite;
+  box-shadow: 0 0 20px rgba(255, 140, 59, 0.3);
+}
+
+/* Button 3 (Green) */
+.cosmic-glassy-button3 {
+  border: 1.5px solid #c7f2d4;
+  color: #c7f2d4;
+  box-shadow: 0 0 10px rgba(27, 89, 53, 0.3);
+}
+
+.cosmic-glassy-button3::before {
+  background-image: conic-gradient(from var(--angle), rgba(0, 255, 184, 0), rgba(154, 209, 175, 0.3));
+}
+
+.cosmic-glassy-button3:hover {
+  color: #ddfff2;
+  animation: pulse3 2s infinite;
+  box-shadow: 0 0 20px rgba(166, 255, 206, 0.5);
+}
+
+/* Button 4 (Gold) */
+.cosmic-glassy-button4 {
+  border: 1.5px solid #FFD700;
+  color: #FFD700;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.cosmic-glassy-button4::before {
+  background-image: conic-gradient(from var(--angle), rgba(0, 255, 184, 0), rgba(164, 43, 0, 0.3), rgba(150, 206, 124, 0));
+}
+
+.cosmic-glassy-button4:hover {
+  color: #F4A261;
+  animation: pulse2 2s infinite;
+  box-shadow: 0 0 20px rgba(142, 88, 44, 0.3);
+}
+
+/* Animations */
+@keyframes spin2 {
+  from { --angle: 0deg; }
+  to { --angle: 360deg; }
+}
+
+@keyframes pulse1 {
+  0% { box-shadow: 0 0 0 0 rgba(192, 181, 250, 0.3); }
+  70% { box-shadow: 0 0 0 10px rgba(210, 201, 255, 0.5); }
+  100% { box-shadow: 0 0 0 0 rgba(168, 151, 253, 0.2); }
+}
+
+@keyframes pulse2 {
+  0% { box-shadow: 0 0 0 0 rgba(173, 103, 45, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(244, 163, 97, 0.3); }
+  100% { box-shadow: 0 0 0 0 rgba(244, 163, 97, 0.2); }
+}
+
+@keyframes pulse3 {
+  0% { box-shadow: 0 0 0 0 rgba(181, 250, 205, 0.3); }
+  70% { box-shadow: 0 0 0 10px rgba(201, 255, 232, 0.5); }
+  100% { box-shadow: 0 0 0 0 rgba(151, 253, 221, 0.2); }
+}
+
+@keyframes pulseOrange {
+  0% { box-shadow: 0 0 0 0 rgba(255, 140, 59, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(255, 140, 59, 0.3); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 140, 59, 0.2); }
+}
+
+/* Mobile Optimizations */
+@media (max-width: 768px) {
+  .cosmic-glassy-button1, 
+  .cosmic-glassy-button2 {
+    border: 1.5px solid #CEC7F2 !important;
+  }
+  
+  /* Prevent hover animations on touch devices */
+  @media (hover: none) {
+    .cosmic-glassy-button1:hover,
+    .cosmic-glassy-button2:hover,
+    .cosmic-glassy-button3:hover,
+    .cosmic-glassy-button4:hover {
+      transform: none;
+      animation: none;
+    }
+    
+    .cosmic-glassy-button1:active,
+    .cosmic-glassy-button2:active,
+    .cosmic-glassy-button3:active,
+    .cosmic-glassy-button4:active {
+      transform: scale(0.98);
+      opacity: 0.8;
+    }
+  }
+}

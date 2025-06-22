@@ -1,5 +1,6 @@
-// service-worker.js
-const CACHE_NAME = 'neoarcana-app-v1';
+const CACHE_VERSION = 'v2.0.2';
+const CACHE_NAME = `neoarcana-app-${CACHE_VERSION}`;
+
 const urlsToCache = [
   '/',
   '/nfc',
@@ -7,9 +8,8 @@ const urlsToCache = [
   '/static/css/modules/step0.css',
   '/static/css/modules/trial-step2.css',
   '/static/css/galaxy_bg.css',
-  '/static/css/Loader.css',
-  '/static/css/CosmicButton.css',
   '/static/images/cards/card-back.jpg',
+  '/static/images/bg_main.jpg',
   '/static/icons/calendar.svg',
   '/static/icons/user.svg',
   '/static/icons/star.svg',
@@ -25,7 +25,6 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(CACHE_NAME)
       .then(cache => {
-        // Cache files one by one and ignore failures
         return Promise.allSettled(
           urlsToCache.map(url => 
             cache.add(url).catch(error => {
@@ -35,10 +34,33 @@ self.addEventListener('install', event => {
         );
       })
   );
+  self.skipWaiting();
+});
+
+self.addEventListener('activate', event => {
+  event.waitUntil(
+    Promise.all([
+      // Clear old caches
+      caches.keys().then(cacheNames => {
+        return Promise.all(
+          cacheNames
+            .filter(cacheName => cacheName !== CACHE_NAME)
+            .map(cacheName => caches.delete(cacheName))
+        );
+      }),
+      // Take control of all clients immediately
+      clients.claim(),
+      // Notify clients to reload
+      clients.matchAll({ type: 'window' }).then(windowClients => {
+        windowClients.forEach(windowClient => {
+          windowClient.postMessage({ type: 'FORCE_RELOAD' });
+        });
+      })
+    ])
+  );
 });
 
 self.addEventListener('fetch', event => {
-  // Only cache GET requests
   if (event.request.method !== 'GET') {
     return event.respondWith(fetch(event.request));
   }
@@ -49,57 +71,14 @@ self.addEventListener('fetch', event => {
         if (response) {
           return response;
         }
-        return fetch(event.request)
-          .then(response => {
-            // Check if we received a valid response
-            if (!response || response.status !== 200 || response.type !== 'basic') {
-              return response;
-            }
-
-            // Clone the response
-            const responseToCache = response.clone();
-
-            caches.open(CACHE_NAME)
-              .then(cache => {
-                cache.put(event.request, responseToCache);
-              });
-
-            return response;
-          });
-      })
-  );
-});
-
-// Add cache cleanup on activation
-self.addEventListener('activate', event => {
-  event.waitUntil(
-    caches.keys().then(cacheNames => {
-      return Promise.all(
-        cacheNames
-          .filter(cacheName => cacheName !== CACHE_NAME)
-          .map(cacheName => caches.delete(cacheName))
-      );
-    })
-  );
-});
-
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request)
-      .then(response => {
-        if (response) {
-          return response;
-        }
 
         return fetch(event.request)
           .then(response => {
-            // Check if we received a valid response
             if (!response || response.status !== 200 || response.type !== 'basic') {
               console.log(`Failed request: ${event.request.url} - Status: ${response?.status}`);
               return response;
             }
 
-            // Clone the response
             const responseToCache = response.clone();
 
             caches.open(CACHE_NAME)
@@ -114,7 +93,6 @@ self.addEventListener('fetch', event => {
           })
           .catch(error => {
             console.error('Fetch failed:', error);
-            // Return a custom error response
             return new Response('Network request failed', {
               status: 500,
               headers: new Headers({
@@ -124,4 +102,12 @@ self.addEventListener('fetch', event => {
           });
       })
   );
+});
+
+self.addEventListener('message', (event) => {
+  if (event.data === 'checkVersion') {
+    event.ports[0].postMessage({
+      version: CACHE_VERSION
+    });
+  }
 });

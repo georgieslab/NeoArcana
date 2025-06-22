@@ -1,0 +1,1466 @@
+/* =================================================
+   NEOARCANA REGISTRATION STYLES
+   Complete updated implementation with all enhancements
+   ================================================= */
+
+/* ---- VARIABLES ---- */
+:root {
+  /* Color Palette */
+  --neo-primary: #A59AD1;
+  --neo-primary-dark: #6B4E71;
+  --neo-primary-light: #CEC7F2;
+  --neo-secondary: #F4A261;
+  --neo-gold: #FFD700;
+  --neo-bg-dark: #0a0a1f;
+  --neo-bg-darker: #1a1a2e;
+  --neo-text: #FFFFFF;
+  --neo-text-muted: rgba(255, 255, 255, 0.7);
+  --neo-error: #ff6b6b;
+  --neo-success: #4CAF50;
+  
+  /* Spacing */
+  --neo-space-xs: 0.25rem;
+  --neo-space-sm: 0.5rem;
+  --neo-space-md: 1rem;
+  --neo-space-lg: 1.5rem;
+  --neo-space-xl: 2rem;
+  
+  /* Border Radius - CONSISTENT across all elements */
+  --neo-radius: 24px;
+  --neo-radius-sm: 12px;
+  
+  /* Shadows */
+  --neo-shadow-soft: 0 4px 10px rgba(0, 0, 0, 0.15);
+  --neo-shadow-medium: 0 8px 16px rgba(0, 0, 0, 0.2);
+  --neo-shadow-glow: 0 0 15px rgba(165, 154, 209, 0.3);
+  --neo-shadow-glow-strong: 0 0 20px rgba(165, 154, 209, 0.5);
+  
+  /* Glow Effects */
+  --neo-glow-color: rgba(165, 154, 209, 0.6);
+  --neo-glow-color-soft: rgba(165, 154, 209, 0.3);
+  --neo-glow-spread: 15px;
+  --neo-glow-spread-soft: 25px;
+  
+  /* Focus Ring */
+  --neo-focus-ring: 0 0 0 3px rgba(165, 154, 209, 0.4);
+  
+  /* Transitions */
+  --neo-transition-fast: 0.2s ease;
+  --neo-transition-normal: 0.3s ease;
+  --neo-transition-slow: 0.5s ease;
+}
+
+/* ---- BASE CONTAINER STYLES ---- */
+.neo-registration-flow {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: var(--neo-text);
+  padding: var(--neo-space-md);
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  background-color: var(--neo-bg-dark);
+  background-image: 
+    radial-gradient(circle at 10% 20%, rgba(91, 80, 135, 0.2) 0%, transparent 30%),
+    radial-gradient(circle at 90% 80%, rgba(244, 162, 97, 0.15) 0%, transparent 40%);
+  background-attachment: fixed;
+}
+
+.neo-container {
+  width: 100%;
+  max-width: 420px;
+  background: rgba(10, 10, 31, 0.7);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: var(--neo-radius);
+  border: 1px solid rgba(165, 154, 209, 0.2);
+  box-shadow: var(--neo-shadow-medium);
+  padding: var(--neo-space-xl);
+  animation: neo-fade-in 0.5s ease forwards;
+  position: relative;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+.neo-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--neo-primary) 0%, var(--neo-secondary) 50%, var(--neo-gold) 100%);
+  opacity: 0.7;
+  z-index: 1;
+}
+
+.neo-container::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: 
+    radial-gradient(circle at 90% 10%, rgba(244, 162, 97, 0.08) 0%, transparent 40%),
+    radial-gradient(circle at 10% 90%, rgba(165, 154, 209, 0.08) 0%, transparent 40%);
+  pointer-events: none;
+  z-index: -1;
+}
+
+/* ---- TYPOGRAPHY ---- */
+.neo-title {
+  font-size: 2rem;
+  text-align: center;
+  margin-bottom: var(--neo-space-xl);
+  line-height: 1.3;
+  color: var(--neo-secondary);
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+.neo-gradient-text {
+  background: linear-gradient(45deg, var(--neo-secondary), #E76F51);
+  background-size: 200% 200%;
+  animation: neo-gradient-animation 10s ease infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 0 2px 10px rgba(244, 162, 97, 0.2);
+}
+
+.neo-subtitle {
+  color: var(--neo-text-muted);
+  font-size: 1rem;
+  margin-bottom: var(--neo-space-md);
+  text-align: center;
+  font-weight: 500;
+}
+
+/* ---- STEP INDICATOR ---- */
+.neo-step-indicator {
+  display: flex;
+  justify-content: center;
+  gap: var(--neo-space-md);
+  margin-bottom: var(--neo-space-xl);
+  width: 100%;
+  position: relative;
+}
+
+.neo-step-indicator::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: 2px;
+  background: rgba(165, 154, 209, 0.2);
+  z-index: 0;
+}
+
+.neo-step {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(26, 26, 46, 0.6);
+  border: 1px solid rgba(165, 154, 209, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--neo-text);
+  font-size: 15px;
+  transition: all 0.3s ease;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  position: relative;
+  z-index: 1;
+}
+
+.neo-step.active {
+  background: rgba(165, 154, 209, 0.3);
+  border-color: var(--neo-primary);
+  box-shadow: 0 0 15px rgba(165, 154, 209, 0.4);
+  transform: scale(1.1);
+}
+
+.neo-step.completed {
+  background: rgba(165, 154, 209, 0.5);
+  border-color: var(--neo-primary-light);
+}
+
+.neo-step.completed::after {
+  content: '✓';
+  position: absolute;
+  font-size: 16px;
+  color: white;
+}
+
+/* ---- FORM ELEMENTS ---- */
+.neo-form {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--neo-space-xl);
+  margin-bottom: var(--neo-space-lg);
+}
+
+.neo-registration-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  animation: neo-fade-in 0.4s ease forwards;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.neo-input-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: var(--neo-space-lg);
+  z-index: 1;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* Create a pseudo-element for the glow effect */
+.neo-input-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: var(--neo-radius);
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  background: radial-gradient(
+    ellipse at center,
+    var(--neo-glow-color-soft) 0%,
+    transparent 70%
+  );
+  z-index: -1;
+  transform: scale(0.9);
+}
+
+/* Activate the glow when input is focused */
+.neo-input-container.focused::before {
+  opacity: 0.7;
+  transform: scale(1.05);
+}
+
+/* CONSISTENT HEIGHT for all inputs and selectors */
+.neo-input, 
+.neo-dropdown-label,
+.neo-textarea,
+.neo-button {
+  height: 56px;
+  width: 100%;
+  max-width: 100%;
+  background: rgba(26, 26, 46, 0.6);
+  border: 1px solid rgba(165, 154, 209, 0.3);
+  border-radius: var(--neo-radius);
+  color: var(--neo-text);
+  font-size: 16px;
+  transition: 
+    border-color var(--neo-transition-fast),
+    background var(--neo-transition-fast),
+    box-shadow var(--neo-transition-fast),
+    transform var(--neo-transition-fast);
+  -webkit-appearance: none;
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  box-shadow: var(--neo-shadow-soft);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+.neo-input {
+  padding: 0 var(--neo-space-lg) 0 56px;
+}
+
+/* Remove default browser focus styles */
+.neo-input:focus,
+.neo-textarea:focus {
+  outline: none;
+  border-color: rgba(165, 154, 209, 0.7);
+  background: rgba(26, 26, 46, 0.75);
+  box-shadow: 
+    /* Inner glow */
+    inset 0 0 5px 1px rgba(165, 154, 209, 0.1),
+    /* Primary glow */
+    0 0 10px 1px var(--neo-glow-color-soft),
+    /* Secondary glow */
+    0 0 15px 2px rgba(165, 154, 209, 0.2);
+  animation: cosmic-glow 3s infinite ease-in-out;
+}
+
+.neo-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.neo-input-icon {
+  position: absolute;
+  left: var(--neo-space-lg);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  opacity: 0.7;
+  pointer-events: none;
+  z-index: 1;
+  transition: 
+    opacity var(--neo-transition-fast),
+    filter var(--neo-transition-fast);
+}
+
+.neo-input:focus ~ .neo-input-icon {
+  opacity: 1;
+  filter: drop-shadow(0 0 3px rgba(165, 154, 209, 0.7));
+}
+
+.neo-textarea {
+  width: 100%;
+  height: auto;
+  min-height: 120px;
+  padding: var(--neo-space-md) var(--neo-space-lg);
+  line-height: 1.5;
+  resize: none;
+}
+
+.neo-character-count {
+  position: absolute;
+  bottom: -20px;
+  right: 0;
+  font-size: 0.8rem;
+  color: var(--neo-text-muted);
+  transition: color var(--neo-transition-fast);
+}
+
+.neo-textarea:focus + .neo-character-count {
+  color: var(--neo-primary-light);
+}
+
+/* Adding a subtle starry effect in the background of focused inputs */
+.neo-input-container.focused::after {
+  content: '';
+  position: absolute;
+  top: -5px;
+  left: -5px;
+  right: -5px;
+  bottom: -5px;
+  background-image: 
+    radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+    radial-gradient(circle at 70% 20%, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+    radial-gradient(circle at 90% 60%, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+    radial-gradient(circle at 30% 80%, rgba(255, 255, 255, 0.3) 1px, transparent 1px),
+    radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.3) 1px, transparent 1px);
+  background-size: 100px 100px;
+  border-radius: var(--neo-radius);
+  opacity: 0;
+  z-index: -2;
+  animation: starry-background 10s infinite linear;
+  transition: opacity 0.5s ease;
+}
+
+.neo-input-container.focused::after {
+  opacity: 0.3;
+}
+
+@keyframes starry-background {
+  from { background-position: 0 0; }
+  to { background-position: 100px 100px; }
+}
+
+/* Subtle animation for the glow effect */
+@keyframes cosmic-glow {
+  0% { box-shadow: 0 0 10px 1px var(--neo-glow-color-soft), 0 0 15px 2px rgba(165, 154, 209, 0.2); }
+  50% { box-shadow: 0 0 12px 2px var(--neo-glow-color-soft), 0 0 20px 4px rgba(165, 154, 209, 0.2); }
+  100% { box-shadow: 0 0 10px 1px var(--neo-glow-color-soft), 0 0 15px 2px rgba(165, 154, 209, 0.2); }
+}
+
+/* Special effect for empty vs filled inputs */
+.neo-input:not(:placeholder-shown) {
+  border-color: rgba(165, 154, 209, 0.5);
+}
+
+/* ---- DROPDOWN COMPONENTS ---- */
+.neo-dropdown {
+  position: relative;
+  width: 100% !important;
+  max-width: 100%;
+  margin-bottom: var(--neo-space-lg);
+  z-index: 10;
+  box-sizing: border-box;
+}
+
+.neo-dropdown-label {
+  display: flex;
+  align-items: center;
+  gap: var(--neo-space-sm);
+  padding: 0 var(--neo-space-lg) 0 56px;
+  cursor: pointer;
+  user-select: none;
+  width: 100%;
+  box-sizing: border-box;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+.neo-dropdown-label:hover {
+  background: rgba(26, 26, 46, 0.8);
+  border-color: rgba(165, 154, 209, 0.5);
+}
+
+.neo-dropdown-label:focus-visible {
+  outline: none;
+  box-shadow: 
+    0 0 10px 1px var(--neo-glow-color-soft),
+    0 0 15px 2px rgba(165, 154, 209, 0.2);
+  border-color: rgba(165, 154, 209, 0.7);
+}
+
+.neo-dropdown-icon {
+  position: absolute;
+  left: var(--neo-space-lg);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 20px;
+  height: 20px;
+  opacity: 0.7;
+  transition: opacity var(--neo-transition-fast);
+}
+
+.neo-dropdown.open .neo-dropdown-icon {
+  opacity: 1;
+}
+
+.neo-dropdown-text {
+  flex: 1;
+  color: var(--neo-text);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding-right: var(--neo-space-md);
+}
+
+.neo-dropdown-arrow {
+  width: 10px;
+  height: 10px;
+  border-left: 2px solid rgba(255, 255, 255, 0.5);
+  border-bottom: 2px solid rgba(255, 255, 255, 0.5);
+  transform: rotate(-45deg);
+  transition: all 0.3s ease;
+  margin-right: 8px;
+}
+
+.neo-dropdown.open .neo-dropdown-arrow {
+  transform: rotate(135deg);
+}
+
+.neo-dropdown-options {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  width: 100%;
+  background: rgba(20, 20, 30, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: var(--neo-radius-sm);
+  box-shadow: var(--neo-shadow-medium), 0 0 20px rgba(0, 0, 0, 0.3);
+  z-index: 20;
+  border: 1px solid rgba(165, 154, 209, 0.2);
+  transition: 
+    max-height var(--neo-transition-normal),
+    opacity var(--neo-transition-normal),
+    visibility var(--neo-transition-normal),
+    padding var(--neo-transition-normal);
+  max-height: 0;
+  opacity: 0;
+  visibility: hidden;
+  overflow: hidden;
+  padding: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.neo-dropdown.open .neo-dropdown-options {
+  max-height: 300px;
+  padding: var(--neo-space-md);
+  opacity: 1;
+  visibility: visible;
+  overflow: auto;
+}
+
+.neo-dropdown-options-list {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.neo-dropdown-option {
+  padding: var(--neo-space-sm) var(--neo-space-md);
+  cursor: pointer;
+  border-radius: var(--neo-radius-sm);
+  transition: all 0.2s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+.neo-dropdown-option::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 3px;
+  height: 100%;
+  background: var(--neo-primary);
+  opacity: 0;
+  transition: opacity var(--neo-transition-fast);
+}
+
+.neo-dropdown-option:hover {
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.neo-dropdown-option:hover::before {
+  opacity: 0.5;
+}
+
+.neo-dropdown-option.selected {
+  background: rgba(165, 154, 209, 0.2);
+  color: var(--neo-primary-light);
+}
+
+.neo-dropdown-option.selected::before {
+  opacity: 1;
+}
+
+.neo-dropdown-option:active {
+  transform: scale(0.98);
+}
+
+.neo-dropdown-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: var(--neo-space-sm) var(--neo-space-md);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  margin-bottom: var(--neo-space-sm);
+}
+
+.neo-dropdown-header h3 {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 500;
+  color: var(--neo-primary-light);
+}
+
+.neo-dropdown-close {
+  background: none;
+  border: none;
+  color: white;
+  font-size: 24px;
+  cursor: pointer;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  transition: background-color var(--neo-transition-fast);
+}
+
+.neo-dropdown-close:hover {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* ---- COLOR PICKER STYLES ---- */
+.neo-color-options {
+  width: 240px !important;
+  max-height: 300px;
+  overflow-y: auto;
+  padding: 12px;
+  box-sizing: border-box;
+  background: rgba(10, 10, 31, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(165, 154, 209, 0.3);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  z-index: 100;
+}
+
+.neo-color-swatches {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 8px;
+  width: 100%;
+  padding: 4px;
+}
+
+.neo-color-swatch {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
+  margin: 0;
+}
+
+.neo-color-swatch:hover:not(.selected) {
+  transform: scale(1.05);
+  border-color: rgba(255, 255, 255, 0.6);
+  box-shadow: 0 0 8px rgba(255, 255, 255, 0.2);
+}
+
+.neo-color-swatch.selected {
+  border: 2px solid white;
+  transform: scale(1.1);
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+}
+
+.neo-color-check {
+  width: 16px;
+  height: 16px;
+  filter: brightness(0) invert(1); /* Make icon white */
+}
+
+.neo-color-preview {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  margin-left: auto;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.2);
+}
+
+/* ---- INTEREST PICKER STYLES ---- */
+.neo-interests-options-container {
+  width: 280px !important;
+  max-height: 350px;
+  overflow-y: auto;
+  padding: 12px;
+  box-sizing: border-box;
+  background: rgba(10, 10, 31, 0.95);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(165, 154, 209, 0.3);
+  border-radius: 16px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  z-index: 100;
+}
+
+.neo-interests-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  width: 100%;
+}
+
+.neo-interest-option {
+  padding: 10px 12px;
+  border-radius: 12px;
+  cursor: pointer;
+  position: relative;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  transition: all 0.2s ease;
+  font-weight: 400;
+  min-height: 44px;
+}
+
+.neo-interest-option:hover:not(.selected) {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+}
+
+.neo-interest-option.selected {
+  background: rgba(165, 154, 209, 0.3);
+  border: 1px solid rgba(165, 154, 209, 0.6);
+  color: #ffffff;
+  font-weight: 500;
+  box-shadow: 0 0 10px rgba(165, 154, 209, 0.2);
+}
+
+.neo-interest-checkmark {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background-color: rgba(165, 154, 209, 0.7);
+  color: white;
+  font-size: 12px;
+  margin-left: 8px;
+  box-shadow: 0 0 6px rgba(165, 154, 209, 0.4);
+}
+
+.neo-interests-selected {
+  margin: 8px 0 0;
+  padding: 8px 12px;
+  border-radius: 12px;
+  background-color: rgba(165, 154, 209, 0.1);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  animation: neo-fade-in 0.3s ease;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.neo-interest-tag {
+  color: var(--neo-primary);
+  font-weight: 500;
+  display: inline-block;
+  padding: 2px 6px;
+  border-radius: 8px;
+  background-color: rgba(165, 154, 209, 0.15);
+  font-size: 0.9rem;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.neo-interest-more {
+  color: rgba(255, 255, 255, 0.6);
+  font-size: 0.8rem;
+  padding: 2px 6px;
+}
+
+/* ---- DATE INPUT STYLES ---- */
+.neo-date-input.empty {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.neo-date-input.focused {
+  color: var(--neo-text);
+}
+
+.neo-date-input.error {
+  border-color: var(--neo-error);
+}
+
+/* ---- BUTTONS ---- */
+.neo-button-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--neo-space-md);
+  width: 100%;
+  margin-top: var(--neo-space-xl);
+}
+
+.neo-button {
+  position: relative;
+  padding: 0 var(--neo-space-xl);
+  font-weight: 500;
+  cursor: pointer;
+  overflow: hidden;
+  text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.neo-button::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(45deg, 
+    rgba(165, 154, 209, 0.2), 
+    rgba(244, 162, 97, 0.2), 
+    rgba(165, 154, 209, 0.2));
+  background-size: 200% 200%;
+  animation: neo-gradient-animation 10s ease infinite;
+  opacity: 0;
+  transition: opacity var(--neo-transition-fast);
+  z-index: -1;
+}
+
+.neo-button:hover:not(:disabled)::before {
+  opacity: 1;
+}
+
+.neo-button:hover:not(:disabled) {
+  border-color: rgba(165, 154, 209, 0.7);
+  transform: translateY(-2px);
+  box-shadow: var(--neo-shadow-glow);
+}
+
+.neo-button:focus-visible {
+  outline: none;
+  box-shadow: var(--neo-shadow-glow), var(--neo-focus-ring);
+}
+
+.neo-button:active:not(:disabled) {
+  transform: translateY(0);
+  box-shadow: 0 0 8px rgba(165, 154, 209, 0.2);
+}
+
+.neo-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cosmic-glassy-button1, 
+.cosmic-glassy-button2 {
+  background: linear-gradient(135deg, 
+    rgba(165, 154, 209, 0.2) 0%, 
+    rgba(244, 162, 97, 0.2) 100%);
+  border: 1px solid rgba(165, 154, 209, 0.5);
+  border-radius: var(--neo-radius);
+  color: white;
+  font-weight: 500;
+  height: 56px;
+  width: 100%;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--neo-shadow-glow);
+}
+
+.cosmic-glassy-button1::before, 
+.cosmic-glassy-button2::before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, 
+    var(--neo-primary-light), 
+    var(--neo-secondary), 
+    var(--neo-primary-light));
+  background-size: 300% 300%;
+  animation: neo-gradient-animation 10s ease infinite;
+  z-index: -1;
+  border-radius: var(--neo-radius);
+  opacity: 0.3;
+  transition: opacity 0.3s ease;
+}
+
+.cosmic-glassy-button1:hover:not(:disabled), 
+.cosmic-glassy-button2:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: var(--neo-shadow-glow-strong);
+  border-color: rgba(165, 154, 209, 0.8);
+}
+
+.cosmic-glassy-button1:hover:not(:disabled)::before, 
+.cosmic-glassy-button2:hover:not(:disabled)::before {
+  opacity: 0.5;
+}
+
+.cosmic-glassy-button1:active:not(:disabled), 
+.cosmic-glassy-button2:active:not(:disabled) {
+  transform: translateY(0);
+}
+
+.cosmic-glassy-button1:disabled, 
+.cosmic-glassy-button2:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.cosmic-glassy-button1:focus-visible, 
+.cosmic-glassy-button2:focus-visible {
+  outline: none;
+  box-shadow: var(--neo-shadow-glow), var(--neo-focus-ring);
+}
+
+.cosmic-glassy-button1 {
+  background: linear-gradient(135deg, 
+    rgba(244, 162, 97, 0.3) 0%, 
+    rgba(165, 154, 209, 0.3) 100%);
+}
+
+.neo-button--secondary {
+  background: rgba(244, 162, 97, 0.2);
+  border-color: var(--neo-secondary);
+}
+
+.neo-button--secondary:hover:not(:disabled) {
+  background: rgba(244, 162, 97, 0.3);
+  box-shadow: 0 0 15px rgba(244, 162, 97, 0.3);
+}
+
+.neo-text-button {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: 0.9rem;
+  padding: var(--neo-space-sm);
+  cursor: pointer;
+  transition: all 0.3s ease;
+  text-align: center;
+  position: relative;
+}
+
+.neo-text-button::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: 4px;
+  width: 0;
+  height: 1px;
+  background: var(--neo-primary-light);
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+.neo-text-button:hover {
+  color: var(--neo-text);
+}
+
+.neo-text-button:hover::after {
+  width: 30%;
+  left: 35%;
+}
+
+.neo-text-button:focus-visible {
+  outline: none;
+  color: var(--neo-primary-light);
+}
+
+.neo-text-button:focus-visible::after {
+  width: 50%;
+  left: 25%;
+}
+
+/* ---- WELCOME SCREEN ---- */
+.neo-welcome-container {
+  max-width: 400px;
+  width: 100%;
+  padding: var(--neo-space-xl);
+  background: rgba(25, 25, 37, 0.27);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-radius: var(--neo-radius);
+  box-shadow: var(--neo-shadow-medium);
+  border: 1px solid rgba(165, 154, 209, 0.2);
+  text-align: center;
+  animation: neo-fade-in 0.5s ease forwards;
+  box-sizing: border-box;
+}
+
+.neo-code-input {
+  text-align: center;
+  letter-spacing: 2px;
+  font-size: 1.2rem;
+  text-transform: uppercase;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.neo-help-text {
+  margin-top: 1.5rem;
+  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* ---- SUCCESS STATE ---- */
+.neo-success-container {
+  text-align: center;
+}
+
+.neo-success-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--neo-space-lg);
+  margin: var(--neo-space-xl) 0;
+}
+
+.neo-welcome-message {
+  font-size: 1.2rem;
+  color: var(--neo-primary);
+  position: relative;
+  padding-bottom: var(--neo-space-sm);
+}
+
+.neo-welcome-message::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 80px;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    var(--neo-primary), 
+    transparent);
+}
+
+.neo-details {
+  display: flex;
+  flex-direction: column;
+  gap: var(--neo-space-sm);
+  background: rgba(255, 255, 255, 0.05);
+  padding: var(--neo-space-md);
+  border-radius: var(--neo-radius-sm);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  position: relative;
+  overflow: hidden;
+}
+
+.neo-details::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, 
+    transparent, 
+    var(--neo-primary-light), 
+    transparent);
+}
+
+.neo-details p {
+  margin: var(--neo-space-xs) 0;
+}
+
+/* ---- ERROR STYLES ---- */
+.neo-error-container {
+  width: 100%;
+  padding: var(--neo-space-md);
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  border-radius: var(--neo-radius-sm);
+  margin: var(--neo-space-md) 0;
+  text-align: center;
+  animation: neo-error-pulse 2s infinite;
+}
+
+@keyframes neo-error-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0.2); }
+  70% { box-shadow: 0 0 0 5px rgba(255, 107, 107, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 107, 107, 0); }
+}
+
+.neo-error-message {
+  color: var(--neo-error);
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+/* ---- LOADING STATES ---- */
+.neo-loading {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.neo-loading::after {
+  content: '';
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid rgba(255, 255, 255, 0.2);
+  border-top-color: var(--neo-primary);
+  animation: neo-spin 0.8s linear infinite;
+  margin-left: var(--neo-space-sm);
+}
+
+@keyframes neo-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Cosmic loader for form submission */
+.neo-cosmic-loader {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(10, 10, 31, 0.9);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: neo-fade-in 0.3s ease;
+}
+
+.neo-cosmic-loader-content {
+  text-align: center;
+  color: white;
+  font-size: 1.2rem;
+  font-weight: 500;
+}
+
+.neo-cosmic-loader-stars {
+  width: 100px;
+  height: 100px;
+  background-image: radial-gradient(circle, 
+    rgba(255, 255, 255, 0.8) 1px, 
+    transparent 1px), 
+    radial-gradient(circle, 
+    rgba(255, 255, 255, 0.5) 1px, 
+    transparent 1px),
+    radial-gradient(circle, 
+    rgba(255, 255, 255, 0.3) 1px, 
+    transparent 1px);
+  background-size: 10px 10px, 20px 20px, 30px 30px;
+  background-position: 0 0, 10px 10px, 5px 5px;
+  border-radius: 50%;
+  animation: neo-rotate 4s linear infinite, neo-pulse 2s ease-in-out infinite;
+  margin: 0 auto 20px;
+  position: relative;
+}
+
+.neo-cosmic-loader-stars::before {
+  content: '';
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  border-radius: 50%;
+  border: 2px solid rgba(165, 154, 209, 0.3);
+  animation: neo-pulse-reverse 2s ease-in-out infinite;
+}
+
+@keyframes neo-rotate {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes neo-pulse {
+  0% { transform: scale(0.8); opacity: 0.7; }
+  50% { transform: scale(1.1); opacity: 1; }
+  100% { transform: scale(0.8); opacity: 0.7; }
+}
+
+@keyframes neo-pulse-reverse {
+  0% { transform: scale(1.1); opacity: 0.7; }
+  50% { transform: scale(0.9); opacity: 0.3; }
+  100% { transform: scale(1.1); opacity: 0.7; }
+}
+
+/* ---- MOBILE BACKDROP ---- */
+.neo-backdrop {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0);
+  z-index: 5;
+  animation: neo-fade-in 0.3s ease forwards;
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+/* ---- ANIMATIONS ---- */
+@keyframes neo-fade-in {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes neo-fade-out {
+  from { opacity: 1; transform: translateY(0); }
+  to { opacity: 0; transform: translateY(-20px); }
+}
+
+@keyframes neo-gradient-animation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.neo-fade-in {
+  animation: neo-fade-in 0.5s ease forwards;
+}
+
+.neo-fade-out {
+  animation: neo-fade-out 0.5s ease forwards;
+}
+
+/* Add success state for inputs */
+.neo-input-valid {
+  border-color: var(--neo-success) !important;
+  animation: neo-success-pulse 1s;
+}
+
+@keyframes neo-success-pulse {
+  0% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); }
+  70% { box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); }
+}
+
+/* Add shake animation for error */
+.neo-input-shake {
+  animation: neo-shake 0.5s;
+}
+
+@keyframes neo-shake {
+  0%, 100% { transform: translateX(0); }
+  10%, 30%, 50%, 70%, 90% { transform: translateX(-5px); }
+  20%, 40%, 60%, 80% { transform: translateX(5px); }
+}
+
+/* Ripple effect for color selection */
+.neo-color-ripple {
+  position: absolute;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: scale(0);
+  animation: neo-ripple 0.6s linear;
+  pointer-events: none;
+}
+
+@keyframes neo-ripple {
+  to {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+/* ---- RESPONSIVE STYLES ---- */
+@media (max-width: 768px) {
+  .neo-container,
+  .neo-welcome-container {
+    width: 90%;
+    max-width: 420px;
+    padding: var(--neo-space-lg);
+    margin-bottom: var(--neo-space-xl);
+    box-sizing: border-box;
+  }
+  
+  .neo-title {
+    font-size: 1.6rem;
+  }
+  
+  .neo-step-indicator {
+    margin-bottom: var(--neo-space-lg);
+  }
+  
+  .neo-step {
+    width: 32px;
+    height: 32px;
+  }
+  
+  /* Mobile dropdown */
+  .neo-dropdown-options {
+    position: fixed;
+    top: auto;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    border-radius: var(--neo-radius) var(--neo-radius) 0 0;
+    animation: neo-slide-up 0.3s ease forwards;
+    max-height: 70vh;
+    overflow-y: auto;
+    box-shadow: 0 -5px 20px rgba(0, 0, 0, 0.3);
+  }
+  
+  .neo-backdrop {
+    display: block;
+  }
+  
+  /* Color picker grid for mobile */
+  .neo-color-swatches {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  
+  /* Safe area adjustments */
+  .neo-dropdown-options {
+    padding-bottom: calc(var(--neo-space-lg) + env(safe-area-inset-bottom, 0px));
+  }
+
+  /* Make sure buttons have enough touch area */
+  .neo-button,
+  .cosmic-glassy-button1,
+  .cosmic-glassy-button2 {
+    min-height: 54px;
+    padding: var(--neo-space-md) var(--neo-space-lg);
+  }
+
+  .neo-text-button {
+    min-height: 44px;
+    padding: var(--neo-space-md);
+  }
+
+  /* Add bottom safe area padding to the container */
+  .neo-registration-flow {
+    padding-bottom: calc(var(--neo-space-xl) + env(safe-area-inset-bottom, 0px));
+  }
+  
+  /* Interest picker mobile styles */
+  .neo-interests-options-container {
+    position: fixed;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    bottom: 20px;
+    width: 85% !important;
+    max-width: 320px;
+    max-height: 60vh;
+    border-radius: 20px;
+    padding: 16px;
+  }
+  
+  .neo-interests-options {
+    grid-template-columns: 1fr;
+    gap: 10px;
+  }
+  
+  .neo-interest-option {
+    padding: 12px 15px;
+  }
+  
+  /* Color picker mobile styles */
+  .neo-color-options {
+    position: fixed;
+    left: 50% !important;
+    transform: translateX(-50%) !important;
+    bottom: 20px;
+    width: 85% !important;
+    max-width: 320px;
+    max-height: 60vh;
+    border-radius: 20px;
+    padding: 16px;
+  }
+  
+  /* Better handling of dropdowns on small screens */
+  .neo-dropdown-label {
+    padding-right: 30px; /* Make room for the arrow */
+  }
+
+  .neo-dropdown-arrow {
+    position: absolute;
+    right: var(--neo-space-md);
+  }
+}
+
+@keyframes neo-slide-up {
+  from { transform: translateY(100%); }
+  to { transform: translateY(0); }
+}
+
+/* Add touch feedback for mobile */
+@media (hover: none) {
+  .neo-dropdown-option:active,
+  .neo-interest-option:active,
+  .neo-color-swatch:active {
+    opacity: 0.7;
+    transform: scale(0.95);
+  }
+}
+
+/* Ensure proper scrolling for dropdown content */
+.neo-interests-options-container::-webkit-scrollbar,
+.neo-color-options::-webkit-scrollbar,
+.neo-dropdown-options::-webkit-scrollbar {
+  width: 6px;
+}
+
+.neo-interests-options-container::-webkit-scrollbar-track,
+.neo-color-options::-webkit-scrollbar-track,
+.neo-dropdown-options::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+.neo-interests-options-container::-webkit-scrollbar-thumb,
+.neo-color-options::-webkit-scrollbar-thumb,
+.neo-dropdown-options::-webkit-scrollbar-thumb {
+  background: rgba(165, 154, 209, 0.5);
+  border-radius: 10px;
+}
+
+.neo-interests-options-container::-webkit-scrollbar-thumb:hover,
+.neo-color-options::-webkit-scrollbar-thumb:hover,
+.neo-dropdown-options::-webkit-scrollbar-thumb:hover {
+  background: rgba(165, 154, 209, 0.7);
+}
+
+/* Fix iOS issues */
+@supports (-webkit-touch-callout: none) {
+  .neo-input, 
+  .neo-dropdown-label, 
+  .neo-textarea, 
+  .neo-button {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+  
+  .neo-container {
+    min-height: -webkit-fill-available;
+  }
+
+  /* Fix for iOS scrolling in dropdown menus */
+  .neo-dropdown-options,
+  .neo-interests-options-container,
+  .neo-color-options {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Fix for iOS button rendering */
+  .cosmic-glassy-button1,
+  .cosmic-glassy-button2,
+  .neo-button {
+    -webkit-appearance: none;
+  }
+  
+  /* Simplify animations for better performance */
+  @keyframes cosmic-glow {
+    0% { -webkit-box-shadow: 0 0 10px 1px var(--neo-glow-color-soft); }
+    50% { -webkit-box-shadow: 0 0 15px 2px var(--neo-glow-color-soft); }
+    100% { -webkit-box-shadow: 0 0 10px 1px var(--neo-glow-color-soft); }
+  }
+  
+  .neo-input:focus {
+    -webkit-box-shadow: 
+      inset 0 0 5px 1px rgba(165, 154, 209, 0.1),
+      0 0 10px 1px var(--neo-glow-color-soft);
+  }
+  
+  .neo-dropdown,
+  .neo-input-container,
+  .neo-dropdown-label,
+  .neo-input {
+    width: 100% !important;
+    max-width: 100%;
+    box-sizing: border-box;
+  }
+}
+
+/* Dark mode adjustments */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --neo-shadow-soft: 0 4px 10px rgba(0, 0, 0, 0.25);
+    --neo-shadow-medium: 0 8px 16px rgba(0, 0, 0, 0.3);
+  }
+}
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.1s !important;
+    transition-duration: 0.1s !important;
+  }
+}

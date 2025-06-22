@@ -2,6 +2,7 @@ const CosmicLoader = ({ type = 'default', message = null, onLoadingComplete = nu
   const [phase, setPhase] = React.useState(0);
   const [isVisible, setIsVisible] = React.useState(true);
   const [isFading, setIsFading] = React.useState(false);
+  const mountedRef = React.useRef(true);
   
   const loadingPhrases = {
     default: [
@@ -25,32 +26,45 @@ const CosmicLoader = ({ type = 'default', message = null, onLoadingComplete = nu
   };
   
   React.useEffect(() => {
+    // Set mounted ref to true
+    mountedRef.current = true;
+    
     let timeoutId;
     let phaseInterval;
     let fadeTimeoutId;
 
     phaseInterval = setInterval(() => {
-      setPhase(prev => (prev + 1) % loadingPhrases[type].length);
+      if (mountedRef.current) {
+        setPhase(prev => (prev + 1) % loadingPhrases[type].length);
+      }
     }, 2500);
 
     if (onLoadingComplete) {
       // Start fade out at 4.5 seconds
       timeoutId = setTimeout(() => {
-        setIsFading(true);
-        
-        // Call onLoadingComplete after short delay to allow fade to start
-        fadeTimeoutId = setTimeout(() => {
-          onLoadingComplete();
+        if (mountedRef.current) {
+          setIsFading(true);
           
-          // Remove loader component after fade completes
-          setTimeout(() => {
-            setIsVisible(false);
-          }, 500);
-        }, 300);
+          // Call onLoadingComplete after short delay to allow fade to start
+          fadeTimeoutId = setTimeout(() => {
+            if (mountedRef.current && onLoadingComplete) {
+              onLoadingComplete();
+              
+              // Remove loader component after fade completes
+              setTimeout(() => {
+                if (mountedRef.current) {
+                  setIsVisible(false);
+                }
+              }, 500);
+            }
+          }, 300);
+        }
       }, 4500);
     }
 
+    // Cleanup function
     return () => {
+      mountedRef.current = false;
       if (timeoutId) clearTimeout(timeoutId);
       if (phaseInterval) clearInterval(phaseInterval);
       if (fadeTimeoutId) clearTimeout(fadeTimeoutId);
@@ -64,14 +78,34 @@ const CosmicLoader = ({ type = 'default', message = null, onLoadingComplete = nu
   }, [
     // Rotating orb
     React.createElement('div', {
-      key: 'orb-wrapper',
-      className: 'orb-wrapper'
-    }, [
-      React.createElement('div', {
-        key: 'orb',
-        className: 'cosmic-orb'
-      })
-    ]),
+        key: 'orb-wrapper',
+        className: 'orb-wrapper'
+      }, [
+        React.createElement('div', { 
+          key: 'center',
+          className: 'center' 
+        }, [
+          React.createElement('div', { key: 'ball', className: 'ball' }),
+          React.createElement('div', { key: 'blubb-1', className: 'blubb-1' }),
+          React.createElement('div', { key: 'blubb-2', className: 'blubb-2' }),
+          React.createElement('div', { key: 'blubb-3', className: 'blubb-3' }),
+          React.createElement('div', { key: 'blubb-4', className: 'blubb-4' }),
+          React.createElement('div', { key: 'blubb-5', className: 'blubb-5' }),
+          React.createElement('div', { key: 'blubb-6', className: 'blubb-6' }),
+          React.createElement('div', { key: 'blubb-7', className: 'blubb-7' }),
+          React.createElement('div', { key: 'blubb-8', className: 'blubb-8' }),
+          React.createElement('div', { key: 'sparkle-1', className: 'sparkle-1' }),
+          React.createElement('div', { key: 'sparkle-2', className: 'sparkle-2' }),
+          React.createElement('div', { key: 'sparkle-3', className: 'sparkle-3' }),
+          React.createElement('div', { key: 'sparkle-4', className: 'sparkle-4' }),
+          React.createElement('div', { key: 'sparkle-5', className: 'sparkle-5' }),
+          React.createElement('div', { key: 'sparkle-6', className: 'sparkle-6' }),
+          React.createElement('div', { key: 'sparkle-7', className: 'sparkle-7' }),
+          React.createElement('div', { key: 'sparkle-8', className: 'sparkle-8' }),
+          React.createElement('div', { key: 'sparkle-9', className: 'sparkle-9' }),
+          React.createElement('div', { key: 'sparkle-10', className: 'sparkle-10' })
+        ])
+      ]),
     
     // Progress bar (non-rotating)
     React.createElement('div', {
@@ -83,6 +117,7 @@ const CosmicLoader = ({ type = 'default', message = null, onLoadingComplete = nu
         className: 'loading-progress'
       }, [
         React.createElement('div', {
+          key: 'progress-bar',
           className: 'progress-bar'
         })
       ])

@@ -1,5 +1,6 @@
+// Updated RegistrationFlow component with new class names
 const RegistrationFlow = ({ onRegistrationComplete, onError }) => {
-  const mounted = React.useRef(true);  // Add mounted ref
+  const mounted = React.useRef(true);
   const [showWelcome, setShowWelcome] = React.useState(true);
   const [isVerifying, setIsVerifying] = React.useState(false);
   const [error, setError] = React.useState(null);
@@ -63,16 +64,20 @@ const RegistrationFlow = ({ onRegistrationComplete, onError }) => {
 
   // Render welcome screen
   if (showWelcome) {
-    return React.createElement(WelcomeScreen, {
-      onCodeSubmit: handleWelcomeSubmit,
-      isLoading: isVerifying,
-      error: error
-    });
+    return React.createElement('div', {
+      className: 'neo-registration-flow'
+    },
+      React.createElement(WelcomeScreen, {
+        onCodeSubmit: handleWelcomeSubmit,
+        isLoading: isVerifying,
+        error: error
+      })
+    );
   }
 
   // Render registration form
   return React.createElement('div', {
-    className: 'nfc-registration-flow'
+    className: 'neo-registration-flow'
   }, 
     React.createElement(NFCUserRegistration, {
       key: verifiedPosterCode, // Add key to ensure fresh mount

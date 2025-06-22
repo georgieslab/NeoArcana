@@ -1,3 +1,4 @@
+// Updated NFCUserRegistration component with new class names
 const NFCUserRegistration = ({ onComplete, onError, posterCode: initialPosterCode }) => {
   const mounted = React.useRef(true);
   const [registrationSuccess, setRegistrationSuccess] = React.useState(false);
@@ -14,23 +15,23 @@ const NFCUserRegistration = ({ onComplete, onError, posterCode: initialPosterCod
   }, []);
 
   const [formData, setFormData] = React.useState({
-      name: '',
-      dateOfBirth: '',
-      gender: '',
-      color: {
-        name: 'Cosmic Purple',
-        value: '#A59AD1'
-      },
-      interests: [],
-      language: 'en',
-      posterCode: initialPosterCode,
-      futurePlans: '',
-      numbers: {
-        favoriteNumber: '',
-        luckyNumber: '',
-        guidanceNumber: ''
-      }}
-  );
+    name: '',
+    dateOfBirth: '',
+    gender: '',
+    color: {
+      name: 'Cosmic Purple',
+      value: '#A59AD1'
+    },
+    interests: [],
+    language: 'en',
+    posterCode: initialPosterCode,
+    futurePlans: '',
+    numbers: {
+      favoriteNumber: '',
+      luckyNumber: '',
+      guidanceNumber: ''
+    }
+  });
 
   const calculateZodiacSign = (dateStr) => {
     const date = new Date(dateStr);
@@ -110,64 +111,65 @@ const NFCUserRegistration = ({ onComplete, onError, posterCode: initialPosterCod
 
   if (registrationSuccess) {
     return React.createElement('div', {
-    className: 'nfc-registration-container success-container'
-  }, [
-    React.createElement('h1', {
-      key: 'title',
-      className: 'title cosmic-gradient'
-    }, '✨ Registration Complete! ✨'),
-    
-    React.createElement('div', {
-      key: 'success-content',
-      className: 'success-content'
-    }, [
-      React.createElement('p', {
-        key: 'welcome',
-        className: 'cosmic-welcome'
-      }, `Welcome to your cosmic journey, ${formData.name}!`),
-      
-      React.createElement('div', {
-        key: 'details',
-        className: 'cosmic-details'
-      }, [
-        React.createElement('p', { key: 'color' }, 
-          `Your cosmic color: ${formData.color.name}`
-        ),
-        React.createElement('p', { key: 'zodiac' }, 
-          `Zodiac Sign: ${calculateZodiacSign(formData.dateOfBirth)}`
-        ),
-        React.createElement('p', { key: 'interests' },
-          `Focus Areas: ${formData.interests.join(', ')}`
-        )
-      ]),
-      
-      React.createElement('button', {
-        key: 'home-button',
-        className: 'cosmic-button',
-        onClick: () => window.location.href = '/'
-      }, '✨ Return to Main Menu ✨')
-    ])
-  ]);
-}
-
-  const renderStep1 = () => 
-    React.createElement('div', {
-      className: 'registration-step'
+      className: 'neo-container neo-success-container'
     }, [
       React.createElement('h1', {
         key: 'title',
-        className: 'title cosmic-gradient cosmic-text'
-      }, 'Welcome to Your Cosmic Journey'),
+        className: 'neo-title neo-gradient-text'
+      }, '✨ Registration Complete! ✨'),
       
       React.createElement('div', {
-        key: 'input-container',
-        className: 'input-container'
+        key: 'success-content',
+        className: 'neo-success-content'
+      }, [
+        React.createElement('p', {
+          key: 'welcome',
+          className: 'neo-welcome-message'
+        }, `Welcome to your cosmic journey, ${formData.name}!`),
+        
+        React.createElement('div', {
+          key: 'details',
+          className: 'neo-details'
+        }, [
+          React.createElement('p', { key: 'color' }, 
+            `Your cosmic color: ${formData.color.name}`
+          ),
+          React.createElement('p', { key: 'zodiac' }, 
+            `Zodiac Sign: ${calculateZodiacSign(formData.dateOfBirth)}`
+          ),
+          React.createElement('p', { key: 'interests' },
+            `Focus Areas: ${formData.interests.join(', ')}`
+          )
+        ]),
+        
+        React.createElement('button', {
+          key: 'home-button',
+          className: 'neo-button',
+          onClick: () => window.location.href = '/'
+        }, '✨ Return to Main Menu ✨')
+      ])
+    ]);
+  }
+
+  const renderStep1 = () => 
+    React.createElement('div', {
+      className: 'neo-registration-step'
+    }, [
+      React.createElement('h1', {
+        key: 'title',
+        className: 'neo-title neo-gradient-text'
+      }, 'Welcome to Your Cosmic Journey'),
+      
+      // Name input
+      React.createElement('div', {
+        key: 'name-container',
+        className: 'neo-input-container'
       }, [
         React.createElement('img', {
           key: 'user-icon',
           src: '/static/icons/user.svg',
           alt: 'User',
-          className: 'input-icon'
+          className: 'neo-input-icon'
         }),
         React.createElement('input', {
           key: 'name-input',
@@ -175,266 +177,268 @@ const NFCUserRegistration = ({ onComplete, onError, posterCode: initialPosterCod
           value: formData.name,
           onChange: (e) => setFormData({ ...formData, name: e.target.value }),
           placeholder: 'Your Name',
-          className: 'input',
+          className: 'neo-input',
           required: true
         })
       ]),
       
+      // Date input
       React.createElement(DateInput, {
         key: 'date-input',
         value: formData.dateOfBirth,
         onChange: (date) => setFormData({ ...formData, dateOfBirth: date })
       }),
   
+      // Gender select
       React.createElement(GenderSelect, {
         key: 'gender-select',
         selectedGender: formData.gender,
         onGenderChange: (gender) => setFormData({ ...formData, gender })
       }),
   
+      // Continue button
       React.createElement('button', {
         key: 'continue-button',
-        className: 'cosmic-glassy-button1',
+        className: 'cosmic-glassy-button2',
         onClick: () => setCurrentStep(2),
         disabled: !formData.name || !formData.dateOfBirth
       }, 'Continue Your Journey ✨')
     ]);
 
   const renderStep2 = () => 
+    React.createElement('div', {
+      className: 'neo-registration-step'
+    }, [
+      React.createElement('h1', {
+        key: 'title',
+        className: 'neo-title neo-gradient-text'
+      }, 'Choose Your Cosmic Energy'),
+  
       React.createElement('div', {
-        className: 'registration-step'
+        key: 'premium-fields',
+        className: 'neo-premium-fields'
       }, [
-        React.createElement('h1', {
-          key: 'title',
-          className: 'title cosmic-gradient cosmic-text'
-        }, 'Choose Your Cosmic Energy'),
-    
+        React.createElement(ColorPicker, {
+          key: 'color-picker',
+          selectedColor: formData.color,
+          onColorChange: (color) => setFormData({ ...formData, color })
+        }),
+  
+        React.createElement(LanguageSelect, {
+          key: 'language-select',
+          selectedLanguage: formData.language,
+          onLanguageChange: (language) => setFormData({ ...formData, language })
+        }),
+  
         React.createElement('div', {
-          key: 'premium-fields',
-          className: 'premium-fields'
+          key: 'numerology',
+          className: 'neo-numerology-section'
         }, [
-          React.createElement(ColorPicker, {
-            key: 'color-picker',
-            selectedColor: formData.color,
-            onColorChange: (color) => setFormData({ ...formData, color })
-          }),
-    
-          React.createElement(LanguageSelect, {
-            key: 'language-select',
-            selectedLanguage: formData.language,
-            onLanguageChange: (language) => setFormData({ ...formData, language })
-          }),
-    
+          React.createElement('h3', {
+            key: 'numbers-title',
+            className: 'neo-subtitle'
+          }, 'Your Cosmic Numbers'),
+  
+          // Number inputs
           React.createElement('div', {
-            key: 'numerology',
-            className: 'numerology-section'
+            key: 'favorite-number',
+            className: 'neo-input-container'
           }, [
-            React.createElement('h3', {
-              key: 'numbers-title',
-              className: 'section-title'
-            }, 'Your Cosmic Numbers'),
-    
-            // Number inputs
-            React.createElement('div', {
-              key: 'favorite-number',
-              className: 'input-container'
-            }, [
-              React.createElement('img', {
-                key: 'star-icon',
-                src: '/static/icons/star.svg',
-                alt: 'Favorite',
-                className: 'input-icon'
+            React.createElement('img', {
+              key: 'star-icon',
+              src: '/static/icons/star.svg',
+              alt: 'Favorite',
+              className: 'neo-input-icon'
+            }),
+            React.createElement('input', {
+              key: 'favorite-input',
+              type: 'number',
+              min: '0',
+              max: '99',
+              value: formData.numbers.favoriteNumber,
+              onChange: (e) => setFormData({
+                ...formData,
+                numbers: {
+                  ...formData.numbers,
+                  favoriteNumber: e.target.value
+                }
               }),
-              React.createElement('input', {
-                key: 'favorite-input',
-                type: 'number',
-                min: '0',
-                max: '99',
-                value: formData.numbers.favoriteNumber,
-                onChange: (e) => setFormData({
-                  ...formData,
-                  numbers: {
-                    ...formData.numbers,
-                    favoriteNumber: e.target.value
-                  }
-                }),
-                placeholder: 'Your Favorite Number (0-99)',
-                className: 'input'
-              })
-            ]),
-    
-            // Lucky number input
-            React.createElement('div', {
-              key: 'lucky-number',
-              className: 'input-container'
-            }, [
-              React.createElement('img', {
-                key: 'clover-icon',
-                src: '/static/icons/clover.svg',
-                alt: 'Lucky',
-                className: 'input-icon'
+              placeholder: 'Your Favorite Number (0-99)',
+              className: 'neo-input'
+            })
+          ]),
+  
+          // Lucky number input
+          React.createElement('div', {
+            key: 'lucky-number',
+            className: 'neo-input-container'
+          }, [
+            React.createElement('img', {
+              key: 'clover-icon',
+              src: '/static/icons/clover.svg',
+              alt: 'Lucky',
+              className: 'neo-input-icon'
+            }),
+            React.createElement('input', {
+              key: 'lucky-input',
+              type: 'number',
+              min: '0',
+              max: '99',
+              value: formData.numbers.luckyNumber,
+              onChange: (e) => setFormData({
+                ...formData,
+                numbers: {
+                  ...formData.numbers,
+                  luckyNumber: e.target.value
+                }
               }),
-              React.createElement('input', {
-                key: 'lucky-input',
-                type: 'number',
-                min: '0',
-                max: '99',
-                value: formData.numbers.luckyNumber,
-                onChange: (e) => setFormData({
-                  ...formData,
-                  numbers: {
-                    ...formData.numbers,
-                    luckyNumber: e.target.value
-                  }
-                }),
-                placeholder: 'Your Lucky Number (0-99)',
-                className: 'input'
-              })
-            ]),
-    
-            // Guidance number input
-            React.createElement('div', {
-              key: 'guidance-number',
-              className: 'input-container'
-            }, [
-              React.createElement('img', {
-                key: 'compass-icon',
-                src: '/static/icons/compass.svg',
-                alt: 'Guidance',
-                className: 'input-icon'
+              placeholder: 'Your Lucky Number (0-99)',
+              className: 'neo-input'
+            })
+          ]),
+  
+          // Guidance number input
+          React.createElement('div', {
+            key: 'guidance-number',
+            className: 'neo-input-container'
+          }, [
+            React.createElement('img', {
+              key: 'compass-icon',
+              src: '/static/icons/compass.svg',
+              alt: 'Guidance',
+              className: 'neo-input-icon'
+            }),
+            React.createElement('input', {
+              key: 'guidance-input',
+              type: 'number',
+              min: '0',
+              max: '99',
+              value: formData.numbers.guidanceNumber,
+              onChange: (e) => setFormData({
+                ...formData,
+                numbers: {
+                  ...formData.numbers,
+                  guidanceNumber: e.target.value
+                }
               }),
-              React.createElement('input', {
-                key: 'guidance-input',
-                type: 'number',
-                min: '0',
-                max: '99',
-                value: formData.numbers.guidanceNumber,
-                onChange: (e) => setFormData({
-                  ...formData,
-                  numbers: {
-                    ...formData.numbers,
-                    guidanceNumber: e.target.value
-                  }
-                }),
-                placeholder: 'Your Guidance Number (0-99)',
-                className: 'input'
-              })
-            ])
+              placeholder: 'Your Guidance Number (0-99)',
+              className: 'neo-input'
+            })
           ])
-        ]),
-    
-        React.createElement('div', {
-          key: 'button-container',
-          className: 'button-container'
-        }, [
-          React.createElement('button', {
-            key: 'next-button',
-            className: 'cosmic-glassy-button2',
-            onClick: () => setCurrentStep(3),
-            disabled: !formData.numbers.favoriteNumber || 
-                     !formData.numbers.luckyNumber || 
-                     !formData.numbers.guidanceNumber
-          }, 'Next Step ✨'),
-          
-          React.createElement('button', {
-            key: 'back-button',
-            className: 'text-button-cosmic',
-            onClick: () => setCurrentStep(1)
-          }, 'Go Back')
         ])
+      ]),
+  
+      React.createElement('div', {
+        key: 'button-container',
+        className: 'neo-button-container'
+      }, [
+        React.createElement('button', {
+          key: 'next-button',
+          className: 'cosmic-glassy-button2',
+          onClick: () => setCurrentStep(3),
+          disabled: !formData.numbers.favoriteNumber || 
+                   !formData.numbers.luckyNumber || 
+                   !formData.numbers.guidanceNumber
+        }, 'Next Step ✨'),
+        
+        React.createElement('button', {
+          key: 'back-button',
+          className: 'neo-text-button',
+          onClick: () => setCurrentStep(1)
+        }, 'Go Back')
+      ])
     ]);
 
   const renderStep3 = () => 
+    React.createElement('div', {
+      className: 'neo-registration-step'
+    }, [
+      React.createElement('h1', {
+        key: 'title',
+        className: 'neo-title neo-gradient-text'
+      }, 'Choose Your Cosmic Focus'),
+  
+      React.createElement(InterestsPicker, {
+        key: 'interests-picker',
+        selectedInterests: formData.interests,
+        onInterestsChange: (interests) => setFormData({ ...formData, interests })
+      }),
+  
       React.createElement('div', {
-        className: 'registration-step'
+        key: 'plans-container',
+        className: 'neo-input-container'
       }, [
-        React.createElement('h1', {
-          key: 'title',
-          className: 'title cosmic-gradient cosmic-text'
-        }, 'Choose Your Cosmic Focus'),
-    
-        React.createElement(InterestsPicker, {
-          key: 'interests-picker',
-          selectedInterests: formData.interests,
-          onInterestsChange: (interests) => setFormData({ ...formData, interests })
+        React.createElement('textarea', {
+          key: 'plans-input',
+          value: formData.futurePlans,
+          onChange: (e) => setFormData({ ...formData, futurePlans: e.target.value }),
+          placeholder: 'What are your dreams and aspirations for the future? (minimum 25 characters)',
+          className: 'neo-textarea',
+          rows: 4,
+          minLength: 25
         }),
-    
         React.createElement('div', {
-          key: 'plans-container',
-          className: 'future-plans-container'
-        }, [
-          React.createElement('textarea', {
-            key: 'plans-input',
-            value: formData.futurePlans,
-            onChange: (e) => setFormData({ ...formData, futurePlans: e.target.value }),
-            placeholder: 'What are your dreams and aspirations for the future? (minimum 25 characters)',
-            className: 'textarea-input',
-            rows: 4,
-            minLength: 25
-          }),
-          React.createElement('div', {
-            key: 'char-count',
-            className: 'character-count'
-          }, `${formData.futurePlans.length}/25 characters`)
-        ]),
-    
-        React.createElement('div', {
-          key: 'button-container',
-          className: 'button-container'
-        }, [
-          React.createElement('button', {
-            key: 'submit-button',
-            className: 'cosmic-glassy-button1',
-            onClick: handleSubmit,
-            disabled: isSubmitting || 
-                     formData.interests.length === 0 || 
-                     formData.futurePlans.length < 25
-          }, isSubmitting ? 'Connecting to the Universe...' : 'Complete Registration ✨'),
-          
-          React.createElement('button', {
-            key: 'back-button',
-            className: 'text-button-cosmic',
-            onClick: () => setCurrentStep(2)
-          }, 'Go Back')
-        ])
+          key: 'char-count',
+          className: 'neo-character-count'
+        }, `${formData.futurePlans.length}/25 characters`)
+      ]),
+  
+      React.createElement('div', {
+        key: 'button-container',
+        className: 'neo-button-container'
+      }, [
+        React.createElement('button', {
+          key: 'submit-button',
+          className: 'cosmic-glassy-button1',
+          onClick: handleSubmit,
+          disabled: isSubmitting || 
+                   formData.interests.length === 0 || 
+                   formData.futurePlans.length < 25
+        }, isSubmitting ? 'Connecting to the Universe...' : 'Complete Registration ✨'),
+        
+        React.createElement('button', {
+          key: 'back-button',
+          className: 'neo-text-button',
+          onClick: () => setCurrentStep(2)
+        }, 'Go Back')
+      ])
     ]);
 
-
   return React.createElement('div', {
-    className: 'nfc-registration-container'
+    className: 'neo-container'
   }, [
     React.createElement('div', {
       key: 'step-indicator',
-      className: 'step-indicator'
+      className: 'neo-step-indicator'
     }, [
       React.createElement('div', {
         key: 'step1',
-        className: `step ${currentStep >= 1 ? 'active' : ''}`
+        className: `neo-step ${currentStep >= 1 ? 'active' : ''}`
       }, '1'),
       React.createElement('div', {
         key: 'step2',
-        className: `step ${currentStep >= 2 ? 'active' : ''}`
+        className: `neo-step ${currentStep >= 2 ? 'active' : ''}`
       }, '2'),
       React.createElement('div', {
         key: 'step3',
-        className: `step ${currentStep >= 3 ? 'active' : ''}`
+        className: `neo-step ${currentStep >= 3 ? 'active' : ''}`
       }, '3')
     ]),
   
     // Error display
     (error || formError) && React.createElement('div', {
       key: 'error-container',
-      className: 'error-container fade-in'
+      className: 'neo-error-container neo-fade-in'
     }, 
       React.createElement('div', {
-        className: 'error-message cosmic-gradient'
+        className: 'neo-error-message'
       }, [
         React.createElement('p', { key: 'error-text' }, error || formError),
         ((error && error.includes('already registered')) || 
          (formError && formError.includes('already registered'))) &&
           React.createElement('button', {
             key: 'error-button',
-            className: 'cosmic-glassy-button2',
+            className: 'neo-button neo-button--secondary',
             onClick: () => {
               setError(null);
               setFormError(null);
@@ -448,7 +452,7 @@ const NFCUserRegistration = ({ onComplete, onError, posterCode: initialPosterCod
     React.createElement('form', {
       key: 'registration-form',
       onSubmit: (e) => e.preventDefault(),
-      className: 'registration-form'
+      className: 'neo-form'
     }, [
       currentStep === 1 ? renderStep1() : null,
       currentStep === 2 ? renderStep2() : null,

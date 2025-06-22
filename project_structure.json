@@ -1,0 +1,1461 @@
+{
+  "CosmicArcana": {
+    "type": "directory",
+    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana",
+    "contents": {
+      ".babelrc": {
+        "type": "file",
+        "size": 209,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\.babelrc"
+      },
+      ".env": {
+        "type": "file",
+        "size": 427,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\.env"
+      },
+      ".firebaserc": {
+        "type": "file",
+        "size": 54,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\.firebaserc"
+      },
+      ".gcloudignore": {
+        "type": "file",
+        "size": 326,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\.gcloudignore"
+      },
+      ".gitignore": {
+        "type": "file",
+        "size": 505,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\.gitignore"
+      },
+      "app.py": {
+        "type": "file",
+        "size": 42149,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\app.py"
+      },
+      "app.yaml": {
+        "type": "file",
+        "size": 433,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\app.yaml"
+      },
+      "app.yaml.template": {
+        "type": "file",
+        "size": 76,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\app.yaml.template"
+      },
+      "apphosting.yaml": {
+        "type": "file",
+        "size": 672,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\apphosting.yaml"
+      },
+      "assets": {
+        "type": "directory",
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\assets",
+        "contents": {
+          "instructions.txt": {
+            "type": "file",
+            "size": 245,
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\assets\\instructions.txt"
+          },
+          "map_project.py": {
+            "type": "file",
+            "size": 4150,
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\assets\\map_project.py"
+          }
+        }
+      },
+      "build": {
+        "type": "directory",
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\build",
+        "contents": {
+          "bdist.win-amd64": {
+            "type": "directory",
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\build\\bdist.win-amd64",
+            "contents": {}
+          }
+        }
+      },
+      "client_secret_1045313635820-a46ug9eiiquffm32p2vth3fhu12matm8.apps.googleusercontent.com.json": {
+        "type": "file",
+        "size": 359,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\client_secret_1045313635820-a46ug9eiiquffm32p2vth3fhu12matm8.apps.googleusercontent.com.json"
+      },
+      "cloudbuild.yaml": {
+        "type": "file",
+        "size": 1094,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\cloudbuild.yaml"
+      },
+      "data": {
+        "type": "directory",
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\data",
+        "contents": {
+          "promo_codes.json": {
+            "type": "file",
+            "size": 2,
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\data\\promo_codes.json"
+          }
+        }
+      },
+      "Dockerfile": {
+        "type": "file",
+        "size": 728,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\Dockerfile"
+      },
+      "favicon.ico": {
+        "type": "file",
+        "size": 198580,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\favicon.ico"
+      },
+      "firebase.json": {
+        "type": "file",
+        "size": 3,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\firebase.json"
+      },
+      "logs": {
+        "type": "directory",
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\logs",
+        "contents": {}
+      },
+      "manifest.json": {
+        "type": "file",
+        "size": 488,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\manifest.json"
+      },
+      "map.py": {
+        "type": "file",
+        "size": 2627,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\map.py"
+      },
+      "neoarcana-frontend": {
+        "type": "directory",
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\neoarcana-frontend",
+        "contents": {
+          ".gitignore": {
+            "type": "file",
+            "size": 253,
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\neoarcana-frontend\\.gitignore"
+          },
+          "eslint.config.js": {
+            "type": "file",
+            "size": 734,
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\neoarcana-frontend\\eslint.config.js"
+          },
+          "index.html": {
+            "type": "file",
+            "size": 366,
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\neoarcana-frontend\\index.html"
+          },
+          "package-lock.json": {
+            "type": "file",
+            "size": 128314,
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\neoarcana-frontend\\package-lock.json"
+          },
+          "package.json": {
+            "type": "file",
+            "size": 746,
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\neoarcana-frontend\\package.json"
+          },
+          "public": {
+            "type": "directory",
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\neoarcana-frontend\\public",
+            "contents": {
+              "vite.svg": {
+                "type": "file",
+                "size": 1497,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\neoarcana-frontend\\public\\vite.svg"
+              }
+            }
+          },
+          "README.md": {
+            "type": "file",
+            "size": 1942,
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\neoarcana-frontend\\README.md"
+          },
+          "src": {
+            "type": "directory",
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\neoarcana-frontend\\src",
+            "contents": {
+              "App.css": {
+                "type": "file",
+                "size": 606,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\neoarcana-frontend\\src\\App.css"
+              },
+              "App.tsx": {
+                "type": "file",
+                "size": 903,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\neoarcana-frontend\\src\\App.tsx"
+              },
+              "assets": {
+                "type": "directory",
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\neoarcana-frontend\\src\\assets",
+                "contents": {
+                  "react.svg": {
+                    "type": "file",
+                    "size": 4126,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\neoarcana-frontend\\src\\assets\\react.svg"
+                  }
+                }
+              },
+              "index.css": {
+                "type": "file",
+                "size": 1154,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\neoarcana-frontend\\src\\index.css"
+              },
+              "main.tsx": {
+                "type": "file",
+                "size": 230,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\neoarcana-frontend\\src\\main.tsx"
+              },
+              "vite-env.d.ts": {
+                "type": "file",
+                "size": 38,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\neoarcana-frontend\\src\\vite-env.d.ts"
+              }
+            }
+          },
+          "tsconfig.app.json": {
+            "type": "file",
+            "size": 702,
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\neoarcana-frontend\\tsconfig.app.json"
+          },
+          "tsconfig.json": {
+            "type": "file",
+            "size": 119,
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\neoarcana-frontend\\tsconfig.json"
+          },
+          "tsconfig.node.json": {
+            "type": "file",
+            "size": 630,
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\neoarcana-frontend\\tsconfig.node.json"
+          },
+          "vite.config.ts": {
+            "type": "file",
+            "size": 161,
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\neoarcana-frontend\\vite.config.ts"
+          }
+        }
+      },
+      "package-lock.json": {
+        "type": "file",
+        "size": 127889,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\package-lock.json"
+      },
+      "package.json": {
+        "type": "file",
+        "size": 500,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\package.json"
+      },
+      "project_structure.json": {
+        "type": "file",
+        "size": 61384,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\project_structure.json"
+      },
+      "requirements.in": {
+        "type": "file",
+        "size": 89,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\requirements.in"
+      },
+      "requirements.txt": {
+        "type": "file",
+        "size": 312,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\requirements.txt"
+      },
+      "setup.py": {
+        "type": "file",
+        "size": 266,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\setup.py"
+      },
+      "static": {
+        "type": "directory",
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static",
+        "contents": {
+          "components": {
+            "type": "directory",
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\components",
+            "contents": {
+              "shared": {
+                "type": "directory",
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\components\\shared",
+                "contents": {
+                  "languageUtils.js": {
+                    "type": "file",
+                    "size": 0,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\components\\shared\\languageUtils.js"
+                  }
+                }
+              }
+            }
+          },
+          "css": {
+            "type": "directory",
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css",
+            "contents": {
+              "CosmicButton.css": {
+                "type": "file",
+                "size": 3243,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\CosmicButton.css"
+              },
+              "galaxy_bg.css": {
+                "type": "file",
+                "size": 2095,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\galaxy_bg.css"
+              },
+              "Loader.css": {
+                "type": "file",
+                "size": 8680,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\Loader.css"
+              },
+              "mail.css": {
+                "type": "file",
+                "size": 402,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\mail.css"
+              },
+              "modules": {
+                "type": "directory",
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\modules",
+                "contents": {
+                  "cgb.css": {
+                    "type": "file",
+                    "size": 5403,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\modules\\cgb.css"
+                  },
+                  "chatInterface.css": {
+                    "type": "file",
+                    "size": 15180,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\modules\\chatInterface.css"
+                  },
+                  "nfc_3cards.css": {
+                    "type": "file",
+                    "size": 6789,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\modules\\nfc_3cards.css"
+                  },
+                  "nfc_reading.css": {
+                    "type": "file",
+                    "size": 10955,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\modules\\nfc_reading.css"
+                  },
+                  "nfc_registration.css": {
+                    "type": "file",
+                    "size": 34778,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\modules\\nfc_registration.css"
+                  },
+                  "shared": {
+                    "type": "directory",
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\modules\\shared",
+                    "contents": {
+                      "form-elements.css": {
+                        "type": "file",
+                        "size": 0,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\modules\\shared\\form-elements.css"
+                      }
+                    }
+                  },
+                  "step0.css": {
+                    "type": "file",
+                    "size": 5413,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\modules\\step0.css"
+                  },
+                  "step1-trial.css": {
+                    "type": "file",
+                    "size": 4729,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\modules\\step1-trial.css"
+                  },
+                  "trial-step2.css": {
+                    "type": "file",
+                    "size": 4962,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\modules\\trial-step2.css"
+                  }
+                }
+              },
+              "README.md": {
+                "type": "file",
+                "size": 5586,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\README.md"
+              }
+            }
+          },
+          "data": {
+            "type": "directory",
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\data",
+            "contents": {
+              "promo_codes.json": {
+                "type": "file",
+                "size": 317,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\data\\promo_codes.json"
+              }
+            }
+          },
+          "icons": {
+            "type": "directory",
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons",
+            "contents": {
+              "affirmation.svg": {
+                "type": "file",
+                "size": 2388,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\affirmation.svg"
+              },
+              "back.svg": {
+                "type": "file",
+                "size": 1410,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\back.svg"
+              },
+              "calendar.svg": {
+                "type": "file",
+                "size": 1605,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\calendar.svg"
+              },
+              "chat.svg": {
+                "type": "file",
+                "size": 15415,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\chat.svg"
+              },
+              "check.svg": {
+                "type": "file",
+                "size": 332,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\check.svg"
+              },
+              "chevron.svg": {
+                "type": "file",
+                "size": 1899,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\chevron.svg"
+              },
+              "close.svg": {
+                "type": "file",
+                "size": 1526,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\close.svg"
+              },
+              "clover.svg": {
+                "type": "file",
+                "size": 4796,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\clover.svg"
+              },
+              "color.svg": {
+                "type": "file",
+                "size": 7862,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\color.svg"
+              },
+              "compass.svg": {
+                "type": "file",
+                "size": 447,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\compass.svg"
+              },
+              "date.svg": {
+                "type": "file",
+                "size": 1623,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\date.svg"
+              },
+              "email.svg": {
+                "type": "file",
+                "size": 1853,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\email.svg"
+              },
+              "eye.svg": {
+                "type": "file",
+                "size": 15415,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\eye.svg"
+              },
+              "future.svg": {
+                "type": "file",
+                "size": 2219,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\future.svg"
+              },
+              "gender.svg": {
+                "type": "file",
+                "size": 2170,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\gender.svg"
+              },
+              "icon-192x192.png": {
+                "type": "file",
+                "size": 37434,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\icon-192x192.png"
+              },
+              "icon-512x512.png": {
+                "type": "file",
+                "size": 507906,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\icon-512x512.png"
+              },
+              "instagram.svg": {
+                "type": "file",
+                "size": 1027,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\instagram.svg"
+              },
+              "interests.svg": {
+                "type": "file",
+                "size": 2329,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\interests.svg"
+              },
+              "key.svg": {
+                "type": "file",
+                "size": 3482,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\key.svg"
+              },
+              "language.svg": {
+                "type": "file",
+                "size": 2828,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\language.svg"
+              },
+              "location.svg": {
+                "type": "file",
+                "size": 2999,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\location.svg"
+              },
+              "lucky.svg": {
+                "type": "file",
+                "size": 4796,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\lucky.svg"
+              },
+              "mail.svg": {
+                "type": "file",
+                "size": 1853,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\mail.svg"
+              },
+              "mute.svg": {
+                "type": "file",
+                "size": 2352,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\mute.svg"
+              },
+              "name.svg": {
+                "type": "file",
+                "size": 759,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\name.svg"
+              },
+              "numerology.svg": {
+                "type": "file",
+                "size": 1718,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\numerology.svg"
+              },
+              "restart.svg": {
+                "type": "file",
+                "size": 1716,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\restart.svg"
+              },
+              "send.svg": {
+                "type": "file",
+                "size": 1270,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\send.svg"
+              },
+              "share.svg": {
+                "type": "file",
+                "size": 528,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\share.svg"
+              },
+              "star.svg": {
+                "type": "file",
+                "size": 2935,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\star.svg"
+              },
+              "tarot.svg": {
+                "type": "file",
+                "size": 2496,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\tarot.svg"
+              },
+              "ticket.svg": {
+                "type": "file",
+                "size": 614,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\ticket.svg"
+              },
+              "twitter.svg": {
+                "type": "file",
+                "size": 413,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\twitter.svg"
+              },
+              "unmute.svg": {
+                "type": "file",
+                "size": 2310,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\unmute.svg"
+              },
+              "user.svg": {
+                "type": "file",
+                "size": 695,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\user.svg"
+              }
+            }
+          },
+          "images": {
+            "type": "directory",
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images",
+            "contents": {
+              "bg_main.jpg": {
+                "type": "file",
+                "size": 6280508,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\bg_main.jpg"
+              },
+              "card-back.jpg": {
+                "type": "file",
+                "size": 335044,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\card-back.jpg"
+              },
+              "cards": {
+                "type": "directory",
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards",
+                "contents": {
+                  "card-back.jpg": {
+                    "type": "file",
+                    "size": 335044,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\card-back.jpg"
+                  },
+                  "chariot.jpg": {
+                    "type": "file",
+                    "size": 550177,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\chariot.jpg"
+                  },
+                  "death.jpg": {
+                    "type": "file",
+                    "size": 560150,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\death.jpg"
+                  },
+                  "devil.jpg": {
+                    "type": "file",
+                    "size": 513517,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\devil.jpg"
+                  },
+                  "emperor.jpg": {
+                    "type": "file",
+                    "size": 552497,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\emperor.jpg"
+                  },
+                  "empress.jpg": {
+                    "type": "file",
+                    "size": 562853,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\empress.jpg"
+                  },
+                  "fallback-card.jpg": {
+                    "type": "file",
+                    "size": 335044,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\fallback-card.jpg"
+                  },
+                  "fool.jpg": {
+                    "type": "file",
+                    "size": 1096064,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\fool.jpg"
+                  },
+                  "hanged_man.jpg": {
+                    "type": "file",
+                    "size": 460595,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\hanged_man.jpg"
+                  },
+                  "hermit.jpg": {
+                    "type": "file",
+                    "size": 532040,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\hermit.jpg"
+                  },
+                  "hierophant.jpg": {
+                    "type": "file",
+                    "size": 761012,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\hierophant.jpg"
+                  },
+                  "high_priestess.jpg": {
+                    "type": "file",
+                    "size": 693062,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\high_priestess.jpg"
+                  },
+                  "judgement.jpg": {
+                    "type": "file",
+                    "size": 607196,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\judgement.jpg"
+                  },
+                  "justice.jpg": {
+                    "type": "file",
+                    "size": 501745,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\justice.jpg"
+                  },
+                  "lovers.jpg": {
+                    "type": "file",
+                    "size": 612632,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\lovers.jpg"
+                  },
+                  "magician.jpg": {
+                    "type": "file",
+                    "size": 550039,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\magician.jpg"
+                  },
+                  "moon.jpg": {
+                    "type": "file",
+                    "size": 426936,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\moon.jpg"
+                  },
+                  "star.jpg": {
+                    "type": "file",
+                    "size": 568703,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\star.jpg"
+                  },
+                  "strength.jpg": {
+                    "type": "file",
+                    "size": 607854,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\strength.jpg"
+                  },
+                  "sun.jpg": {
+                    "type": "file",
+                    "size": 694157,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\sun.jpg"
+                  },
+                  "temperance.jpg": {
+                    "type": "file",
+                    "size": 597458,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\temperance.jpg"
+                  },
+                  "tower.jpg": {
+                    "type": "file",
+                    "size": 502266,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\tower.jpg"
+                  },
+                  "wheel_of_fortune.jpg": {
+                    "type": "file",
+                    "size": 762549,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\wheel_of_fortune.jpg"
+                  },
+                  "world.jpg": {
+                    "type": "file",
+                    "size": 633321,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\cards\\world.jpg"
+                  }
+                }
+              },
+              "chariot.jpg": {
+                "type": "file",
+                "size": 550177,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\chariot.jpg"
+              },
+              "death.jpg": {
+                "type": "file",
+                "size": 560150,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\death.jpg"
+              },
+              "devil.jpg": {
+                "type": "file",
+                "size": 513517,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\devil.jpg"
+              },
+              "emperor.jpg": {
+                "type": "file",
+                "size": 552497,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\emperor.jpg"
+              },
+              "empress.jpg": {
+                "type": "file",
+                "size": 562853,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\empress.jpg"
+              },
+              "fool.jpg": {
+                "type": "file",
+                "size": 1088844,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\fool.jpg"
+              },
+              "hanged_man.jpg": {
+                "type": "file",
+                "size": 460595,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\hanged_man.jpg"
+              },
+              "hermit.jpg": {
+                "type": "file",
+                "size": 532040,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\hermit.jpg"
+              },
+              "hierophant.jpg": {
+                "type": "file",
+                "size": 761012,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\hierophant.jpg"
+              },
+              "high_priestess.jpg": {
+                "type": "file",
+                "size": 693062,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\high_priestess.jpg"
+              },
+              "judgment.jpg": {
+                "type": "file",
+                "size": 607196,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\judgment.jpg"
+              },
+              "justice.jpg": {
+                "type": "file",
+                "size": 501745,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\justice.jpg"
+              },
+              "logo.png": {
+                "type": "file",
+                "size": 259097,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\logo.png"
+              },
+              "lovers.jpg": {
+                "type": "file",
+                "size": 612632,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\lovers.jpg"
+              },
+              "magician.jpg": {
+                "type": "file",
+                "size": 1041755,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\magician.jpg"
+              },
+              "moon.jpg": {
+                "type": "file",
+                "size": 426936,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\moon.jpg"
+              },
+              "star.jpg": {
+                "type": "file",
+                "size": 568703,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\star.jpg"
+              },
+              "strength.jpg": {
+                "type": "file",
+                "size": 607854,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\strength.jpg"
+              },
+              "sun.jpg": {
+                "type": "file",
+                "size": 694157,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\sun.jpg"
+              },
+              "temperance.jpg": {
+                "type": "file",
+                "size": 597458,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\temperance.jpg"
+              },
+              "texture1.png": {
+                "type": "file",
+                "size": 24048,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\texture1.png"
+              },
+              "texture2.png": {
+                "type": "file",
+                "size": 25346,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\texture2.png"
+              },
+              "texture4.png": {
+                "type": "file",
+                "size": 28563,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\texture4.png"
+              },
+              "texturenucleus.jpg": {
+                "type": "file",
+                "size": 892707,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\texturenucleus.jpg"
+              },
+              "textureStar.png": {
+                "type": "file",
+                "size": 74203,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\textureStar.png"
+              },
+              "tower.jpg": {
+                "type": "file",
+                "size": 502266,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\tower.jpg"
+              },
+              "wheel_of_fortune.jpg": {
+                "type": "file",
+                "size": 762549,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\wheel_of_fortune.jpg"
+              },
+              "world.jpg": {
+                "type": "file",
+                "size": 633321,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\images\\world.jpg"
+              }
+            }
+          },
+          "manifest.json": {
+            "type": "file",
+            "size": 446,
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\manifest.json"
+          },
+          "service-worker.js": {
+            "type": "file",
+            "size": 3139,
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\service-worker.js"
+          },
+          "sound": {
+            "type": "directory",
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\sound",
+            "contents": {
+              "cosmicnoise.mp3": {
+                "type": "file",
+                "size": 802728,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\sound\\cosmicnoise.mp3"
+              }
+            }
+          },
+          "src": {
+            "type": "directory",
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src",
+            "contents": {
+              "api": {
+                "type": "directory",
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api",
+                "contents": {
+                  "adminPanel.py": {
+                    "type": "file",
+                    "size": 6786,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\adminPanel.py"
+                  },
+                  "admin_routes.py": {
+                    "type": "file",
+                    "size": 1638,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\admin_routes.py"
+                  },
+                  "claude_tarot_api.py": {
+                    "type": "file",
+                    "size": 31733,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\claude_tarot_api.py"
+                  },
+                  "cosmic_utils.py": {
+                    "type": "file",
+                    "size": 3357,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\cosmic_utils.py"
+                  },
+                  "firebase_init.py": {
+                    "type": "file",
+                    "size": 1663,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\firebase_init.py"
+                  },
+                  "firestore_signup.py": {
+                    "type": "file",
+                    "size": 4575,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\firestore_signup.py"
+                  },
+                  "get_new_card.py": {
+                    "type": "file",
+                    "size": 783,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\get_new_card.py"
+                  },
+                  "get_three_cards.py": {
+                    "type": "file",
+                    "size": 1903,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\get_three_cards.py"
+                  },
+                  "language_config.py": {
+                    "type": "file",
+                    "size": 3195,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\language_config.py"
+                  },
+                  "logging_config.py": {
+                    "type": "file",
+                    "size": 2141,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\logging_config.py"
+                  },
+                  "manage_posters.py": {
+                    "type": "file",
+                    "size": 1541,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\manage_posters.py"
+                  },
+                  "monitoring.py": {
+                    "type": "file",
+                    "size": 1707,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\monitoring.py"
+                  },
+                  "nfc_cache.py": {
+                    "type": "file",
+                    "size": 3622,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\nfc_cache.py"
+                  },
+                  "nfc_firestore.py": {
+                    "type": "file",
+                    "size": 13242,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\nfc_firestore.py"
+                  },
+                  "nfc_monitoring.py": {
+                    "type": "file",
+                    "size": 5859,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\nfc_monitoring.py"
+                  },
+                  "nfc_rate_limiter.py": {
+                    "type": "file",
+                    "size": 6537,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\nfc_rate_limiter.py"
+                  },
+                  "nfc_routes.py": {
+                    "type": "file",
+                    "size": 26757,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\nfc_routes.py"
+                  },
+                  "nfc_validation.py": {
+                    "type": "file",
+                    "size": 2286,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\nfc_validation.py"
+                  },
+                  "poster_manager.py": {
+                    "type": "file",
+                    "size": 4199,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\poster_manager.py"
+                  },
+                  "poster_routes.py": {
+                    "type": "file",
+                    "size": 2811,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\poster_routes.py"
+                  },
+                  "promo_codes.py": {
+                    "type": "file",
+                    "size": 4153,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\promo_codes.py"
+                  },
+                  "reading_cache.py": {
+                    "type": "file",
+                    "size": 3622,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\reading_cache.py"
+                  },
+                  "simple_admin_handler.py": {
+                    "type": "file",
+                    "size": 8874,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\simple_admin_handler.py"
+                  },
+                  "tarot_cards.py": {
+                    "type": "file",
+                    "size": 7741,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\tarot_cards.py"
+                  },
+                  "three_card_reading.py": {
+                    "type": "file",
+                    "size": 12711,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\three_card_reading.py"
+                  },
+                  "__init__.py": {
+                    "type": "file",
+                    "size": 404,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\__init__.py"
+                  },
+                  "__pycache__": {
+                    "type": "directory",
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\__pycache__",
+                    "contents": {
+                      "admin_routes.cpython-312.pyc": {
+                        "type": "file",
+                        "size": 3475,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\__pycache__\\admin_routes.cpython-312.pyc"
+                      },
+                      "claude_tarot_api.cpython-312.pyc": {
+                        "type": "file",
+                        "size": 26593,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\__pycache__\\claude_tarot_api.cpython-312.pyc"
+                      },
+                      "cosmic_utils.cpython-312.pyc": {
+                        "type": "file",
+                        "size": 3524,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\__pycache__\\cosmic_utils.cpython-312.pyc"
+                      },
+                      "firebase_init.cpython-312.pyc": {
+                        "type": "file",
+                        "size": 2205,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\__pycache__\\firebase_init.cpython-312.pyc"
+                      },
+                      "firestore_signup.cpython-312.pyc": {
+                        "type": "file",
+                        "size": 6092,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\__pycache__\\firestore_signup.cpython-312.pyc"
+                      },
+                      "language_config.cpython-312.pyc": {
+                        "type": "file",
+                        "size": 2657,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\__pycache__\\language_config.cpython-312.pyc"
+                      },
+                      "nfc_cache.cpython-312.pyc": {
+                        "type": "file",
+                        "size": 4730,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\__pycache__\\nfc_cache.cpython-312.pyc"
+                      },
+                      "nfc_firestore.cpython-312.pyc": {
+                        "type": "file",
+                        "size": 14840,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\__pycache__\\nfc_firestore.cpython-312.pyc"
+                      },
+                      "nfc_monitoring.cpython-312.pyc": {
+                        "type": "file",
+                        "size": 6633,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\__pycache__\\nfc_monitoring.cpython-312.pyc"
+                      },
+                      "nfc_rate_limiter.cpython-312.pyc": {
+                        "type": "file",
+                        "size": 8809,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\__pycache__\\nfc_rate_limiter.cpython-312.pyc"
+                      },
+                      "nfc_routes.cpython-312.pyc": {
+                        "type": "file",
+                        "size": 29809,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\__pycache__\\nfc_routes.cpython-312.pyc"
+                      },
+                      "nfc_validation.cpython-312.pyc": {
+                        "type": "file",
+                        "size": 2780,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\__pycache__\\nfc_validation.cpython-312.pyc"
+                      },
+                      "promo_codes.cpython-312.pyc": {
+                        "type": "file",
+                        "size": 6624,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\__pycache__\\promo_codes.cpython-312.pyc"
+                      },
+                      "simple_admin_handler.cpython-312.pyc": {
+                        "type": "file",
+                        "size": 8176,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\__pycache__\\simple_admin_handler.cpython-312.pyc"
+                      },
+                      "tarot_cards.cpython-312.pyc": {
+                        "type": "file",
+                        "size": 7336,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\__pycache__\\tarot_cards.cpython-312.pyc"
+                      },
+                      "__init__.cpython-312.pyc": {
+                        "type": "file",
+                        "size": 477,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\api\\__pycache__\\__init__.cpython-312.pyc"
+                      }
+                    }
+                  }
+                }
+              },
+              "components": {
+                "type": "directory",
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components",
+                "contents": {
+                  "adminpanelloader.js": {
+                    "type": "file",
+                    "size": 1697,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\adminpanelloader.js"
+                  },
+                  "AudioButton.js": {
+                    "type": "file",
+                    "size": 397,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\AudioButton.js"
+                  },
+                  "ChatInterface.js": {
+                    "type": "file",
+                    "size": 8696,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\ChatInterface.js"
+                  },
+                  "CosmicButton.js": {
+                    "type": "file",
+                    "size": 1935,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\CosmicButton.js"
+                  },
+                  "DevPanel.js": {
+                    "type": "file",
+                    "size": 16461,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\DevPanel.js"
+                  },
+                  "ErrorBoundary.js": {
+                    "type": "file",
+                    "size": 494,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\ErrorBoundary.js"
+                  },
+                  "InteractiveCardViewer.js": {
+                    "type": "file",
+                    "size": 1607,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\InteractiveCardViewer.js"
+                  },
+                  "languageConfig.js": {
+                    "type": "file",
+                    "size": 2009,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\languageConfig.js"
+                  },
+                  "Loader.js": {
+                    "type": "file",
+                    "size": 5451,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\Loader.js"
+                  },
+                  "NFCAdminPanel.js": {
+                    "type": "file",
+                    "size": 30469,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\NFCAdminPanel.js"
+                  },
+                  "NFCFlow": {
+                    "type": "directory",
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\NFCFlow",
+                    "contents": {
+                      "ColorPicker.js": {
+                        "type": "file",
+                        "size": 6652,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\NFCFlow\\ColorPicker.js"
+                      },
+                      "cosmic-load.js": {
+                        "type": "file",
+                        "size": 994,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\NFCFlow\\cosmic-load.js"
+                      },
+                      "DateInput.js": {
+                        "type": "file",
+                        "size": 3957,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\NFCFlow\\DateInput.js"
+                      },
+                      "GenderSelect.js": {
+                        "type": "file",
+                        "size": 4396,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\NFCFlow\\GenderSelect.js"
+                      },
+                      "InterestsPicker.js": {
+                        "type": "file",
+                        "size": 8721,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\NFCFlow\\InterestsPicker.js"
+                      },
+                      "LanguageSelect.js": {
+                        "type": "file",
+                        "size": 4029,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\NFCFlow\\LanguageSelect.js"
+                      },
+                      "nfcDataHandler.js": {
+                        "type": "file",
+                        "size": 6567,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\NFCFlow\\nfcDataHandler.js"
+                      },
+                      "NFCLoader.js": {
+                        "type": "file",
+                        "size": 796,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\NFCFlow\\NFCLoader.js"
+                      },
+                      "NFCStep2.js": {
+                        "type": "file",
+                        "size": 28604,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\NFCFlow\\NFCStep2.js"
+                      },
+                      "NFCThreeCardReading.js": {
+                        "type": "file",
+                        "size": 13000,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\NFCFlow\\NFCThreeCardReading.js"
+                      },
+                      "NFCUserRegistration.js": {
+                        "type": "file",
+                        "size": 15217,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\NFCFlow\\NFCUserRegistration.js"
+                      },
+                      "RegistrationFlow.js": {
+                        "type": "file",
+                        "size": 2810,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\NFCFlow\\RegistrationFlow.js"
+                      },
+                      "WelcomeScreen.js": {
+                        "type": "file",
+                        "size": 2083,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\NFCFlow\\WelcomeScreen.js"
+                      }
+                    }
+                  },
+                  "NFCWindow.js": {
+                    "type": "file",
+                    "size": 1403,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\NFCWindow.js"
+                  },
+                  "OptimizedCardImage.js": {
+                    "type": "file",
+                    "size": 508,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\OptimizedCardImage.js"
+                  },
+                  "premium": {
+                    "type": "directory",
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\premium",
+                    "contents": {
+                      "PremiumStep2.js": {
+                        "type": "file",
+                        "size": 4056,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\premium\\PremiumStep2.js"
+                      },
+                      "PremiumStep3.js": {
+                        "type": "file",
+                        "size": 5281,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\premium\\PremiumStep3.js"
+                      }
+                    }
+                  },
+                  "PremiumCodeManager.js": {
+                    "type": "file",
+                    "size": 2428,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\PremiumCodeManager.js"
+                  },
+                  "PremiumFeatures.js": {
+                    "type": "file",
+                    "size": 1983,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\PremiumFeatures.js"
+                  },
+                  "PremiumOverlay.js": {
+                    "type": "file",
+                    "size": 3794,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\PremiumOverlay.js"
+                  },
+                  "PremiumThreeCardReading.js": {
+                    "type": "file",
+                    "size": 8097,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\PremiumThreeCardReading.js"
+                  },
+                  "ReadingHistory.js": {
+                    "type": "file",
+                    "size": 3876,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\ReadingHistory.js"
+                  },
+                  "shared": {
+                    "type": "directory",
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\shared",
+                    "contents": {}
+                  },
+                  "step0.js": {
+                    "type": "file",
+                    "size": 2243,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\step0.js"
+                  },
+                  "step1Premium.js": {
+                    "type": "file",
+                    "size": 4182,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\step1Premium.js"
+                  },
+                  "step1Trial.js": {
+                    "type": "file",
+                    "size": 3914,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\step1Trial.js"
+                  },
+                  "step4.js": {
+                    "type": "file",
+                    "size": 1757,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\step4.js"
+                  },
+                  "step5.js": {
+                    "type": "file",
+                    "size": 2057,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\step5.js"
+                  },
+                  "threecardreading.js": {
+                    "type": "file",
+                    "size": 22021,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\threecardreading.js"
+                  },
+                  "threecardreveal.js": {
+                    "type": "file",
+                    "size": 3131,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\threecardreveal.js"
+                  },
+                  "trial": {
+                    "type": "directory",
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\trial",
+                    "contents": {
+                      "TrialStep2.js": {
+                        "type": "file",
+                        "size": 4688,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\trial\\TrialStep2.js"
+                      },
+                      "TrialStep3.js": {
+                        "type": "file",
+                        "size": 2422,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\trial\\TrialStep3.js"
+                      }
+                    }
+                  },
+                  "zodiacMessages.js": {
+                    "type": "file",
+                    "size": 5441,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\zodiacMessages.js"
+                  }
+                }
+              },
+              "galaxy_bg.js": {
+                "type": "file",
+                "size": 14156,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\galaxy_bg.js"
+              },
+              "TarotApp.css": {
+                "type": "file",
+                "size": 244111,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\TarotApp.css"
+              },
+              "TarotApp.js": {
+                "type": "file",
+                "size": 30651,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\TarotApp.js"
+              },
+              "utils": {
+                "type": "directory",
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\utils",
+                "contents": {
+                  "CardManager.js": {
+                    "type": "file",
+                    "size": 2632,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\utils\\CardManager.js"
+                  },
+                  "__pycache__": {
+                    "type": "directory",
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\utils\\__pycache__",
+                    "contents": {
+                      "moonPhase.cpython-312.pyc": {
+                        "type": "file",
+                        "size": 1710,
+                        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\utils\\__pycache__\\moonPhase.cpython-312.pyc"
+                      }
+                    }
+                  }
+                }
+              },
+              "__init__.py": {
+                "type": "file",
+                "size": 94,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\__init__.py"
+              },
+              "__pycache__": {
+                "type": "directory",
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\__pycache__",
+                "contents": {
+                  "__init__.cpython-312.pyc": {
+                    "type": "file",
+                    "size": 243,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\__pycache__\\__init__.cpython-312.pyc"
+                  }
+                }
+              }
+            }
+          },
+          "utils": {
+            "type": "directory",
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\utils",
+            "contents": {
+              "__pycache__": {
+                "type": "directory",
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\utils\\__pycache__",
+                "contents": {
+                  "cosmic_utils.cpython-312.pyc": {
+                    "type": "file",
+                    "size": 3522,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\utils\\__pycache__\\cosmic_utils.cpython-312.pyc"
+                  }
+                }
+              }
+            }
+          },
+          "__init__.py": {
+            "type": "file",
+            "size": 79,
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\__init__.py"
+          },
+          "__pycache__": {
+            "type": "directory",
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\__pycache__",
+            "contents": {
+              "__init__.cpython-312.pyc": {
+                "type": "file",
+                "size": 245,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\__pycache__\\__init__.cpython-312.pyc"
+              }
+            }
+          }
+        }
+      },
+      "tarot-433417-81a148e4ac53.json": {
+        "type": "file",
+        "size": 2344,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\tarot-433417-81a148e4ac53.json"
+      },
+      "templates": {
+        "type": "directory",
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\templates",
+        "contents": {
+          "react.html": {
+            "type": "file",
+            "size": 11259,
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\templates\\react.html"
+          }
+        }
+      },
+      "__pycache__": {
+        "type": "directory",
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\__pycache__",
+        "contents": {
+          "app.cpython-312.pyc": {
+            "type": "file",
+            "size": 40864,
+            "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\__pycache__\\app.cpython-312.pyc"
+          }
+        }
+      }
+    }
+  }
+}

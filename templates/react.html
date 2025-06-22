@@ -4,7 +4,7 @@
     <link rel="manifest" href="/manifest.json">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="theme-color" content="#A59AD1">
-    <link rel="apple-touch-icon" href="/static/icons/icon-192x192.png">v
+    <link rel="apple-touch-icon" href="/static/icons/icon-192x192.png">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta name="theme-color" content="#000000">
@@ -19,15 +19,18 @@
     <!-- CSS Files -->
     <link rel="stylesheet" href="{{ url_for('static', filename='css/Loader.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/galaxy_bg.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='src/TarotApp.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/CosmicButton.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/step0.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/step1-trial.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/trial-step2.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/nfc.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/nfc_reading.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/nfc_registration.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/cgb.css') }}"> 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/nfc_reading.css') }}"> 
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/nfc_3cards.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='src/TarotApp.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/shared/form-elements.css') }}">
-    
-    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/chatInterface.css') }}">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -53,16 +56,15 @@
     
     <!-- Shared Components -->
     <script type="text/babel" src="{{ url_for('static', filename='src/components/OptimizedCardImage.js') }}"></script>
-    <script type="text/babel" src="{{ url_for('static', filename='src/components/LanguageSelect.js') }}"></script>
-    <script type="text/babel" src="{{ url_for('static', filename='src/components/DevPanel.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/LanguageSelect.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/components/CosmicButton.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/components/ChatInterface.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/components/InteractiveCardViewer.js') }}"></script>
-    <script type="text/babel" src="{{ url_for('static', filename='src/components/InterestsPicker.js') }}"></script>
-    <script type="text/babel" src="{{ url_for('static', filename='src/components/DateInput.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/InterestsPicker.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/DateInput.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/components/zodiacMessages.js') }}"></script>
-    <script type="text/babel" src="{{ url_for('static', filename='src/components/GenderSelect.js') }}"></script>
-    <script type="text/babel" src="{{ url_for('static', filename='src/components/ColorPicker.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/GenderSelect.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/ColorPicker.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/components/AudioButton.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/components/Loader.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/components/languageConfig.js') }}"></script>
@@ -72,9 +74,11 @@
     <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/cosmic-load.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/WelcomeScreen.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/RegistrationFlow.js') }}"></script>
+    <script src="/static/src/components/NFCAdminPanel.js"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/NFCThreeCardReading.js') }}"></script>
+    <script src="/static/src/components/DevPanel.js"></script>
+    <script src="/static/src/components/adminpanelloader.js"></script>
 
-
-    
     <!-- Trial Components -->
     <script type="text/babel" src="{{ url_for('static', filename='src/components/trial/TrialStep2.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/components/trial/TrialStep3.js') }}"></script>
@@ -89,21 +93,85 @@
     <script type="text/babel" src="{{ url_for('static', filename='src/components/step1Premium.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/components/step4.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/components/step5.js') }}"></script>
-    <script src="/static/src/components/threecardreveal.js"></script>
-    <script src="/static/src/components/threecardreading.js"></script>
-    
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/threecardreveal.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/threecardreading.js') }}"></script>
+  
     <!-- Main App -->
-    <script src="{{ url_for('static', filename='src/shuffle_animation.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/TarotApp.js') }}"></script>
 
-    <script>
-        // Initialize the window.initialState if not already set
-        window.initialState = {{ initial_state | tojson | safe if initial_state else '{}' }};
-        console.log('Initial State:', window.initialState); // For debugging
-    </script>
-    
     <script type="text/babel">
         ReactDOM.render(React.createElement(window.TarotApp), document.getElementById('root'));
     </script>
+
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/service-worker.js').then(function(registration) {
+                    // Check for updates every hour
+                    setInterval(() => {
+                        registration.update();
+                    }, 1000 * 60 * 60);
+            
+                    // Check version when service worker becomes active
+                    registration.addEventListener('activate', () => {
+                        const messageChannel = new MessageChannel();
+                        
+                        messageChannel.port1.onmessage = (event) => {
+                            const newVersion = event.data.version;
+                            const currentVersion = localStorage.getItem('appVersion');
+                            
+                            if (newVersion !== currentVersion) {
+                                // Show cosmic-styled update notification
+                                const updateDiv = document.createElement('div');
+                                updateDiv.style.cssText = `
+                                    position: fixed;
+                                    bottom: 20px;
+                                    left: 50%;
+                                    transform: translateX(-50%);
+                                    background: var(--gradient-primary);
+                                    padding: 15px 25px;
+                                    border-radius: 12px;
+                                    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+                                    z-index: 9999;
+                                    display: flex;
+                                    align-items: center;
+                                    gap: 15px;
+                                    animation: slideUp 0.3s ease-out;
+                                `;
+                                
+                                updateDiv.innerHTML = `
+                                    <p style="margin: 0; color: white;">✨ New cosmic energies available!</p>
+                                    <button onclick="window.location.reload(true)" 
+                                        style="background: rgba(255,255,255,0.2); border: none; 
+                                        padding: 8px 15px; border-radius: 6px; color: white; cursor: pointer;">
+                                        Update Now
+                                    </button>
+                                `;
+                                
+                                document.body.appendChild(updateDiv);
+                                localStorage.setItem('appVersion', newVersion);
+                            }
+                        };
+            
+                        if (registration.active) {
+                            registration.active.postMessage('checkVersion', [messageChannel.port2]);
+                        }
+                    });
+                });
+            });
+        }
+    </script>
+    <style>
+        @keyframes slideUp {
+            from {
+                transform: translate(-50%, 100%);
+                opacity: 0;
+            }
+            to {
+                transform: translate(-50%, 0);
+                opacity: 1;
+            }
+        }
+    </style>
 </body>
 </html>

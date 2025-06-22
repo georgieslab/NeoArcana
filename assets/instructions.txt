@@ -1,0 +1,8 @@
+
+gcloud run deploy landing-page --source . --platform managed --region us-central1 --allow-unauthenticated
+
+
+gcloud run deploy tarot-app --source . --platform managed --region us-central1 --allow-unauthenticated  --no-cache
+
+flask run 
+

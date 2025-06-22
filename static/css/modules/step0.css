@@ -15,9 +15,9 @@
   width: 90%;
   max-width: 340px;
   padding: 20px 15px;
-  background-color: rgba(0, 0, 0, 0.55);
+  background-color: rgba(0, 0, 0, 0);
   backdrop-filter: blur(10px);
-  box-shadow: 0 4px 6px rgba(8, 17, 67, 0.32);
+  box-shadow: 0 4px 6px #ff8c3b14;
   color: white;
   text-align: center;
   border-radius: 15px;
@@ -30,17 +30,42 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 2rem;
+  gap: 0.5rem;
   min-height: 60vh;
   justify-content: center;
 }
 
-/* Rest of the styles remain the same */
 .cosmic-logo {
   width: 80px;
   height: 80px;
-  margin-bottom: 1rem;
-  animation: cosmicFloat 6s ease-in-out infinite;
+  margin-bottom: 2rem;
+  animation: cosmic-spin 20s ease-in-out infinite;
+  transform-origin: center center;
+}
+
+@keyframes cosmic-spin {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(180deg) scale(1.1);
+  }
+  50% {
+    transform: rotate(270deg) scale(1);
+  }
+  75% {
+    transform: rotate(315deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+/* Add hover effect */
+.cosmic-logo:hover {
+  animation-duration: 10s;
+  filter: brightness(1.2);
+  transition: filter 0.3s ease;
 }
 
 .cosmic-buttons {

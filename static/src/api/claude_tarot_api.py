@@ -6,6 +6,7 @@ from typing import Dict, List, Optional, Any
 from typing import Dict, List, Optional, Any, TypedDict
 from .tarot_cards import get_random_cards 
 from .language_config import get_language_config
+from.cosmic_utils import calculate_moon_phase, get_current_season, calculate_numerology_day, get_day_energy
 import time
 
 client = Anthropic()
@@ -587,92 +588,86 @@ class ClaudeTarotAPI:
             raise
         
 
-    def get_single_card_reading(
-        self,
-        name: str,
-        zodiac_sign: str,
-        language: str = 'en',
-        numbers: Dict = None,
-        color: Dict = None,
-        interests: List[str] = None,
-        **kwargs
-    ) -> Dict[str, Any]:
-        """Get single card reading with proper language handling"""
+    def get_single_card_reading(self, name: str, zodiac_sign: str, language: str = 'en', **kwargs) -> Dict[str, Any]:
+        """Get single card reading with language support"""
         try:
-            config = get_language_config(language)
-            logger.info(f"Generating reading in {config['claude_name']} for {name}")
-            
             selected_card = get_random_cards(1)[0]
+            current_date = datetime.now()
+            moon_phase = calculate_moon_phase(current_date)
+            day_energy = get_day_energy(current_date)
+            numerology_day = calculate_numerology_day(current_date)
+
+            # Language-specific settings
+            language_map = {
+                'ka': 'Georgian',
+                'ru': 'Russian',
+                'ko': 'Korean',
+                'zh': 'Chinese',
+                'ja': 'Japanese',
+                'es': 'Spanish',
+                'fr': 'French',
+                'de': 'German',
+                'it': 'Italian',
+                'pt': 'Portuguese',
+                'hi': 'Hindi',
+                'ar': 'Arabic',
+                'en': 'English'
+            }
+
+            target_language = language_map.get(language, 'English')
             
-            # Build the prompt with proper language instruction
-            prompt = f"""Create a personalized daily tarot reading for {name}, who is a {zodiac_sign}.
+            prompt = f"""Create a personalized daily tarot reading in {target_language} for {name}, 
+            who is a {zodiac_sign} during this {moon_phase} moon phase.
 
             Critical Instructions:
-            1. Respond ENTIRELY in {config['claude_name']} language
-            2. Use proper grammar and natural phrasing for {config['claude_name']}
-            3. Keep a mystical yet professional tone
-            4. Connect with their zodiac energy
-            
+            1. Respond ENTIRELY in {target_language}
+            2. Format the reading with these exact markers:
+
+            [CARD_READING]
+            Card interpretation weaving today's {moon_phase} moon phase energy 
+            with their {zodiac_sign} path
+            [/CARD_READING]
+
+            [NUMEROLOGY]
+            Connect today's numerology ({numerology_day}) with their zodiac energy
+            [/NUMEROLOGY]
+
+            [AFFIRMATION]
+            A powerful daily affirmation in {target_language}
+            [/AFFIRMATION]
+
             The card drawn is: {selected_card['name']}
             Key themes: {', '.join(selected_card['keywords'])}
-            """
+            Moon Phase: {moon_phase}
+            Day Energy: {day_energy.get('energy')} ({day_energy.get('planet')} Day)
             
-            # Add numerology section if provided
-            if numbers and all(numbers.values()):
-                prompt += f"""
-                
-                Include these numerological influences in your reading:
-                - {numbers.get('favoriteNumber')} 
-                - {numbers.get('luckyNumber')}
-                - {numbers.get('guidanceNumber')}
-                """
-                
-            # Add color influence if provided
-            if color and color.get('name'):
-                prompt += f"\nConsider their connection to {color['name']} energy."
-                
-            # Add interests if provided
-            if interests:
-                prompt += f"\nFocus areas: {', '.join(interests)}"
+            Keep each section mystical yet practical, entirely in {target_language}."""
 
             response = self.client.messages.create(
                 model=self.model,
                 max_tokens=1024,
                 messages=[{"role": "user", "content": prompt}]
             )
-            
-            # Validate the response
-            interpretation = self.validate_reading_response(
-                response.content[0].text,
-                language
-            )
-            
-            # Generate affirmations in the same language
-            affirmation_prompt = f"""Create a brief, empowering affirmation in {config['claude_name']} 
-            that connects with the energy of {selected_card['name']}."""
-            
-            affirmation_response = self.client.messages.create(
-                model=self.model,
-                max_tokens=100,
-                messages=[{"role": "user", "content": affirmation_prompt}]
-            )
-            
-            affirmation = self.validate_reading_response(
-                affirmation_response.content[0].text,
-                language
-            )
 
             return {
                 "cardName": selected_card['name'],
                 "cardImage": self._normalize_card_image(selected_card['image']),
-                "interpretation": interpretation,
-                "affirmations": [affirmation],
-                "language": language
+                "interpretation": response.content[0].text
             }
-            
+
         except Exception as e:
             logger.error(f"Error in single card reading: {e}")
             raise
+
+def extract_section(text: str, section_name: str) -> str:
+    """Extract content between section markers"""
+    start = f"[{section_name}]"
+    end = f"[/{section_name}]"
+    try:
+        return text.split(start)[1].split(end)[0].strip()
+    except:
+        logger.error(f"Failed to extract section {section_name}")
+        return ""
 
     def validate_reading_response(self, text: str, language: str) -> str:
         """Enhanced validation with proper script checking"""

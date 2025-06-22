@@ -16,6 +16,19 @@ const [nfcUserData, setNfcUserData] = React.useState(null);
 const [isNFCUser, setIsNFCUser] = React.useState(false);
 const [showDailyReading, setShowDailyReading] = React.useState(false);
 
+const [showAdmin, setShowAdmin] = React.useState(false);
+
+React.useEffect(() => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const adminMode = urlParams.get('admin') === 'true';
+  
+  if (adminMode) {
+    setShowAdmin(true);
+    // Skip the normal flow
+    setStep(-1);
+  }
+}, []);
+
   // Add cleanup effect
   React.useEffect(() => {
     return () => {
@@ -33,9 +46,6 @@ const [showDailyReading, setShowDailyReading] = React.useState(false);
   const [isSubmitting, setIsSubmitting] = React.useState(false);
   const [buttonText, setButtonText] = React.useState('Talk to the Universe');
   const [isClosing, setIsClosing] = React.useState(false);
-
-  
-  
 
   React.useEffect(() => {
     const urlParams = new URLSearchParams(window.location.search);
@@ -57,16 +67,52 @@ const [showDailyReading, setShowDailyReading] = React.useState(false);
   }, []);
 
   if ('serviceWorker' in navigator) {
+    const isLocalhost = 
+      window.location.hostname === 'localhost' || 
+      window.location.hostname === '127.0.0.1' ||
+      window.location.hostname.startsWith('192.168.');
+      
+    const isProduction = window.location.hostname === 'app.neoarcana.cloud';
+    
     window.addEventListener('load', () => {
-      navigator.serviceWorker.register('/service-worker.js')
-        .then(registration => {
-          console.log('ServiceWorker registered');
-        })
-        .catch(error => {
-          console.error('ServiceWorker registration failed:', error);
-        });
+      try {
+        // Always register in production or when explicitly enabled
+        if (isProduction || !isLocalhost || window.location.search.includes('enableSW=true')) {
+          console.info('Registering service worker...');
+          
+          navigator.serviceWorker.register('/service-worker.js')
+            .then(registration => {
+              console.log('ServiceWorker registered successfully:', registration.scope);
+              
+              // Check for updates
+              setInterval(() => {
+                registration.update().catch(err => {
+                  console.warn('Service worker update check failed:', err);
+                });
+              }, 60 * 60 * 1000); // Check every hour
+            })
+            .catch(error => {
+              if (isProduction) {
+                console.error('ServiceWorker registration failed:', error);
+                // Retry registration once in production
+                setTimeout(() => {
+                  console.info('Retrying service worker registration...');
+                  navigator.serviceWorker.register('/service-worker.js')
+                    .catch(err => console.warn('ServiceWorker registration retry failed'));
+                }, 3000);
+              } else {
+                console.warn('ServiceWorker registration skipped in development:', error);
+              }
+            });
+        } else {
+          console.info('ServiceWorker registration skipped in development environment');
+        }
+      } catch (e) {
+        console.warn('Error during service worker registration:', e);
+      }
     });
   }
+  
   
   // Add to Home Screen
   let deferredPrompt;
@@ -147,6 +193,8 @@ const [showDailyReading, setShowDailyReading] = React.useState(false);
   const audioRef = React.useRef(null);
   const emailSaveTimeoutRef = React.useRef(null);
   const fetchNFCUserData = async (nfcId) => {
+    if (!nfcId || !mountedRef.current) return;
+    
     try {
       console.log('Fetching NFC user data for ID:', nfcId);
       // Ensure nfc_id has correct prefix
@@ -155,6 +203,9 @@ const [showDailyReading, setShowDailyReading] = React.useState(false);
       const response = await fetch(`/api/nfc/user/${formattedId}`);
       const userData = await response.json();
       console.log('Received user data:', userData);
+      
+      // Verify component is still mounted before updating state
+      if (!mountedRef.current) return;
       
       if (!userData.success) {
         throw new Error(userData.error || 'Failed to fetch user data');
@@ -168,15 +219,20 @@ const [showDailyReading, setShowDailyReading] = React.useState(false);
       
       setNfcUserData(enhancedUserData);
       setIsNFCUser(true);
+      
       const userDataObj = userData.user_data && userData.user_data.user_data;
-if (userDataObj) {
+      if (userDataObj) {
         setName(userData.user_data.user_data.name || '');
         setZodiacSign(userData.user_data.user_data.zodiacSign || '');
       }
+      
       setStep(2);
     } catch (error) {
-      console.error('Error fetching NFC user data:', error);
-      setError('Failed to load your cosmic connection. Please try again.');
+      // Only update error state if still mounted
+      if (mountedRef.current) {
+        console.error('Error fetching NFC user data:', error);
+        setError('Failed to load your cosmic connection. Please try again.');
+      }
     }
   };
 
@@ -378,115 +434,195 @@ if (userDataObj) {
     }
   }, [audioReady]);
 
-  const handleTryFree = React.useCallback((isPremiumPath = false) => {
-    setFadeOut(true);
-    if (isPremiumPath) {
-      setIsPremium(true);
-      setIsPremiumReading(true);
-    } else {
-      setIsPremium(false);
-      setIsPremiumReading(false);
-    }
-    
+  const handleTryFree = React.useCallback(() => {
+  setFadeOut(true);
+  
+  // Always set to trial mode (no premium path)
+  setIsPremium(false);
+  setIsPremiumReading(false);
+  
+  setTimeout(() => {
+    setStep(1);
+    setFadeOut(false);
+    setFadeIn(true);
     setTimeout(() => {
-      setStep(1);
-      setFadeOut(false);
-      setFadeIn(true);
-      setTimeout(() => {
-        setFadeIn(false);
-      }, 500);
+      setFadeIn(false);
     }, 500);
+  }, 500);
 
-    setName('');
-    setDateOfBirth('');
-    setEmail('');
-    setZodiacSign('');
-    setCardName('');
-    setCardImage('');
-    setInterpretation('');
-    setAffirmations([]);
-    setPremiumCards([]);
-    setError(null);
+  // Reset all form data
+  setName('');
+  setDateOfBirth('');
+  setEmail('');
+  setZodiacSign('');
+  setCardName('');
+  setCardImage('');
+  setInterpretation('');
+  setAffirmations([]);
+  setPremiumCards([]);
+  setError(null);
 
-    if (window.zoomBackground) {
-      window.zoomBackground(0.3, 1000);
-    }
-  }, []);
+  if (window.zoomBackground) {
+    window.zoomBackground(0.3, 1000);
+  }
+}, []);
 
     React.useEffect(() => {
       console.log('[Language Flow] Selected language changed:', selectedLanguage);
     }, [selectedLanguage]);
     
-    // Update handleSubmit
-    const handleSubmit = async (userData) => {
-      console.log('[Language Flow] Form submitted with language:', userData.language);
-      setIsSubmitting(true);
+const handlePosterRegistration = React.useCallback(() => {
+  console.log('Starting poster registration flow');
+  setIsNFCRegistration(true);
+  setIsNFCUser(true);
+  setStep(1);
+  
+  // Reset any existing data
+  setName('');
+  setDateOfBirth('');
+  setZodiacSign('');
+  setError(null);
+  
+  if (window.zoomBackground) {
+    window.zoomBackground(0.3, 1000);
+  }
+}, []);
+
+const handleSubmit = async (userData) => {
+  console.log('[Language Flow] Form submitted with language:', userData.language);
+  setIsSubmitting(true);
+  setError(null); // Clear any previous errors
+  
+  try {
+    // Submit user data
+    console.log('Submitting user data with language:', userData.language);
+    let userResponse;
     
-    try {
-      // Submit user data
-      console.log('Submitting user data with language:', userData.language);
-      const userResponse = await fetch('/api/submit_user', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          name: userData.name,
-          dateOfBirth: userData.dateOfBirth,
-          isPremium,
-          language: userData.language  // Make sure language is included
-        })
-      });
-  
-      if (!userResponse.ok) {
-        throw new Error(`User data submission failed: ${userResponse.status}`);
-      }
-  
-      const userDataResponse = await userResponse.json();
-      
-      if (mountedRef.current) {
-        setName(userData.name);
-        setDateOfBirth(userData.dateOfBirth);
-        setZodiacSign(userDataResponse.zodiac_sign);
-        setSelectedLanguage(userData.language);
-      }
-  
-      // Construct the query params with language
-      const queryParams = new URLSearchParams({
-        name: userData.name,
-        zodiacSign: userDataResponse.zodiac_sign,
-        isPremium: String(isPremium),
-        language: userData.language
-      });
-  
-      console.log('Fetching tarot reading with language:', userData.language);
-      
-      const readingResponse = await fetch('/api/get_tarot_reading?' + queryParams);
-  
-      if (!readingResponse.ok) {
-        const errorText = await readingResponse.text();
-        throw new Error(`Reading fetch failed: ${readingResponse.status} - ${errorText}`);
-      }
-  
-      const readingData = await readingResponse.json();
-  
-      if (mountedRef.current) {
-        // Set card data
-        setCardName(readingData.cardName);
-        setCardImage(readingData.cardImage);
-        setInterpretation(readingData.interpretation);
-        // Store language for chat
-        setSelectedLanguage(userData.language);
-        setStep(2);
-      }
-  
-    } catch (error) {
-      console.error('Error in handleSubmit:', error);
-      setError(error.message || 'An error occurred');
-    } finally {
-      if (mountedRef.current) {
-        setIsSubmitting(false);
+    // First API call - with retry logic
+    let userApiRetries = 2;
+    let userApiSuccess = false;
+    
+    while (userApiRetries >= 0 && !userApiSuccess) {
+      try {
+        userResponse = await fetch('/api/submit_user', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            name: userData.name,
+            dateOfBirth: userData.dateOfBirth,
+            isPremium,
+            language: userData.language
+          })
+        });
+        
+        if (userResponse.ok) {
+          userApiSuccess = true;
+        } else {
+          throw new Error(`User data submission failed: ${userResponse.status}`);
+        }
+      } catch (userError) {
+        console.warn(`User API attempt failed, retries left: ${userApiRetries}`, userError);
+        if (userApiRetries === 0) {
+          throw new Error(`Failed to submit user data: ${userError.message}`);
+        }
+        userApiRetries--;
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second before retry
       }
     }
-  };
+
+    const userDataResponse = await userResponse.json();
+    
+    if (!mountedRef.current) return; // Exit if component unmounted
+    
+    setName(userData.name);
+    setDateOfBirth(userData.dateOfBirth);
+    setZodiacSign(userDataResponse.zodiac_sign);
+    setSelectedLanguage(userData.language);
+
+    // Construct the query params with language
+    const queryParams = new URLSearchParams({
+      name: userData.name,
+      zodiacSign: userDataResponse.zodiac_sign,
+      isPremium: String(isPremium),
+      language: userData.language
+    });
+
+    console.log('Fetching tarot reading with language:', userData.language);
+    
+    // Second API call - with separate try/catch and retry logic
+    let readingResponse;
+    let readingApiRetries = 2;
+    let readingApiSuccess = false;
+    
+    while (readingApiRetries >= 0 && !readingApiSuccess) {
+      try {
+        // Set timeout to prevent hanging requests
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
+        
+        const url = '/api/get_tarot_reading?' + queryParams.toString();
+        console.log('Requesting reading from:', url);
+        
+        readingResponse = await fetch(url, {
+          signal: controller.signal,
+          // Add cache control headers
+          headers: {
+            'Cache-Control': 'no-cache',
+            'Pragma': 'no-cache'
+          }
+        });
+        
+        clearTimeout(timeoutId);
+        
+        if (readingResponse.ok) {
+          readingApiSuccess = true;
+        } else {
+          const errorText = await readingResponse.text();
+          throw new Error(`Reading fetch failed: ${readingResponse.status} - ${errorText}`);
+        }
+      } catch (fetchError) {
+        console.warn(`Tarot reading fetch attempt failed, retries left: ${readingApiRetries}`, fetchError);
+        if (readingApiRetries === 0) {
+          throw fetchError; // No more retries, propagate the error
+        }
+        readingApiRetries--;
+        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second before retry
+      }
+    }
+
+    if (!mountedRef.current) return; // Check again if component unmounted
+    
+    try {
+      const readingData = await readingResponse.json();
+      
+      // Set card data
+      setCardName(readingData.cardName);
+      setCardImage(readingData.cardImage);
+      setInterpretation(readingData.interpretation);
+      // Store language for chat
+      setSelectedLanguage(userData.language);
+      setStep(2);
+    } catch (parseError) {
+      throw new Error(`Error parsing reading response: ${parseError.message}`);
+    }
+
+  } catch (error) {
+    console.error('Error in handleSubmit:', error);
+    
+    if (mountedRef.current) {
+      setError(error.message || 'An error occurred while connecting to the cosmic energies. Please try again.');
+      
+      // Fallback for when API is unreachable
+      if (error.message && error.message.includes('Failed to fetch')) {
+        setError('Unable to connect to the cosmic servers. Please check your connection and try again.');
+      }
+    }
+  } finally {
+    if (mountedRef.current) {
+      setIsSubmitting(false);
+    }
+  }
+};
 
   const handleNFCSubmit = async (userData) => {
     try {
@@ -607,15 +743,13 @@ const handleCardReveal = React.useCallback(() => {
       {contentVisible && (
         <div className="parent-container" onClick={handleUserInteraction}>
           {step === 0 && !showDailyReading && (
-              <Step0
-                onTryFree={handleTryFree}
-                onSignUpPro={() => {
-                  setIsPremium(true);
-                  handleSignUpPro();
-                }}
-                onExplore={handleDailyReading}
-              />
-          )}
+  <Step0
+    onTryFree={handleTryFree}
+    onExplore={handleDailyReading}
+    onPosterRegistration={handlePosterRegistration}
+  />
+)}
+
           {showDailyReading && nfcUserData ? (
   <div className="container">
     <NFCStep2 
@@ -691,6 +825,56 @@ const handleCardReveal = React.useCallback(() => {
           </React.Fragment>
       )}
 
+{showAdmin && (
+  <React.Fragment>
+    <button onClick={() => {
+      setShowAdmin(false);
+      setStep(0);
+    }} className="back-button">
+      <img src="/static/icons/back.svg" alt="Back" className="back-icon" />
+    </button>
+    {window.AdminPanelLoader ? 
+      <window.AdminPanelLoader
+        appState={{
+          step,
+          setStep,
+          isPremium,
+          setIsPremium,
+          resetState: () => {
+            setStep(0);
+            setIsPremium(false);
+            setIsPremiumReading(false);
+            setIsNFCUser(false);
+            setIsNFCRegistration(false);
+            setName('');
+            setDateOfBirth('');
+            setEmail('');
+            setZodiacSign('');
+            setCardName('');
+            setCardImage('');
+            setInterpretation('');
+            setAffirmations([]);
+            setPremiumCards([]);
+            setNfcUserData(null);
+            localStorage.clear();
+          },
+          onCloseAdminPanel: () => {
+            setShowAdmin(false);
+            setStep(0);
+          }
+        }}
+        onClose={() => {
+          setShowAdmin(false);
+          setStep(0);
+        }}
+      /> :
+      <div className="admin-panel-loading">
+        <p>Loading admin panel...</p>
+      </div>
+    }
+  </React.Fragment>
+)}
+
       {step === 3 && (
         <React.Fragment>
           {isNFCUser || isNFCRegistration ? (
@@ -716,8 +900,6 @@ const handleCardReveal = React.useCallback(() => {
           )}
         </React.Fragment>
       )}
-
-          <AudioButton isMuted={isMuted} toggleMute={toggleMute} />
           
           {step === 3 && !isNFCUser && !isNFCRegistration && (
             <button onClick={handleRestart} className="restart-button">
@@ -732,21 +914,6 @@ const handleCardReveal = React.useCallback(() => {
           )}
         </div>
       )}
-
-      <div id="modal-container">
-        <div className="modal-background">
-          <div className="modal">
-            {step === 4 && (
-              <Step4 
-                onClose={handleClose} 
-                email={email} 
-                setEmail={setEmail}
-              />
-            )}
-            {step === 5 && <Step5 onClose={handleClose} />}
-          </div>
-        </div>
-      </div>
   
       {isDev && devPanel && (
         <DevPanel 
@@ -778,6 +945,11 @@ const handleCardReveal = React.useCallback(() => {
           }}
         />
       )}
+
+      <div className="fixed-audio-control">
+  <AudioButton isMuted={isMuted} toggleMute={toggleMute} />
+</div>
+
     </React.Fragment>
 );  
 };
