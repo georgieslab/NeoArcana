@@ -108,7 +108,7 @@
           },
           "main.py": {
             "type": "file",
-            "size": 21516,
+            "size": 21544,
             "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\api_v2\\main.py"
           },
           "models": {
@@ -350,7 +350,7 @@
             "contents": {
               "main.cpython-314.pyc": {
                 "type": "file",
-                "size": 22737,
+                "size": 22774,
                 "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\api_v2\\__pycache__\\main.cpython-314.pyc"
               },
               "__init__.cpython-314.pyc": {
@@ -597,10 +597,20 @@
         "size": 500,
         "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\package.json"
       },
+      "Procfile": {
+        "type": "file",
+        "size": 56,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\Procfile"
+      },
       "project_structure.json": {
         "type": "file",
-        "size": 78831,
+        "size": 84577,
         "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\project_structure.json"
+      },
+      "render.yaml": {
+        "type": "file",
+        "size": 599,
+        "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\render.yaml"
       },
       "requirements.in": {
         "type": "file",
@@ -609,7 +619,7 @@
       },
       "requirements.txt": {
         "type": "file",
-        "size": 312,
+        "size": 339,
         "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\requirements.txt"
       },
       "setup.py": {
@@ -642,6 +652,187 @@
             "type": "directory",
             "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css",
             "contents": {
+              "00-base": {
+                "type": "directory",
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\00-base",
+                "contents": {
+                  "animations.css": {
+                    "type": "file",
+                    "size": 13510,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\00-base\\animations.css"
+                  },
+                  "reset.css": {
+                    "type": "file",
+                    "size": 8362,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\00-base\\reset.css"
+                  },
+                  "typography.css": {
+                    "type": "file",
+                    "size": 10655,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\00-base\\typography.css"
+                  },
+                  "variables.css": {
+                    "type": "file",
+                    "size": 8182,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\00-base\\variables.css"
+                  }
+                }
+              },
+              "01-global": {
+                "type": "directory",
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\01-global",
+                "contents": {
+                  "global.css": {
+                    "type": "file",
+                    "size": 10780,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\01-global\\global.css"
+                  }
+                }
+              },
+              "02-components": {
+                "type": "directory",
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\02-components",
+                "contents": {
+                  "buttons.css": {
+                    "type": "file",
+                    "size": 15130,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\02-components\\buttons.css"
+                  },
+                  "cards.css": {
+                    "type": "file",
+                    "size": 12393,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\02-components\\cards.css"
+                  },
+                  "forms.css": {
+                    "type": "file",
+                    "size": 14056,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\02-components\\forms.css"
+                  },
+                  "loaders.css": {
+                    "type": "file",
+                    "size": 10318,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\02-components\\loaders.css"
+                  },
+                  "modals.css": {
+                    "type": "file",
+                    "size": 10930,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\02-components\\modals.css"
+                  },
+                  "navigation.css": {
+                    "type": "file",
+                    "size": 11716,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\02-components\\navigation.css"
+                  }
+                }
+              },
+              "03-features": {
+                "type": "directory",
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\03-features",
+                "contents": {
+                  "chat-interface.css": {
+                    "type": "file",
+                    "size": 12640,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\03-features\\chat-interface.css"
+                  },
+                  "chat.css": {
+                    "type": "file",
+                    "size": 11350,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\03-features\\chat.css"
+                  },
+                  "cosmic-button.css": {
+                    "type": "file",
+                    "size": 8742,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\03-features\\cosmic-button.css"
+                  },
+                  "nfc-reading.css": {
+                    "type": "file",
+                    "size": 9252,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\03-features\\nfc-reading.css"
+                  },
+                  "nfc-registration.css": {
+                    "type": "file",
+                    "size": 10506,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\03-features\\nfc-registration.css"
+                  },
+                  "nfc-three-cards.css": {
+                    "type": "file",
+                    "size": 10009,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\03-features\\nfc-three-cards.css"
+                  },
+                  "nfcstep2.css": {
+                    "type": "file",
+                    "size": 18267,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\03-features\\nfcstep2.css"
+                  },
+                  "premium-flow.css": {
+                    "type": "file",
+                    "size": 14148,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\03-features\\premium-flow.css"
+                  },
+                  "step0.css": {
+                    "type": "file",
+                    "size": 11890,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\03-features\\step0.css"
+                  },
+                  "step1trial.css": {
+                    "type": "file",
+                    "size": 12611,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\03-features\\step1trial.css"
+                  },
+                  "step2trial.css": {
+                    "type": "file",
+                    "size": 12270,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\03-features\\step2trial.css"
+                  },
+                  "step3trial.css": {
+                    "type": "file",
+                    "size": 12494,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\03-features\\step3trial.css"
+                  },
+                  "story-behind.css": {
+                    "type": "file",
+                    "size": 2754,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\03-features\\story-behind.css"
+                  },
+                  "trial-flow.css": {
+                    "type": "file",
+                    "size": 12507,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\03-features\\trial-flow.css"
+                  }
+                }
+              },
+              "04-layouts": {
+                "type": "directory",
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\04-layouts",
+                "contents": {
+                  "containers.css": {
+                    "type": "file",
+                    "size": 8506,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\04-layouts\\containers.css"
+                  },
+                  "reading-layouts.css": {
+                    "type": "file",
+                    "size": 9262,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\04-layouts\\reading-layouts.css"
+                  }
+                }
+              },
+              "05-utilities": {
+                "type": "directory",
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\05-utilities",
+                "contents": {
+                  "admin.css": {
+                    "type": "file",
+                    "size": 14019,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\05-utilities\\admin.css"
+                  },
+                  "utilities.css": {
+                    "type": "file",
+                    "size": 12941,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\05-utilities\\utilities.css"
+                  }
+                }
+              },
               "CosmicButton.css": {
                 "type": "file",
                 "size": 3243,
@@ -701,16 +892,6 @@
                         "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\modules\\shared\\form-elements.css"
                       }
                     }
-                  },
-                  "step0.css": {
-                    "type": "file",
-                    "size": 5413,
-                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\modules\\step0.css"
-                  },
-                  "step1-trial.css": {
-                    "type": "file",
-                    "size": 4805,
-                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\css\\modules\\step1-trial.css"
                   },
                   "trial-step2.css": {
                     "type": "file",
@@ -805,6 +986,11 @@
                 "type": "file",
                 "size": 15415,
                 "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\eye.svg"
+              },
+              "favicon.ico": {
+                "type": "file",
+                "size": 138027,
+                "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\icons\\favicon.ico"
               },
               "future.svg": {
                 "type": "file",
@@ -1493,12 +1679,12 @@
                   },
                   "ChatInterface.js": {
                     "type": "file",
-                    "size": 8707,
+                    "size": 8333,
                     "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\ChatInterface.js"
                   },
                   "CosmicButton.js": {
                     "type": "file",
-                    "size": 1935,
+                    "size": 2314,
                     "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\CosmicButton.js"
                   },
                   "DevPanel.js": {
@@ -1577,7 +1763,7 @@
                       },
                       "NFCStep2.js": {
                         "type": "file",
-                        "size": 18453,
+                        "size": 13612,
                         "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\NFCFlow\\NFCStep2.js"
                       },
                       "NFCThreeCardReading.js": {
@@ -1592,7 +1778,7 @@
                       },
                       "RegistrationFlow.js": {
                         "type": "file",
-                        "size": 2810,
+                        "size": 4789,
                         "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\NFCFlow\\RegistrationFlow.js"
                       },
                       "WelcomeScreen.js": {
@@ -1660,7 +1846,7 @@
                   },
                   "step0.js": {
                     "type": "file",
-                    "size": 2258,
+                    "size": 2501,
                     "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\step0.js"
                   },
                   "step1Premium.js": {
@@ -1670,8 +1856,13 @@
                   },
                   "step1Trial.js": {
                     "type": "file",
-                    "size": 3914,
+                    "size": 5262,
                     "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\step1Trial.js"
+                  },
+                  "StoryBehind.js": {
+                    "type": "file",
+                    "size": 3089,
+                    "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\StoryBehind.js"
                   },
                   "threecardreading.js": {
                     "type": "file",
@@ -1689,12 +1880,12 @@
                     "contents": {
                       "TrialStep2.js": {
                         "type": "file",
-                        "size": 4688,
+                        "size": 5356,
                         "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\trial\\TrialStep2.js"
                       },
                       "TrialStep3.js": {
                         "type": "file",
-                        "size": 2422,
+                        "size": 5695,
                         "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\components\\trial\\TrialStep3.js"
                       }
                     }
@@ -1712,7 +1903,7 @@
                 "contents": {
                   "api-config.js": {
                     "type": "file",
-                    "size": 4182,
+                    "size": 5281,
                     "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\config\\api-config.js"
                   },
                   "api.js": {
@@ -1734,7 +1925,7 @@
               },
               "TarotApp.js": {
                 "type": "file",
-                "size": 30178,
+                "size": 29972,
                 "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\static\\src\\TarotApp.js"
               },
               "utils": {
@@ -1833,7 +2024,7 @@
         "contents": {
           "react.html": {
             "type": "file",
-            "size": 11354,
+            "size": 15546,
             "path": "C:\\Users\\georg\\georgiescoding\\CosmicArcana\\templates\\react.html"
           }
         }
