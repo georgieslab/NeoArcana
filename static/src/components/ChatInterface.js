@@ -1,3 +1,8 @@
+// ========================================
+// NEOARCANA - CHAT INTERFACE
+// Fixed version with proper class names
+// ========================================
+
 const ChatInterface = ({ 
   name, 
   zodiacSign, 
@@ -10,8 +15,14 @@ const ChatInterface = ({
   chatHistory,
   onChatHistoryUpdate
 }) => {
-  // Modify the messages state to use chat history if available
+  // State management
   const [messages, setMessages] = React.useState(chatHistory || []);
+  const [newMessage, setNewMessage] = React.useState('');
+  const [isLoading, setIsLoading] = React.useState(false);
+  const [isTyping, setIsTyping] = React.useState(false);
+  const [sessionId, setSessionId] = React.useState(null);
+  const messagesEndRef = React.useRef(null);
+  const mountedRef = React.useRef(true);
 
   // Update parent component when messages change
   React.useEffect(() => {
@@ -20,25 +31,11 @@ const ChatInterface = ({
     }
   }, [messages]);
 
-  // Only start chat session if there's no chat history
-  React.useEffect(() => {
-    if (!chatHistory && mountedRef.current) {
-      startChatSession();
-    }
-  }, []);
-  const [newMessage, setNewMessage] = React.useState('');
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [isTyping, setIsTyping] = React.useState(false);
-  const [sessionId, setSessionId] = React.useState(null);
-  const messagesEndRef = React.useRef(null);
-  const mountedRef = React.useRef(true);
-
-
+  // Initialize chat session
   React.useEffect(() => {
     console.log('[ChatInterface] Initializing with language:', language);
     
-    // Start chat session only once when component mounts
-    if (mountedRef.current) {
+    if (!chatHistory && mountedRef.current) {
       startChatSession();
     }
 
@@ -51,35 +48,21 @@ const ChatInterface = ({
   // Restart chat session if language changes
   React.useEffect(() => {
     console.log('[ChatInterface] Language changed to:', language);
+    if (chatHistory) return; // Don't restart if we have history
+    
     if (mountedRef.current) {
       startChatSession();
     }
   }, [language]);
 
-  const handleAPIError = async (response) => {
-    const contentType = response.headers.get("content-type");
-    if (!response.ok) {
-      try {
-        if (contentType && contentType.includes("application/json")) {
-          const errorData = await response.json();
-          console.error('[ChatInterface] API Error Details:', errorData);
-          throw new Error(errorData.error || 'Failed to communicate with guide');
-        } else {
-          const textError = await response.text();
-          console.error('[ChatInterface] API Error Text:', textError);
-          throw new Error('Server error - please try again later');
-        }
-      } catch (error) {
-        console.error('[ChatInterface] Error parsing API response:', error);
-        throw error;
-      }
-    }
-    
-    try {
-      return await response.json();
-    } catch (error) {
-      console.error('[ChatInterface] Error parsing success response:', error);
-      throw new Error('Invalid response format');
+  // Auto-scroll to bottom when new messages arrive
+  React.useEffect(() => {
+    scrollToBottom();
+  }, [messages]);
+
+  const scrollToBottom = () => {
+    if (messagesEndRef.current) {
+      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
     }
   };
 
@@ -98,24 +81,19 @@ const ChatInterface = ({
         isPremium,
         language,
         cardInfo,
+        nfc_id: null,
         maintainLanguage: true
       };
 
       console.log('[ChatInterface] Starting chat with data:', initialData);
-
-      const response = await fetch('/api/start_chat', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Accept-Language': language,
-          'X-Chat-Language': language
-        },
-        body: JSON.stringify(initialData)
-      });
-
-      const data = await handleAPIError(response);
-      console.log('[ChatInterface] Chat session started:', data);
+      console.log('🚀 Starting chat session via FastAPI:', window.API_CONFIG.BASE_URL);
+      
+      const data = await window.API_CONFIG.post(
+        window.API_CONFIG.ENDPOINTS.START_CHAT,
+        initialData
+      );
+      
+      console.log('✅ Chat session started:', data);
       
       if (data.session_id) {
         setSessionId(data.session_id);
@@ -177,6 +155,7 @@ const ChatInterface = ({
         isPremium,
         language,
         cardInfo,
+        nfc_id: null,
         messageHistory: messages.map(msg => ({
           ...msg,
           language
@@ -186,20 +165,14 @@ const ChatInterface = ({
       };
 
       console.log('[ChatInterface] Sending chat message:', chatData);
-
-      const response = await fetch('/api/chat', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
-          'Accept': 'application/json',
-          'Accept-Language': language,
-          'X-Chat-Language': language
-        },
-        body: JSON.stringify(chatData)
-      });
-
-      const data = await handleAPIError(response);
-      console.log('[ChatInterface] Received chat response:', data);
+      console.log('💬 Sending message to FastAPI:', window.API_CONFIG.BASE_URL);
+      
+      const data = await window.API_CONFIG.post(
+        window.API_CONFIG.ENDPOINTS.CHAT,
+        chatData
+      );
+      
+      console.log('✅ Chat response received:', data);
 
       if (mountedRef.current) {
         const assistantMessage = {
@@ -229,69 +202,93 @@ const ChatInterface = ({
     }
   };
 
-  const scrollToBottom = () => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  return React.createElement('div', {
+    className: 'neo-chat',
+    'data-language': language
+  },
+    // Header
+    React.createElement('div', { className: 'neo-chat-header' },
+      React.createElement('div', { className: 'neo-chat-header-content' },
+        React.createElement('img', {
+          src: '/static/icons/eye.svg',
+          alt: '',
+          className: 'neo-chat-header-icon'
+        }),
+        React.createElement('h2', { className: 'neo-chat-title' }, 
+          'Discuss Your Reading'
+        )
+      ),
+      React.createElement('button', {
+        onClick: onClose,
+        className: 'neo-chat-close',
+        'aria-label': 'Close chat'
+      }, '×')
+    ),
 
-  React.useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+    // Messages Container
+    React.createElement('div', { className: 'neo-chat-messages' },
+      // Messages
+      messages.map((msg, index) =>
+        React.createElement('div', {
+          key: index,
+          className: `neo-chat-message neo-chat-message--${msg.role} ${
+            index === messages.length - 1 ? 'neo-chat-message--fade-in' : ''
+          }`
+        },
+          React.createElement('div', { className: 'neo-chat-message-content' },
+            msg.role === 'assistant' && React.createElement('img', {
+              src: '/static/icons/eye.svg',
+              alt: '',
+              className: 'neo-chat-message-icon'
+            }),
+            msg.content
+          )
+        )
+      ),
 
-  return (
-    <div className="cosmic-chat" data-language={language}>
-      <div className="cosmic-chat__header">
-        <h2 className="cosmic-chat__title">Discuss Your Reading</h2>
-        <button onClick={onClose} className="cosmic-chat__close">×</button>
-      </div>
+      // Typing Indicator
+      isTyping && React.createElement('div', {
+        className: 'neo-chat-message neo-chat-message--assistant neo-chat-message--typing'
+      },
+        React.createElement('div', { className: 'neo-chat-typing-indicator' },
+          React.createElement('span'),
+          React.createElement('span'),
+          React.createElement('span')
+        )
+      ),
 
-      <div className="cosmic-chat__messages">
-        {messages.map((msg, index) => (
-          <div 
-            key={index}
-            className={`cosmic-chat__message cosmic-chat__message--${msg.role} ${
-              index === messages.length - 1 ? 'cosmic-chat__message--fade-in' : ''
-            }`}
-          >
-            <div className="cosmic-chat__message-content">
-              {msg.role === 'assistant' && (
-                <img src="/static/icons/eye.svg" alt="" className="cosmic-chat__icon" />
-              )}
-              {msg.content}
-            </div>
-          </div>
-        ))}
-        
-        {isTyping && (
-          <div className="cosmic-chat__message cosmic-chat__message--typing">
-            <div className="cosmic-chat__typing-indicator">
-              <span></span><span></span><span></span>
-            </div>
-          </div>
-        )}
-        <div ref={messagesEndRef} />
-      </div>
+      // Scroll anchor
+      React.createElement('div', { ref: messagesEndRef })
+    ),
 
-      <form onSubmit={sendMessage} className="cosmic-chat__form">
-        <input
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Ask about your reading..."
-          disabled={isLoading}
-          className="cosmic-chat__input"
-          lang={language}
-        />
-        <button 
-          type="submit"
-          disabled={isLoading || !newMessage.trim()}
-          className="cosmic-chat__submit"
-        >
-          <img src="/static/icons/send.svg" alt="Send" className="cosmic-chat__submit-icon" />
-        </button>
-      </form>
-    </div>
+    // Input Form
+    React.createElement('form', {
+      onSubmit: sendMessage,
+      className: 'neo-chat-form'
+    },
+      React.createElement('input', {
+        type: 'text',
+        value: newMessage,
+        onChange: (e) => setNewMessage(e.target.value),
+        placeholder: 'Ask about your reading...',
+        disabled: isLoading,
+        className: 'neo-chat-input',
+        lang: language,
+        'aria-label': 'Chat message'
+      }),
+      React.createElement('button', {
+        type: 'submit',
+        disabled: isLoading || !newMessage.trim(),
+        className: 'neo-chat-submit',
+        'aria-label': 'Send message'
+      },
+        React.createElement('img', {
+          src: '/static/icons/send.svg',
+          alt: 'Send',
+          className: 'neo-chat-submit-icon'
+        })
+      )
+    )
   );
 };
 

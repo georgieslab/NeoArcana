@@ -488,133 +488,131 @@ const handlePosterRegistration = React.useCallback(() => {
   }
 }, []);
 
+const calculateZodiacSign = (dateOfBirth) => {
+  const date = new Date(dateOfBirth);
+  const month = date.getMonth() + 1;
+  const day = date.getDate();
+
+  const signs = [
+    { sign: 'Capricorn', start: [12, 22], end: [1, 19] },
+    { sign: 'Aquarius', start: [1, 20], end: [2, 18] },
+    { sign: 'Pisces', start: [2, 19], end: [3, 20] },
+    { sign: 'Aries', start: [3, 21], end: [4, 19] },
+    { sign: 'Taurus', start: [4, 20], end: [5, 20] },
+    { sign: 'Gemini', start: [5, 21], end: [6, 20] },
+    { sign: 'Cancer', start: [6, 21], end: [7, 22] },
+    { sign: 'Leo', start: [7, 23], end: [8, 22] },
+    { sign: 'Virgo', start: [8, 23], end: [9, 22] },
+    { sign: 'Libra', start: [9, 23], end: [10, 22] },
+    { sign: 'Scorpio', start: [10, 23], end: [11, 21] },
+    { sign: 'Sagittarius', start: [11, 22], end: [12, 21] }
+  ];
+
+  for (const { sign, start, end } of signs) {
+    if (
+      (month === start[0] && day >= start[1]) ||
+      (month === end[0] && day <= end[1])
+    ) {
+      return sign;
+    }
+  }
+  return 'Capricorn';
+};
+
+// Helper function to calculate birth path number
+const calculateBirthPath = (dateOfBirth) => {
+  const digits = dateOfBirth.replace(/-/g, '').split('').map(Number);
+  let sum = digits.reduce((acc, digit) => acc + digit, 0);
+  
+  // Reduce to single digit (except master numbers 11, 22, 33)
+  while (sum > 9 && sum !== 11 && sum !== 22 && sum !== 33) {
+    sum = sum.toString().split('').map(Number).reduce((acc, digit) => acc + digit, 0);
+  }
+  
+  return sum.toString();
+};
+
+// MAIN FUNCTION - Replace your existing handleSubmit with this
 const handleSubmit = async (userData) => {
   console.log('[Language Flow] Form submitted with language:', userData.language);
   setIsSubmitting(true);
-  setError(null); // Clear any previous errors
+  setError(null);
   
   try {
-    // Submit user data
-    console.log('Submitting user data with language:', userData.language);
-    let userResponse;
-    
-    // First API call - with retry logic
-    let userApiRetries = 2;
-    let userApiSuccess = false;
-    
-    while (userApiRetries >= 0 && !userApiSuccess) {
-      try {
-        userResponse = await fetch('/api/submit_user', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            name: userData.name,
-            dateOfBirth: userData.dateOfBirth,
-            isPremium,
-            language: userData.language
-          })
-        });
-        
-        if (userResponse.ok) {
-          userApiSuccess = true;
-        } else {
-          throw new Error(`User data submission failed: ${userResponse.status}`);
-        }
-      } catch (userError) {
-        console.warn(`User API attempt failed, retries left: ${userApiRetries}`, userError);
-        if (userApiRetries === 0) {
-          throw new Error(`Failed to submit user data: ${userError.message}`);
-        }
-        userApiRetries--;
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second before retry
-      }
-    }
-
-    const userDataResponse = await userResponse.json();
-    
-    if (!mountedRef.current) return; // Exit if component unmounted
-    
+    // Store user data in state
     setName(userData.name);
     setDateOfBirth(userData.dateOfBirth);
-    setZodiacSign(userDataResponse.zodiac_sign);
     setSelectedLanguage(userData.language);
 
-    // Construct the query params with language
-    const queryParams = new URLSearchParams({
+    // Calculate zodiac sign locally (no API call needed)
+    const zodiacSign = calculateZodiacSign(userData.dateOfBirth);
+    setZodiacSign(zodiacSign);
+
+    console.log('🎴 Fetching trial reading from FastAPI...');
+    console.log('📊 User data:', {
       name: userData.name,
-      zodiacSign: userDataResponse.zodiac_sign,
-      isPremium: String(isPremium),
+      zodiacSign: zodiacSign,
       language: userData.language
     });
 
-    console.log('Fetching tarot reading with language:', userData.language);
-    
-    // Second API call - with separate try/catch and retry logic
-    let readingResponse;
-    let readingApiRetries = 2;
-    let readingApiSuccess = false;
-    
-    while (readingApiRetries >= 0 && !readingApiSuccess) {
-      try {
-        // Set timeout to prevent hanging requests
-        const controller = new AbortController();
-        const timeoutId = setTimeout(() => controller.abort(), 15000); // 15 second timeout
-        
-        const url = '/api/get_tarot_reading?' + queryParams.toString();
-        console.log('Requesting reading from:', url);
-        
-        readingResponse = await fetch(url, {
-          signal: controller.signal,
-          // Add cache control headers
-          headers: {
-            'Cache-Control': 'no-cache',
-            'Pragma': 'no-cache'
+    // Call FastAPI daily_affirmation endpoint for trial users
+    // FIXED: Only send birthPath for trial users (no hardcoded favorite/lucky numbers)
+    const readingRequest = {
+      userData: {
+        nfc_id: `trial_${Date.now()}`,
+        name: userData.name,
+        zodiacSign: zodiacSign,
+        language: userData.language,
+        preferences: {
+          color: { 
+            name: 'Cosmic Purple', 
+            value: '#A59AD1' 
+          },
+          interests: [],
+          numbers: {
+            birthPath: calculateBirthPath(userData.dateOfBirth)
+            // REMOVED: favoriteNumber (was '7')
+            // REMOVED: luckyNumber (was '3')
+            // AI will only reference birthPath for trial users
           }
-        });
-        
-        clearTimeout(timeoutId);
-        
-        if (readingResponse.ok) {
-          readingApiSuccess = true;
-        } else {
-          const errorText = await readingResponse.text();
-          throw new Error(`Reading fetch failed: ${readingResponse.status} - ${errorText}`);
         }
-      } catch (fetchError) {
-        console.warn(`Tarot reading fetch attempt failed, retries left: ${readingApiRetries}`, fetchError);
-        if (readingApiRetries === 0) {
-          throw fetchError; // No more retries, propagate the error
-        }
-        readingApiRetries--;
-        await new Promise(resolve => setTimeout(resolve, 1000)); // Wait 1 second before retry
       }
-    }
+    };
 
-    if (!mountedRef.current) return; // Check again if component unmounted
+    console.log('📤 Trial reading request:', readingRequest);
+
+    // Call FastAPI
+    const data = await window.API_CONFIG.post(
+      window.API_CONFIG.ENDPOINTS.DAILY_AFFIRMATION,
+      readingRequest
+    );
+
+    console.log('✅ Trial reading received from FastAPI:', data);
+
+    if (!mountedRef.current) return;
     
-    try {
-      const readingData = await readingResponse.json();
-      
-      // Set card data
-      setCardName(readingData.cardName);
-      setCardImage(readingData.cardImage);
-      setInterpretation(readingData.interpretation);
-      // Store language for chat
+    if (data.success && data.data) {
+      setCardName(data.data.cardName);
+      setCardImage(data.data.cardImage);
+      setInterpretation(data.data.interpretation);
       setSelectedLanguage(userData.language);
+      
+      console.log('🎊 Moving to Step 2 with personalized reading');
       setStep(2);
-    } catch (parseError) {
-      throw new Error(`Error parsing reading response: ${parseError.message}`);
+    } else {
+      throw new Error(data.message || 'Failed to generate reading');
     }
 
   } catch (error) {
-    console.error('Error in handleSubmit:', error);
+    console.error('❌ Error in handleSubmit:', error);
     
     if (mountedRef.current) {
       setError(error.message || 'An error occurred while connecting to the cosmic energies. Please try again.');
       
-      // Fallback for when API is unreachable
       if (error.message && error.message.includes('Failed to fetch')) {
         setError('Unable to connect to the cosmic servers. Please check your connection and try again.');
+      } else if (error.message && error.message.includes('API_CONFIG')) {
+        setError('API configuration not loaded. Please refresh the page.');
       }
     }
   } finally {

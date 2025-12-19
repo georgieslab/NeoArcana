@@ -1,93 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <link rel="manifest" href="/manifest.json">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="theme-color" content="#A59AD1">
-    <link rel="apple-touch-icon" href="/static/icons/icon-192x192.png">
-    <meta name="mobile-web-app-capable" content="yes">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <meta name="theme-color" content="#000000">
-    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <!-- ============================================
+         META TAGS & PWA CONFIGURATION
+         ============================================ -->
     <meta charset="UTF-8">
-    <title>NeoArcana</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="theme-color" content="#A59AD1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <title>NeoArcana - Cosmic Tarot Experience</title>
     
-    <!-- Favicon -->
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    
+    <!-- Favicons -->
     <link rel="icon" href="/static/icons/favicon.ico" type="image/x-icon">
     <link rel="shortcut icon" href="/static/icons/favicon.ico" type="image/x-icon">
+    <link rel="apple-touch-icon" href="/static/icons/icon-192x192.png">
 
-    <!-- CSS Files -->
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/Loader.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/galaxy_bg.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/CosmicButton.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/step0.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/step1-trial.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/trial-step2.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/nfc_reading.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/nfc_registration.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/cgb.css') }}"> 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/nfc_reading.css') }}"> 
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/nfc_3cards.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='src/TarotApp.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/shared/form-elements.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/modules/chatInterface.css') }}">
-    <!-- Fonts -->
+    <!-- ============================================
+         NEOARCANA CSS - MODULAR ARCHITECTURE
+         Load order is critical - don't rearrange!
+         ============================================ -->
+    
+    <!-- PHASE 1: FOUNDATION - Core design system -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/00-base/reset.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/00-base/variables.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/00-base/typography.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/00-base/animations.css') }}">
+    
+    <!-- PHASE 1: GLOBAL - Body, HTML, base classes -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/01-global/global.css') }}">
+    
+    <!-- PHASE 2: COMPONENTS - Reusable UI elements -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/02-components/buttons.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/02-components/cards.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/02-components/forms.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/02-components/modals.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/02-components/loaders.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/02-components/navigation.css') }}">
+    
+    <!-- PHASE 3: FEATURES - Complete user experiences -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/03-features/step0.css') }}">    
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/03-features/chat-interface.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/03-features/step1trial.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/03-features/step2trial.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/03-features/step3trial.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/03-features/nfcstep2.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/03-features/chat.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/03-features/cosmic-button.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/03-features/story-behind.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/03-features/nfc-reading.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/03-features/nfc-registration.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/03-features/nfc-three-cards.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/03-features/trial-flow.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/03-features/premium-flow.css') }}">
+    
+    <!-- PHASE 4: LAYOUTS - Page structure -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/04-layouts/containers.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/04-layouts/reading-layouts.css') }}">
+    
+    <!-- PHASE 5: UTILITIES - Helper classes -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/05-utilities/utilities.css') }}">
+    <!-- Admin panel CSS - only load if needed -->
+    <!-- <link rel="stylesheet" href="{{ url_for('static', filename='css/05-utilities/admin.css') }}"> -->
+
+    <!-- ============================================
+         FONTS
+         ============================================ -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400..900&display=swap" rel="stylesheet">
 
-    <!-- Scripts -->
+    <!-- ============================================
+         VENDOR SCRIPTS
+         ============================================ -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/prefixfree/1.0.7/prefixfree.min.js"></script>
 </head>
 <body>
+    <!-- ============================================
+         APP CONTAINERS
+         ============================================ -->
     <div id="loader-container"></div>
     <div id="canvas_container"></div>
     <div id="root"></div>
 
-    <!-- Core Scripts -->
+    <!-- ============================================
+         CORE LIBRARIES
+         ============================================ -->
+    
+    <!-- API Configuration -->
+    <script src="/static/src/config/api-config.js"></script>
+    
+    <!-- React -->
+    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
+    
+    <!-- Babel -->
     <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+    
+    <!-- Three.js & Related -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/simplex-noise/2.4.0/simplex-noise.min.js"></script>
-    <script src="{{ url_for('static', filename='src/galaxy_bg.js') }}"></script>
-    <script src="https://unpkg.com/react@17/umd/react.development.js"></script>
-    <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js"></script>
-    <script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
     
-    <!-- Shared Components -->
-    <script type="text/babel" src="{{ url_for('static', filename='src/components/OptimizedCardImage.js') }}"></script>
-    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/LanguageSelect.js') }}"></script>
+    <!-- Galaxy Background -->
+    <script src="{{ url_for('static', filename='src/galaxy_bg.js') }}"></script>
+
+    <!-- ============================================
+         SHARED COMPONENTS
+         ============================================ -->
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/languageConfig.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/zodiacMessages.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/Loader.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/AudioButton.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/components/CosmicButton.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/components/ChatInterface.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/OptimizedCardImage.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/components/InteractiveCardViewer.js') }}"></script>
-    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/InterestsPicker.js') }}"></script>
-    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/DateInput.js') }}"></script>
-    <script type="text/babel" src="{{ url_for('static', filename='src/components/zodiacMessages.js') }}"></script>
-    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/GenderSelect.js') }}"></script>
-    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/ColorPicker.js') }}"></script>
-    <script type="text/babel" src="{{ url_for('static', filename='src/components/AudioButton.js') }}"></script>
-    <script type="text/babel" src="{{ url_for('static', filename='src/components/Loader.js') }}"></script>
-    <script type="text/babel" src="{{ url_for('static', filename='src/components/languageConfig.js') }}"></script>
+
+    <!-- ============================================
+         NFC FLOW COMPONENTS
+         ============================================ -->
     <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/nfcDataHandler.js') }}"></script>
-    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/NFCUserRegistration.js') }}"></script>
-    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/NFCStep2.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/cosmic-load.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/WelcomeScreen.js') }}"></script>
-    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/RegistrationFlow.js') }}"></script>
-    <script src="/static/src/components/NFCAdminPanel.js"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/LanguageSelect.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/InterestsPicker.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/DateInput.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/GenderSelect.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/ColorPicker.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/NFCUserRegistration.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/NFCStep2.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/NFCThreeCardReading.js') }}"></script>
-    <script src="/static/src/components/DevPanel.js"></script>
-    <script src="/static/src/components/adminpanelloader.js"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/NFCFlow/RegistrationFlow.js') }}"></script>
 
-    <!-- Trial Components -->
+    <!-- ============================================
+         ADMIN COMPONENTS
+         ============================================ -->
+    <script src="/static/src/components/NFCAdminPanel.js"></script>
+    <script src="/static/src/components/adminpanelloader.js"></script>
+    <script src="/static/src/components/DevPanel.js"></script>
+
+    <!-- ============================================
+         TRIAL FLOW COMPONENTS
+         ============================================ -->
     <script type="text/babel" src="{{ url_for('static', filename='src/components/trial/TrialStep2.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/components/trial/TrialStep3.js') }}"></script>
+    <script type="text/babel" src="{{ url_for('static', filename='src/components/StoryBehind.js') }}"></script>
     
-    <!-- Premium Components -->
+    <!-- ============================================
+         PREMIUM FLOW COMPONENTS
+         ============================================ -->
     <script type="text/babel" src="{{ url_for('static', filename='src/components/premium/PremiumStep2.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/components/premium/PremiumStep3.js') }}"></script>
     
-    <!-- Core Flow Components -->
+    <!-- ============================================
+         CORE FLOW COMPONENTS
+         ============================================ -->
     <script type="text/babel" src="{{ url_for('static', filename='src/components/step0.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/components/step1Trial.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/components/step1Premium.js') }}"></script>
@@ -96,13 +169,21 @@
     <script type="text/babel" src="{{ url_for('static', filename='src/components/threecardreveal.js') }}"></script>
     <script type="text/babel" src="{{ url_for('static', filename='src/components/threecardreading.js') }}"></script>
   
-    <!-- Main App -->
+    <!-- ============================================
+         MAIN APPLICATION
+         ============================================ -->
     <script type="text/babel" src="{{ url_for('static', filename='src/TarotApp.js') }}"></script>
 
+    <!-- ============================================
+         RENDER APP
+         ============================================ -->
     <script type="text/babel">
         ReactDOM.render(React.createElement(window.TarotApp), document.getElementById('root'));
     </script>
 
+    <!-- ============================================
+         SERVICE WORKER & PWA
+         ============================================ -->
     <script>
         if ('serviceWorker' in navigator) {
             window.addEventListener('load', function() {
@@ -128,7 +209,7 @@
                                     bottom: 20px;
                                     left: 50%;
                                     transform: translateX(-50%);
-                                    background: var(--gradient-primary);
+                                    background: linear-gradient(135deg, #A59AD1 0%, #6B4E71 100%);
                                     padding: 15px 25px;
                                     border-radius: 12px;
                                     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
@@ -161,6 +242,10 @@
             });
         }
     </script>
+
+    <!-- ============================================
+         INLINE STYLES
+         ============================================ -->
     <style>
         @keyframes slideUp {
             from {

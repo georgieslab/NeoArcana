@@ -1,0 +1,478 @@
+/* ========================================
+   NEOARCANA - NFC REGISTRATION
+   Poster registration and user onboarding
+   ======================================== */
+
+/* -------------------- NFC REGISTRATION CONTAINER -------------------- */
+
+.nfc-registration-container {
+  width: 80%;
+  min-height: 70%;
+  padding: var(--neo-space-xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(0, 0, 0, 0.6);
+  backdrop-filter: var(--neo-blur-md);
+  border-radius: var(--neo-radius-xl);
+  border: 3px solid rgba(165, 154, 209, 0.29);
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* -------------------- NFC FORM OVERLAY -------------------- */
+
+.nfc-form-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 10, 31, 0.85);
+  backdrop-filter: var(--neo-blur-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-modal);
+  animation: fadeIn 0.3s ease-out;
+}
+
+.nfc-form-container {
+  background: linear-gradient(45deg, rgba(26, 26, 38, 0.7), rgba(20, 20, 30, 0.7));
+  border: 1px solid rgba(165, 154, 209, 0.3);
+  border-radius: var(--neo-radius-md);
+  padding: var(--neo-space-xl);
+  width: 90%;
+  max-width: 500px;
+  position: relative;
+  box-shadow: var(--neo-shadow-lg);
+  animation: scaleIn 0.3s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* -------------------- REGISTRATION STEPS -------------------- */
+
+.registration-step {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--neo-space-lg);
+  animation: fadeIn 0.5s ease;
+}
+
+.registration-header {
+  text-align: center;
+  margin-bottom: var(--neo-space-xl);
+}
+
+.registration-title {
+  font-size: var(--neo-font-3xl);
+  background: var(--gradient-cosmic);
+  background-size: 300% 300%;
+  animation: cosmicGradient 7s ease infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: var(--neo-space-md);
+}
+
+.registration-subtitle {
+  font-size: var(--neo-font-lg);
+  color: rgba(255, 255, 255, 0.7);
+}
+
+/* -------------------- PREMIUM FIELDS -------------------- */
+
+.premium-fields {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: var(--neo-space-md);
+  margin: var(--neo-space-lg) 0;
+  padding: var(--neo-space-lg);
+  background: rgba(165, 154, 209, 0.05);
+  border-radius: var(--neo-radius-md);
+  border: 1px solid rgba(165, 154, 209, 0.1);
+}
+
+.premium-fields-title {
+  font-size: var(--neo-font-xl);
+  color: var(--neo-secondary);
+  text-align: center;
+  margin-bottom: var(--neo-space-md);
+}
+
+.premium-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: var(--neo-space-sm);
+}
+
+.premium-field-label {
+  font-size: var(--neo-font-sm);
+  color: rgba(255, 255, 255, 0.8);
+  font-weight: var(--neo-font-medium);
+}
+
+/* -------------------- REGISTRATION SUCCESS -------------------- */
+
+.registration-success {
+  text-align: center;
+  padding: var(--neo-space-xxl);
+  animation: successPulse 0.6s ease-out;
+}
+
+@keyframes successPulse {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.success-icon {
+  font-size: 4rem;
+  color: var(--neo-gold);
+  margin-bottom: var(--neo-space-lg);
+  animation: iconGlow 2s ease-in-out infinite;
+}
+
+@keyframes iconGlow {
+  0%, 100% {
+    filter: drop-shadow(0 0 10px rgba(255, 215, 0, 0.5));
+  }
+  50% {
+    filter: drop-shadow(0 0 20px rgba(255, 215, 0, 0.8));
+  }
+}
+
+.success-title {
+  font-size: var(--neo-font-3xl);
+  color: var(--neo-gold);
+  margin-bottom: var(--neo-space-md);
+}
+
+.success-message {
+  font-size: var(--neo-font-lg);
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: var(--neo-space-xl);
+  line-height: 1.6;
+}
+
+.success-details {
+  background: rgba(255, 215, 0, 0.1);
+  border: 1px solid rgba(255, 215, 0, 0.3);
+  border-radius: var(--neo-radius-md);
+  padding: var(--neo-space-lg);
+  margin: var(--neo-space-xl) 0;
+}
+
+.success-detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: var(--neo-space-sm) 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.success-detail-item:last-child {
+  border-bottom: none;
+}
+
+.success-detail-label {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.success-detail-value {
+  color: var(--neo-text);
+  font-weight: var(--neo-font-medium);
+}
+
+/* -------------------- REGISTRATION ERROR -------------------- */
+
+.registration-error {
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  border-radius: var(--neo-radius-md);
+  padding: var(--neo-space-lg);
+  margin: var(--neo-space-md) 0;
+  color: var(--neo-error);
+  text-align: center;
+  animation: shake 0.5s ease-in-out;
+}
+
+@keyframes shake {
+  0%, 100% {
+    transform: translateX(0);
+  }
+  25% {
+    transform: translateX(-10px);
+  }
+  75% {
+    transform: translateX(10px);
+  }
+}
+
+.error-icon {
+  font-size: 2rem;
+  margin-bottom: var(--neo-space-sm);
+}
+
+/* -------------------- POSTER CODE INPUT -------------------- */
+
+.poster-code-input-group {
+  width: 100%;
+  max-width: 400px;
+}
+
+.poster-code-label {
+  display: block;
+  text-align: center;
+  font-size: var(--neo-font-lg);
+  color: var(--neo-primary);
+  margin-bottom: var(--neo-space-md);
+  font-weight: var(--neo-font-medium);
+}
+
+.poster-code-input {
+  width: 100%;
+  padding: var(--neo-space-lg);
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(165, 154, 209, 0.3);
+  border-radius: var(--neo-radius-xl);
+  color: var(--neo-text);
+  font-size: var(--neo-font-xl);
+  text-align: center;
+  font-family: monospace;
+  letter-spacing: 2px;
+  transition: all var(--neo-transition-normal);
+}
+
+.poster-code-input:focus {
+  border-color: var(--neo-primary);
+  box-shadow: var(--neo-shadow-cosmic);
+  outline: none;
+}
+
+.poster-code-input::placeholder {
+  color: rgba(255, 255, 255, 0.3);
+  letter-spacing: normal;
+  font-family: inherit;
+}
+
+.poster-code-input.error {
+  border-color: var(--neo-error);
+  animation: shake 0.5s ease-in-out;
+}
+
+/* -------------------- REGISTRATION PROGRESS -------------------- */
+
+.registration-progress {
+  width: 100%;
+  max-width: 400px;
+  margin: var(--neo-space-xl) 0;
+}
+
+.progress-steps {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  margin-bottom: var(--neo-space-lg);
+}
+
+.progress-step {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(165, 154, 209, 0.2);
+  border: 2px solid rgba(165, 154, 209, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: var(--neo-font-bold);
+  position: relative;
+  z-index: 2;
+  transition: all var(--neo-transition-normal);
+}
+
+.progress-step.active {
+  background: var(--neo-primary);
+  border-color: var(--neo-primary);
+  color: var(--neo-text);
+  box-shadow: var(--neo-shadow-cosmic);
+}
+
+.progress-step.completed {
+  background: var(--neo-gold);
+  border-color: var(--neo-gold);
+  color: var(--neo-background);
+}
+
+.progress-line {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(165, 154, 209, 0.2);
+  z-index: 1;
+}
+
+.progress-line-fill {
+  height: 100%;
+  background: var(--neo-primary);
+  transition: width var(--neo-transition-slow);
+}
+
+/* -------------------- VERIFICATION STATUS -------------------- */
+
+.verification-status {
+  display: flex;
+  align-items: center;
+  gap: var(--neo-space-md);
+  padding: var(--neo-space-lg);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--neo-radius-md);
+  margin: var(--neo-space-md) 0;
+}
+
+.verification-status.verifying {
+  border: 1px solid rgba(165, 154, 209, 0.3);
+}
+
+.verification-status.success {
+  border: 1px solid rgba(76, 175, 80, 0.3);
+  background: rgba(76, 175, 80, 0.1);
+}
+
+.verification-status.error {
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  background: rgba(255, 107, 107, 0.1);
+}
+
+.verification-icon {
+  font-size: 1.5rem;
+}
+
+.verification-message {
+  flex: 1;
+  font-size: var(--neo-font-base);
+}
+
+/* -------------------- MOBILE RESPONSIVE -------------------- */
+
+@media (max-width: 768px) {
+  .nfc-registration-container {
+    width: 95%;
+    padding: var(--neo-space-lg);
+  }
+
+  .nfc-registration-container .registration-step {
+    gap: 0rem !important;
+  }
+
+  .nfc-form-container {
+    width: 95%;
+    padding: var(--neo-space-lg);
+  }
+
+  .registration-title {
+    font-size: var(--neo-font-2xl);
+  }
+
+  .premium-fields {
+    margin: 0 !important;
+    padding-bottom: 10px !important;
+    gap: 0.4rem !important;
+  }
+
+  .poster-code-input {
+    font-size: var(--neo-font-lg);
+    padding: var(--neo-space-md);
+  }
+
+  .progress-steps {
+    gap: var(--neo-space-md);
+  }
+
+  .progress-step {
+    width: 32px;
+    height: 32px;
+    font-size: var(--neo-font-sm);
+  }
+}
+
+/* -------------------- ACCESSIBILITY -------------------- */
+
+.poster-code-input:focus,
+.registration-step button:focus {
+  outline: 2px solid rgba(165, 154, 209, 0.5);
+  outline-offset: 2px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .nfc-registration-container {
+    border: 3px solid var(--neo-primary);
+  }
+  
+  .premium-fields {
+    border: 2px solid var(--neo-primary);
+  }
+  
+  .progress-step {
+    border-width: 3px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .nfc-registration-container,
+  .registration-success,
+  .registration-error {
+    animation: none;
+  }
+  
+  .success-icon {
+    animation: none;
+  }
+}
+
+/* -------------------- LOADING STATE -------------------- */
+
+.registration-loading {
+  text-align: center;
+  padding: var(--neo-space-xxl);
+}
+
+.registration-spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(165, 154, 209, 0.2);
+  border-top-color: var(--neo-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto var(--neo-space-lg);
+}
+
+.registration-loading-text {
+  font-size: var(--neo-font-lg);
+  color: rgba(255, 255, 255, 0.7);
+}

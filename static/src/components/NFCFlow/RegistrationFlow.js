@@ -1,97 +1,145 @@
-// Updated RegistrationFlow component with new class names
+// RegistrationFlow.js - Fixed to use FastAPI endpoints
 const RegistrationFlow = ({ onRegistrationComplete, onError }) => {
-  const mounted = React.useRef(true);
-  const [showWelcome, setShowWelcome] = React.useState(true);
-  const [isVerifying, setIsVerifying] = React.useState(false);
+  const [currentView, setCurrentView] = React.useState('welcome');
+  const [posterCode, setPosterCode] = React.useState('');
+  const [existingUser, setExistingUser] = React.useState(null);
   const [error, setError] = React.useState(null);
-  const [verifiedPosterCode, setVerifiedPosterCode] = React.useState(null);
+  const [isSubmitting, setIsSubmitting] = React.useState(false);
 
-  // Add cleanup effect
+  // Check URL for posterCode parameter
   React.useEffect(() => {
-    mounted.current = true;
-    return () => {
-      mounted.current = false;
-    };
+    const urlParams = new URLSearchParams(window.location.search);
+    const urlPosterCode = urlParams.get('posterCode');
+    if (urlPosterCode) {
+      console.log('RegistrationFlow: Poster code from URL:', urlPosterCode);
+      setPosterCode(urlPosterCode);
+      // Auto-verify if we have the code
+      handleWelcomeSubmit({ preventDefault: () => {} }, urlPosterCode);
+    }
   }, []);
 
-  const handleRegistrationComplete = (data) => {
-    if (!mounted.current) return;
-    console.log('Registration completed:', data);
-    // Just handle the success, don't try to update parent state
-    if (onRegistrationComplete) {
-      onRegistrationComplete(data);
-    }
-  };
+  const handleWelcomeSubmit = async (e, prefilledCode) => {
+    e.preventDefault();
+    const codeToVerify = prefilledCode || posterCode;
+    
+    console.log('RegistrationFlow: Verifying poster code:', codeToVerify);
+    setIsSubmitting(true);
+    setError(null);
 
-  const handleWelcomeSubmit = async (code) => {
     try {
-      if (!mounted.current) return;
-      console.log('RegistrationFlow: Verifying poster code:', code);
-      setIsVerifying(true);
-      setError(null);
+      // NEW: Call FastAPI verify_poster endpoint
+      console.log('🔍 Calling FastAPI verify_poster:', window.API_CONFIG.BASE_URL);
+      
+      const data = await window.API_CONFIG.post(
+        window.API_CONFIG.ENDPOINTS.VERIFY_POSTER,
+        { nfc_id: codeToVerify }
+      );
 
-      const response = await fetch('/api/nfc/verify_poster', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ posterCode: code }),
-      });
+      console.log('✅ Verification response:', data);
 
-      const data = await response.json();
-
-      if (!response.ok) {
-        throw new Error(data.error || 'Failed to verify code');
-      }
-
-      if (mounted.current) {
-        setVerifiedPosterCode(code);
-        console.log('RegistrationFlow: Poster code verified:', code);
-        setShowWelcome(false);
+      if (data.success) {
+        if (data.existingUser) {
+          console.log('RegistrationFlow: Existing user detected, loading data');
+          setExistingUser(data.userData);
+          setCurrentView('form');
+        } else {
+          console.log('RegistrationFlow: New user, showing form');
+          setCurrentView('form');
+        }
+      } else {
+        throw new Error(data.message || 'Invalid poster code');
       }
     } catch (err) {
-      console.error('Verification error:', err);
-      if (mounted.current) {
-        setError(err.message);
-        if (onError) onError(err.message);
-      }
+      console.error('❌ Verification error:', err);
+      setError(err.message || 'Failed to verify poster code');
     } finally {
-      if (mounted.current) {
-        setIsVerifying(false);
-      }
+      setIsSubmitting(false);
     }
   };
 
-  // Render welcome screen
-  if (showWelcome) {
-    return React.createElement('div', {
-      className: 'neo-registration-flow'
-    },
-      React.createElement(WelcomeScreen, {
-        onCodeSubmit: handleWelcomeSubmit,
-        isLoading: isVerifying,
-        error: error
-      })
+  const handleFormSubmit = async (userData) => {
+    console.log('RegistrationFlow: Form submitted with data:', userData);
+    setIsSubmitting(true);
+    setError(null);
+
+    try {
+      // Add poster code to user data
+      const registrationData = {
+        ...userData,
+        posterCode: posterCode
+      };
+
+      console.log('📤 Calling FastAPI register:', window.API_CONFIG.BASE_URL);
+
+      // NEW: Call FastAPI register endpoint
+      const data = await window.API_CONFIG.post(
+        window.API_CONFIG.ENDPOINTS.REGISTER,
+        registrationData
+      );
+
+      console.log('✅ Registration response:', data);
+
+      if (data.success) {
+        // Show success view briefly
+        setCurrentView('success');
+        
+        // Call parent callback with the complete user data
+        setTimeout(() => {
+          if (onRegistrationComplete) {
+            onRegistrationComplete({
+              ...data,
+              nfc_id: data.nfcId,
+              user_data: userData
+            });
+          }
+        }, 2000);
+      } else {
+        throw new Error(data.message || 'Registration failed');
+      }
+    } catch (err) {
+      console.error('❌ Registration error:', err);
+      setError(err.message || 'Failed to register');
+      setCurrentView('form'); // Stay on form to show error
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  // Render different views based on state
+  if (currentView === 'welcome') {
+    return React.createElement(window.WelcomeScreen, {
+      posterCode: posterCode,
+      onPosterCodeChange: setPosterCode,
+      onSubmit: handleWelcomeSubmit,
+      error: error,
+      isSubmitting: isSubmitting
+    });
+  }
+
+  if (currentView === 'form') {
+    return React.createElement(window.NFCUserRegistration, {
+      posterCode: posterCode,
+      existingUserData: existingUser,
+      onSubmit: handleFormSubmit,
+      onError: (err) => {
+        setError(err);
+        if (onError) onError(err);
+      },
+      isSubmitting: isSubmitting,
+      error: error
+    });
+  }
+
+  if (currentView === 'success') {
+    return React.createElement('div', { className: 'registration-success' },
+      React.createElement('div', { className: 'success-icon' }, '✨'),
+      React.createElement('h2', { className: 'cosmic-text' }, 'Registration Complete!'),
+      React.createElement('p', null, 'Connecting to your cosmic reading...'),
+      React.createElement('div', { className: 'cosmic-loader' })
     );
   }
 
-  // Render registration form
-  return React.createElement('div', {
-    className: 'neo-registration-flow'
-  }, 
-    React.createElement(NFCUserRegistration, {
-      key: verifiedPosterCode, // Add key to ensure fresh mount
-      posterCode: verifiedPosterCode,
-      onComplete: handleRegistrationComplete,
-      onError: (errorMsg) => {
-        if (mounted.current) {
-          setError(errorMsg);
-          setShowWelcome(true);
-        }
-      },
-      isSubmitting: isVerifying
-    })
-  );
+  return null;
 };
 
 window.RegistrationFlow = RegistrationFlow;

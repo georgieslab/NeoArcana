@@ -1,0 +1,656 @@
+/* ========================================
+   NEOARCANA - FORMS
+   All input, dropdown, and form elements
+   ======================================== */
+
+/* -------------------- BASE INPUT STYLES -------------------- */
+
+.input-container,
+.neo-input-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: var(--neo-space-md);
+}
+
+.input,
+.cosmic-input,
+.neo-input {
+  width: 100%;
+  padding: var(--neo-space-md) var(--neo-space-lg);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--neo-radius-xl);
+  color: var(--neo-text);
+  font-size: var(--neo-font-base);
+  transition: all var(--neo-transition-normal);
+  min-height: var(--input-height);
+}
+
+.input:focus,
+.cosmic-input:focus,
+.neo-input:focus {
+  border-color: var(--neo-primary);
+  box-shadow: 0 0 10px rgba(165, 154, 209, 0.2);
+  outline: none;
+}
+
+.input::placeholder,
+.cosmic-input::placeholder,
+.neo-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* Input with icon */
+.input-with-icon {
+  padding-left: 56px;
+}
+
+.input-icon {
+  position: absolute;
+  left: var(--neo-space-lg);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 24px;
+  height: 24px;
+  opacity: 0.8;
+  pointer-events: none;
+}
+
+/* -------------------- TEXTAREA -------------------- */
+
+.textarea-input,
+.neo-textarea {
+  min-height: 120px;
+  resize: none;
+  line-height: 1.5;
+  padding: var(--neo-space-lg);
+}
+
+/* -------------------- DATE INPUT -------------------- */
+
+input[type="date"] {
+  appearance: none;
+  -webkit-appearance: none;
+  color: var(--neo-text);
+  font-family: inherit;
+  font-size: inherit;
+  background-color: rgba(255, 255, 255, 0.1);
+  padding: var(--neo-space-md) var(--neo-space-lg) var(--neo-space-md) 40px;
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--neo-radius-xl);
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  background: transparent;
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+}
+
+/* Custom date input container */
+.date-input-container {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background-color: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--neo-radius-xl);
+  padding: var(--neo-space-sm) var(--neo-space-lg);
+  transition: all var(--neo-transition-normal);
+  min-height: var(--input-height);
+}
+
+.date-input-container:hover {
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.date-input-container:focus-within {
+  border-color: var(--neo-primary);
+  box-shadow: 0 0 10px rgba(165, 154, 209, 0.2);
+}
+
+.date-inputs {
+  display: flex;
+  align-items: center;
+  margin-left: 30px;
+  gap: 4px;
+}
+
+.date-part {
+  width: 40px;
+  background: transparent;
+  border: none;
+  color: var(--neo-text);
+  font-size: var(--neo-font-base);
+  padding: 4px;
+  text-align: center;
+}
+
+.date-part.year {
+  width: 60px;
+}
+
+.date-part::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.date-part:focus {
+  outline: none;
+}
+
+.date-separator {
+  color: rgba(255, 255, 255, 0.5);
+  padding: 0 2px;
+}
+
+/* -------------------- COSMIC MULTI SELECT DROPDOWN -------------------- */
+
+.cosmic-msd {
+  position: relative;
+  width: 100%;
+  margin-bottom: var(--neo-space-md);
+}
+
+.cosmic-msd-label {
+  position: relative;
+  width: 100%;
+  height: 44px;
+  padding: 0 var(--neo-space-lg);
+  display: flex;
+  align-items: center;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--neo-radius-xl);
+  cursor: pointer;
+  transition: all var(--neo-transition-normal);
+  min-height: var(--input-height);
+}
+
+.cosmic-msd-label:hover {
+  background: rgba(255, 255, 255, 0.15);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+.cosmic-msd-label.active {
+  border-color: var(--neo-primary);
+  box-shadow: 0 0 10px rgba(165, 154, 209, 0.2);
+}
+
+.label-text {
+  flex: 1;
+  color: var(--neo-text);
+}
+
+.label-text.placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* -------------------- DROPDOWN OPTIONS CONTAINER -------------------- */
+
+.cosmic-msd-options-container {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: var(--neo-space-sm);
+  background: rgba(20, 20, 30, 0.95);
+  backdrop-filter: var(--neo-blur-md);
+  border-radius: var(--neo-radius-lg);
+  box-shadow: var(--neo-shadow-lg);
+  z-index: var(--z-dropdown);
+  overflow: hidden;
+  animation: slideUp var(--neo-transition-normal) ease-out;
+}
+
+/* Mobile: Full screen bottom sheet */
+@media (max-width: 768px) {
+  .cosmic-msd-options-container {
+    position: fixed;
+    top: auto;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    border-radius: 24px 24px 0 0;
+    animation: slideUp var(--neo-transition-normal) ease-out;
+    max-height: 80vh;
+  }
+}
+
+/* Dropdown header (mobile only) */
+.cosmic-msd-options-header {
+  display: none;
+  padding: var(--neo-space-lg);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  background: rgba(20, 20, 30, 0.95);
+  backdrop-filter: var(--neo-blur-md);
+  z-index: 2;
+}
+
+@media (max-width: 768px) {
+  .cosmic-msd-options-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+}
+
+.cosmic-msd-options-header h3 {
+  margin: 0;
+  color: var(--neo-primary);
+  font-size: var(--neo-font-lg);
+}
+
+.cosmic-msd-close {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  border: none;
+  color: var(--neo-text);
+  font-size: 24px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--neo-transition-normal);
+}
+
+.cosmic-msd-close:hover {
+  background: rgba(255, 255, 255, 0.2);
+}
+
+/* Dropdown options list */
+.cosmic-msd-options {
+  max-height: 300px;
+  overflow-y: auto;
+  padding: var(--neo-space-sm);
+}
+
+@media (max-width: 768px) {
+  .cosmic-msd-options {
+    max-height: calc(80vh - 70px);
+  }
+}
+
+.cosmic-msd-options-option {
+  padding: var(--neo-space-md);
+  cursor: pointer;
+  transition: all var(--neo-transition-normal);
+  border-radius: var(--neo-radius-sm);
+  margin-bottom: var(--neo-space-xs);
+  background: rgba(255, 255, 255, 0.05);
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: var(--neo-space-sm);
+}
+
+.cosmic-msd-options-option:hover {
+  background: rgba(255, 255, 255, 0.15);
+  transform: translateY(-2px);
+}
+
+.cosmic-msd-options-option.selected {
+  background: rgba(165, 154, 209, 0.2);
+  border: 1px solid var(--neo-primary);
+}
+
+.cosmic-msd-options-option:active {
+  transform: scale(0.98);
+}
+
+/* -------------------- MOBILE BACKDROP -------------------- */
+
+.cosmic-backdrop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  z-index: calc(var(--z-dropdown) - 1);
+  animation: fadeIn var(--neo-transition-fast);
+}
+
+/* -------------------- COLOR PICKER -------------------- */
+
+.color-swatches {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(60px, 1fr));
+  gap: var(--neo-space-md);
+  padding: var(--neo-space-lg);
+}
+
+@media (max-width: 768px) {
+  .color-swatches {
+    grid-template-columns: repeat(4, 1fr);
+    gap: var(--neo-space-lg);
+    padding: var(--neo-space-xl);
+  }
+}
+
+.color-swatch {
+  position: relative;
+  width: 100%;
+  padding-bottom: 100%;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  cursor: pointer;
+  transition: all var(--neo-transition-normal);
+  background-color: var(--color);
+}
+
+.color-swatch:hover {
+  transform: scale(1.1);
+  box-shadow: 0 0 15px var(--color);
+}
+
+.color-swatch.selected {
+  border-color: var(--neo-text);
+  transform: scale(1.1);
+  box-shadow: var(--neo-shadow-cosmic);
+}
+
+.swatch-check {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  filter: brightness(0) invert(1);
+}
+
+/* -------------------- INTERESTS PICKER -------------------- */
+
+.interests-picker .cosmic-msd-options {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--neo-space-sm);
+  padding: var(--neo-space-lg);
+}
+
+@media (max-width: 768px) {
+  .interests-picker .cosmic-msd-options {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* -------------------- LANGUAGE SELECT -------------------- */
+
+.language-option {
+  display: flex;
+  align-items: center;
+  gap: var(--neo-space-md);
+}
+
+.language-flag {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+/* -------------------- GENDER SELECT -------------------- */
+
+.gender-option {
+  display: flex;
+  align-items: center;
+  gap: var(--neo-space-sm);
+}
+
+.gender-icon {
+  width: 20px;
+  height: 20px;
+  opacity: 0.8;
+}
+
+/* -------------------- ERROR STATES -------------------- */
+
+.input.error,
+.cosmic-input.error,
+.neo-input.error {
+  border-color: var(--neo-error);
+  animation: shake 0.5s ease-in-out;
+}
+
+.error-message {
+  color: var(--neo-error);
+  font-size: var(--neo-font-sm);
+  margin-top: var(--neo-space-xs);
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all var(--neo-transition-normal);
+}
+
+.error-message.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* -------------------- SUCCESS STATES -------------------- */
+
+.input.success,
+.cosmic-input.success,
+.neo-input.success {
+  border-color: var(--neo-success);
+}
+
+/* -------------------- CHARACTER COUNT -------------------- */
+
+.character-count {
+  position: absolute;
+  bottom: -20px;
+  right: 16px;
+  font-size: var(--neo-font-sm);
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.character-count.warning {
+  color: var(--neo-warning);
+}
+
+.character-count.error {
+  color: var(--neo-error);
+}
+
+/* -------------------- FORM GROUPS -------------------- */
+
+.form-group,
+.neo-form-group {
+  margin-bottom: var(--neo-space-lg);
+}
+
+.form-label,
+.neo-form-label {
+  display: block;
+  color: var(--neo-text-muted);
+  font-size: var(--neo-font-sm);
+  margin-bottom: var(--neo-space-sm);
+  font-weight: var(--neo-font-medium);
+}
+
+/* -------------------- FIELD SETS -------------------- */
+
+.premium-fields {
+  display: flex;
+  flex-direction: column;
+  gap: var(--neo-space-md);
+  margin: var(--neo-space-lg) 0;
+}
+
+@media (max-width: 768px) {
+  .premium-fields {
+    margin: 0 !important;
+    padding-bottom: 10px !important;
+    gap: 0.4rem !important;
+  }
+  
+  .cosmic-msd {
+    margin-bottom: 10px !important;
+  }
+}
+
+/* -------------------- NUMEROLOGY SECTION -------------------- */
+
+.numerology-section {
+  padding: var(--neo-space-md);
+  background: rgba(165, 154, 209, 0.1);
+  border-radius: var(--neo-radius-lg);
+  backdrop-filter: var(--neo-blur-sm);
+  width: 80%;
+}
+
+.numbers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--neo-space-lg);
+  justify-items: center;
+}
+
+@media (max-width: 768px) {
+  .numbers-grid {
+    grid-template-columns: 1fr;
+    gap: var(--neo-space-md);
+  }
+}
+
+.number-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--neo-space-sm);
+}
+
+@media (max-width: 768px) {
+  .number-item {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--neo-space-sm);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--neo-radius-md);
+  }
+}
+
+.number-icon {
+  width: 24px;
+  height: 24px;
+  opacity: 0.8;
+}
+
+.number-label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: var(--neo-font-sm);
+}
+
+@media (max-width: 768px) {
+  .number-label {
+    flex: 1;
+    text-align: left;
+    margin-left: var(--neo-space-md);
+  }
+}
+
+.number-value {
+  color: var(--neo-secondary);
+  font-size: var(--neo-font-3xl);
+  font-weight: var(--neo-font-bold);
+}
+
+/* -------------------- PROMO CODE INPUT -------------------- */
+
+.cosmic-promo-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--neo-space-md);
+  max-width: 400px;
+  margin: 0 auto;
+  align-items: center;
+}
+
+.promo-input {
+  padding: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+  border-radius: var(--neo-radius-sm);
+  background: rgba(0, 0, 0, 0.3);
+  color: var(--neo-text);
+  font-size: var(--neo-font-base);
+  text-align: center;
+  transition: all var(--neo-transition-normal);
+}
+
+.promo-input:focus {
+  border-color: var(--neo-primary);
+  outline: none;
+  box-shadow: var(--neo-shadow-cosmic);
+}
+
+.promo-input::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.promo-input.error {
+  border-color: var(--neo-error);
+  animation: shake 0.5s ease-in-out;
+}
+
+/* -------------------- ACCESSIBILITY -------------------- */
+
+/* Focus visible styles */
+.input:focus-visible,
+.cosmic-input:focus-visible,
+.cosmic-msd-label:focus-visible {
+  outline: 2px solid rgba(165, 154, 209, 0.8);
+  outline-offset: 2px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .input,
+  .cosmic-input,
+  .cosmic-msd-label {
+    border-width: 2px;
+  }
+}
+
+/* -------------------- LOADING STATE -------------------- */
+
+.input-loading {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.6;
+}
+
+.input-loading::after {
+  content: '';
+  position: absolute;
+  right: var(--neo-space-md);
+  top: 50%;
+  transform: translateY(-50%);
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(165, 154, 209, 0.3);
+  border-top-color: var(--neo-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* -------------------- DISABLED STATE -------------------- */
+
+.input:disabled,
+.cosmic-input:disabled,
+.cosmic-msd-label.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}

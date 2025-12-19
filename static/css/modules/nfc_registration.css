@@ -257,7 +257,7 @@
 .neo-dropdown-label,
 .neo-textarea,
 .neo-button {
-  height: 56px;
+  height: 3rempx;
   width: 100%;
   max-width: 100%;
   background: rgba(26, 26, 46, 0.6);

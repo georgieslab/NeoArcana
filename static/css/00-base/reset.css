@@ -1,0 +1,441 @@
+/* ========================================
+   NEOARCANA - RESET & BASE STYLES
+   Browser normalization and global styles
+   ======================================== */
+
+/* -------------------- CSS RESET -------------------- */
+
+/* Box sizing rules */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+/* Remove default margin and padding */
+* {
+  margin: 0;
+  padding: 0;
+}
+
+/* Remove list styles on ul, ol elements */
+ul,
+ol {
+  list-style: none;
+}
+
+/* Set core root defaults */
+html {
+  scroll-behavior: smooth;
+}
+
+/* Set core body defaults */
+body {
+  min-height: 100vh;
+  text-rendering: optimizeSpeed;
+  line-height: 1.5;
+}
+
+/* Make images easier to work with */
+img,
+picture {
+  max-width: 100%;
+  display: block;
+}
+
+/* Inherit fonts for inputs and buttons */
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+/* Remove default button styles */
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+}
+
+/* Remove input appearance */
+input,
+select,
+textarea {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  border: none;
+  outline: none;
+}
+
+/* Remove spinners from number inputs */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button,
+input[type="tel"]::-webkit-outer-spin-button,
+input[type="tel"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"],
+input[type="tel"] {
+  -moz-appearance: textfield;
+}
+
+/* Remove date picker default styles */
+input[type="date"] {
+  appearance: none;
+  -webkit-appearance: none;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  background: transparent;
+  bottom: 0;
+  color: transparent;
+  cursor: pointer;
+  height: auto;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: auto;
+}
+
+/* Remove anchor default styles */
+a {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* -------------------- GLOBAL STYLES -------------------- */
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  background-color: var(--neo-bg-dark);
+  color: var(--neo-text);
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+/* -------------------- SCROLLBAR STYLING -------------------- */
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--neo-primary) rgba(0, 0, 0, 0.1);
+}
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(165, 154, 209, 0.5);
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(165, 154, 209, 0.7);
+}
+
+/* -------------------- SELECTION STYLING -------------------- */
+
+::selection {
+  background-color: rgba(165, 154, 209, 0.3);
+  color: var(--neo-text);
+}
+
+::-moz-selection {
+  background-color: rgba(165, 154, 209, 0.3);
+  color: var(--neo-text);
+}
+
+/* -------------------- FOCUS STYLES -------------------- */
+
+/* Remove default focus outline */
+*:focus {
+  outline: none;
+}
+
+/* Add custom focus styles */
+button:focus-visible,
+a:focus-visible,
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: 2px solid rgba(165, 154, 209, 0.8);
+  outline-offset: 4px;
+}
+
+/* -------------------- IOS SPECIFIC FIXES -------------------- */
+
+@supports (-webkit-touch-callout: none) {
+  /* Fix for 100vh on iOS */
+  body {
+    min-height: -webkit-fill-available;
+  }
+  
+  /* Fix backdrop-filter for iOS */
+  .neo-container,
+  .modal,
+  .cosmic-msd-options-container {
+    -webkit-backdrop-filter: blur(10px);
+  }
+  
+  /* Fix scrolling */
+  .container,
+  .step-container,
+  .messages-container {
+    -webkit-overflow-scrolling: touch;
+  }
+  
+  /* Prevent zoom on input focus */
+  input, 
+  select, 
+  textarea {
+    font-size: 16px !important;
+  }
+  
+  /* Fix button rendering */
+  button {
+    -webkit-appearance: none;
+  }
+}
+
+/* -------------------- ANDROID SPECIFIC FIXES -------------------- */
+
+/* Remove tap highlight */
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* -------------------- ACCESSIBILITY -------------------- */
+
+/* Reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+  :root {
+    --neo-primary: #ffffff;
+    --neo-secondary: #ffff00;
+    --neo-text: #ffffff;
+  }
+  
+  button,
+  .cosmic-button {
+    border: 2px solid currentColor !important;
+  }
+}
+
+/* -------------------- HIDDEN UTILITIES -------------------- */
+
+.hidden {
+  display: none !important;
+}
+
+.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.invisible {
+  visibility: hidden;
+}
+
+/* Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* -------------------- LOADING STATE -------------------- */
+
+.loading {
+  opacity: 0.5;
+  pointer-events: none;
+  cursor: wait;
+}
+
+/* -------------------- DISABLED STATE -------------------- */
+
+:disabled,
+[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+}
+
+/* -------------------- PRINT STYLES -------------------- */
+
+@media print {
+  /* Hide non-essential elements when printing */
+  .audio-button,
+  .restart-button,
+  .back-button,
+  .chat-interface,
+  .floating-chat-button,
+  .dev-panel {
+    display: none !important;
+  }
+  
+  /* Ensure content is readable */
+  body {
+    background: white !important;
+    color: black !important;
+  }
+  
+  .container {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    border: 1px solid #ccc !important;
+  }
+  
+  /* Ensure cards are visible */
+  .card-image {
+    page-break-inside: avoid;
+  }
+}
+
+/* -------------------- SAFE AREA INSETS -------------------- */
+
+/* Support for notched devices */
+@supports (padding: max(0px)) {
+  body {
+    padding-left: max(0px, env(safe-area-inset-left));
+    padding-right: max(0px, env(safe-area-inset-right));
+  }
+}
+
+/* -------------------- DARK MODE (System Preference) -------------------- */
+
+@media (prefers-color-scheme: dark) {
+  /* Already dark by default, but can adjust if needed */
+  :root {
+    --neo-shadow-soft: 0 4px 10px rgba(0, 0, 0, 0.25);
+    --neo-shadow-medium: 0 8px 16px rgba(0, 0, 0, 0.3);
+    --neo-shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* -------------------- UTILITY CLASSES -------------------- */
+
+/* Display utilities */
+.flex {
+  display: flex;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.grid {
+  display: grid;
+}
+
+/* Positioning */
+.relative {
+  position: relative;
+}
+
+.absolute {
+  position: absolute;
+}
+
+.fixed {
+  position: fixed;
+}
+
+.sticky {
+  position: sticky;
+}
+
+/* Width utilities */
+.w-full {
+  width: 100%;
+}
+
+.h-full {
+  height: 100%;
+}
+
+/* Overflow utilities */
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
+.overflow-scroll {
+  overflow: scroll;
+}
+
+/* Pointer events */
+.pointer-events-none {
+  pointer-events: none;
+}
+
+.pointer-events-auto {
+  pointer-events: auto;
+}
+
+/* Cursor utilities */
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed;
+}
+
+/* -------------------- BACKDROP ACTIVE STATE -------------------- */
+
+/* When modal/backdrop is active, prevent body scroll */
+body.modal-active,
+body.cosmic-reading-active {
+  overflow: hidden !important;
+  height: 100vh !important;
+  position: fixed !important;
+  width: 100% !important;
+}

@@ -1,4 +1,5 @@
-// Updated NFCUserRegistration component with new class names
+// Updated NFCUserRegistration component with FastAPI integration
+// 🔄 CHANGED: Now uses API_CONFIG to connect to FastAPI backend
 const NFCUserRegistration = ({ onComplete, onError, posterCode: initialPosterCode }) => {
   const mounted = React.useRef(true);
   const [registrationSuccess, setRegistrationSuccess] = React.useState(false);
@@ -73,22 +74,18 @@ const NFCUserRegistration = ({ onComplete, onError, posterCode: initialPosterCod
           numbers: formData.numbers,
         },
       };
-  
-      const response = await fetch('/api/nfc/register', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(registrationData),
-      });
 
-      const data = await response.json();
+      // 🔄 CHANGED: Using API_CONFIG for FastAPI connection
+      // OLD: const response = await fetch('/api/nfc/register', {...})
+      console.log('🚀 Submitting registration to FastAPI:', window.API_CONFIG.BASE_URL);
+      
+      const data = await window.API_CONFIG.post(
+        window.API_CONFIG.ENDPOINTS.REGISTER,
+        registrationData
+      );
 
-      if (!response.ok) {
-        throw new Error(data.error || 'Registration failed');
-      }
-
-      console.log('Registration successful:', data);
+      // API_CONFIG.post() automatically handles response parsing and errors
+      console.log('✅ Registration successful:', data);
 
       if (mounted.current) {
         setRegistrationSuccess(true);
@@ -98,7 +95,8 @@ const NFCUserRegistration = ({ onComplete, onError, posterCode: initialPosterCod
       }
 
     } catch (err) {
-      console.error('Registration error:', err);
+      // API_CONFIG.post() throws errors with descriptive messages
+      console.error('❌ Registration error:', err);
       if (mounted.current) {
         setFormError(err.message || 'Registration failed. Please try again.');
       }

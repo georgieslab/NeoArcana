@@ -1,0 +1,584 @@
+/* ========================================
+   NEOARCANA - CHAT INTERFACE
+   Beautiful glass morphism chat styling
+   ======================================== */
+
+/* -------------------- MAIN CONTAINER -------------------- */
+
+.neo-chat {
+  position: fixed;
+  bottom: var(--neo-space-xxl);
+  right: var(--neo-space-xxl);
+  width: 400px;
+  height: 600px;
+  max-height: calc(100vh - 120px);
+  
+  background: rgba(10, 10, 20, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid rgba(165, 154, 209, 0.3);
+  border-radius: var(--neo-radius-xl);
+  
+  box-shadow: 
+    0 20px 60px rgba(0, 0, 0, 0.5),
+    0 0 80px rgba(165, 154, 209, 0.2);
+  
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  
+  z-index: var(--z-floating);
+  animation: chatSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes chatSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* -------------------- HEADER -------------------- */
+
+.neo-chat-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--neo-space-lg) var(--neo-space-xl);
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 1px solid rgba(165, 154, 209, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+/* Cosmic glow behind header */
+.neo-chat-header::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle at center,
+    rgba(165, 154, 209, 0.1) 0%,
+    transparent 70%
+  );
+  animation: cosmicPulse 8s ease-in-out infinite;
+  pointer-events: none;
+}
+
+.neo-chat-header-content {
+  display: flex;
+  align-items: center;
+  gap: var(--neo-space-md);
+  position: relative;
+  z-index: 1;
+}
+
+.neo-chat-header-icon {
+  width: 24px;
+  height: 24px;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 10px rgba(165, 154, 209, 0.5));
+  animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-3px);
+  }
+}
+
+.neo-chat-title {
+  margin: 0;
+  font-size: var(--neo-font-lg);
+  font-weight: 600;
+  background: linear-gradient(
+    135deg,
+    var(--neo-primary) 0%,
+    var(--neo-secondary) 50%,
+    var(--neo-gold) 100%
+  );
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: cosmicGradient 5s ease infinite;
+}
+
+.neo-chat-close {
+  background: none;
+  border: none;
+  color: var(--neo-text);
+  font-size: 32px;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  border-radius: 50%;
+  transition: all var(--neo-transition-normal);
+  position: relative;
+  z-index: 1;
+}
+
+.neo-chat-close:hover {
+  background: rgba(255, 255, 255, 0.1);
+  transform: rotate(90deg);
+  color: var(--neo-secondary);
+}
+
+.neo-chat-close:active {
+  transform: rotate(90deg) scale(0.95);
+}
+
+/* -------------------- MESSAGES CONTAINER -------------------- */
+
+.neo-chat-messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: var(--neo-space-lg);
+  display: flex;
+  flex-direction: column;
+  gap: var(--neo-space-md);
+  
+  /* Custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(165, 154, 209, 0.3) transparent;
+}
+
+.neo-chat-messages::-webkit-scrollbar {
+  width: 6px;
+}
+
+.neo-chat-messages::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.neo-chat-messages::-webkit-scrollbar-thumb {
+  background: rgba(165, 154, 209, 0.3);
+  border-radius: 3px;
+}
+
+.neo-chat-messages::-webkit-scrollbar-thumb:hover {
+  background: rgba(165, 154, 209, 0.5);
+}
+
+/* -------------------- MESSAGES -------------------- */
+
+.neo-chat-message {
+  display: flex;
+  margin-bottom: var(--neo-space-sm);
+  animation: messageSlideIn 0.3s ease-out;
+}
+
+@keyframes messageSlideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.neo-chat-message--fade-in {
+  animation: messageSlideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Message Content Bubble */
+.neo-chat-message-content {
+  max-width: 85%;
+  padding: var(--neo-space-md) var(--neo-space-lg);
+  border-radius: var(--neo-radius-lg);
+  font-size: var(--neo-font-base);
+  line-height: 1.6;
+  word-wrap: break-word;
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  gap: var(--neo-space-sm);
+}
+
+/* Assistant Messages */
+.neo-chat-message--assistant {
+  justify-content: flex-start;
+}
+
+.neo-chat-message--assistant .neo-chat-message-content {
+  background: rgba(165, 154, 209, 0.15);
+  border: 1px solid rgba(165, 154, 209, 0.3);
+  color: var(--neo-text);
+  border-bottom-left-radius: var(--neo-space-xs);
+}
+
+.neo-chat-message--assistant .neo-chat-message-content::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -8px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 8px 8px 0;
+  border-color: transparent rgba(165, 154, 209, 0.15) transparent transparent;
+}
+
+/* Assistant Icon */
+.neo-chat-message-icon {
+  width: 18px;
+  height: 18px;
+  opacity: 0.8;
+  flex-shrink: 0;
+  margin-top: 2px;
+  filter: drop-shadow(0 0 6px rgba(165, 154, 209, 0.5));
+}
+
+/* User Messages */
+.neo-chat-message--user {
+  justify-content: flex-end;
+}
+
+.neo-chat-message--user .neo-chat-message-content {
+  background: linear-gradient(
+    135deg,
+    rgba(244, 162, 97, 0.25),
+    rgba(244, 162, 97, 0.15)
+  );
+  border: 1px solid rgba(244, 162, 97, 0.3);
+  color: var(--neo-text);
+  border-bottom-right-radius: var(--neo-space-xs);
+  margin-left: auto;
+}
+
+.neo-chat-message--user .neo-chat-message-content::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  right: -8px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 8px 8px;
+  border-color: transparent transparent rgba(244, 162, 97, 0.15) transparent;
+}
+
+/* Error Messages */
+.neo-chat-message--error {
+  justify-content: center;
+}
+
+.neo-chat-message--error .neo-chat-message-content {
+  background: rgba(255, 107, 107, 0.15);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  color: var(--color-error);
+  text-align: center;
+  max-width: 90%;
+}
+
+/* -------------------- TYPING INDICATOR -------------------- */
+
+.neo-chat-message--typing .neo-chat-message-content {
+  padding: var(--neo-space-md);
+}
+
+.neo-chat-typing-indicator {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  height: 24px;
+}
+
+.neo-chat-typing-indicator span {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--neo-primary);
+  animation: typingBounce 1.4s infinite;
+  opacity: 0.6;
+}
+
+.neo-chat-typing-indicator span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.neo-chat-typing-indicator span:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.neo-chat-typing-indicator span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes typingBounce {
+  0%, 60%, 100% {
+    transform: translateY(0);
+    opacity: 0.6;
+  }
+  30% {
+    transform: translateY(-8px);
+    opacity: 1;
+  }
+}
+
+/* -------------------- INPUT FORM -------------------- */
+
+.neo-chat-form {
+  display: flex;
+  gap: var(--neo-space-md);
+  padding: var(--neo-space-lg) var(--neo-space-xl);
+  background: rgba(0, 0, 0, 0.3);
+  border-top: 1px solid rgba(165, 154, 209, 0.2);
+}
+
+.neo-chat-input {
+  flex: 1;
+  padding: var(--neo-space-md) var(--neo-space-lg);
+  background: rgba(255, 255, 255, 0.08);
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--neo-radius-full);
+  color: var(--neo-text);
+  font-size: var(--neo-font-base);
+  font-family: inherit;
+  outline: none;
+  transition: all var(--neo-transition-normal);
+}
+
+.neo-chat-input:focus {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: var(--neo-primary);
+  box-shadow: 
+    0 0 0 3px rgba(165, 154, 209, 0.1),
+    0 0 20px rgba(165, 154, 209, 0.2);
+}
+
+.neo-chat-input::placeholder {
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.neo-chat-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* -------------------- SUBMIT BUTTON -------------------- */
+
+.neo-chat-submit {
+  width: 44px;
+  height: 44px;
+  min-width: 44px;
+  border-radius: 50%;
+  background: linear-gradient(
+    135deg,
+    rgba(244, 162, 97, 0.9),
+    rgba(244, 162, 97, 0.7)
+  );
+  border: 2px solid var(--neo-secondary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all var(--neo-transition-normal);
+  position: relative;
+  overflow: hidden;
+}
+
+.neo-chat-submit::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.3);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s, height 0.6s;
+}
+
+.neo-chat-submit:hover::before {
+  width: 100%;
+  height: 100%;
+}
+
+.neo-chat-submit:hover {
+  transform: translateY(-2px) scale(1.05);
+  background: linear-gradient(
+    135deg,
+    rgba(244, 162, 97, 1),
+    rgba(244, 162, 97, 0.9)
+  );
+  box-shadow: 
+    0 4px 12px rgba(244, 162, 97, 0.3),
+    0 0 30px rgba(244, 162, 97, 0.2);
+}
+
+.neo-chat-submit:active {
+  transform: translateY(0) scale(1);
+}
+
+.neo-chat-submit:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.neo-chat-submit:disabled:hover {
+  transform: none;
+  box-shadow: none;
+}
+
+.neo-chat-submit-icon {
+  width: 20px;
+  height: 20px;
+  filter: brightness(0) invert(1);
+  transition: transform var(--neo-transition-normal);
+  position: relative;
+  z-index: 1;
+}
+
+.neo-chat-submit:hover .neo-chat-submit-icon {
+  transform: translateX(2px);
+}
+
+/* -------------------- ANIMATIONS -------------------- */
+
+@keyframes cosmicPulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes cosmicGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+/* -------------------- MOBILE RESPONSIVE -------------------- */
+
+@media (max-width: 768px) {
+  .neo-chat {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    max-height: 100%;
+    border-radius: 0;
+    animation: chatSlideUp 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @keyframes chatSlideUp {
+    from {
+      transform: translateY(100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  .neo-chat-header {
+    padding: var(--neo-space-lg);
+  }
+
+  .neo-chat-messages {
+    padding: var(--neo-space-md);
+  }
+
+  .neo-chat-message-content {
+    max-width: 90%;
+    font-size: var(--neo-font-sm);
+  }
+
+  .neo-chat-form {
+    padding: var(--neo-space-md);
+    /* Account for mobile keyboard */
+    padding-bottom: max(var(--neo-space-md), env(safe-area-inset-bottom));
+  }
+
+  .neo-chat-input {
+    font-size: 16px; /* Prevent zoom on iOS */
+  }
+}
+
+/* Landscape mode on mobile */
+@media (max-width: 768px) and (orientation: landscape) {
+  .neo-chat-messages {
+    max-height: calc(100vh - 140px);
+  }
+}
+
+/* -------------------- ACCESSIBILITY -------------------- */
+
+/* Focus states */
+.neo-chat-input:focus-visible {
+  outline: 2px solid var(--neo-primary);
+  outline-offset: 2px;
+}
+
+.neo-chat-submit:focus-visible {
+  outline: 2px solid var(--neo-primary);
+  outline-offset: 3px;
+}
+
+.neo-chat-close:focus-visible {
+  outline: 2px solid var(--neo-primary);
+  outline-offset: 2px;
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .neo-chat,
+  .neo-chat-message,
+  .neo-chat-header-icon,
+  .neo-chat-typing-indicator span,
+  .neo-chat-submit {
+    animation: none;
+    transition: none;
+  }
+
+  .neo-chat-submit:hover {
+    transform: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .neo-chat {
+    border: 2px solid var(--neo-primary);
+  }
+
+  .neo-chat-message-content {
+    border-width: 2px;
+  }
+
+  .neo-chat-input {
+    border-width: 2px;
+  }
+}
+
+/* Dark mode support (already dark, but for future) */
+@media (prefers-color-scheme: dark) {
+  .neo-chat {
+    background: rgba(10, 10, 20, 0.98);
+  }
+}

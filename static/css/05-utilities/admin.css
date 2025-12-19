@@ -1,0 +1,598 @@
+/* ========================================
+   NEOARCANA - ADMIN PANEL
+   Administrative interface styles
+   ======================================== */
+
+/* -------------------- ADMIN PANEL CONTAINER -------------------- */
+
+.nfc-admin-panel {
+  background: linear-gradient(to bottom, var(--neo-background-dark), var(--neo-background));
+  border-radius: var(--neo-radius-md);
+  padding: var(--neo-space-xl);
+  color: var(--neo-text);
+  max-width: 90%;
+  margin: var(--neo-space-xl) auto;
+  box-shadow: var(--neo-shadow-lg);
+  animation: fadeIn 0.5s ease;
+}
+
+.admin-panel-header {
+  text-align: center;
+  margin-bottom: var(--neo-space-xxl);
+  padding-bottom: var(--neo-space-lg);
+  border-bottom: 2px solid rgba(165, 154, 209, 0.3);
+}
+
+.admin-panel-title {
+  font-size: var(--neo-font-4xl);
+  background: var(--gradient-premium);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  margin-bottom: var(--neo-space-sm);
+  font-weight: var(--neo-font-bold);
+}
+
+.admin-panel-subtitle {
+  font-size: var(--neo-font-lg);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* -------------------- ADMIN LOGIN -------------------- */
+
+.admin-login-container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: var(--neo-space-xxl);
+  background: rgba(0, 0, 0, 0.4);
+  border-radius: var(--neo-radius-lg);
+  border: 1px solid rgba(165, 154, 209, 0.3);
+}
+
+.admin-login-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--neo-space-md);
+  margin-top: var(--neo-space-lg);
+}
+
+.admin-login-input {
+  width: 100%;
+  padding: var(--neo-space-md);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--neo-radius-md);
+  color: var(--neo-text);
+  font-size: var(--neo-font-base);
+  transition: all var(--neo-transition-normal);
+}
+
+.admin-login-input:focus {
+  border-color: var(--neo-primary);
+  box-shadow: var(--neo-shadow-cosmic);
+  outline: none;
+}
+
+.admin-login-error {
+  background: rgba(255, 107, 107, 0.1);
+  border: 1px solid rgba(255, 107, 107, 0.3);
+  border-radius: var(--neo-radius-sm);
+  padding: var(--neo-space-md);
+  color: var(--neo-error);
+  text-align: center;
+  margin-bottom: var(--neo-space-md);
+}
+
+/* -------------------- ADMIN ACTIONS -------------------- */
+
+.admin-actions {
+  display: flex;
+  gap: var(--neo-space-md);
+  margin-bottom: var(--neo-space-xxl);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.admin-action-button {
+  padding: var(--neo-space-md) var(--neo-space-xl);
+  background: rgba(165, 154, 209, 0.2);
+  border: 1px solid var(--neo-primary);
+  border-radius: var(--neo-radius-full);
+  color: var(--neo-text);
+  font-size: var(--neo-font-base);
+  cursor: pointer;
+  transition: all var(--neo-transition-normal);
+}
+
+.admin-action-button:hover {
+  background: rgba(165, 154, 209, 0.3);
+  transform: translateY(-2px);
+  box-shadow: var(--neo-shadow-cosmic);
+}
+
+.admin-action-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* -------------------- NEW POSTER FORM -------------------- */
+
+.new-poster-form {
+  margin-top: var(--neo-space-xl);
+  padding: var(--neo-space-lg);
+  background: rgba(26, 26, 38, 0.5);
+  border-radius: var(--neo-radius-sm);
+  margin-bottom: var(--neo-space-xl);
+  border: 1px solid rgba(165, 154, 209, 0.2);
+}
+
+.new-poster-form h3 {
+  color: var(--neo-secondary);
+  margin-bottom: var(--neo-space-lg);
+  font-size: var(--neo-font-xl);
+}
+
+.poster-form-group {
+  margin-bottom: var(--neo-space-md);
+}
+
+.poster-form-label {
+  display: block;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: var(--neo-space-sm);
+  font-size: var(--neo-font-base);
+  font-weight: var(--neo-font-medium);
+}
+
+.poster-form-input {
+  width: 100%;
+  padding: var(--neo-space-md);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--neo-radius-md);
+  color: var(--neo-text);
+  font-size: var(--neo-font-base);
+  transition: all var(--neo-transition-normal);
+}
+
+.poster-form-input:focus {
+  border-color: var(--neo-primary);
+  box-shadow: var(--neo-shadow-cosmic);
+  outline: none;
+}
+
+.poster-form-help {
+  font-size: var(--neo-font-sm);
+  color: rgba(255, 255, 255, 0.5);
+  margin-top: var(--neo-space-xs);
+}
+
+/* -------------------- POSTER LIST -------------------- */
+
+.poster-list-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: var(--neo-space-lg);
+  padding-bottom: var(--neo-space-md);
+  border-bottom: 1px solid rgba(165, 154, 209, 0.2);
+}
+
+.poster-list-title {
+  font-size: var(--neo-font-2xl);
+  color: var(--neo-secondary);
+  font-weight: var(--neo-font-semibold);
+}
+
+.poster-list-count {
+  font-size: var(--neo-font-base);
+  color: rgba(255, 255, 255, 0.6);
+  background: rgba(165, 154, 209, 0.1);
+  padding: var(--neo-space-sm) var(--neo-space-md);
+  border-radius: var(--neo-radius-full);
+}
+
+.poster-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--neo-space-sm);
+  max-height: 400px;
+  overflow-y: auto;
+  padding-right: var(--neo-space-sm);
+}
+
+/* Custom scrollbar for poster list */
+.poster-list::-webkit-scrollbar {
+  width: 8px;
+}
+
+.poster-list::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.poster-list::-webkit-scrollbar-thumb {
+  background: rgba(165, 154, 209, 0.3);
+  border-radius: 4px;
+}
+
+.poster-list::-webkit-scrollbar-thumb:hover {
+  background: rgba(165, 154, 209, 0.5);
+}
+
+/* -------------------- POSTER ITEMS -------------------- */
+
+.poster-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: var(--neo-space-md);
+  background: rgba(26, 26, 38, 0.3);
+  border-radius: var(--neo-radius-sm);
+  border-left: 3px solid var(--neo-primary);
+  transition: all var(--neo-transition-normal);
+}
+
+.poster-item:hover {
+  background: rgba(26, 26, 38, 0.5);
+  transform: translateX(5px);
+}
+
+.poster-item.registered {
+  border-left-color: var(--neo-gold);
+}
+
+.poster-item-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--neo-space-xs);
+}
+
+.poster-code {
+  font-family: monospace;
+  font-size: var(--neo-font-base);
+  font-weight: var(--neo-font-bold);
+  color: var(--neo-primary-light);
+}
+
+.poster-item.registered .poster-code {
+  color: var(--neo-gold);
+}
+
+.poster-meta {
+  font-size: var(--neo-font-sm);
+  color: rgba(255, 255, 255, 0.6);
+  display: flex;
+  gap: var(--neo-space-md);
+}
+
+.poster-nfc-id {
+  font-family: monospace;
+}
+
+.poster-created {
+  opacity: 0.8;
+}
+
+/* -------------------- POSTER STATUS -------------------- */
+
+.poster-status {
+  font-size: var(--neo-font-sm);
+  padding: 0.2rem 0.5rem;
+  border-radius: var(--neo-radius-sm);
+  text-transform: uppercase;
+  font-weight: var(--neo-font-semibold);
+  letter-spacing: 0.5px;
+}
+
+.poster-status.available {
+  background: rgba(76, 175, 80, 0.2);
+  color: #8BC34A;
+  border: 1px solid rgba(139, 195, 74, 0.3);
+}
+
+.poster-status.registered {
+  background: rgba(33, 150, 243, 0.2);
+  color: #29B6F6;
+  border: 1px solid rgba(41, 182, 246, 0.3);
+}
+
+/* -------------------- DELETE BUTTON -------------------- */
+
+.delete-button {
+  background: rgba(244, 67, 54, 0.2);
+  color: var(--neo-error);
+  border: 1px solid rgba(244, 67, 54, 0.3);
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--neo-transition-normal);
+  font-size: var(--neo-font-lg);
+  font-weight: var(--neo-font-bold);
+}
+
+.delete-button:hover {
+  background: rgba(244, 67, 54, 0.4);
+  transform: scale(1.1);
+}
+
+.delete-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* -------------------- ADMIN STATS -------------------- */
+
+.admin-stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--neo-space-lg);
+  margin-bottom: var(--neo-space-xxl);
+}
+
+.admin-stat-card {
+  background: rgba(165, 154, 209, 0.1);
+  border: 1px solid rgba(165, 154, 209, 0.2);
+  border-radius: var(--neo-radius-md);
+  padding: var(--neo-space-lg);
+  text-align: center;
+}
+
+.admin-stat-value {
+  font-size: var(--neo-font-4xl);
+  font-weight: var(--neo-font-bold);
+  color: var(--neo-gold);
+  margin-bottom: var(--neo-space-sm);
+}
+
+.admin-stat-label {
+  font-size: var(--neo-font-sm);
+  color: rgba(255, 255, 255, 0.7);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+/* -------------------- LOADING & ERROR STATES -------------------- */
+
+.admin-panel-loading {
+  background-color: rgba(10, 10, 31, 0.95);
+  color: var(--neo-text);
+  padding: var(--neo-space-xl);
+  border-radius: var(--neo-radius-sm);
+  text-align: center;
+  max-width: 500px;
+  margin: 100px auto;
+  box-shadow: var(--neo-shadow-lg);
+}
+
+.admin-panel-loading h3 {
+  color: var(--neo-primary);
+  margin-bottom: var(--neo-space-lg);
+  font-size: var(--neo-font-2xl);
+}
+
+.admin-loading-spinner {
+  width: 60px;
+  height: 60px;
+  border: 4px solid rgba(165, 154, 209, 0.2);
+  border-top-color: var(--neo-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: 0 auto var(--neo-space-lg);
+}
+
+.admin-panel-error {
+  background-color: rgba(10, 10, 31, 0.95);
+  color: var(--neo-text);
+  padding: var(--neo-space-xl);
+  border-radius: var(--neo-radius-sm);
+  text-align: center;
+  max-width: 500px;
+  margin: 100px auto;
+  box-shadow: var(--neo-shadow-lg);
+  border: 2px solid var(--neo-error);
+}
+
+.admin-panel-error h3 {
+  color: var(--neo-error);
+  margin-bottom: var(--neo-space-lg);
+  font-size: var(--neo-font-2xl);
+}
+
+.admin-panel-error p {
+  color: rgba(255, 255, 255, 0.8);
+  font-size: var(--neo-font-lg);
+  margin-bottom: var(--neo-space-xl);
+}
+
+/* -------------------- CONFIRMATION DIALOG -------------------- */
+
+.admin-confirm-dialog {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: linear-gradient(135deg, rgba(26, 26, 38, 0.98), rgba(20, 20, 30, 0.98));
+  padding: var(--neo-space-xxl);
+  border-radius: var(--neo-radius-lg);
+  border: 2px solid var(--neo-error);
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+  max-width: 400px;
+  z-index: var(--z-modal-max);
+  animation: scaleIn 0.3s ease-out;
+}
+
+@keyframes scaleIn {
+  from {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0;
+  }
+  to {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 1;
+  }
+}
+
+.admin-confirm-title {
+  font-size: var(--neo-font-2xl);
+  color: var(--neo-error);
+  margin-bottom: var(--neo-space-md);
+  text-align: center;
+}
+
+.admin-confirm-message {
+  font-size: var(--neo-font-lg);
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: var(--neo-space-xl);
+  text-align: center;
+  line-height: 1.6;
+}
+
+.admin-confirm-actions {
+  display: flex;
+  gap: var(--neo-space-md);
+  justify-content: center;
+}
+
+/* -------------------- SEARCH & FILTER -------------------- */
+
+.admin-search-container {
+  margin-bottom: var(--neo-space-xl);
+}
+
+.admin-search-input {
+  width: 100%;
+  padding: var(--neo-space-md) var(--neo-space-lg);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: var(--neo-radius-full);
+  color: var(--neo-text);
+  font-size: var(--neo-font-base);
+  transition: all var(--neo-transition-normal);
+}
+
+.admin-search-input:focus {
+  border-color: var(--neo-primary);
+  box-shadow: var(--neo-shadow-cosmic);
+  outline: none;
+}
+
+.admin-filters {
+  display: flex;
+  gap: var(--neo-space-md);
+  margin-bottom: var(--neo-space-lg);
+  flex-wrap: wrap;
+}
+
+.admin-filter-button {
+  padding: var(--neo-space-sm) var(--neo-space-lg);
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: var(--neo-radius-full);
+  color: rgba(255, 255, 255, 0.7);
+  font-size: var(--neo-font-sm);
+  cursor: pointer;
+  transition: all var(--neo-transition-normal);
+}
+
+.admin-filter-button:hover {
+  background: rgba(255, 255, 255, 0.15);
+  color: var(--neo-text);
+}
+
+.admin-filter-button.active {
+  background: var(--neo-primary);
+  border-color: var(--neo-primary);
+  color: var(--neo-text);
+}
+
+/* -------------------- MOBILE RESPONSIVE -------------------- */
+
+@media (max-width: 768px) {
+  .nfc-admin-panel {
+    padding: var(--neo-space-lg);
+    max-width: 95%;
+  }
+
+  .admin-panel-title {
+    font-size: var(--neo-font-3xl);
+  }
+
+  .admin-actions {
+    flex-direction: column;
+  }
+
+  .admin-action-button {
+    width: 100%;
+  }
+
+  .poster-list {
+    max-height: 300px;
+  }
+
+  .poster-item {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--neo-space-sm);
+  }
+
+  .poster-meta {
+    flex-direction: column;
+    gap: var(--neo-space-xs);
+  }
+
+  .admin-stats {
+    grid-template-columns: 1fr;
+  }
+
+  .admin-confirm-dialog {
+    max-width: 90%;
+  }
+}
+
+/* -------------------- ACCESSIBILITY -------------------- */
+
+.admin-action-button:focus,
+.admin-login-input:focus,
+.poster-form-input:focus,
+.delete-button:focus {
+  outline: 2px solid rgba(165, 154, 209, 0.5);
+  outline-offset: 2px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .nfc-admin-panel {
+    border: 3px solid var(--neo-primary);
+  }
+
+  .poster-item {
+    border-left-width: 5px;
+  }
+
+  .poster-status {
+    border-width: 2px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .nfc-admin-panel,
+  .admin-confirm-dialog,
+  .poster-item {
+    animation: none;
+    transition: none;
+  }
+
+  .admin-loading-spinner {
+    animation: none;
+    border-top-color: var(--neo-primary);
+  }
+}

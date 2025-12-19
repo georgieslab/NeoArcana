@@ -43,8 +43,8 @@ const ThreeCardReading = ({ userData, onError, onComplete }) => {
     const selectedCards = shuffled.slice(0, 3);
     
     // Get user's name and zodiac sign for personalization
-    const userName = userData?.user_data?.name || 'Seeker';
-    const zodiacSign = userData?.user_data?.zodiacSign || 'cosmic traveler';
+    const userName = userData&&user_data&&name || 'Seeker';
+    const zodiacSign = userData&&user_data&&zodiacSign || 'cosmic traveler';
     
     // Generate an interpretation
     const interpretation = `
@@ -118,27 +118,49 @@ Trust in your intuition as you navigate these energies, and remember that you ha
     return themes[cardName] || "cosmic energies";
   };
 
-  // Setup component
+  // Setup component - Fetch real reading from FastAPI
   React.useEffect(() => {
     // Reset mounted ref to true when component mounts
     mounted.current = true;
     
-    // Use a timeout to simulate loading
-    setTimeout(() => {
-      if (mounted.current) {
-        try {
-          // Generate mock data
-          const mockData = generateMockData();
-          setReadingData(mockData);
+    // Fetch real three-card reading from FastAPI
+    const fetchThreeCardReading = async () => {
+      if (!mounted.current) return;
+      
+      try {
+        setIsLoading(true);
+        
+        // 🔄 UPDATED: Using FastAPI via API_CONFIG helper
+        // OLD: Mock data generated locally
+        // NEW: Real API call to FastAPI three_card_reading endpoint
+        console.log('🎴 Fetching three-card reading from FastAPI:', window.API_CONFIG.BASE_URL);
+        console.log('📤 User data:', { nfc_id: userData&&nfc_id });
+        
+        const data = await window.API_CONFIG.post(
+          window.API_CONFIG.ENDPOINTS.THREE_CARD_READING,
+          { nfc_id: userData.nfc_id }
+        );
+        
+        console.log('✅ Three-card reading received:', data);
+        
+        if (mounted.current) {
+          setReadingData(data.data);
           setStep('initial');
-        } catch (err) {
-          console.error('Error generating mock data:', err);
-          setError('Something went wrong preparing your reading');
-        } finally {
+        }
+        
+      } catch (err) {
+        console.error('❌ Error fetching three-card reading:', err);
+        if (mounted.current) {
+          setError(err.message || 'Failed to load your three-card reading');
+        }
+      } finally {
+        if (mounted.current) {
           setIsLoading(false);
         }
       }
-    }, 1500); // 1.5 second delay for loading effect
+    };
+    
+    fetchThreeCardReading();
     
     // Cleanup function
     return () => {

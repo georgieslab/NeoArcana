@@ -1,0 +1,639 @@
+/* ========================================
+   NEOARCANA - BUTTONS
+   All button components and variations
+   ======================================== */
+
+/* -------------------- BASE BUTTON STYLES -------------------- */
+
+.cosmic-button,
+.button,
+.neo-button {
+  position: relative;
+  padding: var(--neo-space-md) var(--neo-space-xl);
+  font-size: var(--neo-font-base);
+  border: solid 4px var(--neo-primary);
+  border-radius: var(--neo-radius-full);
+  background: rgba(255, 255, 255, 0.2);
+  color: var(--neo-text);
+  cursor: pointer;
+  transition: all var(--neo-transition-normal);
+  backdrop-filter: var(--neo-blur-sm);
+  box-shadow: var(--neo-shadow-sm);
+  overflow: hidden;
+  font-weight: var(--neo-font-medium);
+  text-align: center;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--neo-space-sm);
+  min-height: var(--button-height-sm);
+}
+
+.cosmic-button:hover,
+.button:hover,
+.neo-button:hover {
+  background: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+  box-shadow: var(--neo-shadow-md);
+}
+
+.cosmic-button:active,
+.button:active,
+.neo-button:active {
+  transform: translateY(0);
+}
+
+.cosmic-button:disabled,
+.button:disabled,
+.neo-button:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* -------------------- BUTTON VARIANTS -------------------- */
+
+/* Primary Button */
+.cosmic-button--primary,
+.neo-button--primary {
+  background: rgba(165, 154, 209, 0.2);
+  color: var(--neo-primary);
+  border: 1.5px solid var(--neo-primary);
+}
+
+.cosmic-button--primary:hover,
+.neo-button--primary:hover {
+  background: rgba(165, 154, 209, 0.3);
+  box-shadow: var(--neo-shadow-cosmic);
+}
+
+/* Secondary Button */
+.cosmic-button--secondary,
+.neo-button--secondary {
+  background: rgba(244, 162, 97, 0.2);
+  color: var(--neo-secondary);
+  border: 1.5px solid var(--neo-secondary);
+}
+
+.cosmic-button--secondary:hover,
+.neo-button--secondary:hover {
+  background: rgba(244, 162, 97, 0.3);
+  box-shadow: 0 4px 12px rgba(244, 162, 97, 0.4);
+}
+
+/* Premium/Gold Button */
+.cosmic-button--premium,
+.neo-button--premium {
+  background: var(--gradient-premium);
+  border: 1.5px solid var(--neo-gold);
+  color: var(--neo-text);
+  position: relative;
+}
+
+.cosmic-button--premium::before,
+.neo-button--premium::before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  background-image: conic-gradient(
+    from var(--angle),
+    rgba(255, 223, 126, 0),
+    rgba(165, 154, 209, 0.3),
+    rgba(255, 223, 126, 0)
+  );
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  padding: 3px;
+  border-radius: var(--neo-radius-full);
+  animation: spin 3s linear infinite;
+  filter: blur(10px);
+}
+
+/* Error Button */
+.cosmic-btn-error {
+  background: var(--gradient-error);
+  color: var(--neo-error);
+  border: 2px solid rgba(255, 107, 107, 0.5);
+}
+
+.cosmic-btn-error:hover {
+  background: linear-gradient(135deg, rgba(255, 107, 107, 0.5), rgba(255, 80, 80, 0.5));
+  transform: translateY(-3px);
+  box-shadow: 0 10px 25px rgba(255, 107, 107, 0.3);
+}
+
+/* -------------------- COSMIC GLASSY BUTTONS -------------------- */
+
+.cosmic-glassy-button1,
+.cosmic-glassy-button2,
+.cosmic-glassy-button3,
+.cosmic-glassy-button4 {
+  max-width: 284px !important;
+  width: 100% !important;
+  min-height: 55px;
+  padding: 10px 30px;
+  font-size: 18px;
+  border-radius: 25px;
+  cursor: pointer;
+  transition: all var(--neo-transition-normal);
+  overflow: hidden;
+  position: relative;
+  -webkit-backdrop-filter: var(--neo-blur-sm);
+  backdrop-filter: var(--neo-blur-sm);
+  background-color: rgba(46, 46, 56, 0.3);
+  margin: 8px 0 !important;
+  font-weight: var(--neo-font-medium);
+}
+
+/* Common hover effects */
+.cosmic-glassy-button1:hover,
+.cosmic-glassy-button2:hover,
+.cosmic-glassy-button3:hover,
+.cosmic-glassy-button4:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 15px rgba(165, 154, 209, 0.3);
+  background: #000;
+}
+
+/* Common active state */
+.cosmic-glassy-button1:active,
+.cosmic-glassy-button2:active,
+.cosmic-glassy-button3:active,
+.cosmic-glassy-button4:active {
+  transform: scale(0.98);
+}
+
+/* Common ::before pseudo-element for spinning effect */
+.cosmic-glassy-button1::before,
+.cosmic-glassy-button2::before,
+.cosmic-glassy-button3::before,
+.cosmic-glassy-button4::before {
+  content: '';
+  position: absolute;
+  height: 100%;
+  width: 220px;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: -1;
+  padding: 3px;
+  border-radius: 25px;
+  animation: spin2 3s linear infinite;
+  filter: blur(10px);
+}
+
+.cosmic-glassy-button1:hover::before,
+.cosmic-glassy-button2:hover::before,
+.cosmic-glassy-button3:hover::before,
+.cosmic-glassy-button4:hover::before {
+  opacity: 1;
+}
+
+/* Button 1 - Purple */
+.cosmic-glassy-button1 {
+  border: 1.5px solid #9ea5ffde;
+  color: var(--neo-primary-light);
+  background: linear-gradient(135deg, rgb(17 10 44 / 30%), rgb(97 160 244 / 30%));
+  box-shadow: 0 0 10px rgba(165, 154, 209, 0.3);
+}
+
+.cosmic-glassy-button1::before {
+  background-image: conic-gradient(
+    from var(--angle), 
+    rgba(0, 255, 184, 0), 
+    rgba(165, 154, 209, 0.3)
+  );
+}
+
+.cosmic-glassy-button1:hover {
+  color: #e2ddff;
+  animation: pulse1 2s infinite;
+  box-shadow: 0 0 20px rgba(181, 166, 255, 0.5);
+}
+
+/* Button 2 - Orange */
+.cosmic-glassy-button2 {
+  border: 1.5px solid #ff8c3b;
+  color: #ff8c3b;
+  font-weight: 550 !important;
+  box-shadow: 0 0 10px rgba(255, 140, 59, 0.3);
+}
+
+.cosmic-glassy-button2::before {
+  background-image: conic-gradient(
+    from var(--angle), 
+    rgba(0, 255, 184, 0), 
+    rgba(164, 43, 0, 0.3), 
+    rgba(150, 206, 124, 0)
+  );
+}
+
+.cosmic-glassy-button2:hover {
+  color: #ff8c3b;
+  animation: pulseOrange 2s infinite;
+  box-shadow: 0 0 20px rgba(255, 140, 59, 0.3);
+}
+
+/* Button 3 - Green */
+.cosmic-glassy-button3 {
+  border: 1.5px solid #c7f2d4;
+  color: #c7f2d4;
+  box-shadow: 0 0 10px rgba(27, 89, 53, 0.3);
+}
+
+.cosmic-glassy-button3::before {
+  background-image: conic-gradient(
+    from var(--angle), 
+    rgba(0, 255, 184, 0), 
+    rgba(154, 209, 175, 0.3)
+  );
+}
+
+.cosmic-glassy-button3:hover {
+  color: #ddfff2;
+  animation: pulse3 2s infinite;
+  box-shadow: 0 0 20px rgba(166, 255, 206, 0.5);
+}
+
+/* Button 4 - Gold */
+.cosmic-glassy-button4 {
+  border: 1.5px solid var(--neo-gold);
+  color: var(--neo-gold);
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+}
+
+.cosmic-glassy-button4::before {
+  background-image: conic-gradient(
+    from var(--angle), 
+    rgba(0, 255, 184, 0), 
+    rgba(164, 43, 0, 0.3), 
+    rgba(150, 206, 124, 0)
+  );
+}
+
+.cosmic-glassy-button4:hover {
+  color: var(--neo-secondary);
+  animation: pulse2 2s infinite;
+  box-shadow: 0 0 20px rgba(142, 88, 44, 0.3);
+}
+
+/* -------------------- COSMIC ACTION BUTTONS -------------------- */
+
+.cosmic-btn {
+  padding: var(--neo-space-lg) var(--neo-space-xxl);
+  background: linear-gradient(135deg, 
+    rgba(165, 154, 209, 0.2), 
+    rgba(244, 162, 97, 0.2)
+  );
+  border: 2px solid rgba(165, 154, 209, 0.4);
+  border-radius: var(--neo-radius-full);
+  color: var(--neo-text);
+  font-size: var(--neo-font-lg);
+  font-weight: var(--neo-font-semibold);
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  position: relative;
+  overflow: hidden;
+  backdrop-filter: var(--neo-blur-md);
+  box-shadow: var(--neo-shadow-md);
+  min-width: 220px;
+}
+
+.cosmic-btn::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  transform: translate(-50%, -50%);
+  transition: width 0.6s ease, height 0.6s ease;
+}
+
+.cosmic-btn:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.cosmic-btn:hover {
+  transform: translateY(-5px);
+  border-color: rgba(165, 154, 209, 0.6);
+  box-shadow: 0 15px 35px rgba(165, 154, 209, 0.3);
+  background: linear-gradient(135deg, 
+    rgba(165, 154, 209, 0.3), 
+    rgba(244, 162, 97, 0.3)
+  );
+}
+
+.cosmic-btn:active {
+  transform: translateY(-2px);
+}
+
+/* -------------------- TEXT BUTTONS -------------------- */
+
+.text-button-cosmic,
+.neo-text-button {
+  background: none;
+  border: none;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: var(--neo-font-sm);
+  cursor: pointer;
+  transition: all var(--neo-transition-normal);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  position: relative;
+  padding: var(--neo-space-sm) var(--neo-space-md);
+}
+
+.text-button-cosmic:hover,
+.neo-text-button:hover {
+  color: var(--neo-primary);
+  text-shadow: 0 0 10px rgba(165, 154, 209, 0.5);
+}
+
+.text-button-cosmic::after,
+.neo-text-button::after {
+  content: '';
+  position: absolute;
+  bottom: 0.3rem;
+  left: var(--neo-space-md);
+  right: var(--neo-space-md);
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transition: transform var(--neo-transition-normal);
+}
+
+.text-button-cosmic:hover::after,
+.neo-text-button:hover::after {
+  transform: scaleX(1);
+}
+
+/* -------------------- ICON BUTTONS -------------------- */
+
+.icon-button,
+.neo-icon-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  background: rgba(165, 154, 209, 0.2);
+  border: 1px solid rgba(165, 154, 209, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all var(--neo-transition-normal);
+  padding: 0;
+}
+
+.icon-button:hover,
+.neo-icon-button:hover {
+  background: rgba(165, 154, 209, 0.3);
+  transform: scale(1.05);
+}
+
+.icon-button:disabled,
+.neo-icon-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* -------------------- FLOATING ACTION BUTTONS -------------------- */
+
+.floating-chat-button,
+.chat-icon-button {
+  position: fixed;
+  bottom: var(--neo-space-xl);
+  right: var(--neo-space-xl);
+  background: var(--neo-secondary);
+  color: var(--neo-text);
+  border: none;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(244, 162, 97, 0.3);
+  cursor: pointer;
+  transition: all var(--neo-transition-normal);
+  z-index: var(--z-fixed);
+  animation: pulse 2s infinite;
+}
+
+.floating-chat-button:hover,
+.chat-icon-button:hover {
+  background: var(--neo-primary);
+  transform: translateY(-3px);
+  box-shadow: var(--neo-shadow-lg);
+}
+
+.floating-chat-button::after,
+.chat-icon-button:after {
+  content: '';
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  animation: pulse 2s infinite;
+}
+
+/* -------------------- CONTROL BUTTONS (Fixed) -------------------- */
+
+.restart-button,
+.back-button,
+.audio-button {
+  position: fixed;
+  background: rgba(0, 0, 0, 0.7);
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transition: all var(--neo-transition-normal);
+  z-index: var(--z-fixed);
+}
+
+.restart-button {
+  bottom: 65px;
+  right: 15px;
+  box-shadow: 0 0 2px 2px rgba(254, 215, 102, 0.5);
+}
+
+.back-button {
+  bottom: 20px;
+  left: 20px;
+  box-shadow: 0 0 2px 2px rgba(255, 247, 138, 0.432);
+}
+
+.audio-button {
+  bottom: var(--neo-space-xl);
+  right: var(--neo-space-md);
+  box-shadow: 0 0 2px 2px rgba(195, 164, 235, 0.5);
+  background: rgba(255, 255, 255, 0.2);
+  width: 35px;
+  height: 35px;
+  overflow: hidden;
+}
+
+.restart-button:hover,
+.back-button:hover,
+.audio-button:hover {
+  transform: scale(1.2);
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* -------------------- BUTTON WITH ICON -------------------- */
+
+.button-icon,
+.neo-button-icon {
+  width: 20px;
+  height: 20px;
+  transition: transform var(--neo-transition-normal);
+}
+
+.cosmic-button:hover .button-icon,
+.neo-button:hover .neo-button-icon {
+  transform: scale(1.1);
+}
+
+/* -------------------- BUTTON GROUPS -------------------- */
+
+.button-group,
+.neo-button-group {
+  display: flex;
+  gap: var(--neo-space-md);
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.cosmic-actions-container {
+  display: flex;
+  justify-content: center;
+  gap: var(--neo-space-xl);
+  margin: var(--neo-space-xxl) 0;
+  flex-wrap: wrap;
+}
+
+/* -------------------- BUTTON STATES -------------------- */
+
+.button-loading,
+.neo-button-loading {
+  position: relative;
+  pointer-events: none;
+  opacity: 0.7;
+}
+
+.button-loading::after,
+.neo-button-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 16px;
+  height: 16px;
+  border: 2px solid var(--neo-text);
+  border-radius: 50%;
+  border-top-color: transparent;
+  animation: spin 1s linear infinite;
+}
+
+/* -------------------- MOBILE OPTIMIZATIONS -------------------- */
+
+@media (max-width: 768px) {
+  .cosmic-glassy-button1, 
+  .cosmic-glassy-button2,
+  .cosmic-glassy-button3,
+  .cosmic-glassy-button4 {
+    border: 1.5px solid var(--neo-primary-light) !important;
+    min-height: 54px;
+  }
+  
+  .cosmic-btn {
+    padding: var(--neo-space-md) var(--neo-space-xl);
+    min-width: 200px;
+    font-size: var(--neo-font-base);
+  }
+
+  .text-button-cosmic {
+    width: 42%;
+    border: 1.5px solid rgba(255, 140, 59, 0.26);
+    padding: var(--neo-space-md);
+    min-height: var(--touch-target-min);
+  }
+
+  .floating-chat-button,
+  .chat-icon-button {
+    bottom: var(--neo-space-lg);
+    right: var(--neo-space-md);
+    width: 48px;
+    height: 48px;
+  }
+
+  .back-button {
+    position: fixed;
+    bottom: 25px;
+    left: 33px;
+  }
+
+  /* Ensure buttons have proper touch targets */
+  .cosmic-button,
+  .button,
+  .neo-button {
+    min-height: var(--touch-target-min);
+    padding: var(--neo-space-md) var(--neo-space-lg);
+  }
+  
+  /* Prevent hover animations on touch devices */
+  @media (hover: none) {
+    .cosmic-glassy-button1:hover,
+    .cosmic-glassy-button2:hover,
+    .cosmic-glassy-button3:hover,
+    .cosmic-glassy-button4:hover,
+    .cosmic-button:hover,
+    .button:hover {
+      transform: none;
+      animation: none;
+    }
+    
+    .cosmic-glassy-button1:active,
+    .cosmic-glassy-button2:active,
+    .cosmic-glassy-button3:active,
+    .cosmic-glassy-button4:active,
+    .cosmic-button:active,
+    .button:active {
+      transform: scale(0.98);
+      opacity: 0.8;
+    }
+  }
+}
+
+/* -------------------- FOCUS STYLES -------------------- */
+
+.cosmic-button:focus,
+.button:focus,
+.neo-button:focus,
+.cosmic-btn:focus {
+  outline: 2px solid rgba(165, 154, 209, 0.8);
+  outline-offset: 4px;
+}
+
+/* -------------------- DISABLED STATE -------------------- */
+
+.cosmic-button:disabled,
+.button:disabled,
+.neo-button:disabled,
+.cosmic-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none !important;
+  animation: none !important;
+}

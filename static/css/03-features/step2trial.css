@@ -1,0 +1,571 @@
+/* ========================================
+   NEOARCANA - TRIAL STEP 2 (CARD REVEAL)
+   FIXED: Proper card flip + EXCITING animations!
+   ======================================== */
+
+/* -------------------- PREVENT SCROLL (DESKTOP) -------------------- */
+@media (min-width: 769px) {
+  body {
+    overflow: hidden !important;
+    height: 100vh !important;
+  }
+}
+
+/* -------------------- MAIN CONTAINER -------------------- */
+.trial-step2-reveal {
+  width: 100%;
+  height: 100vh;
+  max-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  position: relative;
+  z-index: 1;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.trial-step2-reveal.visible {
+  opacity: 1;
+}
+
+/* -------------------- GLASS CONTAINER -------------------- */
+.trial-step2-reveal-inner {
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid rgba(255, 179, 125, 0.18);
+  border-radius: 15px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 60px rgba(165, 154, 209, 0.15);
+  
+  padding: clamp(1rem, 2vh, 2.5rem);
+  max-width: 700px;
+  width: 90%;
+  max-height: 90vh;
+  
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: clamp(0.5rem, 1.5vh, 1.5rem);
+  
+  animation: fadeInUp 0.8s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Cosmic glow effect */
+.trial-step2-reveal-inner::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle at center,
+    rgba(165, 154, 209, 0.1) 0%,
+    transparent 70%
+  );
+  animation: cosmicPulse 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* -------------------- STEP INDICATOR -------------------- */
+.step-indicator {
+  display: flex;
+  justify-content: center;
+  gap: clamp(0.5rem, 1vh, 1rem);
+  margin-bottom: clamp(0.25rem, 0.5vh, 0.5rem);
+  flex-shrink: 0;
+  position: relative;
+  z-index: 1;
+}
+
+.step {
+  width: clamp(24px, 3.5vh, 32px);
+  height: clamp(24px, 3.5vh, 32px);
+  border-radius: 50%;
+  background: rgba(165, 154, 209, 0.1);
+  border: 1px solid rgba(165, 154, 209, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: clamp(0.8rem, 1.4vh, 0.9rem);
+  transition: all 0.3s ease;
+}
+
+.step.active {
+  background: rgba(165, 154, 209, 0.3);
+  border-color: #A59AD1;
+  color: white;
+  box-shadow: 0 0 20px rgba(165, 154, 209, 0.3);
+}
+
+/* -------------------- CONTENT -------------------- */
+.trial-step2-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(0.5rem, 1.2vh, 1rem);
+  position: relative;
+  z-index: 1;
+  flex-shrink: 0;
+}
+
+/* -------------------- TITLE -------------------- */
+.trial-step2-title {
+  font-size: clamp(1.5rem, 3.5vh, 2.5rem);
+  font-weight: 700;
+  text-align: center;
+  margin: 0;
+  background: linear-gradient(135deg, #A59AD1 0%, #F4A261 50%, #FFD700 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: cosmicGradient 5s ease infinite;
+  letter-spacing: 1px;
+  flex-shrink: 0;
+}
+
+/* -------------------- ZODIAC MESSAGE -------------------- */
+.trial-step2-zodiac-message {
+  padding: clamp(0.5rem, 1vh, 0.75rem) clamp(1rem, 2vh, 1.5rem);
+  background: rgba(244, 162, 97, 0.1);
+  border: 1px solid rgba(244, 162, 97, 0.3);
+  border-radius: 12px;
+  text-align: center;
+  flex-shrink: 0;
+}
+
+.trial-step2-zodiac-message p {
+  margin: 0;
+  color: #F4A261;
+  font-size: clamp(0.85rem, 1.6vh, 1rem);
+  font-style: italic;
+}
+
+/* -------------------- INSTRUCTION -------------------- */
+.trial-step2-instruction {
+  font-size: clamp(0.95rem, 1.8vh, 1.1rem);
+  text-align: center;
+  color: rgba(255, 255, 255, 0.9);
+  margin: 0;
+  font-style: italic;
+  flex-shrink: 0;
+}
+
+/* -------------------- CARD SECTION -------------------- */
+.trial-step2-card-section {
+  margin-top: clamp(0.5rem, 1.5vh, 1.5rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-shrink: 0;
+}
+
+/* -------------------- CARD WRAPPER -------------------- */
+.trial-step2-card-wrapper {
+  position: relative;
+  width: clamp(180px, 25vh, 250px);
+  height: clamp(281px, 39vh, 391px);
+  perspective: 1000px;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+}
+
+.trial-step2-card-wrapper:hover:not(.revealing) {
+  transform: translateY(-10px) scale(1.02);
+}
+
+.trial-step2-card-wrapper.revealing {
+  animation: cardPulse 0.8s ease-in-out;
+  cursor: default;
+}
+
+/* -------------------- CARD (3D FLIP CONTAINER) -------------------- */
+.trial-step2-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 2.5s cubic-bezier(0.4, 0, 0.2, 1);
+  border-radius: 12px;
+}
+
+/* Flip when wrapper has .flipped class */
+.trial-step2-card-wrapper.flipped .trial-step2-card {
+  transform: rotateY(180deg);
+}
+
+/* -------------------- CARD FACES -------------------- */
+.trial-step2-card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden; /* KEY: Hides back face when flipped */
+  -webkit-backface-visibility: hidden;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 
+    0 10px 40px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(165, 154, 209, 0.3);
+}
+
+/* BACK FACE (visible by default) */
+.trial-step2-card-back {
+  background: linear-gradient(135deg, rgba(165, 154, 209, 0.2), rgba(107, 78, 113, 0.2));
+  border: 2px solid #A59AD1;
+  /* No rotation - this is the default view */
+}
+
+/* FRONT FACE (hidden by default, rotated 180deg) */
+.trial-step2-card-front {
+  transform: rotateY(180deg); /* KEY: Pre-rotated so it shows when card flips */
+  background: rgba(20, 20, 30, 0.9);
+  border: 2px solid #FFD700;
+}
+
+.trial-step2-card-face img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+/* -------------------- COSMIC GLOW -------------------- */
+.trial-step2-cosmic-glow {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 150%;
+  height: 150%;
+  background: radial-gradient(
+    circle,
+    rgba(165, 154, 209, 0.4) 0%,
+    rgba(244, 162, 97, 0.3) 30%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+  z-index: -1;
+}
+
+.trial-step2-card-wrapper:hover:not(.revealing) .trial-step2-cosmic-glow {
+  opacity: 1;
+}
+
+.trial-step2-card-wrapper.revealing .trial-step2-cosmic-glow {
+  opacity: 1;
+  animation: glowExpand 2.5s ease-out;
+}
+
+/* -------------------- PARTICLES -------------------- */
+.trial-step2-particles {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.trial-step2-particle {
+  position: absolute;
+  width: 6px;
+  height: 6px;
+  background: #FFD700;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 10px #FFD700, 0 0 20px #FFD700;
+  animation: particleExplode 1.5s ease-out forwards;
+  animation-delay: var(--delay, 0s);
+}
+
+/* -------------------- ANIMATIONS -------------------- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cosmicPulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes cosmicGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes cardPulse {
+  0%, 100% {
+    transform: translateY(0) scale(1);
+  }
+  25% {
+    transform: translateY(-15px) scale(1.05);
+  }
+  50% {
+    transform: translateY(0) scale(1.02);
+  }
+  75% {
+    transform: translateY(-5px) scale(1.03);
+  }
+}
+
+@keyframes glowExpand {
+  0% {
+    opacity: 0.5;
+    transform: translate(-50%, -50%) scale(1);
+  }
+  50% {
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1.5);
+  }
+  100% {
+    opacity: 0.8;
+    transform: translate(-50%, -50%) scale(1.2);
+  }
+}
+
+@keyframes particleExplode {
+  0% {
+    transform: translate(-50%, -50%) scale(0) rotate(0deg);
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.8;
+  }
+  100% {
+    transform: 
+      translate(-50%, -50%) 
+      translateX(calc(cos(var(--angle, 0deg)) * 150px)) 
+      translateY(calc(sin(var(--angle, 0deg)) * 150px))
+      scale(1.5)
+      rotate(360deg);
+    opacity: 0;
+  }
+}
+
+/* -------------------- MOBILE (SCROLLABLE) -------------------- */
+@media (max-width: 768px) {
+  body {
+    overflow: auto !important;
+    height: auto !important;
+  }
+
+  .trial-step2-reveal {
+    height: auto;
+    min-height: 100vh;
+    max-height: none;
+    overflow-y: auto;
+    padding: 1rem;
+  }
+
+  .trial-step2-reveal-inner {
+    padding: 1.5rem 1rem;
+    max-width: 100%;
+    max-height: none;
+    gap: 1rem;
+    margin: 2rem 0;
+  }
+
+  .step-indicator {
+    gap: 0.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .step {
+    width: 32px;
+    height: 32px;
+    font-size: 0.9rem;
+  }
+
+  .trial-step2-title {
+    font-size: 2rem;
+  }
+
+  .trial-step2-instruction {
+    font-size: 1rem;
+  }
+
+  .trial-step2-zodiac-message {
+    padding: 0.75rem 1rem;
+  }
+
+  .trial-step2-zodiac-message p {
+    font-size: 0.95rem;
+  }
+
+  .trial-step2-content {
+    gap: 1rem;
+  }
+
+  .trial-step2-card-section {
+    margin-top: 1rem;
+  }
+
+  .trial-step2-card-wrapper {
+    width: 200px;
+    height: 313px;
+  }
+}
+
+/* -------------------- SMALL MOBILE -------------------- */
+@media (max-width: 480px) {
+  .trial-step2-reveal-inner {
+    padding: 1.25rem 0.75rem;
+  }
+
+  .trial-step2-title {
+    font-size: 1.75rem;
+  }
+
+  .step {
+    width: 28px;
+    height: 28px;
+    font-size: 0.85rem;
+  }
+
+  .trial-step2-zodiac-message {
+    padding: 0.5rem 0.75rem;
+  }
+
+  .trial-step2-card-wrapper {
+    width: 180px;
+    height: 281px;
+  }
+}
+
+/* -------------------- SHORT DESKTOP SCREENS -------------------- */
+@media (min-width: 769px) and (max-height: 800px) {
+  .trial-step2-reveal-inner {
+    padding: 1rem;
+    gap: 0.5rem;
+    max-height: 95vh;
+  }
+
+  .step {
+    width: 24px;
+    height: 24px;
+    font-size: 0.8rem;
+  }
+
+  .trial-step2-title {
+    font-size: 1.5rem;
+  }
+
+  .trial-step2-instruction {
+    font-size: 0.95rem;
+  }
+
+  .trial-step2-zodiac-message {
+    padding: 0.5rem 1rem;
+  }
+
+  .trial-step2-zodiac-message p {
+    font-size: 0.85rem;
+  }
+
+  .trial-step2-content {
+    gap: 0.5rem;
+  }
+
+  .trial-step2-card-section {
+    margin-top: 0.5rem;
+  }
+
+  .trial-step2-card-wrapper {
+    width: 180px;
+    height: 281px;
+  }
+}
+
+/* -------------------- VERY SHORT DESKTOP -------------------- */
+@media (min-width: 769px) and (max-height: 700px) {
+  .trial-step2-reveal-inner {
+    padding: 0.75rem;
+    gap: 0.4rem;
+  }
+
+  .step {
+    width: 20px;
+    height: 20px;
+    font-size: 0.75rem;
+  }
+
+  .trial-step2-title {
+    font-size: 1.25rem;
+  }
+
+  .trial-step2-instruction {
+    font-size: 0.85rem;
+  }
+
+  .trial-step2-zodiac-message {
+    padding: 0.4rem 0.75rem;
+  }
+
+  .trial-step2-zodiac-message p {
+    font-size: 0.8rem;
+  }
+
+  .trial-step2-card-wrapper {
+    width: 160px;
+    height: 250px;
+  }
+}
+
+/* -------------------- ACCESSIBILITY -------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .trial-step2-reveal-inner,
+  .trial-step2-title,
+  .trial-step2-card {
+    animation: none;
+  }
+
+  .trial-step2-card-wrapper:hover {
+    transform: none;
+  }
+
+  .trial-step2-particle {
+    display: none;
+  }
+}
+
+/* High contrast */
+@media (prefers-contrast: high) {
+  .trial-step2-reveal-inner {
+    border: 3px solid #A59AD1;
+  }
+
+  .trial-step2-card-face {
+    border-width: 3px;
+  }
+}

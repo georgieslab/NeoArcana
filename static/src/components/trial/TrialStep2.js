@@ -1,3 +1,7 @@
+// ========================================
+// NEOARCANA - TRIAL STEP 2 (CARD REVEAL)
+// FIXED: Proper card flip + EXCITING reveal!
+// ========================================
 
 const TrialStep2 = ({ name, cardImage, handleCardReveal, zodiacSign }) => {
   const [isVisible, setIsVisible] = React.useState(false);
@@ -5,7 +9,8 @@ const TrialStep2 = ({ name, cardImage, handleCardReveal, zodiacSign }) => {
   const [showCard, setShowCard] = React.useState(false);
   const [showZodiacMessage, setShowZodiacMessage] = React.useState(false);
   const [instructionText, setInstructionText] = React.useState('');
-  const [currentCard, setCurrentCard] = React.useState(null);
+  const [isRevealing, setIsRevealing] = React.useState(false);
+  const [isFlipped, setIsFlipped] = React.useState(false);
   const [canClick, setCanClick] = React.useState(true);
   const [zodiacMessage, setZodiacMessage] = React.useState('');
   const mounted = React.useRef(true);
@@ -45,103 +50,104 @@ const TrialStep2 = ({ name, cardImage, handleCardReveal, zodiacSign }) => {
     };
   }, []);
 
-  const handleTrialCardClick = React.useCallback(async () => {
-    if (!canClick) return;
+  const handleCardClick = async () => {
+    if (!canClick || isRevealing) return;
     
-    if (currentCard === null) {
-      setCanClick(false);
-      setCurrentCard(0);
-      handleCardReveal(); // Call this only once
+    setCanClick(false);
+    setIsRevealing(true);
+    
+    // Wait a moment for anticipation
+    await new Promise(resolve => setTimeout(resolve, 300));
+    
+    // Flip the card
+    setIsFlipped(true);
+    
+    // Wait for flip animation to complete
+    await new Promise(resolve => setTimeout(resolve, 2500));
+    
+    // Proceed to next step
+    if (mounted.current) {
+      handleCardReveal();
     }
-  }, [canClick, currentCard, handleCardReveal]);
-
-  const TrialCard = ({ cardImage, onClick, isRevealed }) => {
-    const [isPreReveal, setIsPreReveal] = React.useState(false);
-    const [particles, setParticles] = React.useState([]);
-    
-    const handleClick = async () => {
-      if (isRevealed || isPreReveal) return;
-      
-      // Start pre-reveal animation
-      setIsPreReveal(true);
-      
-      // Create particles
-      const newParticles = Array.from({ length: 20 }).map((_, i) => ({
-        id: i,
-        duration: 0.8 + Math.random() * 0.5,
-        delay: Math.random() * 0.5,
-        style: {
-          animation: `particleExpand ${0.8 + Math.random() * 0.5}s cubic-bezier(0.4, 0, 0.2, 1) forwards ${Math.random() * 0.5}s`
-        }
-      }));
-      setParticles(newParticles);
-  
-      // Wait for pre-reveal animation
-      await new Promise(resolve => setTimeout(resolve, 1500));
-      
-      // Trigger the main reveal
-      onClick();
-      
-      // Clean up particles after animation
-      setTimeout(() => {
-        setParticles([]);
-      }, 2500);
-    };
-  
-    return (
-      <div className="trial-card-container" onClick={handleClick}>
-        <div className={`trial-card ${isPreReveal ? 'pre-reveal' : ''} ${isRevealed ? 'is-flipped' : ''}`}>
-          <div className="trial-card-face trial-card-back">
-            <img src="/static/images/card-back.jpg" alt="Card Back" />
-          </div>
-          <div className="trial-card-face trial-card-front">
-            <img src={cardImage} alt="Your Card" />
-          </div>
-        </div>
-        {particles.map(particle => (
-          <div 
-            key={particle.id}
-            className="cosmic-particle"
-            style={particle.style}
-          />
-        ))}
-        <div className="cosmic-glow"></div>
-      </div>
-    );
   };
 
-  return (
-    <div className={`container step2-container ${isVisible ? 'visible' : ''}`}>
-      <div className="step-indicator">
-        <div className="step">1</div>
-        <div className="step active">2</div>
-        <div className="step">3</div>
-      </div>
+  return React.createElement("div", { 
+    className: `trial-step2-reveal ${isVisible ? 'visible' : ''}` 
+  },
+    React.createElement("div", { className: "trial-step2-reveal-inner" },
+      
+      // Step Indicator
+      React.createElement("div", { className: "step-indicator" },
+        React.createElement("div", { className: "step" }, "1"),
+        React.createElement("div", { className: "step active" }, "2"),
+        React.createElement("div", { className: "step" }, "3")
+      ),
 
-      <div className="step-content">
-        <h1 className="title cosmic-gradient cosmic-text">Hey {name}!</h1>
+      // Content Container
+      React.createElement("div", { className: "trial-step2-content" },
+        
+        // Title
+        React.createElement("h1", { className: "trial-step2-title" },
+          `Hey ${name}!`
+        ),
 
-        {showZodiacMessage && (
-          <div className="zodiac-message fade-in">
-            <p>{zodiacMessage} - {zodiacSign}</p>
-          </div>
-        )}
+        // Zodiac Message
+        showZodiacMessage && React.createElement("div", { className: "trial-step2-zodiac-message fade-in" },
+          React.createElement("p", null, `${zodiacMessage} - ${zodiacSign}`)
+        ),
 
-        {showInstruction && (
-          <p className="card-instruction">{instructionText || `The stars have chosen a card for you, ${name}...`}</p>
-        )}
+        // Instruction
+        showInstruction && React.createElement("p", { className: "trial-step2-instruction" },
+          instructionText || `The stars have chosen a card for you, ${name}. Click to reveal...`
+        ),
 
-        {showCard && (
-          <div className="trial-card-section">
-            <TrialCard
-              cardImage={cardImage}
-              onClick={handleTrialCardClick}
-              isRevealed={currentCard === 0}
-            />
-          </div>
-        )}
-      </div>
-    </div>
+        // Card Section
+        showCard && React.createElement("div", { className: "trial-step2-card-section" },
+          React.createElement("div", { 
+            className: `trial-step2-card-wrapper ${isRevealing ? 'revealing' : ''} ${isFlipped ? 'flipped' : ''}`,
+            onClick: handleCardClick
+          },
+            // Card container with 3D flip
+            React.createElement("div", { className: "trial-step2-card" },
+              
+              // Back face
+              React.createElement("div", { className: "trial-step2-card-face trial-step2-card-back" },
+                React.createElement("img", { 
+                  src: "/static/images/card-back.jpg",
+                  alt: "Card Back" 
+                })
+              ),
+              
+              // Front face
+              React.createElement("div", { className: "trial-step2-card-face trial-step2-card-front" },
+                React.createElement("img", { 
+                  src: cardImage,
+                  alt: "Your Card" 
+                })
+              )
+            ),
+            
+            // Particle effects container
+            isRevealing && React.createElement("div", { className: "trial-step2-particles" },
+              // Generate 20 particles
+              Array.from({ length: 20 }).map((_, i) => 
+                React.createElement("div", {
+                  key: i,
+                  className: "trial-step2-particle",
+                  style: {
+                    '--delay': `${i * 0.05}s`,
+                    '--angle': `${(360 / 20) * i}deg`
+                  }
+                })
+              )
+            ),
+            
+            // Cosmic glow effect
+            React.createElement("div", { className: "trial-step2-cosmic-glow" })
+          )
+        )
+      )
+    )
   );
 };
 

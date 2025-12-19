@@ -107,3 +107,18 @@ def calculate_numerology_day(date=None):
         day_num = sum(int(digit) for digit in str(day_num))
         
     return day_num
+
+def getLanguageForClaude(iso_code):
+    """Convert ISO language code to Claude-friendly language name"""
+    language_map = {
+        'ka': 'Georgian',
+        'ru': 'Russian',
+        'es': 'Spanish',
+        'fr': 'French',
+        'de': 'German',
+        'zh': 'Chinese',
+        'ja': 'Japanese',
+        'ko': 'Korean',
+        'en': 'English'
+    }
+    return language_map.get(iso_code, 'English')

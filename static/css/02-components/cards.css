@@ -1,0 +1,583 @@
+/* ========================================
+   NEOARCANA - CARDS
+   All card components, flips, and 3D effects
+   ======================================== */
+
+/* -------------------- BASE CARD CONTAINER -------------------- */
+
+.card-container,
+.neo-card-container {
+  perspective: 1000px;
+  width: 100%;
+  max-width: var(--card-width-lg);
+  margin: 0 auto;
+  cursor: pointer;
+  transition: transform var(--neo-transition-normal);
+}
+
+.card-container:hover {
+  transform: translateY(-10px);
+}
+
+/* -------------------- CARD 3D STRUCTURE -------------------- */
+
+.card,
+.neo-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 0.6s var(--neo-transition-bounce);
+  border-radius: var(--neo-radius-lg);
+  box-shadow: var(--neo-shadow-md);
+}
+
+.card.revealed {
+  transform: rotateY(180deg);
+}
+
+.card.spinning {
+  animation: spinCard 2s ease-in-out;
+}
+
+/* -------------------- CARD FACES -------------------- */
+
+.card-face,
+.neo-card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: var(--neo-radius-lg);
+  overflow: hidden;
+}
+
+.card-back,
+.neo-card-back {
+  background: var(--neo-bg-darker);
+  background-image: url('/static/images/card-back.jpg');
+  background-size: cover;
+  background-position: center;
+  border: 2px solid rgba(165, 154, 209, 0.3);
+}
+
+.card-front,
+.neo-card-front {
+  background: #2a2a2a;
+  transform: rotateY(180deg);
+  border: 2px solid var(--neo-primary);
+}
+
+/* -------------------- CARD IMAGE -------------------- */
+
+.card-image,
+.neo-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity var(--neo-transition-normal);
+}
+
+.card-image.fade-in {
+  opacity: 1;
+}
+
+.card-image.hidden {
+  opacity: 0;
+}
+
+.tarot-card-image {
+  width: 100%;
+  height: auto;
+  max-width: 300px;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: var(--neo-radius-lg);
+  box-shadow: var(--neo-shadow-md);
+}
+
+/* -------------------- TRIAL CARD STYLES -------------------- */
+
+.trial-card-container {
+  cursor: pointer;
+  width: var(--card-width-md);
+  height: var(--card-height-md);
+  margin: 0 auto;
+  position: relative;
+  perspective: 1000px;
+}
+
+.trial-card {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  transition: transform 2.5s var(--neo-transition-bounce);
+}
+
+.trial-card.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.trial-card.pre-reveal {
+  animation: preRevealGlow 1.5s ease-in-out;
+}
+
+.trial-card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: var(--neo-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--neo-shadow-md);
+}
+
+.trial-card-back {
+  background: linear-gradient(45deg, var(--neo-primary), var(--neo-primary-dark));
+  border: 2px solid var(--neo-gold);
+}
+
+.trial-card-front {
+  transform: rotateY(180deg);
+  border: 2px solid var(--neo-primary);
+}
+
+/* Trial card reveal animation */
+.trial-card.is-flipped {
+  animation: cardRevealGalactic 2.5s var(--neo-transition-bounce) forwards;
+}
+
+/* -------------------- PREMIUM CARD STYLES -------------------- */
+
+.premium-card-container {
+  flex: 1;
+  max-width: var(--card-width-lg);
+  perspective: 1000px;
+  cursor: pointer;
+  transition: transform var(--neo-transition-normal);
+}
+
+.premium-card-container.active {
+  transform: translateY(-10px);
+}
+
+.premium-card-container.revealed .card {
+  transform: rotateY(180deg);
+}
+
+.premium-card {
+  height: 301px !important;
+}
+
+.premium-card div {
+  height: 301px !important;
+}
+
+.premium-card-box {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: var(--neo-radius-lg);
+  padding: var(--neo-space-md);
+  transition: all var(--neo-transition-normal);
+  cursor: pointer;
+}
+
+.premium-card-box.active {
+  background: rgba(165, 154, 209, 0.2);
+  transform: translateX(10px);
+}
+
+/* -------------------- THREE CARD READING -------------------- */
+
+.three-card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--neo-space-xl);
+}
+
+.three-card-reveal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.cards-reveal-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--neo-space-xl);
+  margin-bottom: var(--neo-space-xxl);
+  width: 100%;
+}
+
+.card-wrapper {
+  width: 100%;
+  height: 300px;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+  position: relative;
+  margin-bottom: var(--neo-space-lg);
+}
+
+.card-container.revealed .card-wrapper {
+  transform: rotateY(180deg);
+}
+
+/* Position labels for three card spread */
+.position-label {
+  font-size: var(--neo-font-lg);
+  margin-bottom: var(--neo-space-md);
+  color: var(--neo-gold);
+  font-weight: var(--neo-font-medium);
+  text-align: center;
+}
+
+/* -------------------- NFC READING CARDS -------------------- */
+
+.nfc-reading__card-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  perspective: 1000px;
+  margin: 0 auto;
+  animation: sectionAppear 0.6s ease forwards 0.3s;
+  opacity: 0;
+}
+
+.nfc-reading__card-container {
+  width: 100%;
+  max-width: 250px;
+  cursor: pointer;
+  transition: transform var(--neo-transition-normal);
+  margin: var(--neo-space-lg) 0;
+}
+
+.nfc-reading__card-container:hover {
+  transform: scale(1.02);
+}
+
+.nfc-reading__card {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2/3;
+  transform-style: preserve-3d;
+  transition: transform 1s var(--neo-transition-bounce);
+  animation: cosmic-card-pulse 3s ease-in-out infinite;
+}
+
+.nfc-reading__card.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.nfc-reading__card-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: var(--neo-radius-md);
+  overflow: hidden;
+  box-shadow: var(--neo-shadow-lg);
+}
+
+.nfc-reading__card-back {
+  background: linear-gradient(135deg, rgba(165, 154, 209, 0.3), rgba(107, 78, 113, 0.3));
+  border: 2px solid rgba(165, 154, 209, 0.5);
+}
+
+.nfc-reading__card-front {
+  transform: rotateY(180deg);
+  border: 2px solid var(--neo-primary);
+}
+
+.nfc-reading__card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* -------------------- CARD IMAGE CONTAINER -------------------- */
+
+.card-image-container {
+  position: relative;
+  width: var(--card-width-md);
+  transition: transform var(--neo-transition-normal);
+}
+
+.card-image-container:hover {
+  transform: translateY(-10px);
+  cursor: pointer;
+}
+
+.trial3-card-image-container {
+  cursor: pointer;
+  transition: transform var(--neo-transition-normal);
+  padding: var(--neo-space-md);
+}
+
+.trial3-card-image-container:hover {
+  transform: translateY(-10px);
+}
+
+.trial3-tarot-card-image {
+  width: 100%;
+  max-width: 250px;
+  height: auto;
+  aspect-ratio: 10/16;
+  border-radius: var(--neo-radius-md);
+  box-shadow: var(--neo-shadow-md);
+  border: 2px solid var(--neo-primary);
+}
+
+/* -------------------- CARD ENLARGED VIEW -------------------- */
+
+.trial3-card-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 10, 31, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-modal);
+  cursor: pointer;
+}
+
+.trial3-enlarged-card {
+  max-height: 90vh;
+  max-width: 90vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trial3-enlarged-card img {
+  max-height: 100%;
+  max-width: 100%;
+  object-fit: contain;
+  border-radius: var(--neo-radius-lg);
+  border: 3px solid var(--neo-primary);
+}
+
+/* -------------------- CARD SECTIONS -------------------- */
+
+.cards-section {
+  display: flex;
+  justify-content: center;
+  gap: var(--neo-space-xl);
+  margin-bottom: var(--neo-space-xl);
+  padding: var(--neo-space-md);
+}
+
+.premium-cards-container {
+  display: flex;
+  justify-content: center;
+  gap: var(--neo-space-xl);
+  margin: var(--neo-space-xl) 0;
+}
+
+/* -------------------- CARD ANIMATIONS -------------------- */
+
+/* Card spinning animation */
+@keyframes spinAndRevealGradual {
+  0% { 
+    transform: rotateY(0deg); 
+  }
+  100% { 
+    transform: rotateY(3780deg); 
+  }
+}
+
+.card.spinning {
+  animation: spinAndRevealGradual 10s ease-in-out;
+}
+
+/* Card name appear animation */
+.card-name.appear,
+.nfc-reading__card-name {
+  animation: cardNameAppear 0.5s ease forwards;
+}
+
+/* -------------------- CARD HOVER EFFECTS -------------------- */
+
+.card-container:hover .card-glow {
+  opacity: 1;
+}
+
+.card-glow {
+  position: absolute;
+  top: -10px;
+  left: -10px;
+  right: -10px;
+  bottom: -10px;
+  background: radial-gradient(
+    circle,
+    rgba(165, 154, 209, 0.3) 0%,
+    transparent 70%
+  );
+  opacity: 0;
+  transition: opacity var(--neo-transition-slow);
+  pointer-events: none;
+  border-radius: var(--neo-radius-lg);
+  z-index: -1;
+}
+
+/* -------------------- CARD LOADING STATE -------------------- */
+
+.card-loading {
+  position: relative;
+  opacity: 0.6;
+}
+
+.card-loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(165, 154, 209, 0.3);
+  border-top-color: var(--neo-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+}
+
+/* -------------------- MOBILE RESPONSIVE -------------------- */
+
+@media (max-width: 768px) {
+  .premium-cards-container {
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .premium-cards-container::-webkit-scrollbar {
+    display: none !important;
+  }
+
+  .premium-card-container {
+    max-width: 240px;
+  }
+
+  .premium-card {
+    height: 301px !important;
+  }
+
+  .premium-card div {
+    height: 301px !important;
+  }
+
+  .cards-reveal-section {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card-container {
+    width: 80%;
+    max-width: 250px;
+    margin-bottom: var(--neo-space-xxl);
+  }
+
+  .trial-card-container {
+    width: 180px;
+    height: 281.25px;
+  }
+
+  .card-image-container {
+    width: 180px;
+  }
+
+  .trial3-card-image-container {
+    width: var(--card-width-md);
+  }
+
+  /* Disable hover effects on touch devices */
+  @media (hover: none) {
+    .card-container:hover {
+      transform: none;
+    }
+
+    .card-container:active {
+      transform: scale(0.98);
+    }
+  }
+}
+
+/* -------------------- THREE CARD MOBILE -------------------- */
+
+@media (max-width: 768px) {
+  .three-card-container {
+    padding: var(--neo-space-md);
+  }
+
+  .cards-reveal-section {
+    gap: var(--neo-space-lg);
+  }
+}
+
+/* -------------------- ACCESSIBILITY -------------------- */
+
+/* Reduced motion for card animations */
+@media (prefers-reduced-motion: reduce) {
+  .card,
+  .trial-card,
+  .nfc-reading__card {
+    transition: transform 0.1s ease !important;
+    animation: none !important;
+  }
+
+  .card-container:hover {
+    transform: none;
+  }
+}
+
+/* Focus styles for keyboard navigation */
+.card-container:focus-within {
+  outline: 2px solid var(--neo-primary);
+  outline-offset: 4px;
+  border-radius: var(--neo-radius-lg);
+}
+
+/* -------------------- CARD BADGE -------------------- */
+
+.premium-badge {
+  background: linear-gradient(45deg, var(--neo-secondary), var(--neo-gold));
+  padding: 4px 12px;
+  border-radius: 12px;
+  font-size: var(--neo-font-sm);
+  color: black;
+  margin-right: 8px;
+  font-weight: var(--neo-font-semibold);
+}
+
+/* -------------------- CARD GRID LAYOUTS -------------------- */
+
+.card-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--neo-space-xl);
+  padding: var(--neo-space-lg);
+}
+
+.card-grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--neo-space-xl);
+}
+
+@media (max-width: 768px) {
+  .card-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}

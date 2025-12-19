@@ -1,0 +1,810 @@
+/* ========================================
+   NEOARCANA - UTILITIES
+   Helper classes and common utilities
+   ======================================== */
+
+/* -------------------- DISPLAY UTILITIES -------------------- */
+
+.hidden {
+  display: none !important;
+}
+
+.visible {
+  opacity: 1;
+  visibility: visible;
+}
+
+.invisible {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.block {
+  display: block !important;
+}
+
+.inline-block {
+  display: inline-block !important;
+}
+
+.flex {
+  display: flex !important;
+}
+
+.inline-flex {
+  display: inline-flex !important;
+}
+
+.grid {
+  display: grid !important;
+}
+
+/* -------------------- FLEX UTILITIES -------------------- */
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-row {
+  flex-direction: row;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-nowrap {
+  flex-wrap: nowrap;
+}
+
+.justify-start {
+  justify-content: flex-start;
+}
+
+.justify-center {
+  justify-content: center;
+}
+
+.justify-end {
+  justify-content: flex-end;
+}
+
+.justify-between {
+  justify-content: space-between;
+}
+
+.justify-around {
+  justify-content: space-around;
+}
+
+.align-start {
+  align-items: flex-start;
+}
+
+.align-center {
+  align-items: center;
+}
+
+.align-end {
+  align-items: flex-end;
+}
+
+.align-stretch {
+  align-items: stretch;
+}
+
+/* -------------------- GAP UTILITIES -------------------- */
+
+.gap-xs {
+  gap: var(--neo-space-xs);
+}
+
+.gap-sm {
+  gap: var(--neo-space-sm);
+}
+
+.gap-md {
+  gap: var(--neo-space-md);
+}
+
+.gap-lg {
+  gap: var(--neo-space-lg);
+}
+
+.gap-xl {
+  gap: var(--neo-space-xl);
+}
+
+.gap-xxl {
+  gap: var(--neo-space-xxl);
+}
+
+/* -------------------- SPACING UTILITIES -------------------- */
+
+/* Padding */
+.p-0 {
+  padding: 0 !important;
+}
+
+.p-xs {
+  padding: var(--neo-space-xs);
+}
+
+.p-sm {
+  padding: var(--neo-space-sm);
+}
+
+.p-md {
+  padding: var(--neo-space-md);
+}
+
+.p-lg {
+  padding: var(--neo-space-lg);
+}
+
+.p-xl {
+  padding: var(--neo-space-xl);
+}
+
+.p-xxl {
+  padding: var(--neo-space-xxl);
+}
+
+/* Margin */
+.m-0 {
+  margin: 0 !important;
+}
+
+.m-xs {
+  margin: var(--neo-space-xs);
+}
+
+.m-sm {
+  margin: var(--neo-space-sm);
+}
+
+.m-md {
+  margin: var(--neo-space-md);
+}
+
+.m-lg {
+  margin: var(--neo-space-lg);
+}
+
+.m-xl {
+  margin: var(--neo-space-xl);
+}
+
+.m-xxl {
+  margin: var(--neo-space-xxl);
+}
+
+/* Margin auto */
+.mx-auto {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.my-auto {
+  margin-top: auto;
+  margin-bottom: auto;
+}
+
+/* Specific sides */
+.mt-0 {
+  margin-top: 0 !important;
+}
+
+.mt-sm {
+  margin-top: var(--neo-space-sm);
+}
+
+.mt-md {
+  margin-top: var(--neo-space-md);
+}
+
+.mt-lg {
+  margin-top: var(--neo-space-lg);
+}
+
+.mt-xl {
+  margin-top: var(--neo-space-xl);
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
+.mb-sm {
+  margin-bottom: var(--neo-space-sm);
+}
+
+.mb-md {
+  margin-bottom: var(--neo-space-md);
+}
+
+.mb-lg {
+  margin-bottom: var(--neo-space-lg);
+}
+
+.mb-xl {
+  margin-bottom: var(--neo-space-xl);
+}
+
+/* -------------------- TEXT UTILITIES -------------------- */
+
+.text-left {
+  text-align: left !important;
+}
+
+.text-center {
+  text-align: center !important;
+}
+
+.text-right {
+  text-align: right !important;
+}
+
+.text-justify {
+  text-align: justify !important;
+}
+
+.text-uppercase {
+  text-transform: uppercase !important;
+}
+
+.text-lowercase {
+  text-transform: lowercase !important;
+}
+
+.text-capitalize {
+  text-transform: capitalize !important;
+}
+
+/* -------------------- FONT WEIGHT UTILITIES -------------------- */
+
+.font-light {
+  font-weight: var(--neo-font-light) !important;
+}
+
+.font-normal {
+  font-weight: var(--neo-font-normal) !important;
+}
+
+.font-medium {
+  font-weight: var(--neo-font-medium) !important;
+}
+
+.font-semibold {
+  font-weight: var(--neo-font-semibold) !important;
+}
+
+.font-bold {
+  font-weight: var(--neo-font-bold) !important;
+}
+
+/* -------------------- FONT SIZE UTILITIES -------------------- */
+
+.text-xs {
+  font-size: var(--neo-font-xs) !important;
+}
+
+.text-sm {
+  font-size: var(--neo-font-sm) !important;
+}
+
+.text-base {
+  font-size: var(--neo-font-base) !important;
+}
+
+.text-lg {
+  font-size: var(--neo-font-lg) !important;
+}
+
+.text-xl {
+  font-size: var(--neo-font-xl) !important;
+}
+
+.text-2xl {
+  font-size: var(--neo-font-2xl) !important;
+}
+
+.text-3xl {
+  font-size: var(--neo-font-3xl) !important;
+}
+
+.text-4xl {
+  font-size: var(--neo-font-4xl) !important;
+}
+
+/* -------------------- COLOR UTILITIES -------------------- */
+
+.text-primary {
+  color: var(--neo-primary) !important;
+}
+
+.text-secondary {
+  color: var(--neo-secondary) !important;
+}
+
+.text-gold {
+  color: var(--neo-gold) !important;
+}
+
+.text-error {
+  color: var(--neo-error) !important;
+}
+
+.text-success {
+  color: var(--neo-success) !important;
+}
+
+.text-muted {
+  color: rgba(255, 255, 255, 0.6) !important;
+}
+
+.text-white {
+  color: var(--neo-text) !important;
+}
+
+/* -------------------- BACKGROUND UTILITIES -------------------- */
+
+.bg-primary {
+  background-color: var(--neo-primary) !important;
+}
+
+.bg-secondary {
+  background-color: var(--neo-secondary) !important;
+}
+
+.bg-dark {
+  background-color: var(--neo-background) !important;
+}
+
+.bg-darker {
+  background-color: var(--neo-background-dark) !important;
+}
+
+.bg-transparent {
+  background-color: transparent !important;
+}
+
+/* -------------------- BORDER UTILITIES -------------------- */
+
+.border {
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.border-primary {
+  border-color: var(--neo-primary) !important;
+}
+
+.border-secondary {
+  border-color: var(--neo-secondary) !important;
+}
+
+.border-gold {
+  border-color: var(--neo-gold) !important;
+}
+
+.border-0 {
+  border: none !important;
+}
+
+.border-top {
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.border-bottom {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.border-left {
+  border-left: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.border-right {
+  border-right: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+/* -------------------- BORDER RADIUS UTILITIES -------------------- */
+
+.rounded-none {
+  border-radius: 0 !important;
+}
+
+.rounded-sm {
+  border-radius: var(--neo-radius-sm) !important;
+}
+
+.rounded-md {
+  border-radius: var(--neo-radius-md) !important;
+}
+
+.rounded-lg {
+  border-radius: var(--neo-radius-lg) !important;
+}
+
+.rounded-xl {
+  border-radius: var(--neo-radius-xl) !important;
+}
+
+.rounded-full {
+  border-radius: var(--neo-radius-full) !important;
+}
+
+/* -------------------- WIDTH UTILITIES -------------------- */
+
+.w-full {
+  width: 100% !important;
+}
+
+.w-auto {
+  width: auto !important;
+}
+
+.w-half {
+  width: 50% !important;
+}
+
+.w-third {
+  width: 33.333333% !important;
+}
+
+.w-quarter {
+  width: 25% !important;
+}
+
+.max-w-xs {
+  max-width: 320px !important;
+}
+
+.max-w-sm {
+  max-width: 480px !important;
+}
+
+.max-w-md {
+  max-width: 640px !important;
+}
+
+.max-w-lg {
+  max-width: 800px !important;
+}
+
+.max-w-xl {
+  max-width: 1000px !important;
+}
+
+.max-w-2xl {
+  max-width: 1200px !important;
+}
+
+.max-w-full {
+  max-width: 100% !important;
+}
+
+/* -------------------- HEIGHT UTILITIES -------------------- */
+
+.h-full {
+  height: 100% !important;
+}
+
+.h-auto {
+  height: auto !important;
+}
+
+.h-screen {
+  height: 100vh !important;
+}
+
+.min-h-screen {
+  min-height: 100vh !important;
+}
+
+/* -------------------- POSITION UTILITIES -------------------- */
+
+.relative {
+  position: relative !important;
+}
+
+.absolute {
+  position: absolute !important;
+}
+
+.fixed {
+  position: fixed !important;
+}
+
+.sticky {
+  position: sticky !important;
+}
+
+/* -------------------- Z-INDEX UTILITIES -------------------- */
+
+.z-0 {
+  z-index: 0 !important;
+}
+
+.z-10 {
+  z-index: 10 !important;
+}
+
+.z-20 {
+  z-index: 20 !important;
+}
+
+.z-30 {
+  z-index: 30 !important;
+}
+
+.z-40 {
+  z-index: 40 !important;
+}
+
+.z-50 {
+  z-index: 50 !important;
+}
+
+/* -------------------- OPACITY UTILITIES -------------------- */
+
+.opacity-0 {
+  opacity: 0 !important;
+}
+
+.opacity-25 {
+  opacity: 0.25 !important;
+}
+
+.opacity-50 {
+  opacity: 0.5 !important;
+}
+
+.opacity-75 {
+  opacity: 0.75 !important;
+}
+
+.opacity-100 {
+  opacity: 1 !important;
+}
+
+/* -------------------- POINTER EVENTS -------------------- */
+
+.pointer-events-none {
+  pointer-events: none !important;
+}
+
+.pointer-events-auto {
+  pointer-events: auto !important;
+}
+
+/* -------------------- CURSOR UTILITIES -------------------- */
+
+.cursor-pointer {
+  cursor: pointer !important;
+}
+
+.cursor-not-allowed {
+  cursor: not-allowed !important;
+}
+
+.cursor-default {
+  cursor: default !important;
+}
+
+/* -------------------- OVERFLOW UTILITIES -------------------- */
+
+.overflow-hidden {
+  overflow: hidden !important;
+}
+
+.overflow-auto {
+  overflow: auto !important;
+}
+
+.overflow-scroll {
+  overflow: scroll !important;
+}
+
+.overflow-x-hidden {
+  overflow-x: hidden !important;
+}
+
+.overflow-y-hidden {
+  overflow-y: hidden !important;
+}
+
+.overflow-x-auto {
+  overflow-x: auto !important;
+}
+
+.overflow-y-auto {
+  overflow-y: auto !important;
+}
+
+/* -------------------- TRANSITION UTILITIES -------------------- */
+
+.transition {
+  transition: all var(--neo-transition-normal) !important;
+}
+
+.transition-fast {
+  transition: all var(--neo-transition-fast) !important;
+}
+
+.transition-slow {
+  transition: all var(--neo-transition-slow) !important;
+}
+
+.transition-none {
+  transition: none !important;
+}
+
+/* -------------------- TRANSFORM UTILITIES -------------------- */
+
+.scale-95 {
+  transform: scale(0.95) !important;
+}
+
+.scale-100 {
+  transform: scale(1) !important;
+}
+
+.scale-105 {
+  transform: scale(1.05) !important;
+}
+
+.scale-110 {
+  transform: scale(1.1) !important;
+}
+
+.rotate-90 {
+  transform: rotate(90deg) !important;
+}
+
+.rotate-180 {
+  transform: rotate(180deg) !important;
+}
+
+.-rotate-90 {
+  transform: rotate(-90deg) !important;
+}
+
+.-rotate-180 {
+  transform: rotate(-180deg) !important;
+}
+
+/* -------------------- SHADOW UTILITIES -------------------- */
+
+.shadow-sm {
+  box-shadow: var(--neo-shadow-sm) !important;
+}
+
+.shadow-md {
+  box-shadow: var(--neo-shadow-md) !important;
+}
+
+.shadow-lg {
+  box-shadow: var(--neo-shadow-lg) !important;
+}
+
+.shadow-cosmic {
+  box-shadow: var(--neo-shadow-cosmic) !important;
+}
+
+.shadow-none {
+  box-shadow: none !important;
+}
+
+/* -------------------- ANIMATION STATE UTILITIES -------------------- */
+
+.fade-in {
+  animation: fadeIn var(--neo-transition-slow) ease forwards;
+}
+
+.fade-out {
+  opacity: 0;
+  transition: opacity var(--neo-transition-slow);
+}
+
+.loading {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* -------------------- ASPECT RATIO UTILITIES -------------------- */
+
+.aspect-square {
+  aspect-ratio: 1 / 1;
+}
+
+.aspect-video {
+  aspect-ratio: 16 / 9;
+}
+
+.aspect-card {
+  aspect-ratio: 2 / 3;
+}
+
+/* -------------------- COSMIC GRADIENT UTILITY -------------------- */
+
+.cosmic-gradient-text {
+  background: var(--gradient-cosmic);
+  background-size: 300% 300%;
+  animation: cosmicGradient 7s ease infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/* -------------------- BACKDROP BLUR -------------------- */
+
+.backdrop-blur-sm {
+  backdrop-filter: var(--neo-blur-sm);
+  -webkit-backdrop-filter: var(--neo-blur-sm);
+}
+
+.backdrop-blur-md {
+  backdrop-filter: var(--neo-blur-md);
+  -webkit-backdrop-filter: var(--neo-blur-md);
+}
+
+.backdrop-blur-lg {
+  backdrop-filter: var(--neo-blur-lg);
+  -webkit-backdrop-filter: var(--neo-blur-lg);
+}
+
+/* -------------------- SCREEN READER ONLY -------------------- */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border-width: 0;
+}
+
+/* -------------------- MOBILE ONLY / DESKTOP ONLY -------------------- */
+
+.mobile-only {
+  display: none !important;
+}
+
+.desktop-only {
+  display: block !important;
+}
+
+@media (max-width: 768px) {
+  .mobile-only {
+    display: block !important;
+  }
+
+  .desktop-only {
+    display: none !important;
+  }
+}
+
+/* -------------------- RESPONSIVE TEXT -------------------- */
+
+@media (max-width: 768px) {
+  .text-responsive-sm {
+    font-size: var(--neo-font-sm) !important;
+  }
+
+  .text-responsive-base {
+    font-size: var(--neo-font-base) !important;
+  }
+
+  .text-responsive-lg {
+    font-size: var(--neo-font-lg) !important;
+  }
+}

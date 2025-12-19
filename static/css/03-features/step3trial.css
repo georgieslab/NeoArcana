@@ -1,0 +1,593 @@
+/* ========================================
+   NEOARCANA - TRIAL STEP 3 (READING DISPLAY)
+   FIXED: Side-by-side + Parsed sections styling
+   Chat button on LEFT side
+   ======================================== */
+
+/* -------------------- MAIN CONTAINER -------------------- */
+.trial-step3-container {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  position: relative;
+  opacity: 0;
+  transition: opacity 0.8s ease;
+}
+
+.trial-step3-container.visible {
+  opacity: 1;
+}
+
+/* -------------------- READING LAYOUT (SIDE-BY-SIDE) -------------------- */
+.trial-step3-reading-layout {
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1.5px solid rgba(255, 179, 125, 0.18);
+  border-radius: 15px;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.4),
+    0 0 60px rgba(165, 154, 209, 0.15);
+  
+  padding: 2rem;
+  max-width: 1400px;
+  width: 100%;
+  
+  /* SIDE-BY-SIDE LAYOUT */
+  display: grid;
+  grid-template-columns: 350px 1fr;
+  gap: 3rem;
+  align-items: start;
+  
+  animation: fadeInUp 0.8s ease-out;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Cosmic glow effect */
+.trial-step3-reading-layout::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: radial-gradient(
+    circle at center,
+    rgba(165, 154, 209, 0.1) 0%,
+    transparent 70%
+  );
+  animation: cosmicPulse 8s ease-in-out infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+
+/* -------------------- LEFT COLUMN: CARD -------------------- */
+.trial-step3-card-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  position: relative;
+  z-index: 1;
+}
+
+.trial-step3-card-container {
+  position: relative;
+  width: 100%;
+  max-width: 300px;
+  aspect-ratio: 10 / 16;
+  cursor: pointer;
+  transition: transform 0.3s ease;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 
+    0 10px 40px rgba(0, 0, 0, 0.5),
+    0 0 30px rgba(165, 154, 209, 0.3);
+}
+
+.trial-step3-card-container:hover {
+  transform: translateY(-10px) scale(1.02);
+  box-shadow: 
+    0 15px 50px rgba(0, 0, 0, 0.6),
+    0 0 50px rgba(165, 154, 209, 0.5);
+}
+
+.trial-step3-card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: 12px;
+}
+
+.trial-step3-card-name {
+  font-size: 1.5rem;
+  font-weight: 600;
+  text-align: center;
+  margin: 0;
+  color: #F4A261;
+  text-shadow: 0 2px 10px rgba(244, 162, 97, 0.3);
+}
+
+/* -------------------- RIGHT COLUMN: READING -------------------- */
+.trial-step3-reading-column {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  position: relative;
+  z-index: 1;
+  min-height: 500px;
+}
+
+.trial-step3-reading-title {
+  font-size: 2.5rem;
+  font-weight: 700;
+  text-align: left;
+  margin: 0;
+  background: linear-gradient(135deg, #A59AD1 0%, #F4A261 50%, #FFD700 100%);
+  background-size: 200% 200%;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  animation: cosmicGradient 5s ease infinite;
+  letter-spacing: 1px;
+}
+
+.trial-step3-interpretation-container {
+  flex: 1;
+  position: relative;
+  background: rgba(165, 154, 209, 0.05);
+  border: 1px solid rgba(165, 154, 209, 0.1);
+  border-radius: 12px;
+  padding: 2rem;
+  overflow-y: auto;
+  max-height: 600px;
+  
+  /* Custom scrollbar */
+  scrollbar-width: thin;
+  scrollbar-color: rgba(165, 154, 209, 0.3) transparent;
+}
+
+.trial-step3-interpretation-container::-webkit-scrollbar {
+  width: 6px;
+}
+
+.trial-step3-interpretation-container::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.trial-step3-interpretation-container::-webkit-scrollbar-thumb {
+  background: rgba(165, 154, 209, 0.3);
+  border-radius: 3px;
+}
+
+.trial-step3-interpretation-container::-webkit-scrollbar-thumb:hover {
+  background: rgba(165, 154, 209, 0.5);
+}
+
+/* -------------------- INTERPRETATION SECTIONS -------------------- */
+.trial-step3-section {
+  margin-bottom: 2rem;
+  animation: fadeInUp 0.6s ease-out;
+  animation-fill-mode: both;
+}
+
+.trial-step3-section:nth-child(1) { animation-delay: 0.1s; }
+.trial-step3-section:nth-child(2) { animation-delay: 0.2s; }
+.trial-step3-section:nth-child(3) { animation-delay: 0.3s; }
+
+.trial-step3-section:last-child {
+  margin-bottom: 0;
+}
+
+.trial-step3-section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 2px solid rgba(165, 154, 209, 0.2);
+}
+
+.trial-step3-section-icon {
+  font-size: 1.5rem;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
+}
+
+.trial-step3-section-title {
+  font-size: 1.4rem;
+  font-weight: 600;
+  margin: 0;
+  color: #F4A261;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.trial-step3-section-content {
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.8;
+  font-size: 1.05rem;
+  white-space: pre-wrap;
+  word-break: break-word;
+  padding-left: 0.5rem;
+}
+
+/* -------------------- SCROLL INDICATOR -------------------- */
+.trial-step3-scroll-indicator {
+  position: sticky;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.trial-step3-scroll-indicator.hidden {
+  opacity: 0;
+}
+
+.trial-step3-scroll-arrow {
+  width: 12px;
+  height: 12px;
+  border-right: 2px solid #FFD700;
+  border-bottom: 2px solid #FFD700;
+  transform: rotate(45deg);
+  animation: bounce 2s infinite;
+}
+
+/* -------------------- CHAT BUTTON (LEFT SIDE!) -------------------- */
+.trial-step3-chat-button {
+  position: fixed;
+  bottom: 2rem;
+  left: 2rem; /* LEFT side now! */
+  
+  width: 56px;
+  height: 56px;
+  background: #F4A261;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  cursor: pointer;
+  z-index: 100;
+  
+  box-shadow: 
+    0 4px 15px rgba(244, 162, 97, 0.4),
+    0 0 0 0 rgba(244, 162, 97, 0.7);
+  
+  transition: all 0.3s ease;
+  animation: chatPulse 2s infinite ease-in-out;
+}
+
+.trial-step3-chat-button:hover {
+  transform: translateY(-3px) scale(1.05);
+  background: #A59AD1;
+  animation: chatPulseHover 1s infinite ease-in-out;
+}
+
+.trial-step3-chat-button.hidden {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.trial-step3-chat-icon {
+  width: 24px;
+  height: 24px;
+  filter: brightness(0) invert(1); /* White icon */
+  transition: transform 0.3s ease;
+}
+
+.trial-step3-chat-button:hover .trial-step3-chat-icon {
+  transform: scale(1.1);
+}
+
+/* -------------------- CARD OVERLAY (FULL SCREEN) -------------------- */
+.trial-step3-card-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(10, 10, 31, 0.95);
+  backdrop-filter: blur(10px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  cursor: pointer;
+  animation: fadeIn 0.3s ease;
+}
+
+.trial-step3-enlarged-card {
+  max-width: 90vw;
+  max-height: 90vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trial-step3-enlarged-card img {
+  max-width: 100%;
+  max-height: 90vh;
+  object-fit: contain;
+  border-radius: 15px;
+  border: 3px solid #A59AD1;
+  box-shadow: 
+    0 20px 80px rgba(0, 0, 0, 0.8),
+    0 0 60px rgba(165, 154, 209, 0.5);
+}
+
+/* -------------------- ANIMATIONS -------------------- */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes cosmicPulse {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
+}
+
+@keyframes cosmicGradient {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: rotate(45deg) translateY(0);
+  }
+  40% {
+    transform: rotate(45deg) translateY(-10px);
+  }
+  60% {
+    transform: rotate(45deg) translateY(-5px);
+  }
+}
+
+@keyframes chatPulse {
+  0% {
+    box-shadow: 
+      0 4px 15px rgba(244, 162, 97, 0.4),
+      0 0 0 0 rgba(244, 162, 97, 0.7);
+  }
+  50% {
+    box-shadow: 
+      0 4px 20px rgba(244, 162, 97, 0.6),
+      0 0 0 10px rgba(244, 162, 97, 0.1);
+  }
+  100% {
+    box-shadow: 
+      0 4px 15px rgba(244, 162, 97, 0.4),
+      0 0 0 0 rgba(244, 162, 97, 0);
+  }
+}
+
+@keyframes chatPulseHover {
+  0% {
+    box-shadow: 
+      0 6px 20px rgba(165, 154, 209, 0.5),
+      0 0 0 0 rgba(165, 154, 209, 0.8);
+  }
+  50% {
+    box-shadow: 
+      0 8px 25px rgba(165, 154, 209, 0.7),
+      0 0 0 8px rgba(165, 154, 209, 0.2);
+  }
+  100% {
+    box-shadow: 
+      0 6px 20px rgba(165, 154, 209, 0.5),
+      0 0 0 0 rgba(165, 154, 209, 0);
+  }
+}
+
+/* -------------------- TABLET (MEDIUM SCREENS) -------------------- */
+@media (max-width: 1024px) {
+  .trial-step3-reading-layout {
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    padding: 1.5rem;
+  }
+
+  .trial-step3-reading-title {
+    font-size: 2rem;
+  }
+
+  .trial-step3-section-title {
+    font-size: 1.2rem;
+  }
+
+  .trial-step3-section-content {
+    font-size: 1rem;
+  }
+}
+
+/* -------------------- MOBILE (STACKED LAYOUT) -------------------- */
+@media (max-width: 768px) {
+  .trial-step3-container {
+    padding: 1rem;
+    align-items: flex-start;
+    min-height: auto;
+  }
+
+  .trial-step3-reading-layout {
+    /* STACKED LAYOUT */
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    padding: 1.5rem;
+    margin: 1rem 0;
+  }
+
+  .trial-step3-card-column {
+    /* Card goes on TOP */
+    order: 1;
+    width: 100%;
+  }
+
+  .trial-step3-card-container {
+    max-width: 250px;
+    margin: 0 auto;
+  }
+
+  .trial-step3-reading-column {
+    /* Reading goes BELOW */
+    order: 2;
+    min-height: auto;
+  }
+
+  .trial-step3-reading-title {
+    font-size: 1.75rem;
+    text-align: center;
+  }
+
+  .trial-step3-interpretation-container {
+    max-height: none;
+    padding: 1.5rem;
+  }
+
+  .trial-step3-section-header {
+    justify-content: center;
+  }
+
+  .trial-step3-section-title {
+    font-size: 1.1rem;
+  }
+
+  .trial-step3-section-content {
+    font-size: 1rem;
+    line-height: 1.7;
+    padding-left: 0;
+  }
+
+  .trial-step3-chat-button {
+    bottom: 1.5rem;
+    left: 1.5rem;
+    width: 50px;
+    height: 50px;
+  }
+
+  .trial-step3-chat-icon {
+    width: 22px;
+    height: 22px;
+  }
+}
+
+/* -------------------- SMALL MOBILE -------------------- */
+@media (max-width: 480px) {
+  .trial-step3-container {
+    padding: 0.5rem;
+  }
+
+  .trial-step3-reading-layout {
+    padding: 1rem;
+    gap: 1.5rem;
+  }
+
+  .trial-step3-card-container {
+    max-width: 200px;
+  }
+
+  .trial-step3-card-name {
+    font-size: 1.25rem;
+  }
+
+  .trial-step3-reading-title {
+    font-size: 1.5rem;
+  }
+
+  .trial-step3-interpretation-container {
+    padding: 1rem;
+  }
+
+  .trial-step3-section-icon {
+    font-size: 1.2rem;
+  }
+
+  .trial-step3-section-title {
+    font-size: 1rem;
+  }
+
+  .trial-step3-section-content {
+    font-size: 0.95rem;
+  }
+
+  .trial-step3-chat-button {
+    width: 48px;
+    height: 48px;
+    bottom: 1rem;
+    left: 1rem;
+  }
+
+  .trial-step3-chat-icon {
+    width: 20px;
+    height: 20px;
+  }
+}
+
+/* -------------------- ACCESSIBILITY -------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .trial-step3-reading-layout,
+  .trial-step3-chat-button,
+  .trial-step3-section {
+    animation: none;
+  }
+
+  .trial-step3-card-container:hover {
+    transform: none;
+  }
+
+  .trial-step3-scroll-arrow {
+    animation: none;
+  }
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .trial-step3-reading-layout {
+    border: 3px solid #A59AD1;
+  }
+
+  .trial-step3-card-container {
+    border: 3px solid #A59AD1;
+  }
+
+  .trial-step3-chat-button {
+    border: 2px solid white;
+  }
+
+  .trial-step3-section-header {
+    border-bottom-width: 3px;
+  }
+}

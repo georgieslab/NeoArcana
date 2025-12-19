@@ -1102,7 +1102,7 @@ def graceful_shutdown(signum, frame):
     sys.exit(0)
 
 if __name__ == '__main__':
-    port = int(os.getenv('PORT', 8080))
+    port = int(os.getenv('PORT', 5000))
     
     # Run without SSL for local development
     if os.getenv('FLASK_ENV') == 'development' or os.getenv('FLASK_DEBUG', 'False').lower() in ('true', '1', 't'):
