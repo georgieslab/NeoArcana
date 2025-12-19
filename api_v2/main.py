@@ -48,7 +48,8 @@ app.add_middleware(
         "http://127.0.0.1:5000",      # Flask alternative
         "http://localhost:3000",      # Future Vite/React dev server
         "http://127.0.0.1:3000",      # Vite alternative
-        "https://app.neoarcana.cloud", # Production domain
+        "https://app.neoarcana.cloud",
+         "https://neoarcana-dmoy.onrender.com"
         # Add your production domain when ready
     ],
     allow_credentials=True,
