@@ -12,7 +12,7 @@
   
   const BASE_URL = isDevelopment 
     ? 'http://localhost:8000'
-    : 'https://your-production-domain.com'; // Update for production
+    : 'https://neoarcana-dmoy.onrender.com';
 
   // API Endpoints - Complete list
   const ENDPOINTS = {

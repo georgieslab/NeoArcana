@@ -98,6 +98,7 @@
   gap: clamp(0.4rem, 1vh, 0.75rem);
   overflow: visible; /* NO SCROLL! */
   flex-shrink: 0;
+  align-items: center;
 }
 
 /* -------------------- INPUT CONTAINERS -------------------- */

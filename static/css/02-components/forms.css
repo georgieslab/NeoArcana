@@ -9,7 +9,6 @@
 .neo-input-container {
   position: relative;
   width: 100%;
-  margin-bottom: var(--neo-space-md);
 }
 
 .input,
