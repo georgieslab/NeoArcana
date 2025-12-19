@@ -1,20 +1,15 @@
-# NeoArcana - Render.com Configuration
-# This file auto-configures your Render deployment
-
 services:
   - type: web
     name: neoarcana
     env: python
-    region: frankfurt  # Change to your preferred region
-    plan: free  # Free tier
+    region: oregon
+    plan: free
     buildCommand: pip install -r requirements.txt
-    startCommand: gunicorn app:app
+    startCommand: uvicorn api_v2.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
-        value: 3.11.0
-      - key: ENVIRONMENT
-        value: production
-      # Add these manually in Render dashboard (sensitive data):
-      # - ANTHROPIC_API_KEY
-      # - ADMIN_KEY  
-      # - FIREBASE_CREDENTIALS
+        value: 3.9
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: FIREBASE_CREDENTIALS
+        sync: false
