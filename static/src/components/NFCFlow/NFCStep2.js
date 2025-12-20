@@ -54,13 +54,13 @@ const NFCStep2 = ({ userData, error, onError }) => {
         const requestData = {
           userData: {
             nfc_id: userData.nfc_id,
-            name: userData.user_data?.name || userData.name || 'Cosmic Traveler',
-            zodiacSign: userData.user_data?.zodiacSign || userData.zodiacSign || 'Unknown',
-            language: userData.user_data?.preferences?.language || 'en',
+            name: userData.user_data&&name || userData.name || 'Cosmic Traveler',
+            zodiacSign: userData.user_data&&zodiacSign || userData.zodiacSign || 'Unknown',
+            language: userData.user_data&&preferences&&language || 'en',
             preferences: {
-              color: userData.user_data?.preferences?.color || { name: 'Cosmic Purple', value: '#A59AD1' },
-              interests: userData.user_data?.preferences?.interests || [],
-              numbers: userData.user_data?.preferences?.numbers || {}
+              color: userData.user_data&&preferences&&color || { name: 'Cosmic Purple', value: '#A59AD1' },
+              interests: userData.user_data&&preferences&&interests || [],
+              numbers: userData.user_data&&preferences&&numbers || {}
             }
           }
         };
@@ -288,7 +288,7 @@ const NFCStep2 = ({ userData, error, onError }) => {
   // SUCCESS STATE - Display Reading
   if (readingData) {
     const sections = parseInterpretation(readingData.interpretation);
-    const userName = userData.user_data?.name || userData.name || 'Cosmic Traveler';
+    const userName = userData.user_data&&name || userData.name || 'Cosmic Traveler';
 
     return React.createElement('div', { className: 'cosmic-reading-wrapper' },
       // Background
