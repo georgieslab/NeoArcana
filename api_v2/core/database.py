@@ -1,42 +1,25 @@
-"""
-Firebase database initialization and connection
-"""
-import firebase_admin
-from firebase_admin import credentials, firestore
-from functools import lru_cache
-import logging
+import os
+import json
 
-logger = logging.getLogger(__name__)
-
-
-@lru_cache()
 def get_firebase_app():
-    """
-    Initialize Firebase app (cached)
-    """
+    """Initialize and return Firebase app."""
     try:
-        # Try to get existing app
         return firebase_admin.get_app()
     except ValueError:
-        # Initialize new app
-        cred = credentials.Certificate('./tarot-433417-81a148e4ac53.json')
-        return firebase_admin.initialize_app(cred)
-
-
-@lru_cache()
-def get_db():
-    """
-    Get Firestore database client (cached)
-    """
-    try:
-        app = get_firebase_app()
-        db = firestore.client()
-        logger.info("✅ Firebase connected successfully")
-        return db
-    except Exception as e:
-        logger.error(f"❌ Firebase connection failed: {e}")
-        raise
-
-
-# Get database instance
-db = get_db()
+        # Try to get credentials from environment variable first
+        firebase_creds = os.getenv('FIREBASE_CREDENTIALS')
+        
+        if firebase_creds:
+            # Parse JSON from environment variable
+            try:
+                cred_dict = json.loads(firebase_creds)
+                cred = credentials.Certificate(cred_dict)
+            except json.JSONDecodeError:
+                # If it's a file path, use it directly
+                cred = credentials.Certificate(firebase_creds)
+        else:
+            # Fallback to local file for development
+            cred = credentials.Certificate('./tarot-433417-81a148e4ac53.json')
+        
+        firebase_admin.initialize_app(cred)
+        return firebase_admin.get_app()
