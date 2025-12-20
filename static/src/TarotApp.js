@@ -1,5 +1,10 @@
 const TarotApp = ({ language = 'en' }) => {
 
+  // API Configuration - Add this RIGHT HERE!
+  const API_BASE_URL = window.location.hostname === 'localhost'
+    ? 'http://localhost:8000'  // Local development
+    : 'https://neoarcana-2.onrender.com';  // Production API
+
   // UI State
   const mountedRef = React.useRef(true);
   const initialState = window.initialState || {};
@@ -200,7 +205,7 @@ React.useEffect(() => {
       // Ensure nfc_id has correct prefix
       const formattedId = nfcId.startsWith('nfc_') ? nfcId : `nfc_${nfcId}`;
       
-      const response = await fetch(`/api/nfc/user/${formattedId}`);
+      const response = await fetch(`${API_BASE_URL}/api/nfc/user/${formattedId}`);
       const userData = await response.json();
       console.log('Received user data:', userData);
       
@@ -281,7 +286,7 @@ React.useEffect(() => {
       console.log('Processing NFC registration with data:', userData);
   
       // First verify poster code
-      const verifyResponse = await fetch('/api/nfc/verify_poster', {
+      const verifyResponse = await fetch(`${API_BASE_URL}/api/nfc/verify_poster`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -311,7 +316,7 @@ React.useEffect(() => {
       // If existing user, update
       if (verifyData.existingUser) {
         console.log('Updating existing user with ID:', verifyData.nfcId);
-        const updateResponse = await fetch(`/api/nfc/update_user/${verifyData.nfcId}`, {
+        const updateResponse = await fetch(`${API_BASE_URL}/api/nfc/update_user/${verifyData.nfcId}`, {
           method: 'PUT',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(formattedUserData)
@@ -332,7 +337,7 @@ React.useEffect(() => {
   
       // Register new user with numbers data
       console.log('Registering new user with data:', formattedUserData);
-      const registerResponse = await fetch('/api/nfc/register', {
+      const registerResponse = await fetch(`${API_BASE_URL}/api/nfc/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formattedUserData)
@@ -626,7 +631,7 @@ const handleSubmit = async (userData) => {
     try {
       setIsSubmitting(true);
       // API call to register NFC user
-      const response = await fetch('/api/nfc/register', {
+      const response = await fetch('${API_BASE_URL}/api/nfc/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)
