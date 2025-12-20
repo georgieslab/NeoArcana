@@ -15,6 +15,9 @@ import time
 import sys
 from flask.cli import with_appcontext
 import click
+import subprocess
+import threading
+import requests
 
 # Configure logging
 logging.basicConfig(
@@ -45,6 +48,61 @@ except Exception as e:
 
 # Initialize Flask app
 app = Flask(__name__, static_folder='static', template_folder='templates')
+
+# Start FastAPI in background thread
+def start_fastapi():
+    """Start FastAPI server on port 8000"""
+    try:
+        print("🚀 Starting FastAPI backend on port 8000...")
+        subprocess.run([
+            'uvicorn', 
+            'api_v2.main:app', 
+            '--host', '0.0.0.0',
+            '--port', '8000'
+        ])
+    except Exception as e:
+        print(f"❌ Error starting FastAPI: {e}")
+
+# Start FastAPI in background when app starts
+if os.getenv('RENDER'):  # Only on Render, not locally
+    fastapi_thread = threading.Thread(target=start_fastapi, daemon=True)
+    fastapi_thread.start()
+    print("✅ FastAPI background thread started")
+
+# Proxy all /api/ calls to FastAPI
+@app.route('/api/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def api_proxy(path):
+    """Proxy API calls to FastAPI backend"""
+    fastapi_url = f'http://localhost:8000/api/{path}'
+    
+    try:
+        # Forward the request to FastAPI
+        if request.method == 'POST':
+            resp = requests.post(
+                fastapi_url,
+                json=request.get_json(),
+                headers={'Content-Type': 'application/json'}
+            )
+        elif request.method == 'GET':
+            resp = requests.get(
+                fastapi_url,
+                params=request.args
+            )
+        elif request.method == 'PUT':
+            resp = requests.put(
+                fastapi_url,
+                json=request.get_json(),
+                headers={'Content-Type': 'application/json'}
+            )
+        elif request.method == 'DELETE':
+            resp = requests.delete(fastapi_url)
+        
+        # Return FastAPI's response
+        return resp.json(), resp.status_code
+        
+    except Exception as e:
+        print(f"❌ Error proxying to FastAPI: {e}")
+        return {"error": "API request failed", "details": str(e)}, 500
 
 # Import Firebase and initialize db
 try:
