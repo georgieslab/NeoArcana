@@ -160,7 +160,7 @@ const ChatInterface = ({
           ...msg,
           language
         })),
-        sessionId,
+        session_id: sessionId,  // ✅ FIXED: Changed from sessionId to session_id for FastAPI
         maintainLanguage: true
       };
 
