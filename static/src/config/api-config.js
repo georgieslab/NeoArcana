@@ -1,6 +1,7 @@
 // ============================================================================
 // NeoArcana API Configuration
 // Handles all API calls to FastAPI backend
+// FIXED: Handles both HTTP and HTTPS origins
 // ============================================================================
 
 (function() {
@@ -10,9 +11,15 @@
   const isDevelopment = window.location.hostname === 'localhost' || 
                         window.location.hostname === '127.0.0.1';
   
+  // FIXED: Always use HTTP for localhost FastAPI (even if frontend is HTTPS)
+  // FastAPI runs on HTTP port 8000 regardless of Flask's protocol
   const BASE_URL = isDevelopment 
-    ? 'http://localhost:8000'
-    : '';
+    ? 'http://localhost:8000'  // Always HTTP for local FastAPI
+    : '';  // Production uses relative URLs (same origin)
+
+  console.log('🔧 API Config initializing...');
+  console.log('📍 Current location:', window.location.href);
+  console.log('🎯 API Base URL:', BASE_URL);
 
   // API Endpoints - Complete list
   const ENDPOINTS = {
@@ -42,11 +49,13 @@
 
   // Helper function to make POST requests
   async function post(endpoint, data) {
+    const url = `${BASE_URL}${endpoint}`;
+    
     try {
-      console.log(`🚀 Posting to FastAPI: ${BASE_URL}${endpoint}`);
-      console.log('📤 Request data:', data);
+      console.log(`🚀 POST to FastAPI: ${url}`);
+      console.log('📤 Request data:', JSON.stringify(data, null, 2));
 
-      const response = await fetch(`${BASE_URL}${endpoint}`, {
+      const response = await fetch(url, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -66,6 +75,16 @@
 
     } catch (error) {
       console.error('❌ API POST Error:', error);
+      
+      // Provide helpful error messages
+      if (error.message.includes('Failed to fetch')) {
+        console.error('🔍 Possible causes:');
+        console.error('   1. FastAPI not running on port 8000');
+        console.error('   2. CORS blocking the request');
+        console.error('   3. Network connectivity issue');
+        console.error('💡 Try: python -m uvicorn api_v2.main:app --reload --port 8000');
+      }
+      
       throw error;
     }
   }
@@ -76,7 +95,7 @@
       const url = new URL(`${BASE_URL}${endpoint}`);
       Object.keys(params).forEach(key => url.searchParams.append(key, params[key]));
 
-      console.log(`🔍 Getting from FastAPI: ${url.toString()}`);
+      console.log(`🔍 GET from FastAPI: ${url.toString()}`);
 
       const response = await fetch(url.toString(), {
         method: 'GET',
@@ -104,7 +123,7 @@
   // Helper function to make PUT requests
   async function put(endpoint, data) {
     try {
-      console.log(`🔄 Putting to FastAPI: ${BASE_URL}${endpoint}`);
+      console.log(`🔄 PUT to FastAPI: ${BASE_URL}${endpoint}`);
       console.log('📤 Request data:', data);
 
       const response = await fetch(`${BASE_URL}${endpoint}`, {
@@ -131,6 +150,18 @@
     }
   }
 
+  // Health check function
+  async function checkHealth() {
+    try {
+      const result = await get(ENDPOINTS.HEALTH);
+      console.log('💚 FastAPI Health:', result);
+      return result;
+    } catch (error) {
+      console.error('💔 FastAPI not reachable:', error.message);
+      return null;
+    }
+  }
+
   // Expose API_CONFIG to global scope
   window.API_CONFIG = {
     BASE_URL: BASE_URL,
@@ -138,6 +169,7 @@
     post: post,
     get: get,
     put: put,
+    checkHealth: checkHealth,
     
     // Convenience methods for specific endpoints
     verifyPoster: (nfc_id) => post(ENDPOINTS.VERIFY_POSTER, { nfc_id }),
@@ -152,8 +184,22 @@
     getChatHistory: (session_id) => get(`${ENDPOINTS.CHAT_HISTORY}/${session_id}`)
   };
 
-  console.log('✅ API Config loaded. Using:', BASE_URL);
-  console.log('FastAPI Mode:', isDevelopment ? 'Development' : 'Production');
+  console.log('✅ API Config loaded successfully');
+  console.log('🌐 Mode:', isDevelopment ? 'Development' : 'Production');
   console.log('📋 Available endpoints:', Object.keys(ENDPOINTS).length);
+  
+  // Auto-check health on load (helpful for debugging)
+  if (isDevelopment) {
+    setTimeout(() => {
+      checkHealth().then(result => {
+        if (result) {
+          console.log('🎉 FastAPI connection verified!');
+        } else {
+          console.warn('⚠️ FastAPI not responding. Make sure to run:');
+          console.warn('   python -m uvicorn api_v2.main:app --reload --port 8000');
+        }
+      });
+    }, 1000);
+  }
 
 })();

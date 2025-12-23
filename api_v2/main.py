@@ -1,5 +1,6 @@
 """
 NeoArcana FastAPI - With Registration and Readings
+FIXED: CORS now allows both HTTP and HTTPS origins
 """
 from dotenv import load_dotenv
 load_dotenv()  # Load .env FIRST!
@@ -38,25 +39,33 @@ app = FastAPI(
 )
 
 # ============================================================================
-# CORS MIDDLEWARE - CRITICAL FOR FRONTEND CONNECTION
+# CORS MIDDLEWARE - FIXED FOR BOTH HTTP AND HTTPS
 # ============================================================================
-# Add CORS immediately after app creation
+# Browser may treat localhost as HTTPS due to HSTS caching
+# So we need to allow BOTH HTTP and HTTPS origins
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
-        "http://localhost:5000",      # Flask development server
-        "http://127.0.0.1:5000",      # Flask alternative
-        "http://localhost:3000",      # Future Vite/React dev server
-        "http://127.0.0.1:3000",      # Vite alternative
+        # HTTP origins
+        "http://localhost:5000",
+        "http://127.0.0.1:5000",
+        "http://localhost:3000",
+        "http://127.0.0.1:3000",
+        "http://localhost:8000",
+        "http://127.0.0.1:8000",
+        # HTTPS origins (for browsers with HSTS caching)
+        "https://localhost:5000",
+        "https://127.0.0.1:5000",
+        "https://localhost:3000",
+        "https://127.0.0.1:3000",
+        # Production domains
         "https://app.neoarcana.cloud",
-         "https://neoarcana-dmoy.onrender.com"
-        # Add your production domain when ready
+        "https://neoarcana-dmoy.onrender.com",
     ],
     allow_credentials=True,
     allow_methods=["*"],  # Allow all HTTP methods
     allow_headers=["*"],  # Allow all headers
 )
-
 
 # ============================================================================
 # CUSTOM SWAGGER UI WITH NEOARCANA COSMIC THEME
@@ -208,95 +217,91 @@ async def custom_swagger_ui_html():
             
             .swagger-ui .btn:hover {{
                 background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange)) !important;
-                box-shadow: 0 6px 20px rgba(255, 215, 0, 0.4) !important;
-                transform: translateY(-2px);
+                transform: translateY(-2px) !important;
             }}
             
+            /* Execute button special */
             .swagger-ui .btn.execute {{
-                background: linear-gradient(135deg, var(--accent-orange), var(--accent-gold)) !important;
+                background: linear-gradient(135deg, var(--accent-gold), var(--accent-orange)) !important;
+                font-size: 16px !important;
             }}
             
             /* Input fields */
-            .swagger-ui input[type=text],
-            .swagger-ui input[type=email],
-            .swagger-ui textarea,
-            .swagger-ui select {{
+            .swagger-ui input[type=text], .swagger-ui textarea {{
                 background: rgba(26, 26, 46, 0.9) !important;
                 border: 2px solid var(--primary-purple) !important;
-                color: var(--primary-light) !important;
                 border-radius: 8px !important;
+                color: white !important;
+                padding: 12px !important;
             }}
             
-            .swagger-ui input[type=text]:focus,
-            .swagger-ui textarea:focus {{
+            .swagger-ui input[type=text]:focus, .swagger-ui textarea:focus {{
                 border-color: var(--accent-gold) !important;
-                box-shadow: 0 0 10px rgba(255, 215, 0, 0.3) !important;
+                box-shadow: 0 0 15px rgba(255, 215, 0, 0.3) !important;
             }}
             
-            /* Response blocks */
+            /* Response section */
             .swagger-ui .responses-inner {{
-                background: rgba(26, 26, 46, 0.6) !important;
-                border: 1px solid var(--primary-purple) !important;
+                background: rgba(26, 26, 46, 0.5) !important;
                 border-radius: 8px !important;
                 padding: 15px !important;
             }}
             
-            /* Code blocks */
-            .swagger-ui .highlight-code {{
-                background: rgba(10, 10, 31, 0.9) !important;
-                border: 1px solid var(--primary-purple) !important;
+            .swagger-ui .response-col_status {{
+                color: var(--accent-gold) !important;
+                font-weight: 700 !important;
             }}
             
-            .swagger-ui .microlight {{
-                color: var(--primary-light) !important;
+            /* Code blocks */
+            .swagger-ui .highlight-code {{
+                background: var(--bg-dark) !important;
+                border-radius: 8px !important;
             }}
             
             /* Models section */
-            .swagger-ui section.models {{
-                background: rgba(26, 26, 46, 0.6) !important;
-                border: 2px solid var(--primary-purple) !important;
-                border-radius: 12px !important;
-                padding: 20px !important;
+            .swagger-ui .model-box {{
+                background: rgba(26, 26, 46, 0.8) !important;
+                border: 1px solid var(--primary-purple) !important;
+                border-radius: 8px !important;
             }}
             
-            .swagger-ui section.models h4 {{
+            /* Table styling */
+            .swagger-ui table tbody tr td {{
+                color: var(--primary-light) !important;
+                border-color: var(--primary-purple) !important;
+            }}
+            
+            /* Section headers */
+            .swagger-ui .opblock-section-header {{
+                background: rgba(165, 154, 209, 0.1) !important;
+                border-radius: 8px 8px 0 0 !important;
+            }}
+            
+            .swagger-ui .opblock-section-header h4 {{
+                color: var(--primary-light) !important;
+            }}
+            
+            /* Parameter row */
+            .swagger-ui .parameter__name {{
                 color: var(--accent-gold) !important;
             }}
             
-            /* Authorization button */
-            .swagger-ui .authorization__btn {{
-                background: linear-gradient(135deg, var(--accent-orange), var(--accent-gold)) !important;
-                border: none !important;
-                color: white !important;
+            .swagger-ui .parameter__type {{
+                color: var(--primary-purple) !important;
             }}
             
-            /* Try it out button */
-            .swagger-ui .try-out__btn {{
-                background: linear-gradient(135deg, var(--primary-purple), var(--primary-dark)) !important;
-                border: none !important;
-                color: white !important;
+            /* Links */
+            .swagger-ui a {{
+                color: var(--accent-gold) !important;
             }}
             
-            /* Download button */
-            .swagger-ui .download-contents {{
-                background: linear-gradient(135deg, var(--accent-orange), var(--accent-gold)) !important;
-                border: none !important;
-                color: white !important;
+            .swagger-ui a:hover {{
+                color: var(--accent-orange) !important;
             }}
             
-            /* Clear button */
-            .swagger-ui .btn-clear {{
-                background: rgba(244, 67, 54, 0.7) !important;
-            }}
-            
-            /* Loading spinner */
-            .swagger-ui .loading-container {{
-                background: rgba(26, 26, 46, 0.95) !important;
-            }}
-            
-            /* Scrollbar styling */
+            /* Custom scrollbar */
             ::-webkit-scrollbar {{
-                width: 12px;
+                width: 8px;
             }}
             
             ::-webkit-scrollbar-track {{
@@ -305,23 +310,11 @@ async def custom_swagger_ui_html():
             
             ::-webkit-scrollbar-thumb {{
                 background: var(--primary-purple);
-                border-radius: 6px;
+                border-radius: 4px;
             }}
             
             ::-webkit-scrollbar-thumb:hover {{
                 background: var(--accent-gold);
-            }}
-            
-            /* Search/Filter box */
-            .swagger-ui .filter-container {{
-                background: rgba(26, 26, 46, 0.8) !important;
-                border: 2px solid var(--primary-purple) !important;
-                border-radius: 8px !important;
-                margin-bottom: 30px !important;
-            }}
-            
-            .swagger-ui .filter input[type=text] {{
-                color: var(--primary-light) !important;
             }}
         </style>
     </head>
@@ -330,31 +323,21 @@ async def custom_swagger_ui_html():
         <script src="https://cdn.jsdelivr.net/npm/swagger-ui-dist@5/swagger-ui-bundle.js"></script>
         <script>
             window.onload = function() {{
-                const ui = SwaggerUIBundle({{
-                    url: '/openapi.json',
+                window.ui = SwaggerUIBundle({{
+                    url: "/openapi.json",
                     dom_id: '#swagger-ui',
                     deepLinking: true,
                     presets: [
                         SwaggerUIBundle.presets.apis,
                         SwaggerUIBundle.SwaggerUIStandalonePreset
                     ],
-                    plugins: [
-                        SwaggerUIBundle.plugins.DownloadUrl
-                    ],
-                    layout: "BaseLayout",
-                    defaultModelsExpandDepth: -1,
-                    docExpansion: "none",
-                    filter: true,
-                    syntaxHighlight: {{
-                        theme: "monokai"
-                    }}
-                }})
-            }}
+                    layout: "BaseLayout"
+                }});
+            }};
         </script>
     </body>
     </html>
     """)
-
 
 # ============================================================================
 # ROOT & HEALTH ENDPOINTS
@@ -556,7 +539,7 @@ async def startup_event():
     logger.info("📚 API Docs: http://localhost:8000/docs")
     logger.info(f"🔥 Firebase: {'Connected' if db else 'Not Connected'}")
     logger.info(f"🤖 Claude API: {'Configured' if settings.ANTHROPIC_API_KEY else 'NOT CONFIGURED'}")
-    logger.info("🌐 CORS: Enabled for localhost:5000, localhost:3000")
+    logger.info("🌐 CORS: Enabled for HTTP/HTTPS on localhost:5000, localhost:3000")
     logger.info("✅ All routes loaded successfully")
     logger.info("=" * 60)
 
