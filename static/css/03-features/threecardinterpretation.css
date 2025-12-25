@@ -1,0 +1,596 @@
+/* ========================================
+   EMERGENCY SCROLLING FIX!
+   Add this to the TOP of your CSS file!
+   ======================================== */
+
+/* FORCE SCROLLING - CRITICAL FIX! */
+.three-card-top-layout {
+    height: auto !important;
+    max-height: none !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    position: relative !important;
+}
+
+.three-card-page-container {
+    height: auto !important;
+    max-height: none !important;
+    overflow: visible !important;
+    padding-bottom: 8rem !important; /* Space for buttons */
+}
+
+.three-card-reading-sections {
+    height: auto !important;
+    overflow: visible !important;
+    display: block !important;
+}
+
+.reading-section {
+    height: auto !important;
+    overflow: visible !important;
+    display: block !important;
+    margin-bottom: 3rem !important;
+}
+
+.reading-section-content {
+    height: auto !important;
+    overflow: visible !important;
+    display: block !important;
+    white-space: pre-wrap !important;
+}
+
+/* ========================================
+   THREE CARD - TOP LAYOUT (SCROLLABLE FIX!)
+   Cards at top, reading below - NOW SCROLLS! 🎴
+   ======================================== */
+
+/* Container - MUST BE SCROLLABLE! */
+.three-card-top-layout {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: all 0.6s ease-out;
+    min-height: 100vh;
+    overflow-y: auto; /* ← CRITICAL: Allow scrolling! */
+    overflow-x: hidden;
+}
+
+.three-card-top-layout.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Page Container */
+.three-card-page-container {
+    max-width: 1400px;
+    margin: 0 auto;
+    padding: 2rem 1.5rem 5rem;
+    min-height: 100vh;
+}
+
+/* Header */
+.three-card-page-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    animation: headerFadeIn 0.8s ease-out;
+}
+
+@keyframes headerFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.three-card-page-title {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    background: linear-gradient(135deg, #9370DB, #A59AD1, #F4A261);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    font-weight: 800;
+    margin-bottom: 0.75rem;
+    letter-spacing: 0.5px;
+}
+
+.three-card-page-subtitle {
+    font-size: 1.2rem;
+    color: rgba(255, 255, 255, 0.7);
+    font-style: italic;
+    margin: 0;
+}
+
+/* ========================================
+   THREE CARDS ROW (AT TOP)
+   ======================================== */
+
+.three-card-top-cards-row {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2.5rem;
+    margin-bottom: 2.5rem;
+    perspective: 1000px;
+}
+
+.three-card-top-card-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    animation: cardSlideUp 0.8s ease-out var(--card-delay) both;
+}
+
+@keyframes cardSlideUp {
+    from {
+        opacity: 0;
+        transform: translateY(40px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Position Label */
+.card-top-position {
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+}
+
+.position-icon-top {
+    font-size: 1.3rem;
+    animation: iconBounce 2s ease-in-out infinite;
+}
+
+@keyframes iconBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+/* Card Image Wrapper */
+.card-top-image-wrapper {
+    position: relative;
+    width: 240px;
+    border-radius: 16px;
+    overflow: hidden;
+    transition: all 0.3s ease;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+}
+
+.card-top-image-wrapper:hover {
+    transform: translateY(-8px) scale(1.03);
+    box-shadow: 0 16px 48px rgba(165, 154, 209, 0.6);
+}
+
+.card-top-image {
+    width: 100%;
+    display: block;
+}
+
+/* Hover Overlay */
+.card-top-hover {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, transparent 60%, rgba(0, 0, 0, 0.85));
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 1.5rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.card-top-image-wrapper:hover .card-top-hover {
+    opacity: 1;
+}
+
+.card-top-hover span {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: #fff;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+/* Card Name */
+.card-top-name {
+    font-size: 1.2rem;
+    font-weight: 800;
+    text-align: center;
+    text-shadow: 0 2px 10px rgba(0, 0, 0, 0.6);
+    letter-spacing: 0.5px;
+    max-width: 240px;
+}
+
+/* ========================================
+   COSMIC INFO BAR
+   ======================================== */
+
+.three-card-cosmic-bar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
+    padding: 1.5rem 2rem;
+    background: rgba(26, 26, 38, 0.5);
+    backdrop-filter: blur(15px);
+    border-radius: 16px;
+    border: 2px solid rgba(165, 154, 209, 0.2);
+    margin-bottom: 3rem;
+    animation: barFadeIn 0.8s ease-out 0.6s both;
+}
+
+@keyframes barFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.cosmic-bar-item {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.95);
+    font-weight: 600;
+}
+
+.cosmic-bar-icon {
+    font-size: 1.4rem;
+}
+
+/* ========================================
+   READING SECTIONS (BELOW CARDS)
+   MUST BE VISIBLE AND SCROLLABLE!
+   ======================================== */
+
+.three-card-reading-sections {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding-bottom: 6rem; /* Extra padding for buttons at bottom */
+}
+
+.reading-section {
+    margin-bottom: 3.5rem;
+    animation: sectionFadeIn 0.8s ease-out var(--section-delay) both;
+}
+
+@keyframes sectionFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.reading-section-header {
+    display: flex;
+    align-items: center;
+    gap: 1.25rem;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 2px solid rgba(165, 154, 209, 0.2);
+}
+
+.section-icon-wrapper {
+    width: 55px;
+    height: 55px;
+    border-radius: 14px;
+    border: 2px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    backdrop-filter: blur(10px);
+    flex-shrink: 0;
+}
+
+.section-icon {
+    font-size: 2rem;
+}
+
+.section-title {
+    font-size: 2rem;
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    margin: 0;
+}
+
+.reading-section-content {
+    font-size: 1.15rem;
+    line-height: 1.9;
+    color: rgba(255, 255, 255, 0.95);
+    text-align: justify;
+    white-space: pre-line;
+    padding-left: 70px;
+}
+
+/* ========================================
+   BUTTONS
+   ======================================== */
+
+/* Return Button */
+.three-card-return-btn {
+    position: fixed;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 1.1rem 2.75rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, rgba(165, 154, 209, 0.3), rgba(107, 78, 113, 0.3));
+    border: 2px solid #A59AD1;
+    color: #A59AD1;
+    border-radius: 60px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(15px);
+    z-index: 100;
+}
+
+.three-card-return-btn:hover {
+    transform: translateX(-50%) translateY(-3px);
+    box-shadow: 0 10px 32px rgba(165, 154, 209, 0.5);
+    border-color: #CEC7F2;
+    color: #CEC7F2;
+}
+
+/* Chat Button */
+.three-card-chat-btn {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #A59AD1, #F4A261);
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 6px 24px rgba(165, 154, 209, 0.5);
+    transition: all 0.3s ease;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.three-card-chat-btn:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 10px 40px rgba(165, 154, 209, 0.7);
+}
+
+.three-card-chat-btn.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.chat-btn-icon {
+    width: 32px;
+    height: 32px;
+    filter: brightness(0) invert(1);
+}
+
+/* ========================================
+   CARD OVERLAY (ENLARGED VIEW)
+   ======================================== */
+
+.card-enlarged-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.9);
+    backdrop-filter: blur(15px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2000;
+    cursor: pointer;
+    animation: fadeIn 0.3s ease-out;
+    overflow-y: auto; /* Allow scrolling if needed */
+}
+
+.card-enlarged-content {
+    max-width: 90%;
+    max-height: 90%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+    animation: scaleIn 0.4s cubic-bezier(0.4, 0.0, 0.2, 1);
+    cursor: default;
+    position: relative;
+    margin: auto;
+}
+
+.enlarged-position {
+    font-size: 1.3rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    padding: 0.75rem 1.5rem;
+    background: rgba(26, 26, 38, 0.8);
+    border-radius: 12px;
+    border: 2px solid;
+}
+
+.enlarged-img {
+    max-width: 500px;
+    max-height: 70vh;
+    border-radius: 20px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.6);
+}
+
+.enlarged-name {
+    font-size: 2.5rem;
+    font-weight: 800;
+    text-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+    letter-spacing: 1px;
+}
+
+.enlarged-close {
+    position: absolute;
+    top: -60px;
+    right: 0;
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: rgba(165, 154, 209, 0.3);
+    border: 2px solid #A59AD1;
+    color: #fff;
+    font-size: 1.5rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.enlarged-close:hover {
+    background: rgba(165, 154, 209, 0.5);
+    transform: rotate(90deg);
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes scaleIn {
+    from {
+        opacity: 0;
+        transform: scale(0.8);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
+/* Tablet */
+@media (max-width: 1024px) {
+    .three-card-top-cards-row {
+        gap: 2rem;
+    }
+    
+    .card-top-image-wrapper {
+        width: 200px;
+    }
+    
+    .reading-section-content {
+        padding-left: 0;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .three-card-page-container {
+        padding: 1.5rem 1rem 5rem;
+    }
+    
+    .three-card-top-cards-row {
+        gap: 1.5rem;
+    }
+    
+    .card-top-image-wrapper {
+        width: 160px;
+    }
+    
+    .card-top-name {
+        font-size: 1rem;
+    }
+    
+    .three-card-cosmic-bar {
+        flex-direction: column;
+        gap: 1rem;
+    }
+    
+    .reading-section-header {
+        gap: 1rem;
+    }
+    
+    .section-icon-wrapper {
+        width: 45px;
+        height: 45px;
+    }
+    
+    .section-icon {
+        font-size: 1.5rem;
+    }
+    
+    .section-title {
+        font-size: 1.5rem;
+    }
+    
+    .reading-section-content {
+        font-size: 1.05rem;
+        padding-left: 0;
+    }
+    
+    .three-card-return-btn {
+        bottom: 1rem;
+        font-size: 1rem;
+        padding: 0.875rem 2rem;
+    }
+    
+    .three-card-chat-btn {
+        bottom: 1rem;
+        right: 1rem;
+        width: 55px;
+        height: 55px;
+    }
+}
+
+/* Small Mobile */
+@media (max-width: 480px) {
+    .three-card-top-cards-row {
+        flex-direction: column;
+        align-items: center;
+        gap: 2rem;
+    }
+    
+    .card-top-image-wrapper {
+        width: 240px;
+    }
+    
+    .card-top-name {
+        font-size: 1.2rem;
+        max-width: 240px;
+    }
+}
+
+/* Touch Devices */
+@media (hover: none) {
+    .card-top-image-wrapper:hover {
+        transform: none;
+    }
+    
+    .card-top-image-wrapper:active {
+        transform: scale(0.98);
+    }
+}

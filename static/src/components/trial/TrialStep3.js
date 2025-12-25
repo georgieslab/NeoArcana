@@ -1,7 +1,6 @@
 // ========================================
-// NEOARCANA - TRIAL STEP 3 (READING DISPLAY)
-// FIXED: Parses interpretation tags into sections
-// Side-by-side layout on desktop, stacked on mobile
+// NEOARCANA - TRIAL STEP 3 (FINAL VERSION)
+// Three-card button under card! Perfect placement! 🎴
 // ========================================
 
 const TrialStep3 = ({ 
@@ -17,6 +16,12 @@ const TrialStep3 = ({
   const [selectedCard, setSelectedCard] = React.useState(null);
   const [currentLanguage, setCurrentLanguage] = React.useState(language);
   const [chatHistory, setChatHistory] = React.useState(null);
+
+  // Three-card reading state
+  const [showThreeCardReveal, setShowThreeCardReveal] = React.useState(false);
+  const [showThreeCardInterpretation, setShowThreeCardInterpretation] = React.useState(false);
+  const [threeCardData, setThreeCardData] = React.useState(null);
+  const [isLoadingThreeCard, setIsLoadingThreeCard] = React.useState(false);
 
   React.useEffect(() => {
     setIsVisible(true);
@@ -36,13 +41,51 @@ const TrialStep3 = ({
     setShowChat(false);
   };
 
+  // Handle three-card reading request
+  const handleThreeCardReading = async () => {
+    console.log('🎴 Requesting three-card reading...');
+    setIsLoadingThreeCard(true);
+    
+    try {
+      const response = await window.API_CONFIG.post(
+        '/api/nfc/three_card_reading',
+        { nfc_id: null }
+      );
+      
+      console.log('✅ Three-card reading received:', response);
+      
+      if (response.success && response.data) {
+        setThreeCardData(response.data);
+        setShowThreeCardReveal(true);
+      }
+    } catch (error) {
+      console.error('❌ Error getting three-card reading:', error);
+      alert('Unable to generate three-card reading. Please try again.');
+    } finally {
+      setIsLoadingThreeCard(false);
+    }
+  };
+
+  // Handle completion of three-card reveal (go to interpretation)
+  const handleThreeCardRevealComplete = () => {
+    console.log('✅ Three-card reveal complete, showing interpretation');
+    setShowThreeCardReveal(false);
+    setShowThreeCardInterpretation(true);
+  };
+
+  // Handle return from three-card interpretation
+  const handleReturnFromThreeCard = () => {
+    console.log('↩️ Returning to single card view');
+    setShowThreeCardInterpretation(false);
+    setThreeCardData(null);
+  };
+
   // Parse interpretation into sections
   const parseInterpretation = (text) => {
     if (!text) return [];
     
     const sections = [];
     
-    // Split by section markers
     const cardReading = text.match(/\[CARD_READING\]([\s\S]*?)(?=\[|$)/);
     const numerology = text.match(/\[NUMEROLOGY_INSIGHT\]([\s\S]*?)(?=\[|$)/);
     const affirmation = text.match(/\[DAILY_AFFIRMATION\]([\s\S]*?)(?=\[|$)/);
@@ -71,7 +114,6 @@ const TrialStep3 = ({
       });
     }
     
-    // If no sections found, return the whole text as one section
     if (sections.length === 0) {
       sections.push({
         title: 'Your Reading',
@@ -89,62 +131,105 @@ const TrialStep3 = ({
     className: `trial-step3-container ${isVisible ? 'visible' : ''}` 
   },
     
-    // Main reading container with side-by-side layout
-    React.createElement("div", { className: "trial-step3-reading-layout" },
+    // Show THREE-CARD REVEAL
+    showThreeCardReveal && threeCardData ? 
+      React.createElement(window.ThreeCardReveal, {
+        name: name,
+        readingData: threeCardData,
+        onComplete: handleThreeCardRevealComplete,
+        zodiacSign: zodiacSign
+      })
+    
+    // Show THREE-CARD INTERPRETATION
+    : showThreeCardInterpretation && threeCardData ?
+      React.createElement(window.ThreeCardInterpretation, {
+        readingData: threeCardData,
+        name: name,
+        zodiacSign: zodiacSign,
+        language: currentLanguage,
+        onReturn: handleReturnFromThreeCard
+      })
+    
+    // Show SINGLE CARD VIEW (original)
+    : React.createElement(React.Fragment, null,
       
-      // LEFT SIDE: Card Section
-      React.createElement("div", { className: "trial-step3-card-column" },
-        React.createElement("div", { 
-          className: "trial-step3-card-container",
-          onClick: () => setSelectedCard(0)
-        },
-          React.createElement("img", {
-            src: cardImage,
-            alt: cardName,
-            className: "trial-step3-card-image"
-          })
-        ),
+      // Main reading container
+      React.createElement("div", { className: "trial-step3-reading-layout" },
         
-        // Card name below card
-        React.createElement("h3", { className: "trial-step3-card-name" }, 
-          cardName
-        )
-      ),
-
-      // RIGHT SIDE: Reading Section
-      React.createElement("div", { className: "trial-step3-reading-column" },
-        React.createElement("h2", { className: "trial-step3-reading-title" }, 
-          "Your Reading"
-        ),
-        
-        React.createElement("div", { className: "trial-step3-interpretation-container" },
+        // LEFT: Card Section WITH BUTTON!
+        React.createElement("div", { className: "trial-step3-card-column" },
           
-          // Render each section
-          sections.map((section, index) => 
-            React.createElement("div", { 
-              key: index,
-              className: "trial-step3-section"
-            },
-              React.createElement("div", { className: "trial-step3-section-header" },
-                React.createElement("span", { className: "trial-step3-section-icon" }, section.icon),
-                React.createElement("h3", { className: "trial-step3-section-title" }, section.title)
-              ),
-              React.createElement("div", { className: "trial-step3-section-content" },
-                section.content
-              )
-            )
+          // Card Image
+          React.createElement("div", { 
+            className: "trial-step3-card-container",
+            onClick: () => setSelectedCard(0)
+          },
+            React.createElement("img", {
+              src: cardImage,
+              alt: cardName,
+              className: "trial-step3-card-image"
+            })
           ),
           
-          // Scroll indicator (only shows when content overflows)
-          React.createElement("div", { className: "trial-step3-scroll-indicator" },
-            React.createElement("div", { className: "trial-step3-scroll-arrow" })
+          // Card Name
+          React.createElement("h3", { className: "trial-step3-card-name" }, 
+            cardName
+          ),
+
+          // THREE-CARD BUTTON (NOW HERE! Under card name!)
+          React.createElement("div", { className: "trial-step3-card-actions" },
+            !isLoadingThreeCard ? 
+              React.createElement("button", {
+                onClick: handleThreeCardReading,
+                className: "three-card-button-sidebar"
+              },
+                React.createElement("span", { className: "three-card-button-icon" }, "🎴"),
+                React.createElement("span", null, "Reveal Past • Present • Future")
+              ) 
+            :
+              // Loading state
+              React.createElement("div", { className: "cosmic-loader-sidebar" },
+                React.createElement("div", { className: "loader-spinner" }),
+                React.createElement("p", { className: "loader-text" },
+                  "✨ Consulting..."
+                )
+              )
+          )
+        ),
+
+        // RIGHT: Reading Section
+        React.createElement("div", { className: "trial-step3-reading-column" },
+          React.createElement("h2", { className: "trial-step3-reading-title" }, 
+            "Your Reading"
+          ),
+          
+          React.createElement("div", { className: "trial-step3-interpretation-container" },
+            
+            sections.map((section, index) => 
+              React.createElement("div", { 
+                key: index,
+                className: "trial-step3-section"
+              },
+                React.createElement("div", { className: "trial-step3-section-header" },
+                  React.createElement("span", { className: "trial-step3-section-icon" }, section.icon),
+                  React.createElement("h3", { className: "trial-step3-section-title" }, section.title)
+                ),
+                React.createElement("div", { className: "trial-step3-section-content" },
+                  section.content
+                )
+              )
+            ),
+            
+            React.createElement("div", { className: "trial-step3-scroll-indicator" },
+              React.createElement("div", { className: "trial-step3-scroll-arrow" })
+            )
           )
         )
       )
     ),
 
-    // Chat Button (LEFT side)
-    React.createElement("button", {
+    // Chat Button (only in single card view)
+    !showThreeCardReveal && !showThreeCardInterpretation && React.createElement("button", {
       className: `trial-step3-chat-button ${showChat ? 'hidden' : ''}`,
       onClick: handleChatOpen,
       title: "Chat about your reading"
@@ -169,7 +254,7 @@ const TrialStep3 = ({
       onChatHistoryUpdate: setChatHistory
     }),
 
-    // Card Overlay (full screen when clicked)
+    // Card Overlay
     selectedCard !== null && React.createElement("div", {
       className: "trial-step3-card-overlay",
       onClick: () => setSelectedCard(null)

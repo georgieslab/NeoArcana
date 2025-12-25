@@ -1,29 +1,34 @@
 """
-Pydantic models for three-card tarot readings
+Three-card and weekly reading models
 """
 from pydantic import BaseModel, Field
-from typing import Optional, List, Dict
+from typing import Optional, List
 
 
 class ThreeCardRequest(BaseModel):
-    """Request for three-card reading"""
-    nfc_id: str = Field(..., description="User's NFC ID")
-
-
-class CardPosition(BaseModel):
-    """Single card in a position"""
-    position: str  # "Past", "Present", or "Future"
-    cardName: str
-    cardImage: str
-    keywords: List[str]
+    """Request model for three-card reading"""
+    nfc_id: Optional[str] = None  # ✅ Optional for trial users
+    userData: Optional[dict] = None  # ✅ NEW! For AI personalization (name, zodiacSign, language)
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "nfc_id": "nfc_TEST001",
+                "userData": {
+                    "name": "Georgie",
+                    "zodiacSign": "Libra",
+                    "language": "en"
+                }
+            }
+        }
 
 
 class ThreeCardReading(BaseModel):
-    """Complete three-card reading data"""
-    cards: List[str] = Field(..., description="List of card image URLs")
-    cardNames: List[str] = Field(..., description="List of card names")
-    positions: List[str] = ["Past", "Present", "Future"]
-    interpretation: str = Field(..., description="Complete reading interpretation")
+    """Three-card reading data structure"""
+    cards: List[str]
+    cardNames: List[str]
+    positions: List[str]
+    interpretation: str
     moonPhase: Optional[str] = None
     season: Optional[str] = None
     dayEnergy: Optional[str] = None
@@ -32,19 +37,25 @@ class ThreeCardReading(BaseModel):
 
 
 class ThreeCardResponse(BaseModel):
-    """Response with three-card reading"""
+    """Response model for three-card reading"""
     success: bool
-    data: Optional[ThreeCardReading] = None
-    error: Optional[str] = None
+    data: ThreeCardReading
+
 
 class WeeklyReadingRequest(BaseModel):
-    """Request for weekly reading"""
-    nfc_id: str = Field(..., description="User's NFC ID")
+    """Request model for weekly reading"""
+    nfc_id: str  # Required - premium feature only
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "nfc_id": "nfc_TEST001"
+            }
+        }
 
 
 class WeeklyReadingResponse(BaseModel):
-    """Response with weekly reading"""
+    """Response model for weekly reading"""
     success: bool
-    data: Optional[ThreeCardReading] = None
-    error: Optional[str] = None
+    data: ThreeCardReading
     cached: bool = False

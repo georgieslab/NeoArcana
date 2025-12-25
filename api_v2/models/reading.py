@@ -1,26 +1,54 @@
 """
-Pydantic models for tarot readings
+Daily reading models
 """
 from pydantic import BaseModel, Field
-from typing import Optional, Dict
+from typing import Optional
 
 
-class UserDataForReading(BaseModel):
-    """User data needed for generating reading"""
-    nfc_id: str
-    name: str
-    zodiacSign: str
+class UserPreferences(BaseModel):
+    """User preferences structure"""
+    color: Optional[dict] = None
+    interests: Optional[list] = None
     language: Optional[str] = "en"
-    preferences: Optional[Dict] = Field(default_factory=dict)
+    gender: Optional[str] = None
+    numbers: Optional[dict] = None
+
+
+class UserData(BaseModel):
+    """User data for reading generation"""
+    nfc_id: Optional[str] = None
+    name: str
+    dateOfBirth: Optional[str] = None
+    zodiacSign: str
+    language: str = "en"
+    preferences: UserPreferences = Field(default_factory=UserPreferences)
 
 
 class DailyAffirmationRequest(BaseModel):
-    """Request for daily affirmation reading"""
-    userData: UserDataForReading
+    """Request model for daily affirmation"""
+    userData: UserData
+    
+    class Config:
+        json_schema_extra = {
+            "example": {
+                "userData": {
+                    "nfc_id": "nfc_TEST001",
+                    "name": "Georgie",
+                    "dateOfBirth": "1994-09-01",
+                    "zodiacSign": "Libra",
+                    "language": "en",
+                    "preferences": {
+                        "color": {"name": "Cosmic Purple", "value": "#A59AD1"},
+                        "interests": ["tarot", "astrology"],
+                        "language": "en"
+                    }
+                }
+            }
+        }
 
 
 class ReadingData(BaseModel):
-    """Tarot reading data"""
+    """Reading data structure"""
     cardName: str
     cardImage: str
     interpretation: str
@@ -32,7 +60,6 @@ class ReadingData(BaseModel):
 
 
 class DailyAffirmationResponse(BaseModel):
-    """Response with daily affirmation reading"""
+    """Response model for daily affirmation"""
     success: bool
-    data: Optional[ReadingData] = None
-    error: Optional[str] = None
+    data: ReadingData

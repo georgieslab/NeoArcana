@@ -88,14 +88,25 @@ async def three_card_reading(
     Includes:
     - AI-powered interpretations via Claude
     - Cosmic context (moon phase, season, planetary energy)
-    - Personalized based on zodiac, interests, and preferences
-    - Cached for 24 hours (one reading per day)
+    - Personalized based on zodiac, interests, and preferences (NFC users)
+    - Simple cosmic reading for trial users
+    - Cached for 24 hours (one reading per day for NFC users)
+    
+    NOW SUPPORTS TRIAL USERS! 🎉
+    - Trial users: nfc_id = null (cosmic reading without personalization)
+    - NFC users: nfc_id = "nfc_XXX" (full personalized reading)
     """
     try:
-        logger.info(f"Three-card reading request for: {request.nfc_id}")
+        nfc_id = request.nfc_id
         
-        # Generate reading (ASYNC!)
-        reading_data = await reading_service.generate_three_card_reading(request.nfc_id)
+        if nfc_id:
+            # NFC user - full personalized reading
+            logger.info(f"Three-card reading request for NFC user: {nfc_id}")
+            reading_data = await reading_service.generate_three_card_reading(nfc_id)
+        else:
+            # Trial user - simple cosmic reading
+            logger.info("Three-card reading request for trial user")
+            reading_data = await reading_service.generate_trial_three_card_reading()
         
         return ThreeCardResponse(
             success=True,

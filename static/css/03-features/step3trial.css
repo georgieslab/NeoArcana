@@ -591,3 +591,572 @@
     border-bottom-width: 3px;
   }
 }
+
+/* ========================================
+   ADD TO: static/css/03-features/step2trial.css
+   (or wherever your trial CSS is)
+   Cosmic Button Styling for Three-Card Reading
+   ======================================== */
+
+/* Three-Card Reading Button */
+.three-card-button {
+    position: relative;
+    background: linear-gradient(135deg, rgba(165, 154, 209, 0.2), rgba(107, 78, 113, 0.2));
+    border: 2px solid #A59AD1;
+    color: #A59AD1;
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    overflow: hidden;
+    min-width: 280px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    margin: 2rem auto;
+    text-transform: none;
+    letter-spacing: 0.5px;
+}
+
+.three-card-button::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+        transparent, 
+        rgba(165, 154, 209, 0.3), 
+        transparent
+    );
+    transition: left 0.5s ease;
+}
+
+.three-card-button:hover::before {
+    left: 100%;
+}
+
+.three-card-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(165, 154, 209, 0.4);
+    border-color: #CEC7F2;
+    color: #CEC7F2;
+}
+
+.three-card-button:active {
+    transform: translateY(0);
+}
+
+.three-card-button:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.three-card-button-icon {
+    font-size: 1.3rem;
+    animation: cardPulse 2s ease-in-out infinite;
+}
+
+@keyframes cardPulse {
+    0%, 100% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.1);
+    }
+}
+
+/* Loading Spinner */
+.cosmic-loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.loader-spinner {
+    width: 50px;
+    height: 50px;
+    border: 3px solid rgba(165, 154, 209, 0.2);
+    border-top-color: #A59AD1;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+.loader-text {
+    margin-top: 1rem;
+    color: #A59AD1;
+    font-size: 1rem;
+    animation: pulse 1.5s ease-in-out infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+@keyframes pulse {
+    0%, 100% { opacity: 0.6; }
+    50% { opacity: 1; }
+}
+
+/* Three-Card Display Container */
+.trial-three-card-container {
+    animation: fadeIn 0.5s ease-in;
+    width: 100%;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* Three-Card Grid */
+.three-card-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.card-position {
+    text-align: center;
+    animation: fadeInUp 0.5s ease-out backwards;
+}
+
+.card-position:nth-child(1) { animation-delay: 0s; }
+.card-position:nth-child(2) { animation-delay: 0.2s; }
+.card-position:nth-child(3) { animation-delay: 0.4s; }
+
+.position-label {
+    font-size: 0.9rem;
+    color: #A59AD1;
+    margin-bottom: 0.5rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    position: relative;
+    display: inline-block;
+}
+
+.position-label::after {
+    content: '';
+    position: absolute;
+    bottom: -4px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60%;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, #A59AD1, transparent);
+}
+
+.tarot-card-image {
+    width: 100%;
+    max-width: 250px;
+    border-radius: 12px;
+    box-shadow: 0 8px 32px rgba(165, 154, 209, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.tarot-card-image:hover {
+    transform: scale(1.05);
+    box-shadow: 0 12px 48px rgba(165, 154, 209, 0.5);
+}
+
+.card-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #fff;
+    margin-top: 0.5rem;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+/* Interpretation Box */
+.three-card-interpretation {
+    padding: 2rem;
+    background: rgba(26, 26, 38, 0.6);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    border: 1px solid rgba(165, 154, 209, 0.2);
+    line-height: 1.8;
+    white-space: pre-line;
+    margin-bottom: 2rem;
+    font-size: 1.05rem;
+    color: rgba(255, 255, 255, 0.95);
+}
+
+.three-card-interpretation strong {
+    color: #A59AD1;
+    font-weight: 600;
+}
+
+/* Back Button */
+.cosmic-btn--outline {
+    background: transparent;
+    border: 2px solid #A59AD1;
+    color: #A59AD1;
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 12px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.cosmic-btn--outline:hover {
+    background: rgba(165, 154, 209, 0.1);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 16px rgba(165, 154, 209, 0.3);
+}
+
+/* Animations */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .three-card-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+    }
+    
+    .three-card-button {
+        min-width: auto;
+        width: 100%;
+        max-width: 100%;
+        font-size: 1rem;
+        padding: 0.875rem 1.5rem;
+    }
+    
+    .three-card-interpretation {
+        padding: 1.5rem;
+        font-size: 1rem;
+    }
+    
+    .tarot-card-image {
+        max-width: 280px;
+    }
+}
+
+@media (max-width: 480px) {
+    .position-label {
+        font-size: 0.8rem;
+        letter-spacing: 1px;
+    }
+    
+    .card-name {
+        font-size: 1rem;
+    }
+    
+    .three-card-button-icon {
+        font-size: 1.1rem;
+    }
+}
+
+/* Touch Devices - No Hover */
+@media (hover: none) {
+    .three-card-button:active {
+        transform: scale(0.98);
+    }
+    
+    .tarot-card-image:hover {
+        transform: none;
+    }
+}
+
+/* ========================================
+   THREE CARD REVEAL - ADDITIONS
+   Add these to your existing step2trial.css
+   Uses all the same TrialStep2 styles!
+   ======================================== */
+
+/* Three-Card Layout */
+.three-card-reveal-section {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-top: 2rem;
+    perspective: 1500px;
+}
+
+.three-card-column {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    animation: cardFadeIn 0.8s ease-out calc(var(--card-index, 0) * 0.2s) both;
+}
+
+.three-card-column:nth-child(1) { --card-index: 0; }
+.three-card-column:nth-child(2) { --card-index: 1; }
+.three-card-column:nth-child(3) { --card-index: 2; }
+
+@keyframes cardFadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Position Label */
+.card-position-label {
+    font-size: 0.95rem;
+    font-weight: 700;
+    color: #A59AD1;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    margin-bottom: 0.5rem;
+}
+
+.position-icon {
+    font-size: 1.2rem;
+    animation: iconBounce 2s ease-in-out infinite;
+}
+
+@keyframes iconBounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-5px); }
+}
+
+/* Card Name Label */
+.card-name-label {
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #fff;
+    text-align: center;
+    margin-top: 0.75rem;
+    text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+    animation: fadeInUp 0.6s ease-out 0.3s both;
+}
+
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive - Tablet */
+@media (max-width: 1024px) {
+    .three-card-reveal-section {
+        gap: 1.5rem;
+    }
+}
+
+/* Responsive - Mobile */
+@media (max-width: 768px) {
+    .three-card-reveal-section {
+        flex-direction: column;
+        align-items: center;
+        gap: 3rem;
+    }
+}
+
+/* Responsive - Small Mobile */
+@media (max-width: 480px) {
+    .card-position-label {
+        font-size: 0.85rem;
+        letter-spacing: 1.5px;
+    }
+    
+    .card-name-label {
+        font-size: 1rem;
+    }
+}
+
+/* ========================================
+   THREE-CARD BUTTON - SIDEBAR POSITION
+   Beautiful button under card! Perfect UX! 🎴
+   ======================================== */
+
+/* Container for button under card */
+.trial-step3-card-actions {
+    width: 100%;
+    margin-top: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+/* Three-Card Button - Sidebar Version */
+.three-card-button-sidebar {
+    width: 100%;
+    padding: 1.2rem 1.5rem;
+    font-size: 1.1rem;
+    font-weight: 700;
+    background: linear-gradient(135deg, rgba(165, 154, 209, 0.3), rgba(147, 112, 219, 0.3));
+    border: 2px solid #A59AD1;
+    color: #fff;
+    border-radius: 16px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(10px);
+    position: relative;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    text-align: center;
+}
+
+/* Shimmer effect */
+.three-card-button-sidebar::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+    transition: left 0.6s ease;
+}
+
+.three-card-button-sidebar:hover::before {
+    left: 100%;
+}
+
+/* Hover state */
+.three-card-button-sidebar:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(165, 154, 209, 0.5);
+    border-color: #CEC7F2;
+}
+
+.three-card-button-sidebar:active {
+    transform: translateY(0);
+}
+
+/* Icon animation */
+.three-card-button-sidebar .three-card-button-icon {
+    font-size: 1.4rem;
+    animation: cardIconFloat 2s ease-in-out infinite;
+}
+
+@keyframes cardIconFloat {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-4px); }
+}
+
+/* Glow animation */
+.three-card-button-sidebar {
+    animation: buttonGlow 3s ease-in-out infinite;
+}
+
+@keyframes buttonGlow {
+    0%, 100% {
+        box-shadow: 0 4px 16px rgba(165, 154, 209, 0.3);
+    }
+    50% {
+        box-shadow: 0 6px 24px rgba(165, 154, 209, 0.5);
+    }
+}
+
+/* Loading state - Sidebar version */
+.cosmic-loader-sidebar {
+    width: 100%;
+    padding: 1.2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.75rem;
+    background: rgba(26, 26, 38, 0.4);
+    border-radius: 16px;
+    border: 2px solid rgba(165, 154, 209, 0.3);
+}
+
+.cosmic-loader-sidebar .loader-spinner {
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(165, 154, 209, 0.2);
+    border-top-color: #A59AD1;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+.cosmic-loader-sidebar .loader-text {
+    font-size: 0.95rem;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 600;
+    margin: 0;
+}
+
+/* Responsive - Keep button in sidebar */
+@media (max-width: 1024px) {
+    .three-card-button-sidebar {
+        font-size: 1rem;
+        padding: 1rem 1.25rem;
+    }
+}
+
+@media (max-width: 768px) {
+    /* On mobile, card column is on top, button still under card */
+    .trial-step3-card-actions {
+        margin-top: 1.5rem;
+    }
+    
+    .three-card-button-sidebar {
+        font-size: 1rem;
+        padding: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .three-card-button-sidebar {
+        font-size: 0.95rem;
+        padding: 0.875rem;
+    }
+    
+    .three-card-button-sidebar .three-card-button-icon {
+        font-size: 1.2rem;
+    }
+}
+
+/* Touch devices */
+@media (hover: none) {
+    .three-card-button-sidebar:hover {
+        transform: none;
+    }
+    
+    .three-card-button-sidebar:active {
+        transform: scale(0.98);
+    }
+}

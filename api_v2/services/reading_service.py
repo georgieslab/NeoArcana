@@ -187,28 +187,148 @@ I trust the path that unfolds before me and welcome divine guidance.
         except Exception as e:
             logger.error(f"Error saving reading: {e}")
     
-    async def generate_three_card_reading(self, nfc_id: str) -> Dict:
+    async def generate_trial_three_card_reading(self, user_data: Optional[Dict] = None) -> Dict:
         """
-        Generate three-card Past/Present/Future reading
+        Generate AI-powered three-card reading for trial users
+        Uses Claude Sonnet 4 for personalized, detailed interpretations!
+        NOW WITH PERSONALIZATION! 🎉
         """
         try:
-            # Get user data
+            logger.info("Generating AI-powered trial three-card reading")
+            
+            # Get cosmic context
+            current_date = datetime.now()
+            moon_phase = calculate_moon_phase(current_date)
+            season = get_current_season(current_date)
+            
+            # Select three random cards
+            cards = get_random_cards(3)
+            
+            card_names = [card['name'] for card in cards]
+            
+            # FIX: Ensure full path for images
+            card_images = []
+            for card in cards:
+                img = card['image']
+                # If image doesn't start with /static, add full path
+                if not img.startswith('/static'):
+                    # Remove any leading slashes and get just filename
+                    filename = img.split('/')[-1] if '/' in img else img
+                    img = f'/static/images/cards/{filename}'
+                card_images.append(img)
+            
+            positions = ["Past", "Present", "Future"]
+            
+            logger.info(f"Selected cards for trial: {card_names}")
+            
+            # Get user info for personalization (if provided)
+            name = "friend"
+            zodiac_sign = ""
+            if user_data:
+                name = user_data.get('name', 'friend')
+                zodiac_sign = user_data.get('zodiacSign', '')
+            
+            # BUILD AI PROMPT for detailed reading
+            prompt = f"""You are a mystical tarot reader providing a deeply personalized three-card reading. 
+
+CARDS DRAWN:
+- PAST: {card_names[0]}
+- PRESENT: {card_names[1]}  
+- FUTURE: {card_names[2]}
+
+COSMIC CONTEXT:
+- Moon Phase: {moon_phase}
+- Season: {season}
+{f'- Zodiac Sign: {zodiac_sign}' if zodiac_sign else ''}
+
+Create a comprehensive, meaningful three-card reading with these sections:
+
+[PAST]
+Write 3-4 paragraphs (150-200 words) about {card_names[0]} in the past position. Explain:
+- What foundations this card reveals from their past
+- How past experiences shaped who they are today
+- What lessons and wisdom they've gained
+- How this energy still influences them
+Be specific, insightful, and empowering.
+
+[PRESENT]
+Write 3-4 paragraphs (150-200 words) about {card_names[1]} in the present position. Explain:
+- What this card reveals about their current situation
+- The energies and influences active right now
+- Opportunities and challenges they're facing
+- What they need to understand or embrace
+Be direct, relevant, and actionable.
+
+[FUTURE]
+Write 3-4 paragraphs (150-200 words) about {card_names[2]} in the future position. Explain:
+- What this card shows about the path ahead
+- Potential outcomes and possibilities
+- How current actions influence future results
+- What to focus on moving forward
+Be hopeful, inspiring, and empowering.
+
+[INTEGRATION]
+Write 2-3 paragraphs (100-150 words) weaving all three cards together. Show:
+- How the journey flows from {card_names[0]} through {card_names[1]} to {card_names[2]}
+- The overarching story these cards tell
+- How the {moon_phase} moon and {season} season amplify this message
+- A powerful concluding insight
+
+TONE: Warm, wise, mystical yet grounded. Speak directly to the reader as "you". Be specific to the actual cards drawn, not generic. Make it feel deeply personal and meaningful.
+
+LENGTH: Total of 600-800 words for a comprehensive, satisfying reading."""
+
+            # Call Claude API
+            logger.info("Calling Claude API for three-card interpretation...")
+            
+            response = await self.client.messages.create(
+                model="claude-sonnet-4-20250514",
+                max_tokens=2000,
+                temperature=0.8,
+                messages=[{
+                    "role": "user",
+                    "content": prompt
+                }]
+            )
+            
+            interpretation = response.content[0].text
+            
+            logger.info(f"AI interpretation generated: {len(interpretation)} characters")
+            
+            result = {
+                "cards": card_images,
+                "cardNames": card_names,
+                "positions": positions,
+                "interpretation": interpretation,
+                "moonPhase": moon_phase,
+                "season": season,
+                "cached": False
+            }
+            
+            logger.info("Trial three-card reading generated successfully with AI")
+            return result
+            
+        except Exception as e:
+            logger.error(f"Error generating trial three-card reading: {e}")
+            raise
+    
+    async def generate_three_card_reading(self, nfc_id: str) -> Dict:
+        """
+        Generate three-card reading for NFC user (with saved preferences)
+        """
+        try:
+            logger.info(f"Generating three-card reading for NFC user: {nfc_id}")
+            
+            # Get user from Firebase
             user_ref = self.db.collection('nfc_users').document(nfc_id)
             user_doc = user_ref.get()
             
             if not user_doc.exists:
-                raise ValueError("User not found")
+                raise ValueError(f"User not found: {nfc_id}")
             
             user_data = user_doc.to_dict()
-            user_info = user_data.get('user_data', {})
             
-            # Extract user info
-            name = user_info.get('name', 'Seeker')
-            zodiac_sign = user_info.get('zodiacSign', 'Unknown')
-            preferences = user_info.get('preferences', {})
-            language = preferences.get('language', 'en')
-            
-            # Check for cached reading today
+            # Check cache (one per day)
             today = datetime.now().strftime('%Y-%m-%d')
             cached_reading = await self._get_cached_three_card_reading(nfc_id, today)
             
@@ -217,6 +337,12 @@ I trust the path that unfolds before me and welcome divine guidance.
                 cached_reading['cached'] = True
                 return cached_reading
             
+            # Extract user info
+            name = user_data.get('name', 'Seeker')
+            zodiac_sign = user_data.get('zodiacSign', 'Unknown')
+            language = user_data.get('language', 'en')
+            preferences = user_data.get('preferences', {})
+            
             # Get cosmic context
             current_date = datetime.now()
             moon_phase = calculate_moon_phase(current_date)
@@ -224,8 +350,11 @@ I trust the path that unfolds before me and welcome divine guidance.
             day_energy = get_day_energy(current_date)
             numerology_day = calculate_numerology_day(current_date)
             
-            # Select THREE random cards
+            # Select three cards
             cards = get_random_cards(3)
+            card_names = [card['name'] for card in cards]
+            
+            logger.info(f"Selected cards: {card_names}")
             
             # Build prompt for three-card reading
             prompt = self._build_three_card_prompt(
@@ -240,13 +369,11 @@ I trust the path that unfolds before me and welcome divine guidance.
                 numerology_day=numerology_day
             )
             
-            logger.info(f"Generating three-card reading for {name}")
-            logger.info(f"Cards: {[card['name'] for card in cards]}")
-            
-            # Call Claude API (ASYNC!)
+            # Call Claude API
             response = await self.client.messages.create(
                 model="claude-sonnet-4-20250514",
-                max_tokens=2500,  # More tokens for three cards
+                max_tokens=2000,
+                temperature=0.8,
                 messages=[{"role": "user", "content": prompt}]
             )
             
@@ -254,7 +381,7 @@ I trust the path that unfolds before me and welcome divine guidance.
             
             result = {
                 "cards": [get_card_image(card['name']) for card in cards],
-                "cardNames": [card['name'] for card in cards],
+                "cardNames": card_names,
                 "positions": ["Past", "Present", "Future"],
                 "interpretation": interpretation,
                 "moonPhase": moon_phase,
@@ -264,7 +391,7 @@ I trust the path that unfolds before me and welcome divine guidance.
                 "cached": False
             }
             
-            # Cache the reading for today
+            # Cache the reading
             await self._cache_three_card_reading(nfc_id, today, result)
             
             logger.info(f"✅ Three-card reading generated for {name}")
@@ -292,7 +419,7 @@ I trust the path that unfolds before me and welcome divine guidance.
     ) -> str:
         """Build prompt for three-card reading"""
         
-        positions = ['Past', 'Present', 'Future']
+        positions = ["Past", "Present", "Future"]
         cards_info = [
             f"{pos}: {card['name']} ({', '.join(card['keywords'])})"
             for pos, card in zip(positions, cards)
@@ -321,64 +448,53 @@ Personal Energy:
 
 Critical Instructions:
 1. Respond ENTIRELY in {getLanguageForClaude(language)} language
-2. Create a cohesive narrative connecting all three cards
-3. Structure with these EXACT markers for each position:
+2. Structure with these EXACT markers:
 
 [PAST]
-(Interpretation of {cards[0]['name']} - how past influences shaped current journey)
+(Detailed interpretation of {cards[0]['name']} - foundations and lessons from the past. 3-4 paragraphs, 150-200 words)
 [/PAST]
 
 [PRESENT]
-(Interpretation of {cards[1]['name']} - current situation and energies at play)
+(Detailed interpretation of {cards[1]['name']} - current energies and situation. 3-4 paragraphs, 150-200 words)
 [/PRESENT]
 
 [FUTURE]
-(Interpretation of {cards[2]['name']} - potential outcomes and guidance for the path ahead)
+(Detailed interpretation of {cards[2]['name']} - path ahead and potential. 3-4 paragraphs, 150-200 words)
 [/FUTURE]
 
 [INTEGRATION]
-(Brief synthesis showing how past, present, and future connect into one meaningful journey)
+(Weaving all three cards into a cohesive narrative. How do these cards tell a complete story? 2-3 paragraphs, 100-150 words)
 [/INTEGRATION]
 
-Weave their {zodiac_sign} nature, {color_name} energy, and interests in {interests_str} throughout the reading.
-Maintain a mystical yet empowering tone."""
+Maintain a mystical yet practical tone, deeply personalized to {name}'s journey."""
         
         return prompt
     
     async def _get_cached_three_card_reading(self, nfc_id: str, date: str) -> Optional[Dict]:
-        """Get cached three-card reading for today"""
+        """Get cached three-card reading if exists"""
         try:
-            user_ref = self.db.collection('nfc_users').document(nfc_id)
-            reading_ref = user_ref.collection('three_card_readings').document(date)
-            reading = reading_ref.get()
+            cache_ref = self.db.collection('three_card_cache').document(f"{nfc_id}_{date}")
+            cache_doc = cache_ref.get()
             
-            if reading.exists:
-                return reading.to_dict()
+            if cache_doc.exists:
+                return cache_doc.to_dict()
             return None
+            
         except Exception as e:
             logger.error(f"Error getting cached reading: {e}")
             return None
     
-    async def _cache_three_card_reading(self, nfc_id: str, date: str, reading_data: Dict):
-        """Cache three-card reading in Firestore"""
+    async def _cache_three_card_reading(self, nfc_id: str, date: str, reading: Dict):
+        """Cache three-card reading"""
         try:
-            user_ref = self.db.collection('nfc_users').document(nfc_id)
-            reading_ref = user_ref.collection('three_card_readings').document(date)
+            cache_ref = self.db.collection('three_card_cache').document(f"{nfc_id}_{date}")
+            cache_ref.set(reading)
+            logger.info(f"Three-card reading cached for {nfc_id}")
             
-            cache_data = {
-                **reading_data,
-                'timestamp': datetime.now(),
-                'nfc_id': nfc_id,
-                'date': date
-            }
-            
-            reading_ref.set(cache_data)
-            logger.info(f"Three-card reading cached for {nfc_id} on {date}")
         except Exception as e:
             logger.error(f"Error caching reading: {e}")
     
     def _get_fallback_three_card_reading(self) -> Dict:
-
         """Get fallback three-card reading when API fails"""
         return {
             "cards": [
@@ -389,66 +505,61 @@ Maintain a mystical yet empowering tone."""
             "cardNames": ["The Star", "The Sun", "The World"],
             "positions": ["Past", "Present", "Future"],
             "interpretation": """[PAST]
-The Star in your past brought hope and healing, guiding you through challenges toward renewal.
-[/PAST]
+The Star reveals the foundations of hope and renewal in your past.
 
 [PRESENT]
-The Sun illuminates your present with joy, success, and clarity. You are in your power.
-[/PRESENT]
+The Sun illuminates your current journey with clarity and joy.
 
 [FUTURE]
-The World in your future promises completion, achievement, and the fulfillment of your journey.
-[/FUTURE]
+The World shows completion and fulfillment ahead.
 
 [INTEGRATION]
-Your journey flows from healing hope through present joy toward complete fulfillment.
-[/INTEGRATION]""",
+Together, these cards tell a story of transformation and achievement.""",
             "moonPhase": "Unknown",
             "season": "Unknown",
-            "dayEnergy": "Unknown",
-            "numerologyDay": 0,
             "cached": False
         }
     
     async def generate_weekly_reading(self, nfc_id: str) -> Dict:
         """
-        Generate weekly three-card reading with rate limiting
+        Generate weekly three-card reading (PREMIUM FEATURE - RATE LIMITED)
         """
         try:
+            logger.info(f"Generating weekly reading for: {nfc_id}")
+            
             # Import rate limiter
             from api_v2.services.rate_limiter_service import RateLimiterService
             rate_limiter = RateLimiterService(self.db)
             
-            # Check weekly limit
-            can_read, error_msg = await rate_limiter.check_weekly_limit(nfc_id)
+            # Check rate limit (once per week!)
+            can_generate, error_message = await rate_limiter.check_weekly_limit(nfc_id)
             
-            if not can_read:
-                # Get last reading
-                last_reading = await rate_limiter.get_last_weekly_reading(nfc_id)
+            if not can_generate:
+                # Return cached reading with rate limit message
+                logger.warning(f"Weekly reading rate limit for {nfc_id}: {error_message}")
                 
-                if last_reading:
-                    logger.info(f"Returning cached weekly reading for {nfc_id}")
-                    last_reading['cached'] = True
-                    return last_reading
+                # Try to get the most recent weekly reading
+                cached = await self._get_latest_weekly_reading(nfc_id)
+                if cached:
+                    cached['cached'] = True
+                    return cached
                 
-                # No cached reading available
-                raise ValueError(error_msg)
+                raise ValueError(error_message)
             
-            # Generate new reading (same as three-card)
+            # Get user from Firebase
             user_ref = self.db.collection('nfc_users').document(nfc_id)
             user_doc = user_ref.get()
             
             if not user_doc.exists:
-                raise ValueError("User not found")
+                raise ValueError(f"User not found: {nfc_id}")
             
             user_data = user_doc.to_dict()
-            user_info = user_data.get('user_data', {})
             
             # Extract user info
-            name = user_info.get('name', 'Seeker')
-            zodiac_sign = user_info.get('zodiacSign', 'Unknown')
-            preferences = user_info.get('preferences', {})
-            language = preferences.get('language', 'en')
+            name = user_data.get('name', 'Seeker')
+            zodiac_sign = user_data.get('zodiacSign', 'Unknown')
+            language = user_data.get('language', 'en')
+            preferences = user_data.get('preferences', {})
             
             # Get cosmic context
             current_date = datetime.now()
@@ -457,10 +568,10 @@ Your journey flows from healing hope through present joy toward complete fulfill
             day_energy = get_day_energy(current_date)
             numerology_day = calculate_numerology_day(current_date)
             
-            # Select THREE random cards
+            # Select three cards
             cards = get_random_cards(3)
             
-            # Build prompt for weekly reading (focus on the week ahead)
+            # Build prompt for weekly reading
             prompt = self._build_weekly_reading_prompt(
                 name=name,
                 zodiac_sign=zodiac_sign,
@@ -596,3 +707,21 @@ Maintain a mystical yet practical tone, focusing on actionable weekly guidance."
             
         except Exception as e:
             logger.error(f"Error saving weekly reading: {e}")
+    
+    async def _get_latest_weekly_reading(self, nfc_id: str) -> Optional[Dict]:
+        """Get the most recent weekly reading"""
+        try:
+            user_ref = self.db.collection('nfc_users').document(nfc_id)
+            weekly_readings = user_ref.collection('weekly_readings')\
+                .order_by('timestamp', direction='DESCENDING')\
+                .limit(1)\
+                .get()
+            
+            for reading in weekly_readings:
+                return reading.to_dict()
+            
+            return None
+            
+        except Exception as e:
+            logger.error(f"Error getting latest weekly reading: {e}")
+            return None
