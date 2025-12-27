@@ -40,6 +40,7 @@ React.useEffect(() => {
       mountedRef.current = false;
     };
   }, []);
+  const [showStory, setShowStory] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(true);
   const [contentVisible, setContentVisible] = React.useState(false);
   const [step, setStep] = React.useState(0);
@@ -738,6 +739,14 @@ const handleCardReveal = React.useCallback(() => {
     }, 500);
   }, []);
 
+  const handleShowStory = React.useCallback(() => {
+     setShowStory(true);
+   }, []);
+   
+   const handleCloseStory = React.useCallback(() => {
+     setShowStory(false);
+   }, []);
+
   
 
   return (
@@ -745,13 +754,20 @@ const handleCardReveal = React.useCallback(() => {
       {isLoading && <CosmicLoader type="initial" onLoadingComplete={handleLoadingComplete} />}
       {contentVisible && (
         <div className="parent-container" onClick={handleUserInteraction}>
-          {step === 0 && !showDailyReading && (
+          {step === 0 && !showDailyReading && !showStory && (
   <Step0
     onTryFree={handleTryFree}
     onExplore={handleDailyReading}
     onPosterRegistration={handlePosterRegistration}
+    onShowStory={handleShowStory}
   />
 )}
+
+{showStory && (
+  <StoryBehind onBack={handleCloseStory} />
+)}
+
+  
 
           {showDailyReading && nfcUserData ? (
   <div className="container">
@@ -769,6 +785,8 @@ const handleCardReveal = React.useCallback(() => {
           <p>{error}</p>
         </div>
       ))}
+
+      
 
       {step === 1 && (
         <React.Fragment>
