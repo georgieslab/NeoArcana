@@ -25,10 +25,38 @@ export default function App() {
   const [showChat, setShowChat] = useState(false);
   const [initialPosterCode, setInitialPosterCode] = useState('');
 
+  // Helper for demo/fallback reading
+  const getDemoReading = (lang = 'en') => {
+    if (lang === 'ka') {
+      return {
+        cards: ['fool.jpg', 'magician.jpg', 'high_priestess.jpg'],
+        cardNames: ['The Fool', 'The Magician', 'The High Priestess'],
+        interpretation:
+          '[PAST]\nსულელი (The Fool) აღნიშნავს გაბედულ ნაბიჯს უცნობში. თქვენ წარსულში ენდეთ სამყაროს დინებას და გადადგით ნაბიჯი, რომელმაც ფუნდამენტურად გარდაქმნა თქვენი სულიერი გამოცდილება.\n\n[PRESENT]\nმაგი (The Magician) მიუთითებს თქვენს უსაზღვრო შემოქმედებით პოტენციალზე. ყველა ელემენტი და ინსტრუმენტი ამჟამად თქვენს ხელთაა რეალობის შესაქმნელად.\n\n[FUTURE]\nუმაღლესი ქურუმი (The High Priestess) წინასწარმეტყველებს ღრმა ინტუიციურ გაღვიძებას და წმინდა საიდუმლოებათა გაცხადებას თქვენს გზაზე.\n\n[INTEGRATION]\nენდეთ შინაგან კომპასს, მოუსმინეთ თქვენს გულს და გააერთიანეთ ნება უმაღლეს სიბრძნესთან.',
+        cosmicContext: {
+          moonPhase: 'Waxing Gibbous',
+          season: 'Spring',
+          dayEnergy: 'ინტუიცია და მანიფესტაცია',
+        },
+      };
+    }
+    return {
+      cards: ['fool.jpg', 'magician.jpg', 'high_priestess.jpg'],
+      cardNames: ['The Fool', 'The Magician', 'The High Priestess'],
+      interpretation:
+        '[PAST]\nThe Fool marks a courageous leap of faith you took. You embraced the unknown with pure trust and soul curiosity.\n\n[PRESENT]\nThe Magician reveals your power to shape current reality. All tools, elements, and conscious powers are at your disposal.\n\n[FUTURE]\nThe High Priestess shows deep intuitive awakening and mysteries unveiling in your unfolding journey.\n\n[INTEGRATION]\nTrust the inner compass, align deliberate action with divine wisdom, and step forward into your sovereign potential.',
+      cosmicContext: {
+        moonPhase: 'Waxing Gibbous',
+        season: 'Spring',
+        dayEnergy: 'Intuition and Manifestation',
+      },
+    };
+  };
+
   // Fetch 3-card reading from backend
   const fetchReading = useCallback(async (nfcId = null, focus = 'General Cosmic Guidance', user = null) => {
     setIsLoading(true);
-    setLoadingMessage('Drawing sacred Arcana from the ether...');
+    setLoadingMessage(user?.language === 'ka' ? 'წმინდა არკანას გამოხმობა ეთერიდან...' : 'Drawing sacred Arcana from the ether...');
 
     try {
       const res = await api.getThreeCardReading(nfcId, focus, user);
@@ -37,32 +65,12 @@ export default function App() {
         setStep(2); // Jump to Card Reveal
       } else {
         // Fallback demo data if backend offline
-        setReadingData({
-          cards: ['fool.jpg', 'magician.jpg', 'high_priestess.jpg'],
-          cardNames: ['The Fool', 'The Magician', 'The High Priestess'],
-          interpretation:
-            '[PAST]\nThe Fool marks a courageous leap of faith you took. You embraced the unknown with pure trust.\n\n[PRESENT]\nThe Magician reveals your power to shape current reality. All tools and elements are at your disposal.\n\n[FUTURE]\nThe High Priestess shows deep intuitive awakening and mysteries unveiling in your journey.\n\n[INTEGRATION]\nTrust the inner compass and align action with divine wisdom.',
-          cosmicContext: {
-            moonPhase: 'Waxing Gibbous',
-            season: 'Spring',
-            dayEnergy: 'Intuition and Manifestation',
-          },
-        });
+        setReadingData(getDemoReading(user?.language));
         setStep(2);
       }
     } catch (err) {
       console.warn('API error, loading fallback cosmic reading:', err);
-      setReadingData({
-        cards: ['fool.jpg', 'magician.jpg', 'high_priestess.jpg'],
-        cardNames: ['The Fool', 'The Magician', 'The High Priestess'],
-        interpretation:
-          '[PAST]\nThe Fool marks a courageous leap of faith you took. You embraced the unknown with pure trust.\n\n[PRESENT]\nThe Magician reveals your power to shape current reality. All tools and elements are at your disposal.\n\n[FUTURE]\nThe High Priestess shows deep intuitive awakening and mysteries unveiling in your journey.\n\n[INTEGRATION]\nTrust your inner compass and align conscious action with divine wisdom.',
-        cosmicContext: {
-          moonPhase: 'Waxing Gibbous',
-          season: 'Spring',
-          dayEnergy: 'Manifestation & Insight',
-        },
-      });
+      setReadingData(getDemoReading(user?.language));
       setStep(2);
     } finally {
       setIsLoading(false);
@@ -184,6 +192,7 @@ export default function App() {
           <ThreeCardReveal
             name={userData?.name || 'Seeker'}
             zodiacSign={userData?.zodiacSign}
+            language={userData?.language || 'en'}
             readingData={readingData || {
               cards: ['fool.jpg', 'magician.jpg', 'high_priestess.jpg'],
               cardNames: ['The Fool', 'The Magician', 'The High Priestess'],
@@ -200,6 +209,7 @@ export default function App() {
             name={userData?.name || 'Seeker'}
             zodiacSign={userData?.zodiacSign}
             focusArea={userData?.focusArea}
+            language={userData?.language || 'en'}
             onReturn={handleReturnToStart}
             onOpenChat={() => setShowChat(true)}
           />

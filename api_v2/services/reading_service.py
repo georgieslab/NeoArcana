@@ -99,24 +99,77 @@ class ReadingService:
     ) -> Dict:
         """Generate high-quality dynamic cosmic interpretation when AI APIs are unreachable"""
         name = "Seeker"
+        language = "en"
+        focus_area = ""
         if user_data:
             name = user_data.get('name', 'Seeker')
+            language = user_data.get('language', 'en')
+            focus_area = user_data.get('focusArea', '')
 
         past_kw = ", ".join(cards[0].get('keywords', ['foundation', 'experience']))
         pres_kw = ", ".join(cards[1].get('keywords', ['manifestation', 'present energy']))
         fut_kw = ", ".join(cards[2].get('keywords', ['vision', 'destiny']))
 
-        interpretation = f"""[PAST]
-{card_names[0]} forms the spiritual bedrock of your journey. Vibrating with the energies of {past_kw}, your past experiences have tempered your soul with wisdom. Every crossroad you faced was a crucible of growth, shaping the inner authority and discernment you carry today. Honor the lessons you have walked through.
+        past_card = card_names[0]
+        pres_card = card_names[1]
+        fut_card = card_names[2]
+
+        if language == 'ka':
+            focus_str = f"თქვენს შეკითხვასთან დაკავშირებით ({focus_area}), " if focus_area else ""
+
+            interpretation = f"""[PAST]
+არკანა {past_card} წარმოადგენს თქვენი სულიერი მოგზაურობის ფუნდამენტურ საყრდენს. მისი ენერგეტიკა, რომელიც გაჯერებულია {past_kw}-ის ძალებით, მოწმობს იმ ღრმა გამოცდილებებზე, რომლებმაც ჩამოაყალიბეს თქვენი შინაგანი სამყარო. წარსულში გადატანილი ყოველი განსაცდელი და ყოველი მიღწეული გამარჯვება იყო ერთგვარი ალქიმიური პროცესი, რომელმაც გამოაწრთო თქვენი სული და მოგანიჭათ უნიკალური სიბრძნე.
+
+{name}, {focus_str}გახსოვდეთ, რომ ის გაკვეთილები, რომლებიც ამ კარტმა გაიარა თქვენს ცხოვრებაში, არ იყო შემთხვევითი. მათ გასწავლეს საკუთარი თავის რწმენა და გაგათავისუფლეს ილუზიებისგან. წარსულის ეს ენერგია დღესაც ცოცხლობს თქვენში, როგორც ურყევი ფესვი, რომელიც გაძლევთ ძალას, მტკიცედ იდგეთ მიწაზე და გაუძლოთ ნებისმიერ ქარიშხალს.
+
+პატივი მიაგეთ განვლილ გზას. ყველაფერი, რაც იყო, ემსახურებოდა თქვენს გაძლიერებას. {past_card}-ის სიბრძნე მოგიწოდებთ, გააცნობიეროთ თქვენი შინაგანი ავტორიტეტი და გამოიყენოთ ეს გამოცდილება, როგორც მეგზური ვარსკვლავი აწმყოში გადაწყვეტილებების მისაღებად.
 
 [PRESENT]
-{card_names[1]} radiates at the center of your path, charged with {pres_kw}. Under the current {moon_phase} moon in {season}, the universe calls upon you to actively engage with your inner truth. You are not at the mercy of circumstance; the tools to shape your immediate horizon are directly in your hands.
+არკანა {pres_card} ანათებს თქვენი ამჟამინდელი გზის ცენტრში, ავსებს რა თქვენს სივრცეს {pres_kw}-ის აქტიური ვიბრაციებით. მიმდინარე {moon_phase} მთვარის ფაზისა და {season}-ის კოსმოსური ციკლის ქვეშ, სამყარო გიბიძგებთ გააქტიურებისკენ. ეს არ არის პასიური ლოდინის დრო; ეს არის მომენტი, როდესაც თქვენი ნება და ცნობიერება პირდაპირ ზემოქმედებს რეალობაზე.
+
+დღეს თქვენს წინაშე არსებული ვითარება მოითხოვს სრულ ყურადღებას და გულწრფელობას საკუთარ თავთან. {pres_card} გეუბნებათ, რომ თქვენ ფლობთ ყველა საჭირო რესურსს, რათა გარდაქმნათ გამოწვევები შესაძლებლობებად. შესაძლოა გრძნობდეთ გაურკვევლობას, მაგრამ სინამდვილეში თქვენ იმყოფებით ძალის პიკზე, სადაც თითოეულ შეგნებულ ნაბიჯს უდიდესი მნიშვნელობა აქვს.
+
+მოუსმინეთ თქვენს შინაგან ხმას და იმოქმედეთ გაბედულად. ენდეთ სამყაროს დინებას, მაგრამ ნუ დაივიწყებთ, რომ საჭე თქვენს ხელთაა. {pres_card}-ის ენერგია გაძლევთ ნათელ ხედვას და გამბედაობას, რათა თქვენი მიზნები რეალობად აქციოთ.
 
 [FUTURE]
-{card_names[2]} illuminates the path unfolding before you. Echoing the resonance of {fut_kw}, the seeds you nurture today will blossom into profound transformation. Trust the subtle synchronicities appearing in your life and take confident, aligned action toward your highest vision.
+არკანა {fut_card} ანათებს თქვენს მომავალ ჰორიზონტს, ატარებს რა {fut_kw}-ის აღთქმასა და უმაღლეს პოტენციალს. ეს კარტი წინასწარმეტყველებს სულიერ ტრანსფორმაციას, წარმატებას და იმ თესლის აყვავებას, რომელსაც დღეს სიყვარულითა და რწმენით რგავთ. თქვენი გზა იხსნება ახალი პერსპექტივებისა და ღრმა გაცნობიერებისკენ.
+
+სამყარო გიმზადებთ მოვლენათა ჰარმონიულ განვითარებას, სადაც თქვენი შრომა და შინაგანი ძიება გამოიღებს ნაყოფს. {fut_card} მიგანიშნებთ, რომ ის, რისკენაც ისწრაფვით {focus_str}, არა მხოლოდ მიღწევადია, არამედ მოგიტანთ სულიერ სიმშვიდესა და ჰარმონიას. იყავით ყურადღებით იმ სინქრონიზმებისა და ნიშნების მიმართ, რომლებსაც კოსმოსი გამოგიგზავნით.
+
+შედით მომავალში თავდაჯერებულად. {fut_card}-ის ნათელი გაჩვენებთ, რომ თქვენი უმაღლესი მიზნები სრულ თანხვედრაშია სამყაროს ნებასთან. გააგრძელეთ სვლა წინ, რადგან წინ გელით თქვენი ჭეშმარიტი არსის სრული გამოვლინება.
 
 [INTEGRATION]
-The sacred movement from {card_names[0]} through {card_names[1]} into {card_names[2]} reflects an unbroken arc of soul evolution. The cosmos reminds you, {name}, that past triumphs, current lessons, and future aspirations are weaving together into a harmonious destiny. Walk forward with clarity and faith."""
+არკანების ეს წმინდა ტრიადა — {past_card}-ის მყარი საფუძვლიდან, {pres_card}-ის ცოცხალი მოქმედების გავლით, {fut_card}-ის მნათობ მომავლამდე — წარმოადგენს თქვენი სულის ევოლუციის განუყოფელ და დიდებულ ნარატივს.
+
+{name}, კოსმოსი გაგონებთ, რომ თქვენი წარსული გაკვეთილები, აწმყოს ძალისხმევა და მომავლის იმედები ერთიანდება ერთ ღვთაებრივ ნაქსოვში. {moon_phase} მთვარისა და {season}-ის ენერგიები აძლიერებს ამ გზავნილს: თქვენ ხართ საკუთარი ბედისწერის შემოქმედი. იარეთ წინ სიცხადით, სიყვარულითა და ურყევი რწმენით."""
+        else:
+            focus_str = f"regarding your focus on {focus_area}, " if focus_area else ""
+
+            interpretation = f"""[PAST]
+{past_card} forms the sacred bedrock of your spiritual evolution. Vibrating with the timeless currents of {past_kw}, this arcana reveals the profound trials, breakthroughs, and soul initiations that brought you to where you stand today. Every threshold you crossed in the past was an alchemical crucible, refining your character and awakening your inner discernment.
+
+{name}, {focus_str}the lessons imprinted by {past_card} were neither accidental nor in vain. They taught you self-reliance and unmasked the illusions that once held you back. The wisdom distilled from these experiences remains alive within your cellular memory, serving as an unshakeable anchor that grants you strength and grounding.
+
+Honor the road you have traveled. Recognize the quiet courage it required to endure, evolve, and step into greater authenticity. The energy of {past_card} offers deep reassurance that you possess a proven resilience upon which your present endeavors can firmly stand.
+
+[PRESENT]
+{pres_card} radiates at the vibrant epicenter of your current path, charged with the electric resonance of {pres_kw}. Beneath the mystical glow of today's {moon_phase} moon in {season}, the universe is actively calling you into alignment with your inner authority. This is not a time of passive resignation; it is a momentous threshold where your conscious intention directly shapes reality.
+
+The circumstances surrounding you now require complete honesty, presence, and courage. {pres_card} reminds you that you already possess the keys, intuition, and resources needed to transform friction into spiritual propulsion. What appears challenging on the surface is actually an invitation to step into your sovereign power.
+
+Listen closely to the subtle guidance of your intuition and act with grounded conviction. While the cosmos guides your trajectory, the steering wheel remains firmly in your hands. Embrace the vitality of {pres_card} to bridge the gap between inner vision and outer manifestation.
+
+[FUTURE]
+{fut_card} casts its luminous aura across the path unfolding before you, carrying the sacred frequencies of {fut_kw}. This card heralds a significant spiritual elevation, profound clarity, and the bountiful blossoming of the intentions you nurture today with faith and deliberate care.
+
+The horizon opening up for you {focus_str}is rich with auspicious possibilities and deep fulfillment. {fut_card} indicates that what you have been striving toward is not only attainable, but will bring a profound sense of peace, wholeness, and belonging. Keep an open heart for the synchronicities, allies, and cosmic whispers appearing in your everyday life.
+
+Step forward into tomorrow with radiant confidence. The light of {fut_card} affirms that your highest aspirations are in harmonious rhythm with universal law. Trust the unfolding divine timing and know that your journey is leading toward fulfillment and self-mastery.
+
+[INTEGRATION]
+The sacred movement from {past_card} through {pres_card} into {fut_card} reflects an unbroken arc of personal and spiritual mastery. This trinity of cards speaks of a profound inner metamorphosis—moving from karmic foundations, through mindful action, into luminous destiny.
+
+{name}, the cosmos invites you to witness how your past triumphs, current lessons, and future dreams are weaving together into a harmonious destiny. Amplified by the {moon_phase} moon and the natural cycle of {season}, you are supported in every dimension of your journey. Walk forward with courage, clarity, and unwavering faith."""
 
         return {
             "cards": card_images,
@@ -319,64 +372,97 @@ I trust the path that unfolds before me and welcome divine guidance.
             # Get user info for personalization (if provided)
             name = "friend"
             zodiac_sign = ""
+            language = "en"
+            focus_area = "General Destiny"
             if user_data:
                 name = user_data.get('name', 'friend')
                 zodiac_sign = user_data.get('zodiacSign', '')
+                language = user_data.get('language', 'en')
+                focus_area = user_data.get('focusArea', 'General Destiny')
             
+            target_lang = getLanguageForClaude(language)
+            is_georgian = (language == 'ka' or target_lang.lower() == 'georgian')
+
+            if is_georgian:
+                language_instructions = f"""CRITICAL LANGUAGE REQUIREMENT:
+- You MUST write this ENTIRE reading in fluent, poetic, evocative, and grammatically rich GEORGIAN (ქართულ ენაზე).
+- Every sentence of your interpretation must be in Georgian. Do NOT use English in the body text under any circumstance.
+- Address the seeker warmly as {name} in Georgian (მაგალითად: „{name}, შენი წარსულის ენერგია...“).
+- PARSING STRUCTURE MANDATE: You MUST preserve the exact English bracket markers:
+  [PAST]
+  [PRESENT]
+  [FUTURE]
+  [INTEGRATION]
+  Do NOT translate or alter the marker words inside the brackets (do not write [წარსული] instead of [PAST], as the frontend parser specifically looks for [PAST], [PRESENT], [FUTURE], [INTEGRATION]).
+  Write all content beneath each marker completely in Georgian."""
+            elif target_lang != 'English':
+                language_instructions = f"""CRITICAL LANGUAGE REQUIREMENT:
+- You MUST write this ENTIRE reading in {target_lang}.
+- Every sentence of your interpretation must be in {target_lang}.
+- Address the seeker warmly as {name}.
+- PARSING STRUCTURE MANDATE: You MUST preserve the exact English bracket markers:
+  [PAST]
+  [PRESENT]
+  [FUTURE]
+  [INTEGRATION]
+  Write all content beneath each marker in {target_lang}."""
+            else:
+                language_instructions = f"""LANGUAGE: English. Address the seeker warmly as {name} and craft a deeply evocative, poetic, and inspiring reading."""
+
             # BUILD AI PROMPT for detailed reading
-            prompt = f"""You are a mystical tarot reader providing a deeply personalized three-card reading. 
+            prompt = f"""You are a master mystical tarot oracle and cosmic guide providing a deeply personalized, comprehensive three-card reading for {name}.
 
-CARDS DRAWN:
-- PAST: {card_names[0]}
-- PRESENT: {card_names[1]}  
-- FUTURE: {card_names[2]}
-
-COSMIC CONTEXT:
+USER & COSMIC PROFILE:
+- Seeker Name: {name}
+{f'- Zodiac Sign: {zodiac_sign}' if zodiac_sign else ''}
+- Core Focus Area / Sacred Question: {focus_area}
 - Moon Phase: {moon_phase}
 - Season: {season}
-{f'- Zodiac Sign: {zodiac_sign}' if zodiac_sign else ''}
 
-Create a comprehensive, meaningful three-card reading with these sections:
+CARDS DRAWN:
+- PAST POSITION: {card_names[0]}
+- PRESENT POSITION: {card_names[1]}
+- FUTURE POSITION: {card_names[2]}
+
+{language_instructions}
+
+REQUIRED READING STRUCTURE AND DEPTH:
 
 [PAST]
-Write 3-4 paragraphs (150-200 words) about {card_names[0]} in the past position. Explain:
-- What foundations this card reveals from their past
-- How past experiences shaped who they are today
-- What lessons and wisdom they've gained
-- How this energy still influences them
-Be specific, insightful, and empowering.
+Write 3-4 substantial, richly detailed paragraphs (220-280 words) interpreting {card_names[0]} in the Past position:
+- Explore the karmic roots, spiritual foundation, and lived experiences that brought {name} to this threshold.
+- Explain the soul lessons, wisdom, and inner resilience forged through past challenges.
+- How the lingering echoes of {card_names[0]} continue to shape their instincts and perceptions today.
+- Direct resonance with their focus on {focus_area}.
 
 [PRESENT]
-Write 3-4 paragraphs (150-200 words) about {card_names[1]} in the present position. Explain:
-- What this card reveals about their current situation
-- The energies and influences active right now
-- Opportunities and challenges they're facing
-- What they need to understand or embrace
-Be direct, relevant, and actionable.
+Write 3-4 substantial, richly detailed paragraphs (220-280 words) interpreting {card_names[1]} in the Present position:
+- Detail the active energetic currents, psychological truths, and cosmic catalysts at play right now.
+- What {name} must confront, accept, or embody at this exact moment under the {moon_phase} moon in {season}.
+- The hidden strengths, untapped resources, and actionable guidance offered by {card_names[1]}.
+- Practical and spiritual advice tailored to their inquiry about {focus_area}.
 
 [FUTURE]
-Write 3-4 paragraphs (150-200 words) about {card_names[2]} in the future position. Explain:
-- What this card shows about the path ahead
-- Potential outcomes and possibilities
-- How current actions influence future results
-- What to focus on moving forward
-Be hopeful, inspiring, and empowering.
+Write 3-4 substantial, richly detailed paragraphs (220-280 words) interpreting {card_names[2]} in the Future position:
+- Illuminate the emerging horizon, destiny trajectory, and transformative potential unlocking ahead.
+- How conscious choices made today in alignment with {card_names[1]} will manifest the highest blessings of {card_names[2]}.
+- Synchronicities, signs, and opportunities to watch for on this unfolding path.
+- An empowering, uplifting message of hope and sovereignty regarding {focus_area}.
 
 [INTEGRATION]
-Write 2-3 paragraphs (100-150 words) weaving all three cards together. Show:
-- How the journey flows from {card_names[0]} through {card_names[1]} to {card_names[2]}
-- The overarching story these cards tell
-- How the {moon_phase} moon and {season} season amplify this message
-- A powerful concluding insight
+Write 2-3 substantial paragraphs (150-200 words) weaving all three cards into a unified spiritual tapestry:
+- Trace the sacred narrative arc from {card_names[0]} through {card_names[1]} into {card_names[2]}.
+- How the celestial backdrop of the {moon_phase} and {season} anchors this cosmic revelation for {name}.
+- A profound, memorable closing blessing and philosophical reflection to anchor their soul's journey.
 
-TONE: Warm, wise, mystical yet grounded. Speak directly to the reader as "you". Be specific to the actual cards drawn, not generic. Make it feel deeply personal and meaningful.
-
-LENGTH: Total of 600-800 words for a comprehensive, satisfying reading."""
+LENGTH & TONE:
+- TOTAL WORD COUNT: 850-1100 words. Provide a rich, immersive, literary-grade esoteric reading that leaves the seeker feeling deeply seen, understood, and enlightened.
+- TONE: Mystical yet grounded, compassionate, empowering, poetic, and wise. Speak directly to {name} as "you". Do NOT produce a short or brief summary. Ensure all sections are fully fleshed out."""
 
             # Call AI provider (AWS Bedrock or Anthropic)
             try:
-                logger.info("Calling AI provider for three-card interpretation...")
-                interpretation = await self._call_ai_api(prompt, max_tokens=2000)
+                logger.info(f"Calling AI provider for three-card interpretation (language={language}, max_tokens=3500)...")
+                interpretation = await self._call_ai_api(prompt, max_tokens=3500)
                 logger.info(f"AI interpretation generated: {len(interpretation)} characters")
             except Exception as ai_err:
                 logger.warning(f"AI call failed ({ai_err}), using rich dynamic cosmic interpretation")
@@ -458,7 +544,7 @@ LENGTH: Total of 600-800 words for a comprehensive, satisfying reading."""
             
             # Call AI provider (AWS Bedrock or Anthropic)
             try:
-                interpretation = await self._call_ai_api(prompt, max_tokens=2000)
+                interpretation = await self._call_ai_api(prompt, max_tokens=3500)
             except Exception as ai_err:
                 logger.warning(f"AI call failed ({ai_err}), falling back to dynamic cosmic interpretation")
                 card_images = [get_card_image(card['name']) for card in cards]
@@ -516,11 +602,39 @@ LENGTH: Total of 600-800 words for a comprehensive, satisfying reading."""
         interests = preferences.get('interests', ['spiritual growth'])
         interests_str = ', '.join(interests) if interests else 'spiritual growth'
         
-        prompt = f"""Create a deeply personalized three-card tarot reading for {name}, 
+        target_lang = getLanguageForClaude(language)
+        is_georgian = (language == 'ka' or target_lang.lower() == 'georgian')
+
+        if is_georgian:
+            lang_directive = f"""CRITICAL LANGUAGE REQUIREMENT:
+- You MUST write this ENTIRE reading in fluent, poetic, evocative, and grammatically rich GEORGIAN (ქართულ ენაზე).
+- Every sentence of your interpretation must be in Georgian. Do NOT use English in the body text.
+- Address the seeker warmly as {name} in Georgian.
+- PARSING STRUCTURE MANDATE: You MUST preserve the exact English bracket markers:
+  [PAST]
+  [PRESENT]
+  [FUTURE]
+  [INTEGRATION]
+  Do NOT translate or alter the marker words inside the brackets. Write all content beneath each marker completely in Georgian."""
+        elif target_lang != 'English':
+            lang_directive = f"""CRITICAL LANGUAGE REQUIREMENT:
+- You MUST write this ENTIRE reading in {target_lang}.
+- Every sentence of your interpretation must be in {target_lang}.
+- PARSING STRUCTURE MANDATE: You MUST preserve the exact English bracket markers:
+  [PAST]
+  [PRESENT]
+  [FUTURE]
+  [INTEGRATION]
+  Write all content beneath each marker in {target_lang}."""
+        else:
+            lang_directive = f"""LANGUAGE: English. Address the seeker warmly as {name} and craft an exquisite, deeply insightful reading."""
+
+        cards_text = "\n".join(cards_info)
+        prompt = f"""Create a deeply personalized, comprehensive three-card tarot reading for {name}, 
 a {zodiac_sign} born under today's {moon_phase} moon in {season}.
 
 Cards Drawn:
-{chr(10).join(cards_info)}
+{cards_text}
 
 Cosmic Timing:
 - Moon Phase: {moon_phase}
@@ -532,27 +646,23 @@ Personal Energy:
 - Color Connection: {color_name}
 - Life Path Focus: {interests_str}
 
-Critical Instructions:
-1. Respond ENTIRELY in {getLanguageForClaude(language)} language
-2. Structure with these EXACT markers:
+{lang_directive}
+
+Structure with these EXACT markers:
 
 [PAST]
-(Detailed interpretation of {cards[0]['name']} - foundations and lessons from the past. 3-4 paragraphs, 150-200 words)
-[/PAST]
+Detailed interpretation of {cards[0]['name']} - foundations and lessons from the past. 3-4 substantial paragraphs, 220-280 words.
 
 [PRESENT]
-(Detailed interpretation of {cards[1]['name']} - current energies and situation. 3-4 paragraphs, 150-200 words)
-[/PRESENT]
+Detailed interpretation of {cards[1]['name']} - current energies and situation. 3-4 substantial paragraphs, 220-280 words.
 
 [FUTURE]
-(Detailed interpretation of {cards[2]['name']} - path ahead and potential. 3-4 paragraphs, 150-200 words)
-[/FUTURE]
+Detailed interpretation of {cards[2]['name']} - path ahead and transformative potential. 3-4 substantial paragraphs, 220-280 words.
 
 [INTEGRATION]
-(Weaving all three cards into a cohesive narrative. How do these cards tell a complete story? 2-3 paragraphs, 100-150 words)
-[/INTEGRATION]
+Weaving all three cards into a cohesive spiritual narrative and cosmic blessing. 2-3 paragraphs, 150-200 words.
 
-Maintain a mystical yet practical tone, deeply personalized to {name}'s journey."""
+Maintain a mystical yet practical tone, deeply personalized to {name}'s journey. Total length: 850-1100 words."""
         
         return prompt
     

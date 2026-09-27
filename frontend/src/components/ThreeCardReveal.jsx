@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { getPersonalMessage } from '../utils/zodiac';
 
-export default function ThreeCardReveal({ name, readingData, onComplete, zodiacSign }) {
+export default function ThreeCardReveal({ name, readingData, onComplete, zodiacSign, language = 'en' }) {
   const [isVisible] = useState(true);
   const [showInstruction] = useState(true);
   const [showCards] = useState(true);
@@ -12,7 +12,8 @@ export default function ThreeCardReveal({ name, readingData, onComplete, zodiacS
 
   const zodiacMessage = zodiacSign ? getPersonalMessage(zodiacSign) : '';
 
-  const positions = ['Past', 'Present', 'Future'];
+  const isKa = language === 'ka';
+  const positions = isKa ? ['წარსული', 'აწმყო', 'მომავალი'] : ['Past', 'Present', 'Future'];
   const positionIcons = ['🌙', '⭐', '✨'];
 
   useEffect(() => {
@@ -100,7 +101,9 @@ export default function ThreeCardReveal({ name, readingData, onComplete, zodiacS
         </div>
 
         <div className="trial-step2-content">
-          <h1 className="trial-step2-title">Greetings, {name || 'Seeker'}</h1>
+          <h1 className="trial-step2-title">
+            {isKa ? `მოგესალმებით, ${name || 'მაძიებელო'}` : `Greetings, ${name || 'Seeker'}`}
+          </h1>
 
           {showZodiacMessage && (
             <div className="trial-step2-zodiac-message fade-in">
@@ -111,8 +114,8 @@ export default function ThreeCardReveal({ name, readingData, onComplete, zodiacS
           {showInstruction && (
             <p className="trial-step2-instruction">
               {flippedCards.every((f) => f)
-                ? 'All cards revealed! Delving into cosmic interpretation...'
-                : 'Three cards chosen from the ether. Tap each card to reveal your arcana:'}
+                ? (isKa ? 'ყველა კარტი გახსნილია! მიმდინარეობს კოსმოსური ინტერპრეტაციის გაცხადება...' : 'All cards revealed! Delving into cosmic interpretation...')
+                : (isKa ? 'სამი წმინდა კარტი ეთერიდან. შეეხეთ თითოეულ კარტს თქვენი არკანის გასახსნელად:' : 'Three cards chosen from the ether. Tap each card to reveal your arcana:')}
             </p>
           )}
 
@@ -132,7 +135,7 @@ export default function ThreeCardReveal({ name, readingData, onComplete, zodiacS
                     onClick={() => handleCardClick(index)}
                     role="button"
                     tabIndex={0}
-                    aria-label={`Reveal ${positions[index]} card`}
+                    aria-label={isKa ? `გახსენით ${positions[index]}ს კარტი` : `Reveal ${positions[index]} card`}
                   >
                     <div className="trial-step2-card">
                       {/* Back face */}

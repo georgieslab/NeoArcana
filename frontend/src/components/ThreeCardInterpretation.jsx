@@ -6,12 +6,14 @@ export default function ThreeCardInterpretation({
   name,
   zodiacSign,
   focusArea,
+  language = 'en',
   onReturn,
   onOpenChat,
 }) {
   const [selectedCard, setSelectedCard] = useState(null);
 
-  const positions = ['Past', 'Present', 'Future'];
+  const isKa = language === 'ka';
+  const positions = isKa ? ['წარსული', 'აწმყო', 'მომავალი'] : ['Past', 'Present', 'Future'];
   const positionIcons = ['🌙', '⭐', '✨'];
   const positionColors = ['#a78bfa', '#38bdf8', '#f59e0b']; // Amethyst, Luminous Cyan/Lavender, Radiant Amber
 
@@ -20,6 +22,7 @@ export default function ThreeCardInterpretation({
     if (!str) return '';
     return str
       .replace(/^[\s*#:\-_]+/, '') // Strip leading markdown chars
+      .replace(/\[\/(?:PAST|PRESENT|FUTURE|INTEGRATION)\]/gi, '') // Strip closing tags
       .replace(/[\s*#:\-_]+$/, '') // Strip trailing markdown chars
       .trim();
   };
@@ -30,23 +33,29 @@ export default function ThreeCardInterpretation({
     if (!text) {
       return [
         {
-          title: 'The Past: Foundations & Lessons',
+          title: isKa ? 'წარსული: ფესვები და გაკვეთილები' : 'The Past: Foundations & Lessons',
           icon: '🌙',
-          content: 'The sacred foundations and experiences that shaped the path of your soul.',
+          content: isKa
+            ? 'თქვენი სულის გზის განმსაზღვრელი წმინდა საფუძვლები და გამოცდილებები.'
+            : 'The sacred foundations and experiences that shaped the path of your soul.',
           position: 'past',
           color: positionColors[0],
         },
         {
-          title: 'The Present: Active Energetic Influences',
+          title: isKa ? 'აწმყო: მიმდინარე ენერგეტიკული ნაკადები' : 'The Present: Active Energetic Influences',
           icon: '⭐',
-          content: 'The celestial forces and inner wisdom available to you in the current moment.',
+          content: isKa
+            ? 'ზეციური ძალები და შინაგანი სიბრძნე, რომელიც ამჟამად თქვენს განკარგულებაშია.'
+            : 'The celestial forces and inner wisdom available to you in the current moment.',
           position: 'present',
           color: positionColors[1],
         },
         {
-          title: 'The Future: Unfolding Destiny & Potential',
+          title: isKa ? 'მომავალი: ბედისწერის ჰორიზონტი და პოტენციალი' : 'The Future: Unfolding Destiny & Potential',
           icon: '✨',
-          content: 'The highest possibilities opening as your deliberate choices align with the cosmos.',
+          content: isKa
+            ? 'უმაღლესი შესაძლებლობები, რომლებიც იხსნება თქვენი შეგნებული არჩევანის კვალდაკვალ.'
+            : 'The highest possibilities opening as your deliberate choices align with the cosmos.',
           position: 'future',
           color: positionColors[2],
         },
@@ -55,11 +64,11 @@ export default function ThreeCardInterpretation({
 
     const sections = [];
 
-    // Match [PAST] / **[PAST]** / ## Past
-    const pastRegex = /(?:\[PAST\]|\*\*\[PAST\]\*\*|\*\*PAST\*\*|##\s*Past)([\s\S]*?)(?=(?:\[PRESENT\]|\*\*\[PRESENT\]\*\*|\*\*PRESENT\*\*|##\s*Present)|(?:\[FUTURE\]|\*\*\[FUTURE\]\*\*|\*\*FUTURE\*\*|##\s*Future)|(?:\[INTEGRATION\]|\*\*\[INTEGRATION\]\*\*|\*\*INTEGRATION\*\*|##\s*Integration)|$)/i;
-    const presRegex = /(?:\[PRESENT\]|\*\*\[PRESENT\]\*\*|\*\*PRESENT\*\*|##\s*Present)([\s\S]*?)(?=(?:\[FUTURE\]|\*\*\[FUTURE\]\*\*|\*\*FUTURE\*\*|##\s*Future)|(?:\[INTEGRATION\]|\*\*\[INTEGRATION\]\*\*|\*\*INTEGRATION\*\*|##\s*Integration)|$)/i;
-    const futRegex = /(?:\[FUTURE\]|\*\*\[FUTURE\]\*\*|\*\*FUTURE\*\*|##\s*Future)([\s\S]*?)(?=(?:\[INTEGRATION\]|\*\*\[INTEGRATION\]\*\*|\*\*INTEGRATION\*\*|##\s*Integration)|$)/i;
-    const intRegex = /(?:\[INTEGRATION\]|\*\*\[INTEGRATION\]\*\*|\*\*INTEGRATION\*\*|##\s*Integration)([\s\S]*?)$/i;
+    // Match [PAST] / **[PAST]** / ## Past / ## წარსული
+    const pastRegex = /(?:\[PAST\]|\*\*\[PAST\]\*\*|\*\*PAST\*\*|##\s*Past|##\s*წარსული)([\s\S]*?)(?=(?:\[PRESENT\]|\*\*\[PRESENT\]\*\*|\*\*PRESENT\*\*|##\s*Present|##\s*აწმყო)|(?:\[FUTURE\]|\*\*\[FUTURE\]\*\*|\*\*FUTURE\*\*|##\s*Future|##\s*მომავალი)|(?:\[INTEGRATION\]|\*\*\[INTEGRATION\]\*\*|\*\*INTEGRATION\*\*|##\s*Integration|##\s*ინტეგრაცია)|$)/i;
+    const presRegex = /(?:\[PRESENT\]|\*\*\[PRESENT\]\*\*|\*\*PRESENT\*\*|##\s*Present|##\s*აწმყო)([\s\S]*?)(?=(?:\[FUTURE\]|\*\*\[FUTURE\]\*\*|\*\*FUTURE\*\*|##\s*Future|##\s*მომავალი)|(?:\[INTEGRATION\]|\*\*\[INTEGRATION\]\*\*|\*\*INTEGRATION\*\*|##\s*Integration|##\s*ინტეგრაცია)|$)/i;
+    const futRegex = /(?:\[FUTURE\]|\*\*\[FUTURE\]\*\*|\*\*FUTURE\*\*|##\s*Future|##\s*მომავალი)([\s\S]*?)(?=(?:\[INTEGRATION\]|\*\*\[INTEGRATION\]\*\*|\*\*INTEGRATION\*\*|##\s*Integration|##\s*ინტეგრაცია)|$)/i;
+    const intRegex = /(?:\[INTEGRATION\]|\*\*\[INTEGRATION\]\*\*|\*\*INTEGRATION\*\*|##\s*Integration|##\s*ინტეგრაცია)([\s\S]*?)$/i;
 
     const pastMatch = text.match(pastRegex);
     const presMatch = text.match(presRegex);
@@ -68,7 +77,7 @@ export default function ThreeCardInterpretation({
 
     if (pastMatch && cleanSectionText(pastMatch[1])) {
       sections.push({
-        title: 'The Past: Foundations & Memory',
+        title: isKa ? 'წარსული: ფესვები და მეხსიერება' : 'The Past: Foundations & Memory',
         icon: '🌙',
         content: cleanSectionText(pastMatch[1]),
         position: 'past',
@@ -77,7 +86,7 @@ export default function ThreeCardInterpretation({
     }
     if (presMatch && cleanSectionText(presMatch[1])) {
       sections.push({
-        title: 'The Present: Currents of Now',
+        title: isKa ? 'აწმყო: მიმდინარე ენერგიები' : 'The Present: Currents of Now',
         icon: '⭐',
         content: cleanSectionText(presMatch[1]),
         position: 'present',
@@ -86,7 +95,7 @@ export default function ThreeCardInterpretation({
     }
     if (futMatch && cleanSectionText(futMatch[1])) {
       sections.push({
-        title: 'The Future: Horizon of Becoming',
+        title: isKa ? 'მომავალი: მომავლის ჰორიზონტი' : 'The Future: Horizon of Becoming',
         icon: '✨',
         content: cleanSectionText(futMatch[1]),
         position: 'future',
@@ -95,7 +104,7 @@ export default function ThreeCardInterpretation({
     }
     if (intMatch && cleanSectionText(intMatch[1])) {
       sections.push({
-        title: 'Cosmic Synthesis & Spiritual Integration',
+        title: isKa ? 'კოსმოსური სინთეზი და ინტეგრაცია' : 'Cosmic Synthesis & Spiritual Integration',
         icon: '🔮',
         content: cleanSectionText(intMatch[1]),
         position: 'integration',
@@ -106,7 +115,7 @@ export default function ThreeCardInterpretation({
     // Fallback if no specific section markers matched
     if (sections.length === 0) {
       sections.push({
-        title: 'Divine Arcana Reading',
+        title: isKa ? 'ღვთაებრივი არკანას გაშლა' : 'Divine Arcana Reading',
         icon: '🌌',
         content: text.trim(),
         position: 'overview',
@@ -165,9 +174,14 @@ export default function ThreeCardInterpretation({
 
         {/* Header */}
         <div className="three-card-header">
-          <h1 className="three-card-title">Sacred Arcana Revealed</h1>
+          <h1 className="three-card-title">
+            {isKa ? 'წმინდა არკანა გაცხადდა' : 'Sacred Arcana Revealed'}
+          </h1>
           <p className="three-card-subtitle">
-            <span>Illuminated for <strong>{name || 'Seeker'}</strong></span>
+            <span>
+              {isKa ? 'გაცხადებულია: ' : 'Illuminated for '}
+              <strong>{name || (isKa ? 'მაძიებლისთვის' : 'Seeker')}</strong>
+            </span>
             {zodiacSign && <span className="subtitle-badge">✦ {zodiacSign}</span>}
             {focusArea && <span className="subtitle-badge">🧭 {focusArea}</span>}
           </p>
@@ -251,7 +265,7 @@ export default function ThreeCardInterpretation({
                         className="open-card-img"
                         loading="eager"
                       />
-                      <span className="open-card-zoom-badge">🔍 Zoom</span>
+                      <span className="open-card-zoom-badge">{isKa ? '🔍 გადიდება' : '🔍 Zoom'}</span>
                     </div>
                   )}
 
@@ -275,7 +289,7 @@ export default function ThreeCardInterpretation({
                     </div>
                     <div>
                       <span className="open-card-subhead" style={{ color: cardColor }}>
-                        {positions[idx]} Realm • {cardName}
+                        {positions[idx]} {isKa ? 'სფერო' : 'Realm'} • {cardName}
                       </span>
                       <h2 className="open-card-title">{section.title}</h2>
                     </div>
@@ -301,7 +315,7 @@ export default function ThreeCardInterpretation({
               <div className="synthesis-header">
                 <div className="synthesis-icon-bubble">🔮</div>
                 <div>
-                  <span className="synthesis-eyebrow">Cosmic Weaving</span>
+                  <span className="synthesis-eyebrow">{isKa ? 'კოსმოსური ქსოვა' : 'Cosmic Weaving'}</span>
                   <h2 className="synthesis-title">{synthesisSection.title}</h2>
                 </div>
               </div>
@@ -322,7 +336,7 @@ export default function ThreeCardInterpretation({
               type="button"
             >
               <span>🔄</span>
-              <span>Draw Another Spread</span>
+              <span>{isKa ? 'ახალი გაშლა' : 'Draw Another Spread'}</span>
             </button>
           </div>
         )}
@@ -334,13 +348,17 @@ export default function ThreeCardInterpretation({
           onClick={onOpenChat}
           className="floating-universe-chat-btn"
           type="button"
-          aria-label="Converse with the Universe"
-          title="Converse with the Universe"
+          aria-label={isKa ? 'ესაუბრეთ სამყაროს' : 'Converse with the Universe'}
+          title={isKa ? 'ესაუბრეთ სამყაროს' : 'Converse with the Universe'}
         >
           <span className="floating-chat-pulse-ring" />
           <span className="floating-chat-icon">💬</span>
-          <span className="floating-chat-label floating-chat-full-text">Converse with the Universe</span>
-          <span className="floating-chat-label floating-chat-short-text">Cosmic Chat</span>
+          <span className="floating-chat-label floating-chat-full-text">
+            {isKa ? 'ესაუბრეთ სამყაროს' : 'Converse with the Universe'}
+          </span>
+          <span className="floating-chat-label floating-chat-short-text">
+            {isKa ? 'კოსმოსური ჩატი' : 'Cosmic Chat'}
+          </span>
           <span className="floating-chat-sparkle">✨</span>
         </button>
       )}

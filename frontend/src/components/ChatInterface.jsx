@@ -18,7 +18,14 @@ export default function ChatInterface({
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
 
-  const quickPrompts = [
+  const isKa = language === 'ka';
+
+  const quickPrompts = isKa ? [
+    '✨ რა არის ამ გაშლის მთავარი გაკვეთილი?',
+    '🔮 როგორ უკავშირდება ეს კარტები ერთმანეთს?',
+    '⚡ რა დაფარულ დაბრკოლებას უნდა მივაქციო ყურადღება?',
+    '🌟 როგორ მოვიდე საუკეთესო ჰარმონიაში მომავლის კარტთან?',
+  ] : [
     '✨ What is the core lesson of this spread?',
     '🔮 How do these cards connect with each other?',
     '⚡ What hidden blockage should I be mindful of?',
@@ -258,7 +265,7 @@ export default function ChatInterface({
             type="text"
             value={inputMessage}
             onChange={(e) => setInputMessage(e.target.value)}
-            placeholder="Whisper your question to the cosmos..."
+            placeholder={isKa ? "დაუსვით თქვენი შეკითხვა კოსმოსს..." : "Whisper your question to the cosmos..."}
             disabled={isLoading}
             className="neo-chat-input"
           />
