@@ -1,8 +1,6 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 export default function StoryBehind({ onBack }) {
-  const [activeSection, setActiveSection] = useState('vision');
-
   // Allow closing via Escape key
   useEffect(() => {
     const handleKeyDown = (e) => {
@@ -14,112 +12,31 @@ export default function StoryBehind({ onBack }) {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [onBack]);
 
-  const sections = [
+  const specs = [
     {
-      id: 'vision',
-      icon: '🌟',
-      title: 'The Vision',
-      subtitle: 'Where Ancient Wisdom Meets Modern Magic',
-      content: [
-        'NeoArcana was born from a profound question that kept me awake at night: What if we could bridge the gap between ancient tarot wisdom and cutting-edge AI technology?',
-        'For centuries, tarot has offered guidance, insight, and self-reflection. But traditional readings required physical decks, expert readers, and often felt disconnected from our digital lives.',
-        'I envisioned a world where anyone, anywhere, could receive deeply personalized cosmic guidance - combining the mystical depth of tarot with the intelligence of modern AI, accessible right from their pocket.',
-      ],
-      gradient: 'linear-gradient(135deg, #9370DB, #A59AD1)',
-    },
-    {
-      id: 'journey',
-      icon: '🚀',
-      title: 'The Journey',
-      subtitle: 'From Concept to Reality',
-      content: [
-        'As a designer with a passion for spirituality and technology, I spent over 700 hours bringing this vision to life. Every line of code, every gradient, every animation was crafted with intention.',
-        "The biggest challenge? I wasn't a programmer when I started. I learned to code through AI assistance, prompt engineering, and sheer determination. NeoArcana isn't just an app - it's proof that vision and dedication can overcome technical barriers.",
-        "Each cosmic gradient, every glassmorphism effect, and all the careful UX decisions reflect my design background. The app doesn't just work - it creates an experience, a journey into the mystical.",
-      ],
-      gradient: 'linear-gradient(135deg, #A59AD1, #F4A261)',
-    },
-    {
-      id: 'magic',
-      icon: '✨',
-      title: 'The Magic',
-      subtitle: 'AI-Powered Personalization',
-      content: [
-        'At the heart of NeoArcana lies intelligent foundation models. But this isn’t generic AI - every reading is deeply personalized to YOU.',
-        'Your zodiac sign, birth date, favorite colors, interests, and even the current moon phase all weave together to create interpretations that feel remarkably personal and insightful.',
-        'The AI doesn’t just pull random meanings - it understands tarot symbolism, astrological influences, and numerological significance. It crafts narratives that honor the ancient wisdom while speaking in a modern, accessible voice.',
-        'Each reading considers cosmic context: the season, lunar cycle, and planetary energies. Your card isn’t just "The Star" - it’s "The Star for you, right now, in this moment of your journey."',
-      ],
-      gradient: 'linear-gradient(135deg, #F4A261, #FFD700)',
-    },
-    {
-      id: 'innovation',
+      badge: 'HARDWARE',
+      label: 'NTAG213 Microchip',
+      detail: 'Embedded NFC with cryptographic signature',
       icon: '🎴',
-      title: 'The Innovation',
-      subtitle: 'Bridging Physical and Digital',
-      content: [
-        'NFC technology transforms NeoArcana from just another app into something magical. Imagine tapping your phone to a beautiful cosmic poster on your wall and instantly receiving your personalized reading.',
-        'Each NFC-enabled poster is a portal - a physical anchor point connecting the tangible world to your digital spiritual practice. It’s meditation meets technology, mysticism meets convenience.',
-        'The posters aren’t just functional - they’re art. Designed to be displayed proudly, each one features stunning cosmic imagery that enhances your space while serving as your daily connection point.',
-        'This physical-digital bridge makes spiritual practice more accessible. No shuffling cards, no complex spreads to remember - just a simple tap to connect with cosmic wisdom.',
-      ],
-      gradient: 'linear-gradient(135deg, #FFD700, #40E0D0)',
     },
     {
-      id: 'technology',
-      icon: '⚡',
-      title: 'The Technology',
-      subtitle: 'Built for the Future',
-      content: [
-        'NeoArcana is built as a lightning-fast responsive modern web experience, providing native-grade animations and fluid interactions across mobile and desktop.',
-        'The backend runs on FastAPI and Amazon Bedrock with serverless intelligent LLM endpoints, delivering instant cosmic synthesis with sub-second response times.',
-        'Firebase and Firestore power the cloud synchronization, ensuring your attunements and readings remain securely aligned across any device.',
-        'Multiple languages are supported so the cosmos speaks to seekers in their native tongue: English, Spanish, French, German, Italian, Portuguese, and more.',
-      ],
-      gradient: 'linear-gradient(135deg, #40E0D0, #9370DB)',
+      badge: 'ASTRONOMY',
+      label: 'PyEphem Engine',
+      detail: 'Live celestial transits & lunar calculations',
+      icon: '🪐',
     },
     {
-      id: 'design',
-      icon: '🎨',
-      title: 'The Design',
-      subtitle: 'Cosmic Aesthetics',
-      content: [
-        'Every gradient, every glow effect, every celestial animation serves a purpose: to transport you into a transcendent cosmic state of mind.',
-        'Glassmorphism layers create ethereal depth, while interactive Three.js starry celestial particles respond to your presence.',
-        'The typography and palette balance readability with mysticism - celestial gold (#ffd700), radiant amber (#f4a261), and royal amethyst (#a59ad1).',
-      ],
-      gradient: 'linear-gradient(135deg, #CEC7F2, #F4BFBF)',
+      badge: 'ARCHETYPES',
+      label: '22 Major Arcana',
+      detail: 'Original sacred geometry & celestial vector art',
+      icon: '✨',
     },
     {
-      id: 'creator',
-      icon: '🌈',
-      title: 'The Creator',
-      subtitle: "Georgie's Lab",
-      content: [
-        "Hi, I'm Georgie - a designer turned creator with a vision that wouldn't let me sleep. I've always been fascinated by the intersection of spirituality and technology.",
-        'My design background guided the sacred atmosphere and experience, while modern agentic AI enabled me to architect the entire code foundation.',
-        'Every pixel, gradient, and line of code carries deep intention: to make cosmic guidance accessible, sublime, and genuinely empowering.',
-      ],
-      gradient: 'linear-gradient(135deg, #F4BFBF, #A59AD1)',
+      badge: 'GLOBAL',
+      label: '9 Languages',
+      detail: 'Multilingual archetypal synthesis',
+      icon: '🌍',
     },
-    {
-      id: 'gratitude',
-      icon: '🙏',
-      title: 'Thank You',
-      subtitle: 'For Being Part of This Journey',
-      content: [
-        "If you're reading this, you are part of NeoArcana's story. Whether you're drawing your first card or returning daily, you bring this universe to life.",
-        'May the cosmos illuminate your path and the cards reveal your highest destiny. ✨',
-      ],
-      gradient: 'linear-gradient(135deg, #F4A261, #FFD700)',
-    },
-  ];
-
-  const stats = [
-    { number: '700+', label: 'Hours of Crafting', icon: '⏰' },
-    { number: '22', label: 'Major Arcana Cards', icon: '🎴' },
-    { number: '9', label: 'Languages Supported', icon: '🌍' },
-    { number: '100%', label: 'Cosmic Dedication', icon: '✨' },
   ];
 
   return (
@@ -145,8 +62,9 @@ export default function StoryBehind({ onBack }) {
           ×
         </button>
 
-        {/* Header Section */}
-        <div className="story-header">
+        {/* Hero Section */}
+        <header className="story-header">
+          <div className="story-badge">PHYGITAL TAROT &amp; CELESTIAL COMPUTING</div>
           <img
             src="/static/images/logo.png"
             alt="NeoArcana Logo"
@@ -157,79 +75,181 @@ export default function StoryBehind({ onBack }) {
           />
           <h1 className="story-title">The Story Behind NeoArcana</h1>
           <p className="story-tagline">
-            A Solo Creator's Journey to Bridge Ancient Wisdom with Modern Technology
+            Bridging sacred physical art with the living cosmos — a phygital tarot experiment by Georgie's Lab.
           </p>
-        </div>
+        </header>
 
-        {/* Stats Grid */}
-        <div className="story-stats-grid">
-          {stats.map((stat, index) => (
-            <div key={index} className="story-stat-card">
-              <div className="stat-icon">{stat.icon}</div>
-              <div className="stat-number">{stat.number}</div>
-              <div className="stat-label">{stat.label}</div>
+        {/* Specifications Strip */}
+        <div className="story-specs-grid">
+          {specs.map((item, index) => (
+            <div key={index} className="story-spec-card">
+              <div className="spec-top">
+                <span className="spec-icon">{item.icon}</span>
+                <span className="spec-badge">{item.badge}</span>
+              </div>
+              <div className="spec-label">{item.label}</div>
+              <div className="spec-detail">{item.detail}</div>
             </div>
           ))}
         </div>
 
-        {/* Main Content Sections */}
-        <div className="story-content">
-          {sections.map((section) => {
-            const isActive = activeSection === section.id;
-            return (
-              <section
-                key={section.id}
-                className={`story-section ${isActive ? 'active' : ''}`}
-                onClick={() => setActiveSection(isActive ? null : section.id)}
-              >
-                <div className="section-header" style={{ background: section.gradient }}>
-                  <span className="section-icon">{section.icon}</span>
-                  <div className="section-titles">
-                    <h2 className="section-title">{section.title}</h2>
-                    <p className="section-subtitle">{section.subtitle}</p>
-                  </div>
-                  <span className="section-arrow">{isActive ? '▼' : '▶'}</span>
-                </div>
+        {/* Narrative Chapters */}
+        <div className="story-chapters">
+          {/* Chapter 1: The Spark */}
+          <article className="story-chapter-card">
+            <div className="chapter-header">
+              <span className="chapter-pill">CHAPTER I</span>
+              <h2 className="chapter-title">The Spark: Beyond the Frozen Print</h2>
+            </div>
+            <p className="chapter-text">
+              For centuries, tarot has lived in two places: paper decks shuffled in solitude, or decorative prints hanging silently on a wall. But hanging tarot art always felt incomplete to me. You admire the sacred geometry of The Magician or The Star, but the artwork remains frozen in ink — blind to the sky outside your window.
+            </p>
+            <p className="chapter-text">
+              I wanted to build an artwork that breathes with the universe. What if placing your palm and phone against the artwork on your wall wasn't just a gimmick, but a grounding morning ritual that awakens the print, calculates the exact celestial transits overhead, and speaks directly to your moment?
+            </p>
+          </article>
 
-                <div className={`section-content ${isActive ? 'expanded' : ''}`}>
-                  {section.content.map((paragraph, pIdx) => (
-                    <p key={pIdx} className="section-paragraph">
-                      {paragraph}
-                    </p>
-                  ))}
-                </div>
-              </section>
-            );
-          })}
-        </div>
+          {/* Chapter 2: The Phygital Craft */}
+          <article className="story-chapter-card">
+            <div className="chapter-header">
+              <span className="chapter-pill">CHAPTER II</span>
+              <h2 className="chapter-title">The Phygital Craft: Sacred Ink &amp; Microchips</h2>
+            </div>
+            <p className="chapter-text">
+              NeoArcana lives at the convergence of tangible art and physical computing. We call this <em>phygital</em> — where the digital realm serves the physical world, not the other way around.
+            </p>
 
-        {/* Creator Section */}
-        <div className="story-creator-section">
-          <div className="creator-card">
-            <div className="creator-content">
-              <h3 className="creator-name">Made with 🪄 by Georgie</h3>
-              <p className="creator-bio">Designer • Developer • Cosmic Dreamer</p>
+            <div className="craft-features-grid">
+              <div className="craft-feature-item">
+                <div className="craft-icon">🖐️</div>
+                <h3>The Touch Ritual</h3>
+                <p>
+                  In a culture lost in endless doomscrolling, reaching out to touch physical art on your wall creates a conscious pause. It anchors your daily practice in physical space.
+                </p>
+              </div>
+
+              <div className="craft-feature-item">
+                <div className="craft-icon">🔐</div>
+                <h3>Hardware Authentication</h3>
+                <p>
+                  Each poster houses an embedded high-frequency NTAG NFC microchip. Tapping your phone registers the poster to your personal cosmos with cryptographic certainty.
+                </p>
+              </div>
+
+              <div className="craft-feature-item">
+                <div className="craft-icon">🎨</div>
+                <h3>Sacred Geometry</h3>
+                <p>
+                  Every line, glyph, and color harmony is illustrated to balance classical Hermetic tarot symbolism with contemporary cosmic minimalism.
+                </p>
+              </div>
+            </div>
+          </article>
+
+          {/* Chapter 3: The Engine */}
+          <article className="story-chapter-card">
+            <div className="chapter-header">
+              <span className="chapter-pill">CHAPTER III</span>
+              <h2 className="chapter-title">The Engine: Real Astronomical Ephemeris</h2>
+            </div>
+            <p className="chapter-text">
+              Most digital card apps are little more than randomized fortune cookies. NeoArcana was engineered with genuine reverence for the celestial clock.
+            </p>
+            <p className="chapter-text">
+              Our backend calculates real-time ephemeris data using Python's astronomical libraries. When you draw a card or tap your poster, the reading evaluates the live lunar phase, planetary positions, and seasonal solar altitude relative to your astrological profile. The 22 Major Arcana archetypes aren't recited from an old book; they are woven live into the fabric of the current sky.
+            </p>
+          </article>
+
+          {/* Chapter 4: Featured Artifact — The Magician */}
+          <article className="story-poster-showcase">
+            <div className="poster-showcase-visual">
+              <img
+                src="/static/images/magician.jpg"
+                alt="The Magician NFC Poster"
+                className="showcase-poster-img"
+              />
+              <div className="poster-nfc-tag">
+                <span className="nfc-pulse-ring"></span>
+                <span className="nfc-tag-text">NFC EMBEDDED</span>
+              </div>
+            </div>
+
+            <div className="poster-showcase-details">
+              <span className="showcase-kicker">FLAGSHIP PHYSICAL RELEASE</span>
+              <h2 className="showcase-title">The Magician NFC Poster</h2>
+              <p className="showcase-tagline">
+                The conduit between heaven and earth — as above, so below.
+              </p>
+              <p className="showcase-description">
+                Hand-finished celestial artwork printed on heavy archival matte stock, embedded with a concealed NTAG NFC microchip. Tap your phone to the print anytime to instantly summon your daily cosmic guidance and astrological alignment.
+              </p>
+
+              <ul className="showcase-specs-list">
+                <li>✨ Museum-quality archival fine art paper</li>
+                <li>🎴 Concealed NTAG213 NFC hardware chip</li>
+                <li>⚡ Instant one-tap phone attunement (iOS &amp; Android)</li>
+                <li>🌌 Lifetime access to your daily cosmic readings</li>
+              </ul>
+
+              <div className="showcase-actions">
+                <a
+                  href="https://georgieslab.wixsite.com/georgies/product-page/the-magician-poster"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="showcase-buy-btn"
+                >
+                  <span>🛍️ Collect The Magician Poster at Georgie's Lab</span>
+                  <span className="btn-arrow">↗</span>
+                </a>
+              </div>
+            </div>
+          </article>
+
+          {/* Chapter 5: Georgie's Lab */}
+          <article className="story-creator-card">
+            <div className="creator-header">
+              <span className="creator-icon">🪄</span>
+              <div>
+                <h2 className="creator-name">Georgie's Lab</h2>
+                <p className="creator-sub">Design • Physical Computing • Sacred Tech</p>
+              </div>
+            </div>
+            <p className="creator-manifesto">
+              "NeoArcana is an ongoing laboratory experiment. I believe technology doesn't have to be noisy, addictive, or isolating. It can be physical, quiet, and sacred. When we combine tactile materials with thoughtful code, we create objects that invite us to pause, look up at the stars, and reflect."
+            </p>
+            <div className="creator-links">
               <a
                 href="https://instagram.com/georgieslab"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="creator-link"
+                className="creator-link-pill"
               >
-                <span>📱 Follow the Journey</span>
+                <span>📱 Instagram</span>
                 <span className="link-handle">@georgieslab</span>
               </a>
+              <a
+                href="https://georgieslab.wixsite.com/georgies/product-page/the-magician-poster"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="creator-link-pill"
+              >
+                <span>🏛️ The Lab Store</span>
+                <span className="link-handle">The Magician Poster ↗</span>
+              </a>
             </div>
-          </div>
+          </article>
         </div>
 
         {/* Bottom Back Button */}
-        <button
-          onClick={onBack}
-          type="button"
-          className="cosmic-button cosmic-button--primary cosmic-button--large story-back-button"
-        >
-          ← Back to Cosmos
-        </button>
+        <div className="story-footer">
+          <button
+            onClick={onBack}
+            type="button"
+            className="cosmic-button cosmic-button--primary cosmic-button--large story-back-btn"
+          >
+            ← Return to Cosmos
+          </button>
+        </div>
       </div>
     </div>
   );
