@@ -16,17 +16,18 @@
 /* -------------------- MAIN CONTAINER -------------------- */
 
 .cosmic-landing {
-  /* DESKTOP: Fill viewport, no scroll */
+  /* Fill viewport, perfectly centered */
   min-height: 100vh;
-  max-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--neo-space-xl);
+  padding: clamp(1rem, 3vh, 2rem) 1rem;
   position: relative;
   z-index: var(--z-content);
-  overflow: hidden; /* Prevent scroll */
+  box-sizing: border-box;
+  margin: 0 auto;
 }
 
 /* -------------------- GLASS CONTAINER -------------------- */
@@ -41,21 +42,25 @@
     0 8px 32px rgba(0, 0, 0, 0.4),
     0 0 60px rgba(165, 154, 209, 0.15);
   
-  /* DESKTOP: Fit content within viewport */
+  /* Universal centered card */
   padding: clamp(1.5rem, 4vh, 3rem);
   max-width: 500px;
   width: 100%;
-  max-height: 90vh; /* Never exceed 90% of viewport */
+  max-height: 90vh;
+  max-height: 90dvh;
+  margin: auto;
   
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* Center vertically */
-  gap: clamp(1rem, 2.5vh, 2rem); /* Responsive gap */
+  justify-content: center;
+  text-align: center;
+  gap: clamp(1rem, 2.5vh, 2rem);
   
   animation: fadeInUp 0.8s ease-out;
   position: relative;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 /* Cosmic glow effect */
@@ -143,13 +148,15 @@
 .cosmic-buttons {
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: clamp(0.75rem, 1.5vh, 1rem);
   width: 100%;
   max-width: 330px;
-  margin-top: clamp(0.5rem, 2vh, 1.5rem);
+  margin: clamp(0.5rem, 2vh, 1.5rem) auto 0 auto;
   position: relative;
   z-index: 1;
   flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 /* -------------------- BUTTON VARIANTS FOR LANDING -------------------- */
@@ -526,13 +533,14 @@
 @media (max-width: 1024px) and (min-width: 769px) {
   .cosmic-landing {
     min-height: 100vh;
-    max-height: none; /* Allow scroll on smaller desktops if needed */
+    min-height: 100dvh;
+    max-height: none;
     overflow-y: auto;
   }
   
   .cosmic-landing-inner {
-    max-height: none; /* Allow content to expand */
-    margin: 2rem 0; /* Add vertical margin */
+    max-height: none;
+    margin: auto;
   }
 }
 
@@ -556,7 +564,7 @@
     max-width: 440px;
     width: 100%;
     max-height: none;
-    margin: auto 0;
+    margin: auto;
     gap: clamp(1rem, 2.5vh, 1.5rem);
     border-radius: 24px;
     box-sizing: border-box;
@@ -605,7 +613,7 @@
 
   .cosmic-landing-inner {
     padding: 1.75rem 1.15rem;
-    margin: auto 0;
+    margin: auto;
     gap: 1.15rem;
     border-radius: 20px;
     max-width: 100%;
@@ -659,6 +667,7 @@
 @media (max-width: 360px) {
   .cosmic-landing-inner {
     padding: 1.35rem 0.85rem;
+    margin: auto;
     gap: 1rem;
   }
 
