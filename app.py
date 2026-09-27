@@ -44,10 +44,13 @@ if os.getenv('RENDER'):
     fastapi_thread.start()
     print("✅ FastAPI background thread started (Render deployment)")
 
+# Front-end dist path
+FRONTEND_DIST = os.path.abspath(os.path.join(os.path.dirname(__file__), 'frontend', 'dist'))
+
 # Proxy all /api/ calls to FastAPI (for production on Render)
 @app.route('/api/<path:path>', methods=['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'])
 def api_proxy(path):
-    """Proxy API calls to FastAPI backend"""
+    """Proxy API calls to FastAPI backend with retry while booting"""
     fastapi_url = f'http://localhost:8000/api/{path}'
     
     try:
@@ -55,54 +58,84 @@ def api_proxy(path):
         if request.method == 'OPTIONS':
             response = jsonify({'status': 'ok'})
             response.headers.add('Access-Control-Allow-Origin', '*')
-            response.headers.add('Access-Control-Allow-Headers', 'Content-Type')
+            response.headers.add('Access-Control-Allow-Headers', 'Content-Type,Authorization')
             response.headers.add('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS')
             return response
             
-        # Forward the request to FastAPI
-        if request.method == 'POST':
-            resp = requests.post(
-                fastapi_url,
-                json=request.get_json(),
-                headers={'Content-Type': 'application/json'}
-            )
-        elif request.method == 'GET':
-            resp = requests.get(
-                fastapi_url,
-                params=request.args
-            )
-        elif request.method == 'PUT':
-            resp = requests.put(
-                fastapi_url,
-                json=request.get_json(),
-                headers={'Content-Type': 'application/json'}
-            )
-        elif request.method == 'DELETE':
-            resp = requests.delete(fastapi_url)
-        
-        # Return FastAPI's response
-        return resp.json(), resp.status_code
+        # Forward the request to FastAPI with up to 4 retries for daemon boot
+        import time
+        for attempt in range(4):
+            try:
+                if request.method == 'POST':
+                    resp = requests.post(
+                        fastapi_url,
+                        json=request.get_json(silent=True) or {},
+                        headers={'Content-Type': 'application/json'},
+                        timeout=60
+                    )
+                elif request.method == 'GET':
+                    resp = requests.get(
+                        fastapi_url,
+                        params=request.args,
+                        timeout=60
+                    )
+                elif request.method == 'PUT':
+                    resp = requests.put(
+                        fastapi_url,
+                        json=request.get_json(silent=True) or {},
+                        headers={'Content-Type': 'application/json'},
+                        timeout=60
+                    )
+                elif request.method == 'DELETE':
+                    resp = requests.delete(fastapi_url, timeout=60)
+                
+                # Exclude hop-by-hop headers
+                excluded_headers = ['content-encoding', 'content-length', 'transfer-encoding', 'connection']
+                headers = [(k, v) for k, v in resp.raw.headers.items() if k.lower() not in excluded_headers]
+                return (resp.content, resp.status_code, headers)
+            except requests.exceptions.ConnectionError:
+                if attempt < 3:
+                    time.sleep(1)
+                    continue
+                raise
         
     except Exception as e:
         print(f"❌ Error proxying to FastAPI: {e}")
-        return {"error": "API request failed", "details": str(e)}, 500
+        return jsonify({"error": "API request failed", "details": str(e)}), 500
+
+# Serve Vite build assets
+@app.route('/assets/<path:path>')
+def serve_assets(path):
+    """Serve compiled Vite assets (JS, CSS chunks)"""
+    assets_dir = os.path.join(FRONTEND_DIST, 'assets')
+    if os.path.exists(assets_dir):
+        return send_from_directory(assets_dir, path)
+    return jsonify({"error": "Asset not found"}), 404
 
 # Main page route
 @app.route('/')
 def index():
-    """Serve the main React application"""
+    """Serve the modern React application if built, fallback to legacy"""
+    if os.path.exists(os.path.join(FRONTEND_DIST, 'index.html')):
+        return send_from_directory(FRONTEND_DIST, 'index.html')
     return render_template('react.html')
 
 # NFC registration route
 @app.route('/nfc')
 def nfc_registration():
     """NFC registration page"""
+    if os.path.exists(os.path.join(FRONTEND_DIST, 'index.html')):
+        return send_from_directory(FRONTEND_DIST, 'index.html')
     return render_template('react.html')
 
 # Serve static files
 @app.route('/static/<path:path>')
 def serve_static(path):
     """Serve static files (JS, CSS, images)"""
+    # Check frontend/dist/static first, then fallback to static/
+    dist_static = os.path.join(FRONTEND_DIST, 'static')
+    if os.path.exists(dist_static) and os.path.exists(os.path.join(dist_static, path)):
+        return send_from_directory(dist_static, path)
     return send_from_directory('static', path)
 
 # Health check
@@ -111,8 +144,20 @@ def health_check():
     """Health check endpoint"""
     return jsonify({
         "status": "healthy",
-        "service": "flask_frontend"
+        "service": "neoarcana_server"
     })
+
+# Catch-all for SPA client routing
+@app.route('/<path:path>')
+def spa_catch_all(path):
+    if path.startswith(('api/', 'static/', 'assets/', 'health')):
+        return jsonify({"error": "Not Found"}), 404
+    file_path = os.path.join(FRONTEND_DIST, path)
+    if os.path.isfile(file_path):
+        return send_from_directory(FRONTEND_DIST, path)
+    if os.path.exists(os.path.join(FRONTEND_DIST, 'index.html')):
+        return send_from_directory(FRONTEND_DIST, 'index.html')
+    return render_template('react.html')
 
 # CORS headers for all responses
 @app.after_request
