@@ -57,6 +57,7 @@ async def start_chat(
 
 
 @router.post("/chat", response_model=ChatResponse)
+@router.post("/send_message", response_model=ChatResponse)
 async def chat(
     request: ChatRequest,
     chat_service: ChatService = Depends(get_chat_service)

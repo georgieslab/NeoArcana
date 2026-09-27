@@ -1,302 +1,391 @@
-// ========================================
-// NEOARCANA - THREE CARD INTERPRETATION
-// JSX VERSION - Clean & Modern! 🎴
-// ========================================
+import { useState } from 'react';
+import { renderFormattedParagraphs } from '../utils/textFormatter';
 
-const ThreeCardInterpretation = ({ 
+export default function ThreeCardInterpretation({
   readingData,
-  name, 
-  zodiacSign, 
-  language,
-  onReturn
-}) => {
-  const [isVisible, setIsVisible] = React.useState(false);
-  const [showChat, setShowChat] = React.useState(false);
-  const [selectedCard, setSelectedCard] = React.useState(null);
-  const [currentLanguage, setCurrentLanguage] = React.useState(language);
-  const [chatHistory, setChatHistory] = React.useState(null);
+  name,
+  zodiacSign,
+  focusArea,
+  onReturn,
+  onOpenChat,
+}) {
+  const [selectedCard, setSelectedCard] = useState(null);
 
   const positions = ['Past', 'Present', 'Future'];
   const positionIcons = ['🌙', '⭐', '✨'];
-  const positionColors = ['#9370DB', '#A59AD1', '#F4A261'];
+  const positionColors = ['#a78bfa', '#38bdf8', '#f59e0b']; // Amethyst, Luminous Cyan/Lavender, Radiant Amber
 
-  React.useEffect(() => {
-    setIsVisible(true);
-  }, []);
+  // Helper to sanitize markdown artifacts from AI generation
+  const cleanSectionText = (str) => {
+    if (!str) return '';
+    return str
+      .replace(/^[\s*#:\-_]+/, '') // Strip leading markdown chars
+      .replace(/[\s*#:\-_]+$/, '') // Strip trailing markdown chars
+      .trim();
+  };
 
-  React.useEffect(() => {
-    if (language !== currentLanguage) {
-      setCurrentLanguage(language);
+  // Robust parser for Bedrock/Claude reading formats
+  const parseInterpretation = (rawText) => {
+    const text = rawText || readingData?.reading_text || '';
+    if (!text) {
+      return [
+        {
+          title: 'The Past: Foundations & Lessons',
+          icon: '🌙',
+          content: 'The sacred foundations and experiences that shaped the path of your soul.',
+          position: 'past',
+          color: positionColors[0],
+        },
+        {
+          title: 'The Present: Active Energetic Influences',
+          icon: '⭐',
+          content: 'The celestial forces and inner wisdom available to you in the current moment.',
+          position: 'present',
+          color: positionColors[1],
+        },
+        {
+          title: 'The Future: Unfolding Destiny & Potential',
+          icon: '✨',
+          content: 'The highest possibilities opening as your deliberate choices align with the cosmos.',
+          position: 'future',
+          color: positionColors[2],
+        },
+      ];
     }
-  }, [language]);
 
-  const handleChatOpen = () => {
-    setShowChat(true);
-  };
-
-  const handleChatClose = () => {
-    setShowChat(false);
-  };
-
-  // Parse interpretation into sections
-  const parseInterpretation = (text) => {
-    if (!text) return [];
-    
     const sections = [];
-    
-    // Look for [PAST], [PRESENT], [FUTURE], [INTEGRATION]
-    const past = text.match(/\[PAST\]([\s\S]*?)(?=\[PRESENT\]|\[FUTURE\]|\[INTEGRATION\]|$)/);
-    const present = text.match(/\[PRESENT\]([\s\S]*?)(?=\[FUTURE\]|\[INTEGRATION\]|$)/);
-    const future = text.match(/\[FUTURE\]([\s\S]*?)(?=\[INTEGRATION\]|$)/);
-    const integration = text.match(/\[INTEGRATION\]([\s\S]*?)$/);
-    
-    if (past && past[1]) {
+
+    // Match [PAST] / **[PAST]** / ## Past
+    const pastRegex = /(?:\[PAST\]|\*\*\[PAST\]\*\*|\*\*PAST\*\*|##\s*Past)([\s\S]*?)(?=(?:\[PRESENT\]|\*\*\[PRESENT\]\*\*|\*\*PRESENT\*\*|##\s*Present)|(?:\[FUTURE\]|\*\*\[FUTURE\]\*\*|\*\*FUTURE\*\*|##\s*Future)|(?:\[INTEGRATION\]|\*\*\[INTEGRATION\]\*\*|\*\*INTEGRATION\*\*|##\s*Integration)|$)/i;
+    const presRegex = /(?:\[PRESENT\]|\*\*\[PRESENT\]\*\*|\*\*PRESENT\*\*|##\s*Present)([\s\S]*?)(?=(?:\[FUTURE\]|\*\*\[FUTURE\]\*\*|\*\*FUTURE\*\*|##\s*Future)|(?:\[INTEGRATION\]|\*\*\[INTEGRATION\]\*\*|\*\*INTEGRATION\*\*|##\s*Integration)|$)/i;
+    const futRegex = /(?:\[FUTURE\]|\*\*\[FUTURE\]\*\*|\*\*FUTURE\*\*|##\s*Future)([\s\S]*?)(?=(?:\[INTEGRATION\]|\*\*\[INTEGRATION\]\*\*|\*\*INTEGRATION\*\*|##\s*Integration)|$)/i;
+    const intRegex = /(?:\[INTEGRATION\]|\*\*\[INTEGRATION\]\*\*|\*\*INTEGRATION\*\*|##\s*Integration)([\s\S]*?)$/i;
+
+    const pastMatch = text.match(pastRegex);
+    const presMatch = text.match(presRegex);
+    const futMatch = text.match(futRegex);
+    const intMatch = text.match(intRegex);
+
+    if (pastMatch && cleanSectionText(pastMatch[1])) {
       sections.push({
-        title: 'The Past',
+        title: 'The Past: Foundations & Memory',
         icon: '🌙',
-        content: past[1].trim(),
+        content: cleanSectionText(pastMatch[1]),
         position: 'past',
-        color: positionColors[0]
+        color: positionColors[0],
       });
     }
-    
-    if (present && present[1]) {
+    if (presMatch && cleanSectionText(presMatch[1])) {
       sections.push({
-        title: 'The Present',
+        title: 'The Present: Currents of Now',
         icon: '⭐',
-        content: present[1].trim(),
+        content: cleanSectionText(presMatch[1]),
         position: 'present',
-        color: positionColors[1]
+        color: positionColors[1],
       });
     }
-    
-    if (future && future[1]) {
+    if (futMatch && cleanSectionText(futMatch[1])) {
       sections.push({
-        title: 'The Future',
+        title: 'The Future: Horizon of Becoming',
         icon: '✨',
-        content: future[1].trim(),
+        content: cleanSectionText(futMatch[1]),
         position: 'future',
-        color: positionColors[2]
+        color: positionColors[2],
       });
     }
-    
-    if (integration && integration[1]) {
+    if (intMatch && cleanSectionText(intMatch[1])) {
       sections.push({
-        title: 'Your Journey',
+        title: 'Cosmic Synthesis & Spiritual Integration',
         icon: '🔮',
-        content: integration[1].trim(),
+        content: cleanSectionText(intMatch[1]),
         position: 'integration',
-        color: '#CEC7F2'
+        color: '#ffd700',
       });
     }
-    
-    // Fallback if no sections found
+
+    // Fallback if no specific section markers matched
     if (sections.length === 0) {
       sections.push({
-        title: 'Your Reading',
-        icon: '🔮',
-        content: text,
-        position: 'general',
-        color: '#A59AD1'
+        title: 'Divine Arcana Reading',
+        icon: '🌌',
+        content: text.trim(),
+        position: 'overview',
+        color: '#a59ad1',
       });
     }
-    
+
     return sections;
   };
 
-  const sections = parseInterpretation(readingData.interpretation);
+  const sections = parseInterpretation(readingData?.interpretation);
+
+  // Normalize image URLs
+  const getCardImgUrl = (card) => {
+    if (!card) return '/static/images/cards/fallback-card.jpg';
+    const img = typeof card === 'string' ? card : card.image || card.cardImage;
+    if (!img) return '/static/images/cards/fallback-card.jpg';
+    if (img.startsWith('http')) return img;
+    if (img.startsWith('/static/images/cards/')) return img;
+    if (img.startsWith('/static/images/')) return img;
+    if (img.startsWith('/')) return `/static/images/cards${img}`;
+    return `/static/images/cards/${img}`;
+  };
+
+  const getCardName = (index) => {
+    if (readingData?.cardNames && readingData.cardNames[index]) {
+      return readingData.cardNames[index];
+    }
+    if (readingData?.cards && readingData.cards[index]) {
+      const c = readingData.cards[index];
+      return typeof c === 'string'
+        ? c.split('/').pop().replace('.jpg', '').replace(/_/g, ' ')
+        : c.name;
+    }
+    return `Arcana ${index + 1}`;
+  };
+
+  const cardsList = readingData?.cards || [];
+  const moonPhase = readingData?.moonPhase || readingData?.cosmicContext?.moonPhase;
+  const season = readingData?.season || readingData?.cosmicContext?.season;
+  const dayEnergy = readingData?.dayEnergy || readingData?.cosmicContext?.dayEnergy;
+
+  // Separate synthesis from individual cards
+  const cardSections = sections.filter((s) => s.position !== 'integration');
+  const synthesisSection = sections.find((s) => s.position === 'integration');
 
   return (
-    <div className={`three-card-top-layout ${isVisible ? 'visible' : ''}`}>
-      
-      {/* Page Container */}
-      <div className="three-card-page-container">
-        
+    <div className="three-card-outer">
+      <div className="three-card-glassy-container">
+        {/* Stepper Indicator */}
+        <div className="step-indicator">
+          <div className="step">1</div>
+          <div className="step">2</div>
+          <div className="step active">3</div>
+        </div>
+
         {/* Header */}
-        <div className="three-card-page-header">
-          <h1 className="three-card-page-title">
-            🔮 Your Three-Card Journey 🔮
-          </h1>
-          {name && (
-            <p className="three-card-page-subtitle">
-              A personalized reading for {name}
-            </p>
-          )}
+        <div className="three-card-header">
+          <h1 className="three-card-title">Sacred Arcana Revealed</h1>
+          <p className="three-card-subtitle">
+            <span>Illuminated for <strong>{name || 'Seeker'}</strong></span>
+            {zodiacSign && <span className="subtitle-badge">✦ {zodiacSign}</span>}
+            {focusArea && <span className="subtitle-badge">🧭 {focusArea}</span>}
+          </p>
         </div>
 
-        {/* THREE CARDS AT TOP - Horizontal Row */}
-        <div className="three-card-top-cards-row">
-          {readingData.cards.map((cardImage, index) => (
-            <div
-              key={index}
-              className="three-card-top-card-item"
-              onClick={() => setSelectedCard(index)}
-              style={{ '--card-delay': `${index * 0.15}s` }}
-            >
-              {/* Position Label */}
-              <div 
-                className="card-top-position"
-                style={{ color: positionColors[index] }}
-              >
-                <span className="position-icon-top">{positionIcons[index]}</span>
-                {' '}
-                {positions[index]}
-              </div>
-
-              {/* Card Image (smaller) */}
-              <div className="card-top-image-wrapper">
-                <img
-                  src={cardImage}
-                  alt={readingData.cardNames[index]}
-                  className="card-top-image"
-                />
-                {/* Hover overlay */}
-                <div className="card-top-hover">
-                  <span>Click to Enlarge</span>
-                </div>
-              </div>
-              
-              {/* Card Name */}
-              <div 
-                className="card-top-name"
-                style={{ color: positionColors[index] }}
-              >
-                {readingData.cardNames[index]}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        {/* Cosmic Info (centered below cards) */}
-        {(readingData.moonPhase || readingData.season) && (
-          <div className="three-card-cosmic-bar">
-            {readingData.moonPhase && (
-              <div className="cosmic-bar-item">
-                <span className="cosmic-bar-icon">🌙</span>
-                <span> {readingData.moonPhase}</span>
+        {/* Cosmic Timing Info Bar */}
+        {(moonPhase || season || dayEnergy) && (
+          <div className="cosmic-info-bar">
+            {moonPhase && (
+              <div className="cosmic-info-item">
+                <span className="cosmic-icon">🌕</span>
+                <span>{moonPhase}</span>
               </div>
             )}
-            {readingData.season && (
-              <div className="cosmic-bar-item">
-                <span className="cosmic-bar-icon">🍂</span>
-                <span> {readingData.season}</span>
+            {moonPhase && season && <span className="cosmic-info-sep">•</span>}
+            {season && (
+              <div className="cosmic-info-item">
+                <span className="cosmic-icon">🌿</span>
+                <span>{season}</span>
+              </div>
+            )}
+            {(moonPhase || season) && dayEnergy && <span className="cosmic-info-sep">•</span>}
+            {dayEnergy && (
+              <div className="cosmic-info-item">
+                <span className="cosmic-icon">⚡</span>
+                <span>{dayEnergy}</span>
               </div>
             )}
           </div>
         )}
 
-        {/* READING SECTIONS BELOW */}
-        <div className="three-card-reading-sections">
-          {sections.map((section, index) => (
-            <div 
-              key={index}
-              className={`reading-section section-${section.position}`}
-              style={{ '--section-delay': `${index * 0.15}s` }}
-            >
-              {/* Section Header */}
-              <div className="reading-section-header">
-                <div 
-                  className="section-icon-wrapper"
-                  style={{ 
-                    background: `linear-gradient(135deg, ${section.color}33, ${section.color}11)`,
-                    borderColor: section.color
-                  }}
-                >
-                  <span className="section-icon">{section.icon}</span>
+        {/* ==========================================================
+            FULLY OPEN CONTINUOUS READING FLOW (NO TABS / NO ACCORDIONS)
+            Each card's sacred artwork is displayed side-by-side with its
+            full open interpretation text!
+            ========================================================== */}
+        <div className="open-reading-flow">
+          {cardSections.map((section, idx) => {
+            const card = cardsList[idx];
+            const cardColor = positionColors[idx] || '#a59ad1';
+            const cardName = getCardName(idx);
+
+            return (
+              <section
+                key={idx}
+                className="open-card-story"
+                style={{
+                  borderLeftColor: cardColor,
+                  boxShadow: `0 10px 32px rgba(0, 0, 0, 0.4), 0 0 24px ${cardColor}15`,
+                }}
+              >
+                {/* Left: Sacred Card Pedestal */}
+                <div className="open-card-pedestal">
+                  <div
+                    className="open-card-position-pill"
+                    style={{
+                      color: cardColor,
+                      borderColor: `${cardColor}66`,
+                      background: `${cardColor}18`,
+                    }}
+                  >
+                    <span>{positionIcons[idx]}</span>
+                    <span>{positions[idx]}</span>
+                  </div>
+
+                  {card && (
+                    <div
+                      className="open-card-art-frame"
+                      style={{
+                        borderColor: `${cardColor}88`,
+                        boxShadow: `0 10px 28px rgba(0,0,0,0.6), 0 0 22px ${cardColor}44`,
+                      }}
+                      onClick={() => setSelectedCard({ card, idx, name: cardName, color: cardColor })}
+                      role="button"
+                      tabIndex={0}
+                      aria-label={`View enlarged ${cardName}`}
+                    >
+                      <img
+                        src={getCardImgUrl(card)}
+                        alt={cardName}
+                        className="open-card-img"
+                        loading="eager"
+                      />
+                      <span className="open-card-zoom-badge">🔍 Zoom</span>
+                    </div>
+                  )}
+
+                  <h3 className="open-card-name" style={{ color: cardColor }}>
+                    {cardName}
+                  </h3>
                 </div>
-                <h2 
-                  className="section-title"
-                  style={{ color: section.color }}
-                >
-                  {section.title}
-                </h2>
+
+                {/* Right: Full Open Unfolded Reading Text */}
+                <div className="open-card-text-container">
+                  <div className="open-card-header">
+                    <div
+                      className="open-card-icon-bubble"
+                      style={{
+                        color: cardColor,
+                        borderColor: `${cardColor}55`,
+                        background: `${cardColor}18`,
+                      }}
+                    >
+                      {section.icon || positionIcons[idx]}
+                    </div>
+                    <div>
+                      <span className="open-card-subhead" style={{ color: cardColor }}>
+                        {positions[idx]} Realm • {cardName}
+                      </span>
+                      <h2 className="open-card-title">{section.title}</h2>
+                    </div>
+                  </div>
+
+                  <div className="open-card-paragraphs">
+                    {renderFormattedParagraphs(section.content, "open-reading-paragraph")}
+                  </div>
+                </div>
+              </section>
+            );
+          })}
+
+          {/* Synthesis & Divine Integration (Full Width Open Card) */}
+          {synthesisSection && (
+            <section
+              className="open-synthesis-card"
+              style={{
+                borderColor: 'rgba(255, 215, 0, 0.4)',
+                boxShadow: '0 12px 40px rgba(0, 0, 0, 0.5), 0 0 35px rgba(255, 215, 0, 0.15)',
+              }}
+            >
+              <div className="synthesis-header">
+                <div className="synthesis-icon-bubble">🔮</div>
+                <div>
+                  <span className="synthesis-eyebrow">Cosmic Weaving</span>
+                  <h2 className="synthesis-title">{synthesisSection.title}</h2>
+                </div>
               </div>
-              
-              {/* Section Content */}
-              <div className="reading-section-content">
-                {section.content}
+
+              <div className="synthesis-paragraphs">
+                {renderFormattedParagraphs(synthesisSection.content, "open-reading-paragraph synthesis-text")}
               </div>
-            </div>
-          ))}
+            </section>
+          )}
         </div>
+
+        {/* Bottom Actions Bar */}
+        {onReturn && (
+          <div className="interpretation-actions">
+            <button
+              onClick={onReturn}
+              className="restart-reading-btn"
+              type="button"
+            >
+              <span>🔄</span>
+              <span>Draw Another Spread</span>
+            </button>
+          </div>
+        )}
       </div>
 
-      {/* Return Button */}
-      {onReturn && (
+      {/* Floating Cosmic Chat Button (Always Accessible While Reading) */}
+      {onOpenChat && (
         <button
-          className="three-card-return-btn"
-          onClick={onReturn}
+          onClick={onOpenChat}
+          className="floating-universe-chat-btn"
+          type="button"
+          aria-label="Converse with the Universe"
+          title="Converse with the Universe"
         >
-          ← Return to Single Card
+          <span className="floating-chat-pulse-ring" />
+          <span className="floating-chat-icon">💬</span>
+          <span className="floating-chat-label floating-chat-full-text">Converse with the Universe</span>
+          <span className="floating-chat-label floating-chat-short-text">Cosmic Chat</span>
+          <span className="floating-chat-sparkle">✨</span>
         </button>
       )}
 
-      {/* Chat Button (floating) */}
-      <button
-        className={`three-card-chat-btn ${showChat ? 'hidden' : ''}`}
-        onClick={handleChatOpen}
-        title="Chat about your reading"
-      >
-        <img
-          src="/static/icons/chat.svg"
-          alt="Chat"
-          className="chat-btn-icon"
-        />
-      </button>
-
-      {/* Chat Interface */}
-      {showChat && (
-        <window.ChatInterface
-          onClose={handleChatClose}
-          name={name}
-          zodiacSign={zodiacSign}
-          cardName={`${readingData.cardNames[0]}, ${readingData.cardNames[1]}, ${readingData.cardNames[2]}`}
-          interpretation={readingData.interpretation}
-          isPremium={false}
-          language={currentLanguage}
-          chatHistory={chatHistory}
-          onChatHistoryUpdate={setChatHistory}
-        />
-      )}
-
-      {/* Card Overlay (enlarged view) */}
-      {selectedCard !== null && (
-        <div
-          className="card-enlarged-overlay"
-          onClick={() => setSelectedCard(null)}
-        >
-          <div 
-            className="card-enlarged-content"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <div 
-              className="enlarged-position"
-              style={{ color: positionColors[selectedCard] }}
-            >
-              {positionIcons[selectedCard]} {positions[selectedCard]}
-            </div>
-            <img
-              src={readingData.cards[selectedCard]}
-              alt={readingData.cardNames[selectedCard]}
-              className="enlarged-img"
-            />
-            <div 
-              className="enlarged-name"
-              style={{ color: positionColors[selectedCard] }}
-            >
-              {readingData.cardNames[selectedCard]}
-            </div>
+      {/* Fullscreen Card Zoom Overlay */}
+      {selectedCard && (
+        <div className="card-overlay" onClick={() => setSelectedCard(null)}>
+          <div className="card-overlay-content" onClick={(e) => e.stopPropagation()}>
             <button
-              className="enlarged-close"
+              className="overlay-close"
               onClick={() => setSelectedCard(null)}
+              type="button"
+              aria-label="Close card view"
             >
               ✕
             </button>
+
+            <div
+              className="overlay-position"
+              style={{
+                color: selectedCard.color,
+                borderColor: selectedCard.color,
+                boxShadow: `0 0 20px ${selectedCard.color}44`,
+              }}
+            >
+              <span>{positionIcons[selectedCard.idx]}</span>{' '}
+              <span>{positions[selectedCard.idx]}</span>
+            </div>
+
+            <img
+              src={getCardImgUrl(selectedCard.card)}
+              alt={selectedCard.name}
+              className="overlay-image"
+              style={{
+                borderColor: selectedCard.color,
+                boxShadow: `0 20px 60px rgba(0,0,0,0.9), 0 0 50px ${selectedCard.color}55`,
+              }}
+            />
+
+            <div className="overlay-name" style={{ color: selectedCard.color }}>
+              {selectedCard.name}
+            </div>
           </div>
         </div>
       )}
     </div>
   );
-};
-
-window.ThreeCardInterpretation = ThreeCardInterpretation;
+}

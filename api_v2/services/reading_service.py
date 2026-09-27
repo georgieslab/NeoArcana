@@ -19,14 +19,115 @@ logger = logging.getLogger(__name__)
 
 
 class ReadingService:
-    """Service for generating tarot readings"""
+    """Service for generating tarot readings using AWS Bedrock or Anthropic"""
     
     def __init__(self, database):
         self.db = database
-        # Initialize async Anthropic client using settings
         from api_v2.core.config import settings
-        self.client = AsyncAnthropic(api_key=settings.ANTHROPIC_API_KEY)
-    
+        self.client = None
+        if settings.ANTHROPIC_API_KEY:
+            try:
+                self.client = AsyncAnthropic(api_key=settings.ANTHROPIC_API_KEY)
+            except Exception as e:
+                logger.warning(f"Could not initialize Anthropic client: {e}")
+
+    async def _call_ai_api(self, prompt: str, max_tokens: int = 2000) -> str:
+        """Call AI provider (AWS Bedrock or Anthropic)"""
+        from api_v2.core.config import settings
+        import asyncio
+
+        # 1. Try AWS Bedrock if configured or enabled
+        if settings.AI_PROVIDER == 'bedrock' or (settings.AWS_ACCESS_KEY_ID and settings.AWS_SECRET_ACCESS_KEY):
+            try:
+                import boto3
+                
+                def _invoke_bedrock():
+                    client_kwargs = {
+                        'service_name': 'bedrock-runtime',
+                        'region_name': settings.AWS_REGION or 'us-east-1',
+                    }
+                    if settings.AWS_ACCESS_KEY_ID and settings.AWS_SECRET_ACCESS_KEY:
+                        client_kwargs['aws_access_key_id'] = settings.AWS_ACCESS_KEY_ID
+                        client_kwargs['aws_secret_access_key'] = settings.AWS_SECRET_ACCESS_KEY
+                    
+                    bedrock_client = boto3.client(**client_kwargs)
+                    model_id = settings.BEDROCK_MODEL_ID or 'meta.llama3-1-8b-instruct-v1:0'
+                    
+                    logger.info(f"Invoking Amazon Bedrock model: {model_id}")
+                    response = bedrock_client.converse(
+                        modelId=model_id,
+                        messages=[{
+                            "role": "user",
+                            "content": [{"text": prompt}]
+                        }],
+                        inferenceConfig={
+                            "maxTokens": max_tokens,
+                            "temperature": 0.7
+                        }
+                    )
+                    return response['output']['message']['content'][0]['text']
+
+                loop = asyncio.get_running_loop()
+                return await loop.run_in_executor(None, _invoke_bedrock)
+            except Exception as e:
+                logger.error(f"Amazon Bedrock call failed: {e}")
+                # If Anthropic key exists, try Anthropic; otherwise raise
+                if not (self.client and settings.ANTHROPIC_API_KEY):
+                    raise
+
+        # 2. Try Anthropic Claude if available
+        if self.client and settings.ANTHROPIC_API_KEY:
+            logger.info("Calling Anthropic Claude API...")
+            response = await self.client.messages.create(
+                model="claude-3-haiku-20240307",
+                max_tokens=max_tokens,
+                messages=[{"role": "user", "content": prompt}]
+            )
+            return response.content[0].text
+
+        raise ValueError("No valid AI provider credentials configured (AWS Bedrock or Anthropic)")
+
+    def _build_dynamic_reading(
+        self,
+        cards: List[Dict],
+        card_names: List[str],
+        card_images: List[str],
+        positions: List[str],
+        moon_phase: str,
+        season: str,
+        user_data: Optional[Dict] = None
+    ) -> Dict:
+        """Generate high-quality dynamic cosmic interpretation when AI APIs are unreachable"""
+        name = "Seeker"
+        if user_data:
+            name = user_data.get('name', 'Seeker')
+
+        past_kw = ", ".join(cards[0].get('keywords', ['foundation', 'experience']))
+        pres_kw = ", ".join(cards[1].get('keywords', ['manifestation', 'present energy']))
+        fut_kw = ", ".join(cards[2].get('keywords', ['vision', 'destiny']))
+
+        interpretation = f"""[PAST]
+{card_names[0]} forms the spiritual bedrock of your journey. Vibrating with the energies of {past_kw}, your past experiences have tempered your soul with wisdom. Every crossroad you faced was a crucible of growth, shaping the inner authority and discernment you carry today. Honor the lessons you have walked through.
+
+[PRESENT]
+{card_names[1]} radiates at the center of your path, charged with {pres_kw}. Under the current {moon_phase} moon in {season}, the universe calls upon you to actively engage with your inner truth. You are not at the mercy of circumstance; the tools to shape your immediate horizon are directly in your hands.
+
+[FUTURE]
+{card_names[2]} illuminates the path unfolding before you. Echoing the resonance of {fut_kw}, the seeds you nurture today will blossom into profound transformation. Trust the subtle synchronicities appearing in your life and take confident, aligned action toward your highest vision.
+
+[INTEGRATION]
+The sacred movement from {card_names[0]} through {card_names[1]} into {card_names[2]} reflects an unbroken arc of soul evolution. The cosmos reminds you, {name}, that past triumphs, current lessons, and future aspirations are weaving together into a harmonious destiny. Walk forward with clarity and faith."""
+
+        return {
+            "cards": card_images,
+            "cardNames": card_names,
+            "positions": positions,
+            "interpretation": interpretation,
+            "moonPhase": moon_phase,
+            "season": season,
+            "cached": False
+        }
+
     async def generate_daily_reading(self, user_data: Dict) -> Dict:
         """
         Generate personalized daily tarot reading
@@ -64,14 +165,8 @@ class ReadingService:
             
             logger.info(f"Generating reading for {name} - Card: {card['name']}")
             
-            # Call Claude API (ASYNC!)
-            response = await self.client.messages.create(
-                model="claude-sonnet-4-20250514",
-                max_tokens=1500,
-                messages=[{"role": "user", "content": prompt}]
-            )
-            
-            interpretation = response.content[0].text
+            # Call AI provider (AWS Bedrock or Anthropic)
+            interpretation = await self._call_ai_api(prompt, max_tokens=1500)
             
             result = {
                 "cardName": card['name'],
@@ -278,22 +373,14 @@ TONE: Warm, wise, mystical yet grounded. Speak directly to the reader as "you". 
 
 LENGTH: Total of 600-800 words for a comprehensive, satisfying reading."""
 
-            # Call Claude API
-            logger.info("Calling Claude API for three-card interpretation...")
-            
-            response = await self.client.messages.create(
-                model="claude-sonnet-4-20250514",
-                max_tokens=2000,
-                temperature=0.8,
-                messages=[{
-                    "role": "user",
-                    "content": prompt
-                }]
-            )
-            
-            interpretation = response.content[0].text
-            
-            logger.info(f"AI interpretation generated: {len(interpretation)} characters")
+            # Call AI provider (AWS Bedrock or Anthropic)
+            try:
+                logger.info("Calling AI provider for three-card interpretation...")
+                interpretation = await self._call_ai_api(prompt, max_tokens=2000)
+                logger.info(f"AI interpretation generated: {len(interpretation)} characters")
+            except Exception as ai_err:
+                logger.warning(f"AI call failed ({ai_err}), using rich dynamic cosmic interpretation")
+                return self._build_dynamic_reading(cards, card_names, card_images, positions, moon_phase, season, user_data)
             
             result = {
                 "cards": card_images,
@@ -310,7 +397,7 @@ LENGTH: Total of 600-800 words for a comprehensive, satisfying reading."""
             
         except Exception as e:
             logger.error(f"Error generating trial three-card reading: {e}")
-            raise
+            return self._build_dynamic_reading(cards, card_names, card_images, positions, moon_phase, season, user_data)
     
     async def generate_three_card_reading(self, nfc_id: str) -> Dict:
         """
@@ -369,15 +456,14 @@ LENGTH: Total of 600-800 words for a comprehensive, satisfying reading."""
                 numerology_day=numerology_day
             )
             
-            # Call Claude API
-            response = await self.client.messages.create(
-                model="claude-sonnet-4-20250514",
-                max_tokens=2000,
-                temperature=0.8,
-                messages=[{"role": "user", "content": prompt}]
-            )
-            
-            interpretation = response.content[0].text
+            # Call AI provider (AWS Bedrock or Anthropic)
+            try:
+                interpretation = await self._call_ai_api(prompt, max_tokens=2000)
+            except Exception as ai_err:
+                logger.warning(f"AI call failed ({ai_err}), falling back to dynamic cosmic interpretation")
+                card_images = [get_card_image(card['name']) for card in cards]
+                positions = ["Past", "Present", "Future"]
+                return self._build_dynamic_reading(cards, card_names, card_images, positions, moon_phase, season, user_data)
             
             result = {
                 "cards": [get_card_image(card['name']) for card in cards],

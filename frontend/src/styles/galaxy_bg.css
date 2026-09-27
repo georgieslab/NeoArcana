@@ -1,0 +1,52 @@
+body {
+    margin: 0;
+    overflow: hidden;
+    width: 100vw;
+    height: 100vh;
+    background-color: #02000c;
+    background-image: radial-gradient(ellipse at center, rgba(30, 20, 50, 0.4) 0%, rgba(2, 0, 12, 0.95) 100%), url('/static/images/bg_main.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+#canvas_container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    z-index: -1;
+    pointer-events: none;
+}
+
+canvas {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+#root {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+.content {
+    position: relative;
+    z-index: 2;
+}
+
+#canvas_container {
+    opacity: 1;
+    transition: opacity 0.5s ease-in-out;
+}
+
+#canvas_container.loaded {
+    opacity: 1;
+}

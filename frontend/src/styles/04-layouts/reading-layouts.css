@@ -1,0 +1,427 @@
+/* ========================================
+   NEOARCANA - READING LAYOUTS
+   Specific layouts for tarot reading displays
+   ======================================== */
+
+/* -------------------- READING LAYOUT BASE -------------------- */
+
+.reading-layout {
+  display: grid;
+  gap: var(--neo-space-xxl);
+  animation: fadeIn var(--neo-transition-slow);
+  width: 100%;
+}
+
+.reading-layout.standard {
+  grid-template-columns: minmax(300px, 1fr) 2fr;
+}
+
+.reading-layout.premium {
+  grid-template-columns: 1fr;
+}
+
+/* -------------------- READING GRID -------------------- */
+
+.reading-grid {
+  display: grid;
+  grid-template-columns: minmax(300px, 1fr) 2fr;
+  gap: var(--neo-space-xxl);
+  min-height: calc(100vh - 100px);
+}
+
+.standard-reading-container .reading-grid {
+  grid-template-columns: minmax(300px, 1fr) 2fr;
+}
+
+/* -------------------- COLUMN LAYOUTS -------------------- */
+
+.left-column {
+  display: flex;
+  flex-direction: column;
+  gap: var(--neo-space-xl);
+  align-items: center;
+}
+
+.right-column {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: var(--neo-space-lg);
+}
+
+/* -------------------- CARDS SECTION -------------------- */
+
+.cards-section {
+  display: flex;
+  justify-content: center;
+  gap: var(--neo-space-xl);
+  margin-bottom: var(--neo-space-xl);
+  padding: var(--neo-space-md);
+}
+
+.cards-section.vertical {
+  flex-direction: column;
+  align-items: center;
+}
+
+.cards-section.horizontal {
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+/* -------------------- READING SECTIONS CONTAINER -------------------- */
+
+.reading-sections-container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--neo-space-md);
+  max-height: calc(100vh - 200px);
+  overflow-y: auto;
+  padding-right: var(--neo-space-md);
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.reading-sections-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* -------------------- READING SECTION ITEMS -------------------- */
+
+.reading-section-item {
+  background: rgba(165, 154, 209, 0.05);
+  border-radius: var(--neo-radius-md);
+  padding: var(--neo-space-lg);
+  margin-bottom: var(--neo-space-md);
+  border: 1px solid rgba(165, 154, 209, 0.1);
+  transition: all var(--neo-transition-normal);
+}
+
+.reading-section-item:hover {
+  background: rgba(165, 154, 209, 0.08);
+  border-color: rgba(165, 154, 209, 0.2);
+}
+
+.reading-section-item.active {
+  background: rgba(165, 154, 209, 0.12);
+  border-color: var(--neo-primary);
+}
+
+/* -------------------- READING HEADER -------------------- */
+
+.reading-header {
+  width: 100%;
+  padding: var(--neo-space-lg);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgba(165, 154, 209, 0.1);
+  border: none;
+  border-radius: var(--neo-radius-md);
+  cursor: pointer;
+  color: var(--neo-text);
+  transition: all var(--neo-transition-normal);
+}
+
+.reading-header:hover {
+  background: rgba(165, 154, 209, 0.15);
+}
+
+.reading-header.active {
+  background: rgba(165, 154, 209, 0.2);
+}
+
+.reading-header-title {
+  font-size: var(--neo-font-xl);
+  color: var(--neo-text);
+  font-weight: var(--neo-font-semibold);
+}
+
+.reading-header-icon {
+  font-size: var(--neo-font-lg);
+  transition: transform var(--neo-transition-normal);
+  color: var(--neo-secondary);
+}
+
+.reading-header.active .reading-header-icon {
+  transform: rotate(180deg);
+}
+
+/* -------------------- CHEVRON ICON -------------------- */
+
+.chevron-icon {
+  font-size: var(--neo-font-base);
+  transition: transform var(--neo-transition-normal);
+  color: var(--neo-secondary);
+}
+
+.chevron-icon.rotated {
+  transform: rotate(180deg);
+}
+
+/* -------------------- READING CONTENT -------------------- */
+
+.reading-content {
+  padding: var(--neo-space-lg);
+  line-height: 1.8;
+  color: var(--neo-text);
+  font-size: var(--neo-font-lg);
+}
+
+.reading-content.collapsed {
+  display: none;
+}
+
+.reading-content.expanded {
+  display: block;
+  animation: slideDown 0.3s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    max-height: 0;
+  }
+  to {
+    opacity: 1;
+    max-height: 1000px;
+  }
+}
+
+/* -------------------- INTERPRETATION LAYOUT -------------------- */
+
+.interpretation-layout {
+  display: flex;
+  flex-direction: column;
+  gap: var(--neo-space-xl);
+  width: 100%;
+}
+
+.interpretation-section {
+  padding: var(--neo-space-lg);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--neo-radius-md);
+  border-left: 4px solid var(--neo-primary);
+}
+
+.interpretation-section-header {
+  font-size: var(--neo-font-2xl);
+  color: var(--neo-secondary);
+  margin-bottom: var(--neo-space-md);
+  font-weight: var(--neo-font-semibold);
+}
+
+.interpretation-section-body {
+  font-size: var(--neo-font-lg);
+  line-height: 1.8;
+  color: var(--neo-text);
+  white-space: pre-wrap;
+}
+
+/* -------------------- CARD REVEAL LAYOUT -------------------- */
+
+.card-reveal-layout {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--neo-space-xxl);
+  padding: var(--neo-space-xl);
+}
+
+.card-reveal-stage {
+  width: 100%;
+  max-width: 800px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 400px;
+}
+
+/* -------------------- MULTI-CARD LAYOUT -------------------- */
+
+.multi-card-layout {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--neo-space-xl);
+  width: 100%;
+  max-width: 1000px;
+  margin: var(--neo-space-xl) auto;
+}
+
+.multi-card-layout.two-cards {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+.multi-card-layout.three-cards {
+  grid-template-columns: repeat(3, 1fr);
+}
+
+.multi-card-layout.four-cards {
+  grid-template-columns: repeat(2, 1fr);
+}
+
+/* -------------------- CARD POSITION LAYOUT -------------------- */
+
+.card-positions-layout {
+  display: flex;
+  justify-content: space-around;
+  align-items: flex-start;
+  gap: var(--neo-space-xxl);
+  width: 100%;
+  padding: var(--neo-space-xl) 0;
+}
+
+.card-position-slot {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--neo-space-md);
+}
+
+/* -------------------- SPREAD LAYOUTS -------------------- */
+
+.spread-layout {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--neo-space-xl);
+}
+
+.spread-layout.celtic-cross {
+  display: grid;
+  grid-template-areas:
+    ". top ."
+    "left center right"
+    ". bottom .";
+  gap: var(--neo-space-lg);
+}
+
+.spread-layout.past-present-future {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--neo-space-xxl);
+}
+
+/* -------------------- MOBILE RESPONSIVE -------------------- */
+
+@media (max-width: 768px) {
+  .reading-layout.standard,
+  .reading-grid {
+    grid-template-columns: 1fr;
+    gap: var(--neo-space-xl);
+  }
+
+  .standard-reading-container .reading-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cards-section {
+    flex-direction: column;
+    align-items: center;
+    gap: var(--neo-space-lg);
+  }
+
+  .left-column {
+    width: 100%;
+  }
+
+  .multi-card-layout.two-cards,
+  .multi-card-layout.three-cards,
+  .multi-card-layout.four-cards {
+    grid-template-columns: 1fr;
+    gap: var(--neo-space-xl);
+  }
+
+  .card-positions-layout {
+    flex-direction: column;
+    gap: var(--neo-space-xl);
+  }
+
+  .spread-layout.celtic-cross {
+    display: flex;
+    flex-direction: column;
+    gap: var(--neo-space-lg);
+  }
+
+  .spread-layout.past-present-future {
+    grid-template-columns: 1fr;
+    gap: var(--neo-space-xl);
+  }
+
+  .reading-sections-container {
+    max-height: none;
+    overflow-y: visible;
+  }
+}
+
+/* -------------------- TABLET RESPONSIVE -------------------- */
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  .reading-layout.standard,
+  .reading-grid {
+    grid-template-columns: 1fr 1.5fr;
+  }
+
+  .multi-card-layout.four-cards {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+/* -------------------- LARGE SCREENS -------------------- */
+
+@media (min-width: 1400px) {
+  .reading-layout.standard,
+  .reading-grid {
+    grid-template-columns: minmax(350px, 1fr) 2.5fr;
+  }
+
+  .spread-layout {
+    max-width: 1400px;
+  }
+}
+
+/* -------------------- ACCESSIBILITY -------------------- */
+
+.reading-header:focus,
+.reading-section-item:focus {
+  outline: 2px solid rgba(165, 154, 209, 0.5);
+  outline-offset: 4px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .reading-section-item {
+    border-width: 2px;
+  }
+
+  .interpretation-section {
+    border-left-width: 6px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .reading-layout,
+  .reading-content.expanded {
+    animation: none;
+  }
+
+  .reading-header-icon,
+  .chevron-icon {
+    transition: none;
+  }
+}
+
+/* -------------------- SCROLL BEHAVIOR -------------------- */
+
+.reading-sections-container.smooth-scroll {
+  scroll-behavior: smooth;
+}
+
+/* For browsers that don't support native smooth scrolling */
+@supports not (scroll-behavior: smooth) {
+  .reading-sections-container {
+    scroll-behavior: auto;
+  }
+}

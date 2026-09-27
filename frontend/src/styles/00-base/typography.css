@@ -1,0 +1,491 @@
+/* ========================================
+   NEOARCANA - TYPOGRAPHY
+   All text styles, headings, and font utilities
+   ======================================== */
+
+/* -------------------- FONT IMPORTS -------------------- */
+
+/* Using system fonts for performance */
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica', 'Arial', sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* -------------------- HEADINGS -------------------- */
+
+h1, h2, h3, h4, h5, h6 {
+  margin: 0;
+  font-weight: var(--neo-font-semibold);
+  line-height: var(--neo-line-tight);
+}
+
+h1 {
+  font-size: var(--neo-font-4xl);
+}
+
+h2 {
+  font-size: var(--neo-font-3xl);
+}
+
+h3 {
+  font-size: var(--neo-font-2xl);
+}
+
+h4 {
+  font-size: var(--neo-font-xl);
+}
+
+h5 {
+  font-size: var(--neo-font-lg);
+}
+
+h6 {
+  font-size: var(--neo-font-base);
+}
+
+/* -------------------- NEOARCANA TITLE STYLES -------------------- */
+
+.neo-title,
+.title {
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  text-align: center;
+  margin-bottom: var(--neo-space-xl);
+  line-height: var(--neo-line-tight);
+  color: var(--neo-secondary);
+  font-weight: var(--neo-font-semibold);
+  letter-spacing: -0.01em;
+}
+
+.cosmic-title-main {
+  font-size: clamp(2rem, 6vw, 2.8rem);
+  text-align: center;
+  margin: var(--neo-space-md) 0 var(--neo-space-xl) 0;
+  font-weight: var(--neo-font-bold);
+  letter-spacing: 1px;
+  position: relative;
+}
+
+/* Cosmic title with sparkles */
+.cosmic-title-main::before {
+  content: '✨';
+  position: absolute;
+  left: -2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  animation: cosmic-bounce 2s ease-in-out infinite;
+}
+
+.cosmic-title-main::after {
+  content: '✨';
+  position: absolute;
+  right: -2rem;
+  top: 50%;
+  transform: translateY(-50%);
+  animation: cosmic-bounce 2s ease-in-out infinite 1s;
+}
+
+/* -------------------- GRADIENT TEXT EFFECTS -------------------- */
+
+.neo-gradient-text,
+.cosmic-gradient,
+.cosmic-text {
+  background: linear-gradient(45deg, var(--neo-secondary), #E76F51);
+  background-size: 200% 200%;
+  animation: neo-gradient-animation 10s ease infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+.cosmic-title-main {
+  background: linear-gradient(135deg, var(--neo-secondary) 0%, var(--neo-primary) 50%, var(--neo-accent) 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  text-shadow: 0 0 30px rgba(244, 162, 97, 0.5);
+}
+
+/* Alternative gradient text */
+.title {
+  background: linear-gradient(65deg, #cdc0f2, var(--neo-secondary), var(--neo-secondary), rgb(91, 80, 135));
+  background-size: 300% 300%;
+  animation: cosmicGradient 7s ease infinite;
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  text-shadow: 3px 2px 4px rgba(32, 27, 39, 0.479);
+}
+
+/* -------------------- SUBTITLE & SECTION TITLES -------------------- */
+
+.neo-subtitle {
+  color: var(--neo-text-muted);
+  font-size: var(--neo-font-base);
+  margin-bottom: var(--neo-space-md);
+  text-align: center;
+  font-weight: var(--neo-font-medium);
+}
+
+.section-title,
+.cosmic-section-title {
+  color: var(--neo-secondary);
+  font-size: var(--neo-font-xl);
+  margin-bottom: var(--neo-space-md);
+  font-weight: var(--neo-font-semibold);
+}
+
+.cosmic-section-title {
+  margin: 0;
+  font-size: 1.4rem;
+  font-weight: var(--neo-font-semibold);
+  background: linear-gradient(135deg, var(--neo-primary), var(--neo-secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.5px;
+}
+
+/* -------------------- BODY TEXT -------------------- */
+
+p {
+  margin: 0 0 var(--neo-space-md) 0;
+  line-height: var(--neo-line-relaxed);
+}
+
+.cosmic-section-content {
+  color: rgba(255, 255, 255, 0.95);
+  line-height: var(--neo-line-relaxed);
+  font-size: 1.05rem;
+  position: relative;
+  z-index: 2;
+}
+
+/* -------------------- SPECIAL MESSAGE STYLES -------------------- */
+
+.personal-message,
+.zodiac-message {
+  font-size: var(--neo-font-lg);
+  text-align: center;
+  margin: var(--neo-space-md) 0;
+  color: var(--neo-secondary);
+  font-style: italic;
+}
+
+.card-instruction {
+  font-size: var(--neo-font-lg);
+  color: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  margin: var(--neo-space-md) 0;
+  min-height: 1.5em;
+}
+
+.cosmic-instruction {
+  color: rgba(255, 255, 255, 0.8);
+  text-align: center;
+  font-size: 1.1rem;
+  margin: var(--neo-space-xxl) 0;
+  letter-spacing: 0.5px;
+  font-style: italic;
+}
+
+/* -------------------- INTERPRETATION TEXT -------------------- */
+
+.interpretation-text,
+.trial3-interpretation-text {
+  background: rgba(255, 255, 255, 0.06);
+  padding: var(--neo-space-xl);
+  border-radius: var(--neo-radius-lg);
+  box-shadow: var(--neo-shadow-sm);
+  position: relative;
+  line-height: var(--neo-line-relaxed);
+  font-size: var(--neo-font-lg);
+  color: var(--neo-text);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* -------------------- CARD TEXT -------------------- */
+
+.card-name,
+.card-title {
+  color: var(--neo-secondary);
+  font-size: var(--neo-font-lg);
+  margin-top: var(--neo-space-md);
+  text-align: center;
+}
+
+.nfc-reading__card-name {
+  margin-top: var(--neo-space-md);
+  font-size: var(--neo-font-base);
+  color: var(--neo-primary);
+  text-align: center;
+  animation: cardNameAppear 0.5s ease forwards;
+}
+
+.nfc-reading__position-title {
+  color: var(--neo-secondary);
+  font-size: 1.1rem;
+  margin-bottom: var(--neo-space-md);
+  text-align: center;
+  font-weight: var(--neo-font-semibold);
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* -------------------- FOOTER TEXT -------------------- */
+
+.cosmic-footer {
+  color: rgba(255, 255, 255, 0.6);
+  text-align: center;
+  font-size: 0.95rem;
+  margin: var(--neo-space-xxl) 0 var(--neo-space-xxl) 0;
+}
+
+.cosmic-footer a {
+  color: var(--neo-secondary);
+  text-decoration: none;
+  transition: all var(--neo-transition-normal);
+  position: relative;
+}
+
+.cosmic-footer a:hover {
+  color: var(--neo-primary);
+  text-shadow: 0 0 10px rgba(165, 154, 209, 0.5);
+}
+
+/* -------------------- ERROR TEXT -------------------- */
+
+.error-message {
+  color: var(--neo-error);
+  font-size: var(--neo-font-sm);
+  margin-top: var(--neo-space-xs);
+  opacity: 0;
+  transform: translateY(-10px);
+  transition: all var(--neo-transition-normal);
+}
+
+.error-message.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.cosmic-error-title {
+  color: var(--neo-error);
+  font-size: 1.8rem;
+  font-weight: var(--neo-font-bold);
+  margin-bottom: var(--neo-space-lg);
+}
+
+.cosmic-error-message {
+  color: #ff9999;
+  font-size: 1.1rem;
+  margin-bottom: var(--neo-space-xl);
+  line-height: var(--neo-line-normal);
+}
+
+/* -------------------- LOADING TEXT -------------------- */
+
+.cosmic-loading-text {
+  color: var(--neo-primary);
+  font-size: 1.4rem;
+  font-weight: var(--neo-font-semibold);
+  margin-bottom: var(--neo-space-md);
+  animation: cosmic-pulse 2s ease-in-out infinite;
+}
+
+.cosmic-loading-hint {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: var(--neo-font-base);
+  font-style: italic;
+  max-width: 400px;
+}
+
+.loading-message {
+  text-align: center;
+  padding: var(--neo-space-xl);
+  color: var(--neo-text);
+}
+
+.loading-message h2 {
+  color: var(--neo-secondary);
+  margin-bottom: var(--neo-space-md);
+}
+
+/* -------------------- PLACEHOLDER TEXT -------------------- */
+
+::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+  opacity: 1;
+}
+
+:-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+::-ms-input-placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* -------------------- TEXT UTILITIES -------------------- */
+
+.text-center {
+  text-align: center;
+}
+
+.text-left {
+  text-align: left;
+}
+
+.text-right {
+  text-align: right;
+}
+
+.text-muted {
+  color: var(--neo-text-muted);
+}
+
+.text-dimmed {
+  color: var(--neo-text-dimmed);
+}
+
+.text-error {
+  color: var(--neo-error);
+}
+
+.text-success {
+  color: var(--neo-success);
+}
+
+.text-warning {
+  color: var(--neo-warning);
+}
+
+/* Font weights */
+.font-normal {
+  font-weight: var(--neo-font-normal);
+}
+
+.font-medium {
+  font-weight: var(--neo-font-medium);
+}
+
+.font-semibold {
+  font-weight: var(--neo-font-semibold);
+}
+
+.font-bold {
+  font-weight: var(--neo-font-bold);
+}
+
+/* Font sizes */
+.text-xs {
+  font-size: var(--neo-font-xs);
+}
+
+.text-sm {
+  font-size: var(--neo-font-sm);
+}
+
+.text-base {
+  font-size: var(--neo-font-base);
+}
+
+.text-lg {
+  font-size: var(--neo-font-lg);
+}
+
+.text-xl {
+  font-size: var(--neo-font-xl);
+}
+
+.text-2xl {
+  font-size: var(--neo-font-2xl);
+}
+
+.text-3xl {
+  font-size: var(--neo-font-3xl);
+}
+
+.text-4xl {
+  font-size: var(--neo-font-4xl);
+}
+
+/* -------------------- RESPONSIVE TYPOGRAPHY -------------------- */
+
+@media (max-width: 768px) {
+  .neo-title,
+  .title {
+    font-size: clamp(1.6rem, 8vw, 2.2rem);
+  }
+
+  .cosmic-title-main {
+    font-size: clamp(1.6rem, 8vw, 2.2rem);
+    margin: 0.5rem 0 var(--neo-space-lg) 0;
+  }
+
+  .cosmic-title-main::before,
+  .cosmic-title-main::after {
+    display: none;
+  }
+
+  .cosmic-section-title {
+    font-size: 1.2rem;
+  }
+
+  .cosmic-section-content {
+    font-size: var(--neo-font-base);
+  }
+
+  .cosmic-instruction {
+    font-size: var(--neo-font-base);
+    margin: var(--neo-space-xl) 0;
+  }
+
+  .trial3-interpretation-text,
+  .interpretation-text {
+    font-size: 1.2rem;
+    line-height: var(--neo-line-normal);
+    padding: var(--neo-space-xl);
+  }
+}
+
+@media (max-width: 480px) {
+  .cosmic-section-content {
+    font-size: 0.95rem;
+  }
+
+  .nfc-reading__position-title {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .nfc-reading__card-name {
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+  }
+}
+
+/* -------------------- ACCESSIBILITY -------------------- */
+
+/* Improve text readability */
+body {
+  text-rendering: optimizeLegibility;
+}
+
+/* Ensure sufficient contrast */
+@media (prefers-contrast: high) {
+  .neo-text-muted,
+  .text-muted {
+    color: rgba(255, 255, 255, 0.9);
+  }
+}
+
+/* Respect reduced motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  .cosmic-title-main::before,
+  .cosmic-title-main::after {
+    animation: none;
+  }
+}

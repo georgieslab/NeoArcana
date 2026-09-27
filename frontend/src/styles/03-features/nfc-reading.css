@@ -1,0 +1,411 @@
+/* ========================================
+   NEOARCANA - NFC READING DISPLAY
+   Daily tarot reading for NFC users
+   ======================================== */
+
+/* -------------------- NFC READING CONTAINER -------------------- */
+
+.nfc-reading-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh !important;
+  width: 90%;
+  max-width: 800px;
+  overflow-y: auto !important;
+  padding: 20px;
+  position: relative;
+  align-content: center;
+  align-items: center;
+  background-color: rgba(0, 0, 0, 0.55);
+  backdrop-filter: var(--neo-blur-md);
+  box-shadow: 0 4px 6px rgba(8, 17, 67, 0.32);
+  color: var(--neo-text);
+  text-align: center;
+  border-radius: var(--neo-radius-lg);
+  border: 1.5px solid rgba(255, 179, 125, 0.18);
+  margin: 0 auto;
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+.nfc-reading-container.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+/* Hide scrollbar but keep functionality */
+.nfc-reading-container::-webkit-scrollbar {
+  display: none;
+}
+
+.nfc-reading-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* -------------------- NFC READING CONTENT -------------------- */
+
+.nfc-reading-content {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+  width: 100%;
+}
+
+.nfc-reading-content.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.nfc-reading__container {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  overflow-y: auto;
+  padding: 1rem;
+}
+
+.nfc-reading__fade-in {
+  animation: fadeIn 0.5s ease-in-out;
+}
+
+/* -------------------- STEP 2 CONTAINER (NFC VERSION) -------------------- */
+
+.step2-container {
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  backdrop-filter: var(--neo-blur-md);
+  border-radius: var(--neo-radius-lg);
+  padding: var(--neo-space-xl);
+  width: 90%;
+  max-width: 800px;
+  height: 90vh;
+  max-height: 800px;
+  margin: 0 auto;
+}
+
+.step2-container.visible {
+  opacity: 1;
+}
+
+.step2-content {
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+/* -------------------- STANDARD READING LAYOUT -------------------- */
+
+.standard-reading-container {
+  display: grid;
+  grid-template-columns: minmax(300px, 1fr) 2fr;
+  gap: var(--neo-space-xxl);
+  min-height: calc(100vh - 100px);
+  animation: fadeIn 0.5s ease;
+}
+
+/* -------------------- CARD SECTION -------------------- */
+
+.card-section {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 300px;
+  margin-bottom: 0.5rem;
+  padding: var(--neo-space-md);
+}
+
+.card-image-container {
+  position: relative;
+  width: 200px;
+  transition: transform var(--neo-transition-normal);
+}
+
+.card-image-container:hover {
+  transform: translateY(-10px);
+  cursor: pointer;
+}
+
+.tarot-card-image {
+  width: 100%;
+  height: auto;
+  max-width: 300px;
+  aspect-ratio: 2 / 3;
+  object-fit: cover;
+  border-radius: var(--neo-radius-lg);
+  box-shadow: var(--neo-shadow-md);
+}
+
+/* -------------------- READING SECTION -------------------- */
+
+.reading-section {
+  flex: 1;
+  padding: 0 var(--neo-space-md);
+  max-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.reading-title {
+  font-size: var(--neo-font-3xl);
+  color: var(--neo-secondary);
+  margin-bottom: var(--neo-space-lg);
+  text-align: center;
+}
+
+.interpretation-text {
+  padding-bottom: 5rem;
+  background: rgba(255, 255, 255, 0.06);
+  padding: var(--neo-space-xl);
+  border-radius: var(--neo-radius-lg);
+  box-shadow: var(--neo-shadow-sm);
+  position: relative;
+  line-height: 1.5;
+  font-size: var(--neo-font-lg);
+  color: var(--neo-text);
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+/* -------------------- COSMIC CONTEXT -------------------- */
+
+.cosmic-context-section {
+  background: rgba(165, 154, 209, 0.1);
+  border-radius: var(--neo-radius-md);
+  padding: var(--neo-space-lg);
+  margin: var(--neo-space-lg) 0;
+  border: 1px solid rgba(165, 154, 209, 0.2);
+}
+
+.cosmic-context-title {
+  color: var(--neo-secondary);
+  font-size: var(--neo-font-xl);
+  margin-bottom: var(--neo-space-md);
+  text-align: center;
+}
+
+.cosmic-context-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: var(--neo-space-md);
+  margin-top: var(--neo-space-md);
+}
+
+.cosmic-context-item {
+  text-align: center;
+  padding: var(--neo-space-md);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: var(--neo-radius-sm);
+}
+
+.cosmic-context-label {
+  font-size: var(--neo-font-sm);
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: 4px;
+}
+
+.cosmic-context-value {
+  font-size: var(--neo-font-lg);
+  color: var(--neo-secondary);
+  font-weight: var(--neo-font-semibold);
+}
+
+/* -------------------- NUMEROLOGY SECTION -------------------- */
+
+.numerology-section {
+  padding: var(--neo-space-md);
+  background: rgba(165, 154, 209, 0.1);
+  border-radius: var(--neo-radius-lg);
+  backdrop-filter: var(--neo-blur-sm);
+  width: 80%;
+  margin: var(--neo-space-xl) auto;
+}
+
+.numerology-section h2 {
+  color: var(--neo-secondary);
+  margin-bottom: var(--neo-space-lg);
+  text-align: center;
+  font-size: var(--neo-font-2xl);
+}
+
+.numbers-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--neo-space-lg);
+  justify-items: center;
+}
+
+.number-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--neo-space-sm);
+}
+
+.number-icon {
+  width: 24px;
+  height: 24px;
+  opacity: 0.8;
+}
+
+.number-label {
+  color: rgba(255, 255, 255, 0.7);
+  font-size: var(--neo-font-sm);
+}
+
+.number-value {
+  color: var(--neo-secondary);
+  font-size: var(--neo-font-3xl);
+  font-weight: var(--neo-font-bold);
+}
+
+/* -------------------- PERSONAL MESSAGE -------------------- */
+
+.personal-message,
+.zodiac-message {
+  font-size: var(--neo-font-lg);
+  text-align: center;
+  margin: var(--neo-space-md) 0;
+  color: var(--neo-secondary);
+  font-style: italic;
+}
+
+/* -------------------- CARD INSTRUCTION -------------------- */
+
+.card-instruction {
+  font-size: var(--neo-font-lg);
+  color: var(--neo-background-dark);
+  margin: var(--neo-space-md) 0;
+}
+
+/* -------------------- ACTION BUTTONS -------------------- */
+
+.reading-action-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: var(--neo-space-md);
+  width: 100%;
+  max-width: 300px;
+  margin: var(--neo-space-xl) auto;
+}
+
+/* -------------------- MOBILE RESPONSIVE -------------------- */
+
+@media (max-width: 768px) {
+  .nfc-reading-container {
+    width: 95%;
+    height: 100vh !important;
+    padding: 15px;
+    overflow-y: auto !important;
+  }
+
+  .standard-reading-container {
+    grid-template-columns: 1fr;
+    gap: var(--neo-space-xl);
+  }
+
+  .card-image-container {
+    width: 200px;
+  }
+
+  .reading-title {
+    text-align: center;
+    font-size: var(--neo-font-3xl);
+  }
+
+  .interpretation-text {
+    font-size: var(--neo-font-lg);
+    line-height: 1.5;
+    margin-bottom: var(--neo-space-md);
+    background: rgba(255, 255, 255, 0.06);
+    padding: var(--neo-space-xl);
+    border-radius: var(--neo-radius-lg);
+    box-shadow: var(--neo-shadow-sm);
+    position: relative;
+    line-height: 1.5;
+    font-size: var(--neo-font-lg);
+    color: var(--neo-text);
+    width: 84%;
+  }
+
+  .numbers-grid {
+    grid-template-columns: 1fr;
+    gap: var(--neo-space-md);
+  }
+
+  .number-item {
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100%;
+    padding: var(--neo-space-sm);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: var(--neo-radius-md);
+  }
+
+  .number-label {
+    flex: 1;
+    text-align: left;
+    margin-left: var(--neo-space-md);
+  }
+
+  .cosmic-context-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* -------------------- SCROLL RESTORATION -------------------- */
+
+.reading-section {
+  overflow-y: visible;
+  height: auto;
+  max-height: none;
+}
+
+/* Remove any conflicting height constraints */
+.step-content {
+  height: auto !important;
+  overflow-y: visible !important;
+}
+
+/* -------------------- ACCESSIBILITY -------------------- */
+
+.tarot-card-image:focus,
+.card-image-container:focus {
+  outline: 2px solid var(--neo-primary);
+  outline-offset: 4px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .nfc-reading-container {
+    border: 2px solid var(--neo-primary);
+  }
+  
+  .interpretation-text {
+    border: 1px solid currentColor;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .nfc-reading-container,
+  .nfc-reading-content,
+  .card-image-container {
+    animation: none;
+    transition: none;
+  }
+}

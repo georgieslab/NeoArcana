@@ -1,0 +1,311 @@
+/* nfc_three_card_reading.css - Enhanced styling for the Three Card Reading experience */
+
+/* -------------------- 1. Card Grid Layout -------------------- */
+.nfc-reading__cards-grid {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin: 2rem 0;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.nfc-reading__card-position {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 180px;
+  perspective: 1000px;
+}
+
+.nfc-reading__position-title {
+  color: #F4A261;
+  font-size: 1.1rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+/* -------------------- 2. Card Flip Animation -------------------- */
+.nfc-reading__card {
+  width: 100%;
+  height: 300px;
+  position: relative;
+  transform-style: preserve-3d;
+  transition: transform 0.8s ease-in-out;
+  cursor: pointer;
+  border-radius: 12px;
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3);
+}
+
+.nfc-reading__card:hover {
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.4);
+  transform: translateY(-5px);
+}
+
+.nfc-reading__card.revealed {
+  transform: rotateY(180deg);
+}
+
+.nfc-reading__card-back,
+.nfc-reading__card-front {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.nfc-reading__card-front {
+  transform: rotateY(180deg);
+}
+
+.nfc-reading__card-image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 12px;
+  transition: transform 0.3s ease;
+}
+
+.nfc-reading__card-back .nfc-reading__card-image:hover {
+  transform: scale(1.05);
+}
+
+.nfc-reading__card-name {
+  margin-top: 1rem;
+  font-size: 1rem;
+  color: #A59AD1;
+  text-align: center;
+  animation: cardNameAppear 0.5s ease forwards;
+}
+
+@keyframes cardNameAppear {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* -------------------- 3. Mini Cards for Interpretation View -------------------- */
+.nfc-reading__mini-cards {
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin: 1.5rem 0;
+  flex-wrap: wrap;
+}
+
+.nfc-reading__mini-card {
+  width: 90px;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.25);
+  transition: all 0.3s ease;
+  cursor: pointer;
+  position: relative;
+  opacity: 0.7;
+  transform: scale(0.95);
+}
+
+.nfc-reading__mini-card.active {
+  opacity: 1;
+  transform: scale(1);
+  box-shadow: 0 6px 12px rgba(165, 154, 209, 0.5);
+  border: 2px solid #A59AD1;
+}
+
+.nfc-reading__mini-card-image {
+  width: 100%;
+  height: 150px;
+  object-fit: cover;
+}
+
+.nfc-reading__mini-card-title {
+  background: rgba(26, 26, 38, 0.9);
+  color: #F4A261;
+  text-align: center;
+  padding: 0.4rem 0;
+  font-size: 0.8rem;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+
+/* -------------------- 4. Interpretation Sections -------------------- */
+.nfc-reading__section {
+  display: none;
+  opacity: 0;
+  animation: sectionAppear 0.7s ease forwards;
+}
+
+.nfc-reading__section.active {
+  display: block;
+  opacity: 1;
+}
+
+@keyframes sectionAppear {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* -------------------- 5. Secondary Button Variation -------------------- */
+.nfc-reading__button--secondary {
+  background: rgba(244, 162, 97, 0.2);
+  border: 1.5px solid #F4A261;
+  color: #F4A261;
+}
+
+.nfc-reading__button--secondary:hover {
+  background: rgba(244, 162, 97, 0.3);
+  box-shadow: 0 4px 12px rgba(244, 162, 97, 0.4);
+}
+
+/* -------------------- 6. Loading Animation Enhancements -------------------- */
+.nfc-reading__loader {
+  position: relative;
+  width: 70px;
+  height: 70px;
+}
+
+.nfc-reading__loader:before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border: 3px solid rgba(165, 154, 209, 0.1);
+  border-top-color: #A59AD1;
+  border-right-color: #F4A261;
+  border-bottom-color: #A59AD1;
+  animation: spinGradient 1.5s linear infinite;
+}
+
+@keyframes spinGradient {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* -------------------- 7. Responsive Adaptations -------------------- */
+@media (max-width: 768px) {
+  .nfc-reading__cards-grid {
+    gap: 1rem;
+  }
+  
+  .nfc-reading__card-position {
+    width: 140px;
+  }
+  
+  .nfc-reading__card {
+    height: 240px;
+  }
+  
+  .nfc-reading__mini-card {
+    width: 70px;
+  }
+  
+  .nfc-reading__mini-card-image {
+    height: 120px;
+  }
+  
+  .nfc-reading__actions {
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .nfc-reading__button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .nfc-reading__cards-grid {
+    gap: 0.7rem;
+  }
+  
+  .nfc-reading__card-position {
+    width: 110px;
+  }
+  
+  .nfc-reading__card {
+    height: 180px;
+  }
+  
+  .nfc-reading__position-title {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+  }
+  
+  .nfc-reading__card-name {
+    font-size: 0.8rem;
+    margin-top: 0.5rem;
+  }
+}
+
+/* -------------------- 8. iOS-Specific Optimizations -------------------- */
+@supports (-webkit-touch-callout: none) {
+  .nfc-reading__card {
+    /* Fix for 3D transforms on iOS */
+    -webkit-transform-style: preserve-3d;
+  }
+  
+  .nfc-reading__section {
+    /* Fix backdrop filter for iOS */
+    -webkit-backdrop-filter: blur(10px);
+  }
+}
+
+/* -------------------- 9. Animation Improvements -------------------- */
+.nfc-reading__fade-in {
+  animation-duration: 0.7s;
+  animation-fill-mode: both;
+  animation-timing-function: ease-out;
+}
+
+/* Staggered animation for cards */
+.nfc-reading__card-position:nth-child(1) {
+  animation-delay: 0.1s;
+}
+
+.nfc-reading__card-position:nth-child(2) {
+  animation-delay: 0.3s;
+}
+
+.nfc-reading__card-position:nth-child(3) {
+  animation-delay: 0.5s;
+}
+
+/* Card glow effect on hover */
+.nfc-reading__card:before {
+  content: '';
+  position: absolute;
+  top: -2px;
+  left: -2px;
+  right: -2px;
+  bottom: -2px;
+  background: linear-gradient(45deg, #A59AD1, #F4A261, #A59AD1);
+  z-index: -1;
+  border-radius: 14px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.nfc-reading__card:hover:before {
+  opacity: 0.7;
+}
+
+/* -------------------- 10. Accessibility Enhancements -------------------- */
+@media (prefers-reduced-motion: reduce) {
+  .nfc-reading__card,
+  .nfc-reading__fade-in,
+  .nfc-reading__loader:before,
+  .nfc-reading__card-image {
+    transition: none !important;
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}

@@ -7,13 +7,13 @@ from typing import Optional, List
 
 class StartChatRequest(BaseModel):
     """Request model for starting a new chat session"""
-    name: str
-    zodiacSign: str
-    cardName: str
-    reading: str
-    isPremium: bool
-    language: str
-    nfc_id: Optional[str] = None  # ✅ Optional for trial users
+    name: str = "Seeker"
+    zodiacSign: str = "Cosmic Seeker"
+    cardName: Optional[str] = "Three Cards Spread"
+    reading: Optional[str] = ""
+    isPremium: bool = False
+    language: str = "en"
+    nfc_id: Optional[str] = None  # Optional for trial users
     maintainLanguage: bool = True
 
 
@@ -33,13 +33,13 @@ class ChatMessage(BaseModel):
 class ChatRequest(BaseModel):
     """Request model for sending a chat message"""
     message: str
-    name: str
-    zodiacSign: str
-    language: str
-    reading: str
-    cardName: str
-    session_id: str
-    nfc_id: Optional[str] = None  # ✅ Optional for trial users
+    name: Optional[str] = "Seeker"
+    zodiacSign: Optional[str] = "Cosmic Seeker"
+    language: Optional[str] = "en"
+    reading: Optional[str] = ""
+    cardName: Optional[str] = "Three Cards Spread"
+    session_id: Optional[str] = None
+    nfc_id: Optional[str] = None  # Optional for trial users
     messageHistory: List[ChatMessage] = Field(default_factory=list)
 
 

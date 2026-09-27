@@ -4,11 +4,21 @@ services:
     env: python
     region: oregon
     plan: free
-    buildCommand: pip install -r requirements.txt
+    buildCommand: npm --prefix frontend install && npm --prefix frontend run build && pip install -r requirements.txt
     startCommand: uvicorn api_v2.main:app --host 0.0.0.0 --port $PORT
     envVars:
       - key: PYTHON_VERSION
         value: 3.9
+      - key: AI_PROVIDER
+        value: bedrock
+      - key: AWS_ACCESS_KEY_ID
+        sync: false
+      - key: AWS_SECRET_ACCESS_KEY
+        sync: false
+      - key: AWS_REGION
+        value: eu-north-1
+      - key: BEDROCK_MODEL_ID
+        value: deepseek.v3.2
       - key: ANTHROPIC_API_KEY
         sync: false
       - key: FIREBASE_CREDENTIALS

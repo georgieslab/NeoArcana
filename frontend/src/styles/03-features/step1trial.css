@@ -1,0 +1,526 @@
+/* ============================================================================
+   NEOARCANA - STEP 1 TRIAL: CELESTIAL REDESIGN
+   Ultra-modern glassmorphic attunement portal
+   ============================================================================ */
+
+.trial-step1-screen {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1rem;
+  box-sizing: border-box;
+}
+
+.trial-step1-card {
+  position: relative;
+  width: 100%;
+  max-width: 680px;
+  background: rgba(14, 10, 30, 0.78);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(165, 154, 209, 0.32);
+  border-radius: 28px;
+  padding: clamp(1.5rem, 3.5vw, 2.5rem);
+  box-shadow: 
+    0 24px 64px rgba(0, 0, 0, 0.65),
+    0 0 35px rgba(165, 154, 209, 0.18),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  animation: cosmicCardEntry 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  box-sizing: border-box;
+}
+
+@keyframes cosmicCardEntry {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+/* -------------------- BACK BUTTON -------------------- */
+.trial-step1-back-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(165, 154, 209, 0.25);
+  color: #cdc0f2;
+  padding: 0.45rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin-bottom: 1.25rem;
+}
+
+.trial-step1-back-btn:hover {
+  background: rgba(165, 154, 209, 0.18);
+  border-color: #a59ad1;
+  color: #ffffff;
+  transform: translateX(-3px);
+  box-shadow: 0 0 15px rgba(165, 154, 209, 0.2);
+}
+
+.back-arrow {
+  transition: transform 0.2s ease;
+}
+
+.trial-step1-back-btn:hover .back-arrow {
+  transform: translateX(-2px);
+}
+
+/* -------------------- STEPPER -------------------- */
+.trial-stepper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.stepper-item {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  opacity: 0.45;
+  transition: all 0.3s ease;
+}
+
+.stepper-item.active {
+  opacity: 1;
+}
+
+.stepper-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(165, 154, 209, 0.15);
+  border: 1.5px solid rgba(165, 154, 209, 0.4);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.9rem;
+}
+
+.stepper-item.active .stepper-circle {
+  background: linear-gradient(135deg, rgba(165, 154, 209, 0.4), rgba(244, 162, 97, 0.3));
+  border-color: #f4a261;
+  box-shadow: 0 0 16px rgba(244, 162, 97, 0.4);
+}
+
+.stepper-label {
+  font-size: 0.8rem;
+  color: #cdc0f2;
+  font-weight: 500;
+  letter-spacing: 0.5px;
+}
+
+.stepper-item.active .stepper-label {
+  color: #ffffff;
+  font-weight: 600;
+}
+
+.stepper-line {
+  flex: 1;
+  max-width: 40px;
+  height: 1px;
+  background: rgba(165, 154, 209, 0.25);
+}
+
+/* -------------------- HEADER -------------------- */
+.trial-step1-header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.trial-step1-title {
+  font-family: 'Orbitron', sans-serif;
+  font-size: clamp(1.6rem, 3.2vw, 2.2rem);
+  font-weight: 700;
+  letter-spacing: 1px;
+  background: linear-gradient(135deg, #ffffff 0%, #cdc0f2 40%, #f4a261 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  margin: 0 0 0.5rem 0;
+  text-shadow: 0 0 25px rgba(165, 154, 209, 0.25);
+}
+
+.trial-step1-subtitle {
+  color: rgba(205, 192, 242, 0.8);
+  font-size: clamp(0.85rem, 1.8vw, 0.95rem);
+  margin: 0 auto;
+  max-width: 480px;
+  line-height: 1.5;
+}
+
+/* -------------------- INPUT GRID -------------------- */
+.trial-step1-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.trial-field-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.45rem;
+  min-width: 0;
+}
+
+.trial-field-group--dob {
+  grid-column: 1 / -1;
+  position: relative;
+  z-index: 30;
+}
+
+.trial-field-group--dob:focus-within,
+.trial-field-group--dob:has(.calendar-open) {
+  z-index: 60;
+}
+
+.trial-field-group--lang {
+  grid-column: 1 / -1;
+  position: relative;
+  z-index: 10;
+}
+
+.trial-label {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  color: #cdc0f2;
+  font-size: 0.85rem;
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+.label-icon {
+  font-size: 0.95rem;
+}
+
+.trial-input-wrap {
+  position: relative;
+  width: 100%;
+}
+
+.trial-cosmic-input {
+  width: 100%;
+  height: 48px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(165, 154, 209, 0.28);
+  border-radius: 14px;
+  padding: 0 1rem;
+  color: #ffffff;
+  font-size: 0.92rem;
+  box-sizing: border-box;
+  transition: all 0.25s ease;
+  outline: none;
+}
+
+.trial-cosmic-input:focus {
+  border-color: #a59ad1;
+  background: rgba(255, 255, 255, 0.1);
+  box-shadow: 0 0 18px rgba(165, 154, 209, 0.35);
+}
+
+.trial-cosmic-input::placeholder {
+  color: rgba(205, 192, 242, 0.4);
+}
+
+.trial-cosmic-input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(0.85) sepia(0.2) saturate(2) hue-rotate(220deg);
+  cursor: pointer;
+}
+
+.trial-cosmic-select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23cdc0f2' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 1rem center;
+  cursor: pointer;
+}
+
+.trial-cosmic-select option {
+  background: #1a1433;
+  color: #ffffff;
+}
+
+/* -------------------- DYNAMIC ZODIAC BANNER -------------------- */
+.trial-zodiac-banner {
+  margin-bottom: 1.5rem;
+  border-radius: 18px;
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  overflow: hidden;
+}
+
+.trial-zodiac-banner.waiting {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px dashed rgba(165, 154, 209, 0.25);
+  padding: 1rem 1.25rem;
+}
+
+.zodiac-placeholder {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  color: rgba(205, 192, 242, 0.6);
+  font-size: 0.85rem;
+  text-align: center;
+}
+
+.placeholder-sparkle {
+  animation: pulseGlow 2s infinite alternate;
+}
+
+.trial-zodiac-banner.revealed {
+  background: linear-gradient(135deg, rgba(26, 18, 52, 0.9), rgba(40, 22, 60, 0.85));
+  border: 1px solid rgba(244, 162, 97, 0.4);
+  box-shadow: 
+    0 8px 24px rgba(0, 0, 0, 0.4),
+    0 0 20px rgba(165, 154, 209, 0.2);
+  padding: 1rem 1.25rem;
+  animation: glowBloom 0.5s ease forwards;
+}
+
+@keyframes glowBloom {
+  0% {
+    transform: scale(0.97);
+    opacity: 0.7;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.zodiac-banner-content {
+  display: flex;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.zodiac-glyph-ring {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.08);
+  border: 2px solid #a59ad1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 18px rgba(165, 154, 209, 0.35);
+  flex-shrink: 0;
+}
+
+.zodiac-glyph {
+  font-size: 1.8rem;
+  line-height: 1;
+}
+
+.zodiac-details {
+  flex: 1;
+}
+
+.zodiac-header-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.3rem;
+}
+
+.zodiac-name {
+  font-family: 'Orbitron', sans-serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.zodiac-element-pill,
+.zodiac-ruler-pill {
+  font-size: 0.75rem;
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #cdc0f2;
+}
+
+.zodiac-trait {
+  margin: 0;
+  font-size: 0.82rem;
+  color: rgba(205, 192, 242, 0.85);
+  font-style: italic;
+}
+
+/* -------------------- FOCUS CHIPS -------------------- */
+.trial-focus-section {
+  margin-bottom: 1.75rem;
+}
+
+.trial-focus-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  margin-top: 0.6rem;
+}
+
+.focus-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(165, 154, 209, 0.25);
+  border-radius: 20px;
+  padding: 0.5rem 0.95rem;
+  color: #cdc0f2;
+  font-size: 0.82rem;
+  cursor: pointer;
+  transition: all 0.22s ease;
+  user-select: none;
+}
+
+.focus-chip:hover {
+  background: rgba(165, 154, 209, 0.15);
+  border-color: rgba(165, 154, 209, 0.45);
+  color: #ffffff;
+  transform: translateY(-2px);
+}
+
+.focus-chip.selected {
+  background: linear-gradient(135deg, rgba(165, 154, 209, 0.35), rgba(244, 162, 97, 0.28));
+  border-color: #f4a261;
+  color: #ffffff;
+  font-weight: 600;
+  box-shadow: 0 0 16px rgba(244, 162, 97, 0.3);
+  transform: translateY(-2px);
+}
+
+/* -------------------- ERROR ALERT -------------------- */
+.trial-error-alert {
+  background: rgba(255, 107, 107, 0.15);
+  border: 1px solid rgba(255, 107, 107, 0.4);
+  color: #ff8787;
+  border-radius: 12px;
+  padding: 0.75rem 1rem;
+  font-size: 0.85rem;
+  margin-bottom: 1.25rem;
+  text-align: center;
+  animation: shake 0.4s ease;
+}
+
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-5px); }
+  75% { transform: translateX(5px); }
+}
+
+/* -------------------- SUBMIT BUTTON -------------------- */
+.trial-submit-wrap {
+  margin-top: 1rem;
+}
+
+.trial-cosmic-button {
+  position: relative;
+  width: 100%;
+  height: 56px;
+  background: linear-gradient(135deg, #a59ad1 0%, #6b4e71 50%, #f4a261 100%);
+  border: none;
+  border-radius: 16px;
+  color: #ffffff;
+  font-family: 'Orbitron', sans-serif;
+  font-size: 0.95rem;
+  font-weight: 700;
+  letter-spacing: 0.8px;
+  cursor: pointer;
+  overflow: hidden;
+  box-shadow: 
+    0 8px 24px rgba(107, 78, 113, 0.4),
+    0 0 25px rgba(244, 162, 97, 0.3);
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.trial-cosmic-button:hover:not(:disabled) {
+  transform: translateY(-3px) scale(1.01);
+  box-shadow: 
+    0 12px 30px rgba(107, 78, 113, 0.5),
+    0 0 35px rgba(244, 162, 97, 0.5);
+}
+
+.trial-cosmic-button:active:not(:disabled) {
+  transform: translateY(-1px);
+}
+
+.trial-cosmic-button:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+  filter: grayscale(0.2);
+}
+
+.button-shimmer {
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(255, 255, 255, 0.3) 50%,
+    transparent 100%
+  );
+  transform: skewX(-25deg);
+  animation: shimmerFlow 3.5s infinite;
+}
+
+@keyframes shimmerFlow {
+  0% { left: -100%; }
+  60%, 100% { left: 200%; }
+}
+
+/* -------------------- RESPONSIVE -------------------- */
+@media (max-width: 600px) {
+  .trial-step1-screen {
+    padding: 1.5rem 0.75rem;
+  }
+  
+  .trial-step1-card {
+    padding: 1.25rem;
+    border-radius: 20px;
+  }
+
+  .trial-step1-grid {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .trial-field-group--dob,
+  .trial-field-group--lang {
+    grid-column: 1;
+  }
+
+  .zodiac-banner-content {
+    flex-direction: column;
+    text-align: center;
+    gap: 0.75rem;
+  }
+
+  .zodiac-header-row {
+    justify-content: center;
+  }
+
+  .trial-stepper {
+    flex-wrap: wrap;
+  }
+}

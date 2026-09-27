@@ -1,0 +1,254 @@
+/* ========================================
+   NEOARCANA - CSS VARIABLES
+   All colors, spacing, shadows, and effects
+   ======================================== */
+
+:root {
+  /* -------------------- COLOR PALETTE -------------------- */
+  
+  /* Primary Colors */
+  --neo-primary: #A59AD1;
+  --neo-primary-dark: #6B4E71;
+  --neo-primary-light: #CEC7F2;
+  
+  /* Secondary Colors */
+  --neo-secondary: #F4A261;
+  --neo-accent: #FFD700;
+  --neo-gold: #FFD700;
+  
+  /* Background Colors */
+  --neo-bg-dark: #0a0a1f;
+  --neo-bg-darker: #1a1a2e;
+  --neo-bg-darkest: rgba(10, 10, 31, 0.95);
+  --neo-bg-glass: rgba(26, 26, 38, 0.7);
+  --neo-bg-glass-dark: rgba(20, 20, 30, 0.95);
+  
+  /* Text Colors */
+  --neo-text: #FFFFFF;
+  --neo-text-muted: rgba(255, 255, 255, 0.7);
+  --neo-text-dimmed: rgba(255, 255, 255, 0.5);
+  
+  /* Status Colors */
+  --neo-error: #ff6b6b;
+  --neo-success: #4ecdc4;
+  --neo-warning: #F4A261;
+  
+  /* -------------------- COSMIC COLORS -------------------- */
+  
+  /* Cosmic Color Palette (for user selection) */
+  --cosmic-purple: #A59AD1;
+  --cosmic-blue: #5B9BD5;
+  --cosmic-pink: #F4BFBF;
+  --cosmic-gold: #FFD700;
+  --cosmic-green: #8FBC8F;
+  --cosmic-orange: #F4A261;
+  --cosmic-violet: #9370DB;
+  --cosmic-teal: #40E0D0;
+  --cosmic-silver: #C0C0C0;
+  --cosmic-red: #B22222;
+  
+  /* -------------------- SPACING SYSTEM -------------------- */
+  
+  --neo-space-xs: 0.25rem;    /* 4px */
+  --neo-space-sm: 0.5rem;     /* 8px */
+  --neo-space-md: 1rem;       /* 16px */
+  --neo-space-lg: 1.5rem;     /* 24px */
+  --neo-space-xl: 2rem;       /* 32px */
+  --neo-space-xxl: 3rem;      /* 48px */
+  
+  /* -------------------- BORDER RADIUS -------------------- */
+  
+  --neo-radius-sm: 8px;
+  --neo-radius-md: 12px;
+  --neo-radius-lg: 15px;
+  --neo-radius-xl: 20px;
+  --neo-radius: 24px;
+  --neo-radius-full: 50px;
+  --neo-radius-circle: 50%;
+  
+  /* -------------------- SHADOWS -------------------- */
+  
+  /* Standard Shadows */
+  --neo-shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.1);
+  --neo-shadow-md: 0 4px 8px rgba(0, 0, 0, 0.2);
+  --neo-shadow-lg: 0 8px 16px rgba(0, 0, 0, 0.3);
+  --neo-shadow-xl: 0 20px 40px rgba(0, 0, 0, 0.4);
+  --neo-shadow-soft: 0 4px 10px rgba(0, 0, 0, 0.15);
+  --neo-shadow-medium: 0 8px 16px rgba(0, 0, 0, 0.2);
+  
+  /* Cosmic Shadows (with glow) */
+  --neo-shadow-cosmic: 0 0 20px rgba(165, 154, 209, 0.3);
+  --neo-shadow-glow: 0 0 15px rgba(165, 154, 209, 0.3);
+  --neo-shadow-glow-strong: 0 0 20px rgba(165, 154, 209, 0.5);
+  --neo-shadow-glow-intense: 0 0 30px rgba(165, 154, 209, 0.5);
+  
+  /* -------------------- GLOW EFFECTS -------------------- */
+  
+  --neo-glow-color: rgba(165, 154, 209, 0.6);
+  --neo-glow-color-soft: rgba(165, 154, 209, 0.3);
+  --neo-glow-spread: 15px;
+  --neo-glow-spread-soft: 25px;
+  
+  /* Focus Ring */
+  --neo-focus-ring: 0 0 0 3px rgba(165, 154, 209, 0.4);
+  
+  /* -------------------- GRADIENTS -------------------- */
+  
+  /* Primary Gradients */
+  --gradient-primary: linear-gradient(135deg, var(--neo-primary) 0%, var(--neo-primary-dark) 100%);
+  --gradient-cosmic: linear-gradient(45deg, #cdc0f2, var(--neo-secondary), var(--neo-secondary), #5b5087);
+  --gradient-premium: linear-gradient(30deg, rgba(255, 223, 126, 0.9) 0%, rgba(165, 154, 209, 0.9) 100%);
+  --gradient-card: linear-gradient(180deg, rgba(165, 154, 209, 0.1) 0%, rgba(107, 78, 113, 0.1) 100%);
+  
+  /* Secondary Gradients */
+  --gradient-gold: linear-gradient(135deg, #FFD700 0%, #F4A261 100%);
+  --gradient-error: linear-gradient(135deg, rgba(255, 107, 107, 0.3), rgba(255, 80, 80, 0.3));
+  
+  /* Background Gradients */
+  --gradient-bg-purple: radial-gradient(circle at 10% 20%, rgba(91, 80, 135, 0.2) 0%, transparent 30%);
+  --gradient-bg-orange: radial-gradient(circle at 90% 80%, rgba(244, 162, 97, 0.15) 0%, transparent 40%);
+  
+  /* Conic Gradients (for spinning effects) */
+  --gradient-conic-primary: conic-gradient(
+    from 0deg,
+    rgba(165, 154, 209, 0.8) 0deg,
+    rgba(244, 162, 97, 0.8) 90deg,
+    rgba(255, 215, 0, 0.8) 180deg,
+    rgba(165, 154, 209, 0.8) 270deg,
+    rgba(165, 154, 209, 0.8) 360deg
+  );
+  
+  /* -------------------- TRANSITIONS -------------------- */
+  
+  --neo-transition-fast: 0.15s ease;
+  --neo-transition-normal: 0.3s ease;
+  --neo-transition-base: 0.3s ease;
+  --neo-transition-slow: 0.5s ease;
+  --neo-transition-bounce: cubic-bezier(0.4, 0, 0.2, 1);
+  
+  /* -------------------- TYPOGRAPHY -------------------- */
+  
+  /* Font Sizes */
+  --neo-font-xs: 0.75rem;     /* 12px */
+  --neo-font-sm: 0.875rem;    /* 14px */
+  --neo-font-base: 1rem;      /* 16px */
+  --neo-font-lg: 1.125rem;    /* 18px */
+  --neo-font-xl: 1.25rem;     /* 20px */
+  --neo-font-2xl: 1.5rem;     /* 24px */
+  --neo-font-3xl: 1.875rem;   /* 30px */
+  --neo-font-4xl: 2.25rem;    /* 36px */
+  
+  /* Font Weights */
+  --neo-font-normal: 400;
+  --neo-font-medium: 500;
+  --neo-font-semibold: 600;
+  --neo-font-bold: 700;
+  
+  /* Line Heights */
+  --neo-line-tight: 1.2;
+  --neo-line-normal: 1.5;
+  --neo-line-relaxed: 1.8;
+  
+  /* -------------------- Z-INDEX SCALE -------------------- */
+  
+  --z-base: 1;
+  --z-dropdown: 10;
+  --z-sticky: 100;
+  --z-fixed: 1000;
+  --z-modal-backdrop: 5000;
+  --z-modal: 6000;
+  --z-popover: 7000;
+  --z-tooltip: 8000;
+  --z-notification: 9000;
+  --z-max: 9999;
+  
+  /* -------------------- BACKDROP FILTERS -------------------- */
+  
+  --neo-blur-sm: blur(5px);
+  --neo-blur-md: blur(10px);
+  --neo-blur-lg: blur(15px);
+  
+  /* -------------------- SPECIAL PROPERTIES -------------------- */
+  
+  /* For conic gradient animations */
+  --angle: 0deg;
+  
+  /* Card dimensions */
+  --card-width-sm: 140px;
+  --card-width-md: 200px;
+  --card-width-lg: 280px;
+  --card-width-xl: 320px;
+  
+  --card-height-sm: 240px;
+  --card-height-md: 312.5px;
+  --card-height-lg: 300px;
+  
+  /* Input heights */
+  --input-height: 3rem;      /* 48px - consistent across all inputs */
+  --input-height-sm: 2.5rem; /* 40px */
+  --input-height-lg: 3.5rem; /* 56px */
+  
+  /* Button heights */
+  --button-height: 3.5rem;   /* 56px - comfortable touch target */
+  --button-height-sm: 3rem;  /* 48px */
+  
+  /* -------------------- MOBILE OVERRIDES -------------------- */
+  
+  /* Touch target minimum (for accessibility) */
+  --touch-target-min: 44px;
+}
+
+/* -------------------- @PROPERTY DEFINITIONS -------------------- */
+
+/* Required for conic gradient animations */
+@property --angle {
+  syntax: '<angle>';
+  initial-value: 0deg;
+  inherits: false;
+}
+
+/* -------------------- DARK MODE ADJUSTMENTS -------------------- */
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --neo-shadow-soft: 0 4px 10px rgba(0, 0, 0, 0.25);
+    --neo-shadow-medium: 0 8px 16px rgba(0, 0, 0, 0.3);
+    --neo-shadow-lg: 0 8px 20px rgba(0, 0, 0, 0.4);
+  }
+}
+
+/* -------------------- COSMIC COLOR UTILITY MAP -------------------- */
+
+/* Map of all cosmic colors with their meanings */
+:root {
+  /* Color Name -> Hex -> Spiritual Meaning */
+  --cosmic-purple-name: 'Cosmic Purple';
+  --cosmic-purple-meaning: 'Spiritual awareness, mystical connections';
+  
+  --cosmic-blue-name: 'Mystic Blue';
+  --cosmic-blue-meaning: 'Truth, serenity, communication';
+  
+  --cosmic-pink-name: 'Celestial Pink';
+  --cosmic-pink-meaning: 'Unconditional love, compassion';
+  
+  --cosmic-gold-name: 'Astral Gold';
+  --cosmic-gold-meaning: 'Divine success, abundance';
+  
+  --cosmic-green-name: 'Ethereal Green';
+  --cosmic-green-meaning: 'Growth, healing, harmony';
+  
+  --cosmic-orange-name: 'Spiritual Orange';
+  --cosmic-orange-meaning: 'Creativity, joy, expression';
+  
+  --cosmic-violet-name: 'Divine Violet';
+  --cosmic-violet-meaning: 'Transformation, spiritual mastery';
+  
+  --cosmic-teal-name: 'Cosmic Teal';
+  --cosmic-teal-meaning: 'Emotional healing, intuitive flow';
+  
+  --cosmic-silver-name: 'Luna Silver';
+  --cosmic-silver-meaning: 'Moon magic, intuition, divine feminine';
+  
+  --cosmic-red-name: 'Mars Red';
+  --cosmic-red-meaning: 'Passion, courage, strength';
+}

@@ -1,0 +1,401 @@
+/* ========================================
+   NEOARCANA - LAYOUT CONTAINERS
+   Main page containers, wrappers, and structural layouts
+   ======================================== */
+
+/* -------------------- PARENT CONTAINER -------------------- */
+
+.parent-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  padding: 0;
+  box-sizing: border-box;
+  flex-direction: column;
+}
+
+/* -------------------- MAIN CONTAINERS -------------------- */
+
+.container,
+.container-step0,
+.container-step1 {
+  background-color: rgba(0, 0, 0, 0.55);
+  backdrop-filter: var(--neo-blur-md);
+  padding: var(--neo-space-xl);
+  box-shadow: var(--neo-shadow-lg);
+  color: var(--neo-text);
+  text-align: center;
+  border-radius: var(--neo-radius-lg);
+  border: 1.5px solid rgba(255, 179, 125, 0.18);
+  transition: all var(--neo-transition-slow);
+  width: 90%;
+  max-width: 800px;
+  height: fit-content;
+}
+
+.container {
+  height: 90vh;
+  max-height: 800px;
+  overflow-y: auto;
+  position: relative;
+}
+
+/* Hide scrollbars but keep functionality */
+.container::-webkit-scrollbar,
+.step-container::-webkit-scrollbar {
+  display: none;
+}
+
+.container,
+.step-container {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* -------------------- STEP CONTAINERS -------------------- */
+
+.step2-container,
+.step3-container {
+  background-color: rgba(0, 0, 0, 0.55);
+  backdrop-filter: var(--neo-blur-md);
+  padding: var(--neo-space-xl);
+  box-shadow: 0 4px 6px rgba(8, 17, 67, 0.32);
+  color: var(--neo-text);
+  text-align: center;
+  border-radius: var(--neo-radius-lg);
+  border: 1.5px solid rgba(255, 179, 125, 0.18);
+  width: 90%;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.step2-container {
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255, 255, 255, 0.1);
+  height: 90vh;
+  max-height: 800px;
+}
+
+.step2-container.visible {
+  opacity: 1;
+}
+
+.step2-content {
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.step3-container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh !important;
+  width: 100%;
+  overflow-y: auto !important;
+  padding: 20px;
+  position: relative;
+  align-content: center;
+  align-items: center;
+}
+
+.step3-container.visible {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 0.3s ease-in-out, transform 0.3s ease-in-out;
+}
+
+.step3-content {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s ease-in-out, transform 0.5s ease-in-out;
+}
+
+.content-visible .step3-content {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* -------------------- CONTENT WRAPPERS -------------------- */
+
+.content-wrapper {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: var(--neo-space-lg);
+}
+
+.step-content {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+/* -------------------- SECTION CONTAINERS -------------------- */
+
+.section-container {
+  width: 100%;
+  padding: var(--neo-space-xl) 0;
+  margin: var(--neo-space-lg) 0;
+}
+
+.cosmic-section {
+  background: rgba(165, 154, 209, 0.05);
+  border-radius: var(--neo-radius-lg);
+  padding: var(--neo-space-xl);
+  margin: var(--neo-space-xl) 0;
+  border: 1px solid rgba(165, 154, 209, 0.1);
+}
+
+/* -------------------- READING CONTAINERS -------------------- */
+
+.reading-container {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: var(--neo-radius-lg);
+  padding: var(--neo-space-xl);
+  backdrop-filter: var(--neo-blur-md);
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* -------------------- MODAL CONTAINERS -------------------- */
+
+.modal-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-modal);
+  pointer-events: none;
+}
+
+.modal-container.active {
+  pointer-events: all;
+}
+
+/* -------------------- CANVAS CONTAINER -------------------- */
+
+#canvas_container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-background);
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+}
+
+#canvas_container.loaded,
+#canvas_container.fade-in {
+  opacity: 1;
+}
+
+/* -------------------- THREE.JS CARD CONTAINER -------------------- */
+
+#three-js-card-container {
+  position: absolute;
+  width: 200px;
+  height: 312.5px;
+  pointer-events: none;
+  z-index: var(--z-above);
+}
+
+/* -------------------- GALAXY VIEW -------------------- */
+
+.galaxy-view {
+  opacity: 0;
+  visibility: hidden;
+  transition: all var(--neo-transition-slow);
+}
+
+.galaxy-view-active .content-wrapper {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.galaxy-view-active .floating-controls {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* -------------------- ACTIONS CONTAINER -------------------- */
+
+.actions-container {
+  display: flex;
+  justify-content: center;
+  gap: var(--neo-space-xl);
+  margin: var(--neo-space-xxl) 0;
+  flex-wrap: wrap;
+}
+
+.cosmic-actions-container {
+  display: flex;
+  justify-content: center;
+  gap: var(--neo-space-xl);
+  margin: var(--neo-space-xxl) 0;
+  flex-wrap: wrap;
+}
+
+/* -------------------- ERROR CONTAINERS -------------------- */
+
+.error-container {
+  width: 100%;
+  max-width: 340px;
+  margin: var(--neo-space-lg) auto;
+  padding: var(--neo-space-lg);
+  background: rgba(255, 87, 87, 0.1);
+  border: 1px solid rgba(255, 87, 87, 0.3);
+  border-radius: var(--neo-radius-md);
+  text-align: center;
+  position: relative;
+  z-index: var(--z-above);
+}
+
+/* -------------------- INTERPRETATION CONTAINERS -------------------- */
+
+.interpretation-container {
+  background: rgba(165, 154, 209, 0.05);
+  border-radius: var(--neo-radius-lg);
+  padding: var(--neo-space-xl);
+  margin-top: var(--neo-space-xl);
+  border: 1px solid rgba(165, 154, 209, 0.1);
+}
+
+/* -------------------- RESPONSIVE CONTAINERS -------------------- */
+
+@media (max-width: 1024px) {
+  .container-step0,
+  .container-step1 {
+    width: 90%;
+  }
+
+  .content-wrapper {
+    padding: var(--neo-space-md);
+  }
+}
+
+@media (max-width: 768px) {
+  .parent-container {
+    padding: var(--neo-space-md);
+  }
+
+  .container,
+  .container-step0,
+  .container-step1,
+  .step2-container,
+  .step3-container {
+    width: 95%;
+    padding: var(--neo-space-lg);
+  }
+
+  .step3-container {
+    width: 100%;
+    height: 100vh !important;
+    padding: 10px;
+    overflow-y: auto !important;
+  }
+
+  .content-wrapper {
+    padding: var(--neo-space-sm);
+  }
+
+  .cosmic-section {
+    padding: var(--neo-space-lg);
+  }
+}
+
+/* -------------------- LANDSCAPE MODE -------------------- */
+
+@media (max-height: 500px) and (orientation: landscape) {
+  .parent-container {
+    height: auto;
+    min-height: 100vh;
+  }
+
+  .container,
+  .step2-container,
+  .step3-container {
+    max-height: none;
+  }
+}
+
+/* -------------------- IOS SPECIFIC FIXES -------------------- */
+
+@supports (-webkit-touch-callout: none) {
+  .parent-container {
+    min-height: -webkit-fill-available;
+  }
+
+  .container,
+  .step-container {
+    -webkit-overflow-scrolling: touch;
+  }
+}
+
+/* -------------------- ACCESSIBILITY -------------------- */
+
+.container:focus,
+.step-container:focus {
+  outline: 2px solid rgba(165, 154, 209, 0.5);
+  outline-offset: 4px;
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .container,
+  .step2-container,
+  .step3-container {
+    border-width: 3px;
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .container,
+  .step2-container,
+  .step3-container,
+  .step2-content,
+  .step3-content {
+    animation: none;
+    transition: opacity 0.1s !important;
+  }
+}
+
+/* -------------------- PRINT STYLES -------------------- */
+
+@media print {
+  .parent-container {
+    min-height: auto;
+  }
+
+  .container {
+    background: white !important;
+    color: black !important;
+    box-shadow: none !important;
+    border: 1px solid black;
+  }
+
+  #canvas_container {
+    display: none !important;
+  }
+}

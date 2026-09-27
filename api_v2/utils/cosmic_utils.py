@@ -138,16 +138,18 @@ def calculate_numerology_day(date=None):
 
 
 def getLanguageForClaude(iso_code):
-    """Convert ISO language code to Claude-friendly language name"""
+    """Convert ISO language code to LLM-friendly language name"""
     language_map = {
+        'en': 'English',
         'ka': 'Georgian',
-        'ru': 'Russian',
+        'it': 'Italian',
         'es': 'Spanish',
         'fr': 'French',
         'de': 'German',
-        'zh': 'Chinese',
+        'pt': 'Portuguese',
+        'ru': 'Russian',
+        'zh': 'Chinese (Simplified)',
         'ja': 'Japanese',
         'ko': 'Korean',
-        'en': 'English'
     }
     return language_map.get(iso_code, 'English')

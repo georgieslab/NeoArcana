@@ -1,297 +1,277 @@
-// ========================================
-// NEOARCANA - CHAT INTERFACE (JSX)
-// Clean, modern chat component! 💬
-// ========================================
+import { useState, useEffect, useRef } from 'react';
+import api from '../services/api';
+import { renderFormattedParagraphs } from '../utils/textFormatter';
 
-const ChatInterface = ({ 
-  name, 
-  zodiacSign, 
-  cardName, 
-  reading, 
-  onClose, 
-  isPremium,
-  language,
-  cardInfo,
-  chatHistory,
-  onChatHistoryUpdate
-}) => {
-  // State management
-  const [messages, setMessages] = React.useState(chatHistory || []);
-  const [newMessage, setNewMessage] = React.useState('');
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [isTyping, setIsTyping] = React.useState(false);
-  const [sessionId, setSessionId] = React.useState(null);
-  const messagesEndRef = React.useRef(null);
-  const mountedRef = React.useRef(true);
+export default function ChatInterface({
+  name = 'Seeker',
+  zodiacSign = '',
+  focusArea = '',
+  reading = '',
+  cardName = 'Three Sacred Cards',
+  language = 'en',
+  onClose,
+}) {
+  const [messages, setMessages] = useState([]);
+  const [inputMessage, setInputMessage] = useState('');
+  const [isLoading, setIsLoading] = useState(false);
+  const [sessionId, setSessionId] = useState(null);
+  const messagesEndRef = useRef(null);
+  const inputRef = useRef(null);
 
-  // Update parent component when messages change
-  React.useEffect(() => {
-    if (onChatHistoryUpdate) {
-      onChatHistoryUpdate(messages);
-    }
-  }, [messages]);
+  const quickPrompts = [
+    '✨ What is the core lesson of this spread?',
+    '🔮 How do these cards connect with each other?',
+    '⚡ What hidden blockage should I be mindful of?',
+    '🌟 How can I best align with the Future card?',
+  ];
 
-  // Initialize chat session
-  React.useEffect(() => {
-    console.log('[ChatInterface] Initializing with language:', language);
-    
-    if (!chatHistory && mountedRef.current) {
-      startChatSession();
-    }
+  // Auto-scroll to bottom
+  const scrollToBottom = () => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
 
-    return () => {
-      console.log('[ChatInterface] Unmounting');
-      mountedRef.current = false;
-    };
+  useEffect(() => {
+    scrollToBottom();
+  }, [messages, isLoading]);
+
+  // Focus input on mount
+  useEffect(() => {
+    inputRef.current?.focus();
   }, []);
 
-  // Restart chat session if language changes
-  React.useEffect(() => {
-    console.log('[ChatInterface] Language changed to:', language);
-    if (chatHistory) return; // Don't restart if we have history
-    
-    if (mountedRef.current) {
-      startChatSession();
-    }
-  }, [language]);
-
-  // Auto-scroll to bottom when new messages arrive
-  React.useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
-
-  const scrollToBottom = () => {
-    if (messagesEndRef.current) {
-      messagesEndRef.current.scrollIntoView({ behavior: "smooth" });
-    }
-  };
-
-  const startChatSession = async () => {
-    if (!mountedRef.current) return;
-    console.log('[ChatInterface] Starting chat session with language:', language);
-    setIsLoading(true);
-    setIsTyping(true);
-    
-    try {
-      const initialData = {
-        name,
-        zodiacSign,
-        cardName,
-        reading: reading || '',
-        isPremium,
-        language,
-        cardInfo,
-        nfc_id: null,
-        maintainLanguage: true
-      };
-
-      console.log('[ChatInterface] Starting chat with data:', initialData);
-      console.log('🚀 Starting chat session via FastAPI:', window.API_CONFIG.BASE_URL);
-      
-      const data = await window.API_CONFIG.post(
-        window.API_CONFIG.ENDPOINTS.START_CHAT,
-        initialData
-      );
-      
-      console.log('✅ Chat session started:', data);
-      
-      if (data.session_id) {
-        setSessionId(data.session_id);
+  // Close on Escape key
+  useEffect(() => {
+    const handleKeyDown = (e) => {
+      if (e.key === 'Escape' && onClose) {
+        onClose();
       }
-
-      if (mountedRef.current) {
-        const initialMessage = {
-          role: 'assistant',
-          content: data.response,
-          timestamp: new Date().toISOString(),
-          language: language
-        };
-
-        setMessages([initialMessage]);
-      }
-
-    } catch (error) {
-      console.error('[ChatInterface] Chat initialization error:', error);
-      if (mountedRef.current) {
-        setMessages([{
-          role: 'error',
-          content: error.message || 'Unable to connect to your guide. Please try again later.',
-          language: language
-        }]);
-      }
-    } finally {
-      if (mountedRef.current) {
-        setIsTyping(false);
-        setIsLoading(false);
-      }
-    }
-  };
-
-  const sendMessage = async (e) => {
-    e.preventDefault();
-    if (!newMessage.trim() || isLoading) return;
-
-    const userMessage = {
-      role: 'user',
-      content: newMessage.trim(),
-      timestamp: new Date().toISOString(),
-      language: language
     };
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [onClose]);
 
-    if (mountedRef.current) {
-      setNewMessage('');
-      setMessages(prev => [...prev, userMessage]);
+  // Initialize chat session on mount
+  useEffect(() => {
+    let isSubscribed = true;
+
+    async function initSession() {
       setIsLoading(true);
-      setIsTyping(true);
+      try {
+        const data = await api.startChat({
+          name,
+          zodiacSign,
+          cardName: cardName || 'Three Sacred Cards',
+          reading: typeof reading === 'string' ? reading : JSON.stringify(reading),
+          language,
+        });
+
+        if (isSubscribed) {
+          const sid = data?.session_id || data?.sessionId;
+          if (sid) setSessionId(sid);
+
+          const welcomeText =
+            data?.response ||
+            data?.initialMessage ||
+            `Greetings, ${name} of the cosmos! ✨ I am your sacred Tarot Oracle. Your arcana (${cardName}) have opened a portal—what questions echo in your spirit?`;
+
+          setMessages([
+            {
+              role: 'assistant',
+              content: welcomeText,
+            },
+          ]);
+        }
+      } catch (err) {
+        console.warn('Chat init error:', err);
+        if (isSubscribed) {
+          setMessages([
+            {
+              role: 'assistant',
+              content: `Greetings, ${name}! The stars are listening. What wisdom or clarification do you seek from your reading today?`,
+            },
+          ]);
+        }
+      } finally {
+        if (isSubscribed) setIsLoading(false);
+      }
     }
 
+    initSession();
+
+    return () => {
+      isSubscribed = false;
+    };
+  }, [name, zodiacSign, reading, cardName, language]);
+
+  const handleSend = async (messageText) => {
+    const textToSend = messageText || inputMessage;
+    if (!textToSend.trim() || isLoading) return;
+
+    const userMsg = { role: 'user', content: textToSend.trim() };
+    const currentHistory = [...messages, userMsg];
+    setMessages(currentHistory);
+    setInputMessage('');
+    setIsLoading(true);
+
     try {
-      const chatData = {
-        message: userMessage.content,
+      const data = await api.sendMessage({
+        message: textToSend.trim(),
+        sessionId,
         name,
         zodiacSign,
+        reading: typeof reading === 'string' ? reading : JSON.stringify(reading),
         cardName,
-        reading: reading || '',
-        isPremium,
         language,
-        cardInfo,
-        nfc_id: null,
-        messageHistory: messages.map(msg => ({
-          ...msg,
-          language
-        })),
-        session_id: sessionId,
-        maintainLanguage: true
-      };
+        messageHistory: currentHistory,
+      });
 
-      console.log('[ChatInterface] Sending chat message:', chatData);
-      console.log('💬 Sending message to FastAPI:', window.API_CONFIG.BASE_URL);
-      
-      const data = await window.API_CONFIG.post(
-        window.API_CONFIG.ENDPOINTS.CHAT,
-        chatData
-      );
-      
-      console.log('✅ Chat response received:', data);
-
-      if (mountedRef.current) {
-        const assistantMessage = {
+      if (data?.response) {
+        setMessages((prev) => [
+          ...prev,
+          { role: 'assistant', content: data.response },
+        ]);
+      } else {
+        setMessages((prev) => [
+          ...prev,
+          {
+            role: 'assistant',
+            content: 'The cosmic frequencies shift quietly... Trust your inner heart for the revelation.',
+          },
+        ]);
+      }
+    } catch (err) {
+      console.error('Send message error:', err);
+      setMessages((prev) => [
+        ...prev,
+        {
           role: 'assistant',
-          content: data.response,
-          timestamp: new Date().toISOString(),
-          language: language
-        };
-
-        setMessages(prev => [...prev, assistantMessage]);
-      }
-
-    } catch (error) {
-      console.error('[ChatInterface] Message sending error:', error);
-      if (mountedRef.current) {
-        setMessages(prev => [...prev, {
-          role: 'error',
-          content: error.message || 'Message failed to send. Please try again.',
-          language: language
-        }]);
-      }
+          content: 'The connection with the ether briefly rippled. Ask again and the cosmos will speak.',
+        },
+      ]);
     } finally {
-      if (mountedRef.current) {
-        setIsTyping(false);
-        setIsLoading(false);
-      }
+      setIsLoading(false);
     }
   };
 
   return (
-    <div className="neo-chat" data-language={language}>
-      
-      {/* Header */}
-      <div className="neo-chat-header">
-        <div className="neo-chat-header-content">
-          <img
-            src="/static/icons/eye.svg"
-            alt=""
-            className="neo-chat-header-icon"
-          />
-          <h2 className="neo-chat-title">
-            Discuss Your Reading
-          </h2>
-        </div>
-        <button
-          onClick={onClose}
-          className="neo-chat-close"
-          aria-label="Close chat"
-        >
-          ×
-        </button>
-      </div>
-
-      {/* Messages Container */}
-      <div className="neo-chat-messages">
-        
-        {/* Messages */}
-        {messages.map((msg, index) => (
-          <div
-            key={index}
-            className={`neo-chat-message neo-chat-message--${msg.role} ${
-              index === messages.length - 1 ? 'neo-chat-message--fade-in' : ''
-            }`}
-          >
-            <div className="neo-chat-message-content">
-              {msg.role === 'assistant' && (
-                <img
-                  src="/static/icons/eye.svg"
-                  alt=""
-                  className="neo-chat-message-icon"
-                />
-              )}
-              {msg.content}
+    <div
+      className="neo-chat-modal-overlay"
+      onClick={onClose}
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="chat-title"
+    >
+      <div className="neo-chat-modal" onClick={(e) => e.stopPropagation()}>
+        {/* Chat Header */}
+        <div className="neo-chat-header">
+          <div className="neo-chat-header-info">
+            <span className="neo-chat-avatar">🔮</span>
+            <div>
+              <h2 id="chat-title" className="neo-chat-title">
+                Talk to the Universe
+              </h2>
+              <p className="neo-chat-subtitle">
+                <span>Oracle tuned to <strong>{name}</strong></span>
+                {zodiacSign && <span>• {zodiacSign}</span>}
+              </p>
             </div>
           </div>
-        ))}
+          <button
+            onClick={onClose}
+            className="neo-chat-close-btn"
+            type="button"
+            aria-label="Close chat"
+          >
+            ✕
+          </button>
+        </div>
 
-        {/* Typing Indicator */}
-        {isTyping && (
-          <div className="neo-chat-message neo-chat-message--assistant neo-chat-message--typing">
-            <div className="neo-chat-typing-indicator">
-              <span />
-              <span />
-              <span />
+        {/* Spread Attunement Bar */}
+        <div className="neo-chat-attunement-bar">
+          <span>🎴</span>
+          <span>
+            Attuned Spread: <strong>{cardName}</strong>
+            {focusArea ? ` • Focus: ${focusArea}` : ''}
+          </span>
+        </div>
+
+        {/* Message Stream */}
+        <div className="neo-chat-messages">
+          {messages.map((msg, index) => (
+            <div
+              key={index}
+              className={`neo-chat-bubble-wrapper ${
+                msg.role === 'user' ? 'user-message' : 'bot-message'
+              }`}
+            >
+              {msg.role === 'assistant' && (
+                <span className="neo-chat-msg-avatar">🌌</span>
+              )}
+              <div className="neo-chat-bubble">
+                {renderFormattedParagraphs(msg.content, 'neo-chat-para')}
+              </div>
             </div>
+          ))}
+
+          {/* Typing Animation */}
+          {isLoading && (
+            <div className="neo-chat-bubble-wrapper bot-message">
+              <span className="neo-chat-msg-avatar">🌌</span>
+              <div className="neo-chat-bubble typing-indicator">
+                <span className="typing-dot" />
+                <span className="typing-dot" />
+                <span className="typing-dot" />
+              </div>
+            </div>
+          )}
+
+          <div ref={messagesEndRef} />
+        </div>
+
+        {/* Quick Suggestion Chips */}
+        {messages.length <= 3 && !isLoading && (
+          <div className="neo-chat-chips">
+            {quickPrompts.map((prompt, idx) => (
+              <button
+                key={idx}
+                type="button"
+                className="neo-chat-chip"
+                onClick={() => handleSend(prompt)}
+                disabled={isLoading}
+              >
+                {prompt}
+              </button>
+            ))}
           </div>
         )}
 
-        {/* Scroll anchor */}
-        <div ref={messagesEndRef} />
-      </div>
-
-      {/* Input Form */}
-      <form onSubmit={sendMessage} className="neo-chat-form">
-        <input
-          type="text"
-          value={newMessage}
-          onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Ask about your reading..."
-          disabled={isLoading}
-          className="neo-chat-input"
-          lang={language}
-          aria-label="Chat message"
-        />
-        <button
-          type="submit"
-          disabled={isLoading || !newMessage.trim()}
-          className="neo-chat-submit"
-          aria-label="Send message"
+        {/* Input Bar */}
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleSend();
+          }}
+          className="neo-chat-input-form"
         >
-          <img
-            src="/static/icons/send.svg"
-            alt="Send"
-            className="neo-chat-submit-icon"
+          <input
+            ref={inputRef}
+            type="text"
+            value={inputMessage}
+            onChange={(e) => setInputMessage(e.target.value)}
+            placeholder="Whisper your question to the cosmos..."
+            disabled={isLoading}
+            className="neo-chat-input"
           />
-        </button>
-      </form>
+          <button
+            type="submit"
+            disabled={isLoading || !inputMessage.trim()}
+            className="neo-chat-submit-btn"
+            aria-label="Send inquiry"
+          >
+            ➔
+          </button>
+        </form>
+      </div>
     </div>
   );
-};
-
-window.ChatInterface = ChatInterface;
+}

@@ -1,0 +1,538 @@
+/* ========================================
+   NEOARCANA - GLOBAL STYLES
+   Body, HTML, and application-wide base styles
+   ======================================== */
+
+/* -------------------- HTML & BODY -------------------- */
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--neo-background);
+  color: var(--neo-text);
+  font-family: 'Helvetica', 'Arial', sans-serif;
+  font-size: var(--neo-font-base);
+  line-height: 1.6;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+  min-height: 100vh;
+  position: relative;
+}
+
+/* Prevent horizontal scroll */
+body, html {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+/* -------------------- SELECTION STYLING -------------------- */
+
+::selection {
+  background: rgba(165, 154, 209, 0.3);
+  color: var(--neo-text);
+}
+
+::-moz-selection {
+  background: rgba(165, 154, 209, 0.3);
+  color: var(--neo-text);
+}
+
+/* -------------------- SCROLLBAR STYLING -------------------- */
+
+/* Webkit browsers (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(165, 154, 209, 0.5);
+  border-radius: 5px;
+  transition: background var(--neo-transition-normal);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(165, 154, 209, 0.7);
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(165, 154, 209, 0.5) rgba(0, 0, 0, 0.2);
+}
+
+/* -------------------- BASE ELEMENTS -------------------- */
+
+a {
+  color: var(--neo-primary);
+  text-decoration: none;
+  transition: color var(--neo-transition-normal);
+}
+
+a:hover {
+  color: var(--neo-primary-light);
+}
+
+a:focus {
+  outline: 2px solid rgba(165, 154, 209, 0.5);
+  outline-offset: 2px;
+}
+
+img {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+svg {
+  max-width: 100%;
+  height: auto;
+}
+
+/* -------------------- FORM ELEMENTS RESET -------------------- */
+
+button {
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  padding: 0;
+}
+
+button:focus {
+  outline: 2px solid rgba(165, 154, 209, 0.5);
+  outline-offset: 2px;
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+  font-size: inherit;
+  color: inherit;
+  border: none;
+  outline: none;
+  background: none;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  outline: 2px solid rgba(165, 154, 209, 0.5);
+  outline-offset: 2px;
+}
+
+/* Remove default number input spinners */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
+/* -------------------- FOCUS STATES -------------------- */
+
+:focus-visible {
+  outline: 2px solid rgba(165, 154, 209, 0.5);
+  outline-offset: 2px;
+  border-radius: var(--neo-radius-sm);
+}
+
+/* Remove focus outline for mouse users */
+:focus:not(:focus-visible) {
+  outline: none;
+}
+
+/* -------------------- MODAL ACTIVE STATE -------------------- */
+
+body.modal-active {
+  overflow: hidden;
+}
+
+/* -------------------- ROOT CONTAINER -------------------- */
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  position: relative;
+  z-index: var(--z-content);
+}
+
+/* -------------------- CANVAS CONTAINER -------------------- */
+
+#canvas_container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-background);
+  opacity: 0;
+  transition: opacity 1s ease-in-out;
+  pointer-events: none;
+}
+
+#canvas_container.loaded,
+#canvas_container.fade-in {
+  opacity: 1;
+}
+
+#canvas_container canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+/* -------------------- LOADER CONTAINER -------------------- */
+
+#loader-container {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-loader);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+/* -------------------- UTILITY CLASSES -------------------- */
+
+.no-scroll {
+  overflow: hidden;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px !important;
+  height: 1px !important;
+  padding: 0 !important;
+  margin: -1px !important;
+  overflow: hidden !important;
+  clip: rect(0, 0, 0, 0) !important;
+  white-space: nowrap !important;
+  border: 0 !important;
+}
+
+/* -------------------- PRINT STYLES -------------------- */
+
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+  }
+
+  #canvas_container,
+  #loader-container,
+  .no-print {
+    display: none !important;
+  }
+
+  * {
+    box-shadow: none !important;
+    text-shadow: none !important;
+  }
+}
+
+/* -------------------- RESPONSIVE TYPOGRAPHY -------------------- */
+
+@media (max-width: 768px) {
+  html {
+    font-size: 14px;
+  }
+}
+
+@media (max-width: 480px) {
+  html {
+    font-size: 13px;
+  }
+}
+
+@media (min-width: 1400px) {
+  html {
+    font-size: 18px;
+  }
+}
+
+/* -------------------- IOS SPECIFIC FIXES -------------------- */
+
+@supports (-webkit-touch-callout: none) {
+  /* Fix for 100vh on iOS */
+  body {
+    min-height: -webkit-fill-available;
+  }
+
+  /* Fix backdrop-filter for iOS */
+  .backdrop-blur,
+  [class*="backdrop-blur"] {
+    -webkit-backdrop-filter: blur(10px);
+  }
+
+  /* Fix scrolling */
+  * {
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Prevent zoom on input focus */
+  input,
+  select,
+  textarea {
+    font-size: 16px;
+  }
+
+  /* Fix position fixed on iOS */
+  .fixed-element {
+    position: -webkit-sticky;
+    position: sticky;
+  }
+}
+
+/* -------------------- HIGH CONTRAST MODE -------------------- */
+
+@media (prefers-contrast: high) {
+  body {
+    background: #000;
+    color: #fff;
+  }
+
+  * {
+    border-color: currentColor !important;
+  }
+
+  ::selection {
+    background: #fff;
+    color: #000;
+  }
+}
+
+/* -------------------- REDUCED MOTION -------------------- */
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  #canvas_container {
+    display: none !important;
+  }
+}
+
+/* -------------------- DARK MODE SUPPORT -------------------- */
+
+@media (prefers-color-scheme: dark) {
+  /* NeoArcana is already dark-themed, so no changes needed */
+  /* But we can add extra contrast if needed */
+  body {
+    background-color: #000;
+  }
+}
+
+/* -------------------- LANDSCAPE MODE FIXES -------------------- */
+
+@media (max-height: 500px) and (orientation: landscape) {
+  body {
+    overflow-y: auto;
+  }
+
+  .parent-container {
+    min-height: auto;
+    padding: var(--neo-space-md) 0;
+  }
+}
+
+/* -------------------- TOUCH DEVICE OPTIMIZATIONS -------------------- */
+
+@media (hover: none) and (pointer: coarse) {
+  /* Disable hover effects on touch devices */
+  *:hover {
+    /* Hover styles won't apply on touch devices */
+  }
+
+  /* Ensure minimum touch target size */
+  button,
+  a,
+  input,
+  select,
+  textarea {
+    min-height: 44px;
+    min-width: 44px;
+  }
+
+  /* Add active state feedback for touch */
+  button:active,
+  a:active {
+    opacity: 0.7;
+    transform: scale(0.98);
+  }
+}
+
+/* -------------------- SAFE AREA INSETS (for notched devices) -------------------- */
+
+@supports (padding: env(safe-area-inset-top)) {
+  body {
+    padding-top: env(safe-area-inset-top);
+    padding-bottom: env(safe-area-inset-bottom);
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+/* -------------------- SKELETON LOADING STATES -------------------- */
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 25%,
+    rgba(255, 255, 255, 0.1) 50%,
+    rgba(255, 255, 255, 0.05) 75%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+  border-radius: var(--neo-radius-sm);
+}
+
+@keyframes skeleton-loading {
+  0% {
+    background-position: 200% 0;
+  }
+  100% {
+    background-position: -200% 0;
+  }
+}
+
+/* -------------------- ACCESSIBILITY HELPERS -------------------- */
+
+/* Skip to main content link */
+.skip-to-main {
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: var(--neo-primary);
+  color: var(--neo-text);
+  padding: var(--neo-space-md);
+  z-index: var(--z-modal);
+  text-decoration: none;
+}
+
+.skip-to-main:focus {
+  top: 0;
+}
+
+/* Focus trap for modals */
+.focus-trap {
+  position: fixed;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* -------------------- PERFORMANCE OPTIMIZATIONS -------------------- */
+
+/* Hardware acceleration for animations */
+.will-change-transform {
+  will-change: transform;
+}
+
+.will-change-opacity {
+  will-change: opacity;
+}
+
+/* Prevent layout shift */
+img[width],
+img[height] {
+  height: auto;
+}
+
+/* Optimize font rendering */
+body {
+  font-feature-settings: 'kern' 1;
+  font-kerning: normal;
+  text-rendering: optimizeLegibility;
+}
+
+/* -------------------- EXPERIMENTAL FEATURES -------------------- */
+
+/* Backdrop filter support detection */
+@supports (backdrop-filter: blur(10px)) {
+  .glass-effect {
+    backdrop-filter: blur(10px);
+  }
+}
+
+@supports not (backdrop-filter: blur(10px)) {
+  .glass-effect {
+    background: rgba(0, 0, 0, 0.8);
+  }
+}
+
+/* -------------------- ERROR BOUNDARIES -------------------- */
+
+.error-boundary {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  padding: var(--neo-space-xl);
+  text-align: center;
+}
+
+.error-boundary h1 {
+  color: var(--neo-error);
+  margin-bottom: var(--neo-space-lg);
+}
+
+.error-boundary p {
+  color: rgba(255, 255, 255, 0.7);
+  margin-bottom: var(--neo-space-xl);
+  max-width: 600px;
+}
+
+/* -------------------- LOADING STATES -------------------- */
+
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  backdrop-filter: blur(5px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: var(--z-modal);
+}
+
+/* -------------------- END OF GLOBAL STYLES -------------------- */

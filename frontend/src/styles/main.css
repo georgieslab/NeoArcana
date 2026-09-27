@@ -1,0 +1,76 @@
+/* ============================================
+   NEOARCANA CSS - MODULAR ARCHITECTURE
+   ============================================ */
+
+/* PHASE 1: FOUNDATION */
+@import './00-base/reset.css';
+@import './00-base/variables.css';
+@import './00-base/typography.css';
+@import './00-base/animations.css';
+
+/* PHASE 1: GLOBAL */
+@import './01-global/global.css';
+
+/* PHASE 2: COMPONENTS */
+@import './02-components/buttons.css';
+@import './02-components/cards.css';
+@import './02-components/forms.css';
+@import './02-components/modals.css';
+@import './02-components/loaders.css';
+@import './02-components/navigation.css';
+@import './galaxy_bg.css';
+@import './CosmicButton.css';
+@import './02-components/cosmic-date-picker.css';
+
+/* PHASE 3: FEATURES */
+@import './03-features/step0.css';
+@import './03-features/step1trial.css';
+@import './03-features/step2trial.css';
+@import './03-features/step3trial.css';
+@import './03-features/threecardinterpretation.css';
+@import './03-features/chat-interface.css';
+@import './03-features/chat.css';
+@import './03-features/story-behind.css';
+@import './03-features/nfcstep2.css';
+@import './03-features/nfc-reading.css';
+@import './03-features/nfc-registration.css';
+@import './03-features/nfc-three-cards.css';
+@import './03-features/trial-flow.css';
+@import './03-features/premium-flow.css';
+
+/* PHASE 4: LAYOUTS */
+@import './04-layouts/containers.css';
+@import './04-layouts/reading-layouts.css';
+
+/* PHASE 5: UTILITIES */
+@import './05-utilities/utilities.css';
+
+/* NEOARCANA VIEWPORT & COSMIC BACKGROUND ANCHOR */
+.neoarcana-app-wrapper {
+  position: relative;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+  background-color: transparent;
+}
+
+.neoarcana-viewport {
+  position: relative;
+  z-index: 2;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+@keyframes pulseGlow {
+  0% {
+    transform: translate(-50%, -50%) scale(0.9);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.15);
+    opacity: 0.9;
+  }
+}

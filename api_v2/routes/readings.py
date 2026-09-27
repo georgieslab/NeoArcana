@@ -104,9 +104,9 @@ async def three_card_reading(
             logger.info(f"Three-card reading request for NFC user: {nfc_id}")
             reading_data = await reading_service.generate_three_card_reading(nfc_id)
         else:
-            # Trial user - simple cosmic reading
-            logger.info("Three-card reading request for trial user")
-            reading_data = await reading_service.generate_trial_three_card_reading()
+            # Trial user - personalized cosmic reading
+            logger.info(f"Three-card reading request for trial user (userData={request.userData})")
+            reading_data = await reading_service.generate_trial_three_card_reading(request.userData)
         
         return ThreeCardResponse(
             success=True,

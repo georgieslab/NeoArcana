@@ -1,0 +1,451 @@
+/* ========================================
+   NEOARCANA - NFC THREE-CARD READING
+   Past/Present/Future spread layouts
+   ======================================== */
+
+/* -------------------- THREE CARD CONTAINER -------------------- */
+
+.three-card-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: var(--neo-space-xl);
+  animation: fadeIn 0.5s ease;
+}
+
+.three-card-reveal-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+/* -------------------- CARDS REVEAL SECTION -------------------- */
+
+.cards-reveal-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: var(--neo-space-xl);
+  margin-bottom: var(--neo-space-xxl);
+  width: 100%;
+}
+
+.card-wrapper {
+  width: 100%;
+  height: 300px;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+  position: relative;
+  margin-bottom: var(--neo-space-lg);
+}
+
+.card-container.revealed .card-wrapper {
+  transform: rotateY(180deg);
+}
+
+/* -------------------- POSITION LABELS -------------------- */
+
+.position-label {
+  font-size: var(--neo-font-lg);
+  margin-bottom: var(--neo-space-md);
+  color: var(--neo-gold);
+  font-weight: var(--neo-font-medium);
+  text-align: center;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.position-past {
+  color: rgba(165, 154, 209, 0.8);
+}
+
+.position-present {
+  color: var(--neo-gold);
+}
+
+.position-future {
+  color: var(--neo-secondary);
+}
+
+/* -------------------- THREE CARD ERROR -------------------- */
+
+.three-card-error {
+  background: rgba(255, 0, 0, 0.1);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  border-radius: var(--neo-radius-sm);
+  padding: var(--neo-space-lg);
+  margin: var(--neo-space-xl);
+  text-align: center;
+  color: var(--neo-error);
+  animation: shake 0.5s ease-in-out;
+}
+
+/* -------------------- THREE CARD LOADING -------------------- */
+
+.three-card-loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  color: var(--neo-primary);
+  text-align: center;
+}
+
+.three-card-loading-spinner {
+  width: 80px;
+  height: 80px;
+  border: 6px solid rgba(165, 154, 209, 0.2);
+  border-top-color: var(--neo-primary);
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin-bottom: var(--neo-space-xl);
+}
+
+.three-card-loading-text {
+  font-size: var(--neo-font-xl);
+  color: var(--neo-primary);
+  margin-bottom: var(--neo-space-md);
+}
+
+.three-card-loading-subtext {
+  font-size: var(--neo-font-base);
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* -------------------- CARD POSITIONS GRID -------------------- */
+
+.three-card-positions {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--neo-space-xxl);
+  width: 100%;
+  max-width: 1000px;
+  margin: var(--neo-space-xxl) 0;
+}
+
+.card-position {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--neo-space-md);
+  animation: fadeInUp 0.6s ease forwards;
+  opacity: 0;
+}
+
+.card-position:nth-child(1) {
+  animation-delay: 0.2s;
+}
+
+.card-position:nth-child(2) {
+  animation-delay: 0.4s;
+}
+
+.card-position:nth-child(3) {
+  animation-delay: 0.6s;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* -------------------- CARD POSITION CONTENT -------------------- */
+
+.card-position-wrapper {
+  position: relative;
+  width: 100%;
+  max-width: 250px;
+  perspective: 1000px;
+}
+
+.card-position-inner {
+  width: 100%;
+  aspect-ratio: 2/3;
+  transform-style: preserve-3d;
+  transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+  position: relative;
+}
+
+.card-position-wrapper.revealed .card-position-inner {
+  transform: rotateY(180deg);
+}
+
+.card-position-face {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: var(--neo-radius-lg);
+  overflow: hidden;
+  box-shadow: var(--neo-shadow-md);
+}
+
+.card-position-back {
+  background: linear-gradient(135deg, var(--neo-primary-dark), var(--neo-primary));
+  border: 2px solid var(--neo-gold);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-position-front {
+  transform: rotateY(180deg);
+  border: 2px solid var(--neo-primary);
+}
+
+.card-position-front img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* -------------------- CARD NAME DISPLAY -------------------- */
+
+.card-position-name {
+  text-align: center;
+  font-size: var(--neo-font-lg);
+  color: var(--neo-text);
+  font-weight: var(--neo-font-medium);
+  min-height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* -------------------- INTERPRETATION SECTIONS -------------------- */
+
+.three-card-interpretation {
+  width: 100%;
+  max-width: 900px;
+  margin: var(--neo-space-xxl) auto;
+  padding: var(--neo-space-xl);
+  background: rgba(165, 154, 209, 0.05);
+  border-radius: var(--neo-radius-lg);
+  border: 1px solid rgba(165, 154, 209, 0.1);
+}
+
+.interpretation-section {
+  margin-bottom: var(--neo-space-xxl);
+  padding: var(--neo-space-lg);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: var(--neo-radius-md);
+  border-left: 4px solid var(--neo-primary);
+}
+
+.interpretation-section:last-child {
+  margin-bottom: 0;
+}
+
+.interpretation-section-title {
+  font-size: var(--neo-font-2xl);
+  color: var(--neo-secondary);
+  margin-bottom: var(--neo-space-md);
+  display: flex;
+  align-items: center;
+  gap: var(--neo-space-sm);
+}
+
+.interpretation-section-icon {
+  font-size: 1.5rem;
+}
+
+.interpretation-section-content {
+  font-size: var(--neo-font-lg);
+  line-height: 1.8;
+  color: var(--neo-text);
+  white-space: pre-wrap;
+}
+
+/* Color variations for sections */
+.interpretation-section.past {
+  border-left-color: rgba(165, 154, 209, 0.8);
+}
+
+.interpretation-section.present {
+  border-left-color: var(--neo-gold);
+}
+
+.interpretation-section.future {
+  border-left-color: var(--neo-secondary);
+}
+
+.interpretation-section.integration {
+  border-left-color: var(--neo-primary);
+  background: rgba(165, 154, 209, 0.08);
+}
+
+/* -------------------- REVEAL CONTROLS -------------------- */
+
+.reveal-controls {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: var(--neo-space-md);
+  margin: var(--neo-space-xl) 0;
+}
+
+.reveal-instruction {
+  text-align: center;
+  font-size: var(--neo-font-lg);
+  color: var(--neo-secondary);
+  font-style: italic;
+}
+
+.reveal-button {
+  padding: var(--neo-space-lg) var(--neo-space-xxl);
+  background: var(--gradient-premium);
+  border: 2px solid var(--neo-gold);
+  border-radius: var(--neo-radius-full);
+  color: var(--neo-text);
+  font-size: var(--neo-font-lg);
+  font-weight: var(--neo-font-semibold);
+  cursor: pointer;
+  transition: all var(--neo-transition-normal);
+  box-shadow: var(--neo-shadow-cosmic);
+}
+
+.reveal-button:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px rgba(255, 215, 0, 0.4);
+}
+
+.reveal-button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* -------------------- MOBILE RESPONSIVE -------------------- */
+
+@media (max-width: 768px) {
+  .three-card-positions {
+    grid-template-columns: 1fr;
+    gap: var(--neo-space-xl);
+  }
+
+  .cards-reveal-section {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .card-container {
+    width: 80%;
+    max-width: 250px;
+    margin-bottom: var(--neo-space-xxl);
+  }
+
+  .three-card-interpretation {
+    padding: var(--neo-space-lg);
+  }
+
+  .interpretation-section {
+    padding: var(--neo-space-md);
+  }
+
+  .interpretation-section-title {
+    font-size: var(--neo-font-xl);
+  }
+
+  .interpretation-section-content {
+    font-size: var(--neo-font-base);
+  }
+
+  .card-position-wrapper {
+    max-width: 200px;
+  }
+}
+
+/* -------------------- ANIMATIONS -------------------- */
+
+@keyframes cardRevealPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0.7);
+  }
+  70% {
+    box-shadow: 0 0 0 20px rgba(255, 215, 0, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(255, 215, 0, 0);
+  }
+}
+
+.card-position-wrapper.ready-to-reveal {
+  animation: cardRevealPulse 2s infinite;
+}
+
+/* -------------------- ACCESSIBILITY -------------------- */
+
+.card-position-wrapper:focus,
+.reveal-button:focus {
+  outline: 2px solid rgba(165, 154, 209, 0.5);
+  outline-offset: 4px;
+}
+
+/* Keyboard navigation */
+.card-position-wrapper[tabindex="0"]:focus {
+  outline: 2px solid var(--neo-gold);
+  outline-offset: 4px;
+  border-radius: var(--neo-radius-lg);
+}
+
+/* High contrast mode */
+@media (prefers-contrast: high) {
+  .three-card-interpretation {
+    border: 2px solid var(--neo-primary);
+  }
+  
+  .interpretation-section {
+    border-left-width: 6px;
+  }
+  
+  .position-label {
+    border: 1px solid currentColor;
+    padding: var(--neo-space-sm);
+  }
+}
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .card-position,
+  .card-position-inner,
+  .reveal-button {
+    animation: none;
+    transition: none;
+  }
+  
+  .card-position-wrapper.revealed .card-position-inner {
+    transform: none;
+  }
+}
+
+/* -------------------- PREMIUM BADGE -------------------- */
+
+.three-card-premium-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--neo-space-sm);
+  padding: var(--neo-space-sm) var(--neo-space-md);
+  background: var(--gradient-premium);
+  border-radius: var(--neo-radius-full);
+  font-size: var(--neo-font-sm);
+  font-weight: var(--neo-font-semibold);
+  color: var(--neo-background);
+  margin-bottom: var(--neo-space-md);
+}
+
+.premium-badge-icon {
+  font-size: 1rem;
+}

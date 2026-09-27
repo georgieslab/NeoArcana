@@ -10,7 +10,9 @@ from datetime import datetime
 from pydantic import BaseModel
 from fastapi import FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, FileResponse
+from fastapi.staticfiles import StaticFiles
+import os
 import logging
 import random
 import string
@@ -340,11 +342,46 @@ async def custom_swagger_ui_html():
     """)
 
 # ============================================================================
-# ROOT & HEALTH ENDPOINTS
+# FRONTEND ASSET PATHS & ROOT
 # ============================================================================
+FRONTEND_DIST = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "frontend", "dist"))
+STATIC_DIR = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "static"))
+
+# Mount assets directory from Vite build if present
+assets_dir = os.path.join(FRONTEND_DIST, "assets")
+if os.path.exists(assets_dir):
+    app.mount("/assets", StaticFiles(directory=assets_dir), name="assets")
+
+# Mount static files directory
+dist_static = os.path.join(FRONTEND_DIST, "static")
+if os.path.exists(dist_static):
+    app.mount("/static", StaticFiles(directory=dist_static), name="dist_static")
+elif os.path.exists(STATIC_DIR):
+    app.mount("/static", StaticFiles(directory=STATIC_DIR), name="static")
+
 @app.get("/")
 async def root():
-    """API root with information"""
+    """Serve the React frontend if built, or API info"""
+    index_file = os.path.join(FRONTEND_DIST, "index.html")
+    if os.path.exists(index_file):
+        return FileResponse(index_file)
+    return {
+        "message": "Welcome to NeoArcana API v2! 🌟",
+        "docs": "Visit /docs for interactive API documentation",
+        "version": "2.0.0",
+        "endpoints": {
+            "registration": "/api/nfc/register",
+            "daily_reading": "/api/nfc/daily_affirmation",
+            "three_card": "/api/nfc/three_card_reading",
+            "weekly_reading": "/api/nfc/weekly_reading",
+            "chat": "/api/chat",
+            "start_chat": "/api/start_chat"
+        }
+    }
+
+@app.get("/api/info")
+async def api_info():
+    """API info endpoint"""
     return {
         "message": "Welcome to NeoArcana API v2! 🌟",
         "docs": "Visit /docs for interactive API documentation",
@@ -526,6 +563,25 @@ async def create_poster(admin_key: str = None):
 app.include_router(registration.router, prefix="/api/nfc", tags=["Registration & Users"])
 app.include_router(readings.router, prefix="/api/nfc", tags=["Tarot Readings"])
 app.include_router(chat.router, prefix="/api", tags=["AI Chat"])
+
+# ============================================================================
+# SPA CATCH-ALL ROUTE (Serves React frontend for client-side routing)
+# ============================================================================
+@app.get("/{full_path:path}", include_in_schema=False)
+async def serve_spa(full_path: str):
+    """Serve frontend SPA routes, fallback to index.html"""
+    if full_path.startswith(("api", "docs", "redoc", "openapi.json", "health", "test-claude")):
+        raise HTTPException(status_code=404, detail="Not Found")
+    
+    file_path = os.path.join(FRONTEND_DIST, full_path)
+    if os.path.isfile(file_path):
+        return FileResponse(file_path)
+    
+    index_file = os.path.join(FRONTEND_DIST, "index.html")
+    if os.path.exists(index_file):
+        return FileResponse(index_file)
+    
+    raise HTTPException(status_code=404, detail="Page not found")
 
 # ============================================================================
 # STARTUP EVENT

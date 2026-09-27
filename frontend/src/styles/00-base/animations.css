@@ -1,0 +1,783 @@
+/* ========================================
+   NEOARCANA - ANIMATIONS
+   All @keyframes in one organized file
+   ======================================== */
+
+/* -------------------- FADE ANIMATIONS -------------------- */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes neo-fade-in {
+  from { 
+    opacity: 0; 
+    transform: translateY(20px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes neo-fade-out {
+  from { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+  to { 
+    opacity: 0; 
+    transform: translateY(-20px); 
+  }
+}
+
+@keyframes cosmic-fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes cosmicFadeIn {
+  from { 
+    opacity: 0; 
+    transform: translateY(10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes cosmicFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* -------------------- SLIDE ANIMATIONS -------------------- */
+
+@keyframes slideUp {
+  from {
+    transform: translateY(100%);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+@keyframes neo-slide-up {
+  from { 
+    transform: translateY(100%); 
+  }
+  to { 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes cosmicSlideIn {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+@keyframes cosmicSlideOut {
+  from {
+    transform: translateY(0);
+    opacity: 1;
+  }
+  to {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+}
+
+@keyframes cosmicSlideUp {
+  from {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes messageSlideIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* -------------------- SPIN/ROTATE ANIMATIONS -------------------- */
+
+@keyframes spin {
+  to { 
+    transform: rotate(360deg); 
+  }
+}
+
+@keyframes spin2 {
+  from { 
+    --angle: 0deg; 
+  }
+  to { 
+    --angle: 360deg; 
+  }
+}
+
+@keyframes cosmic-spin {
+  0% { 
+    transform: rotate(0deg); 
+  }
+  100% { 
+    transform: rotate(360deg); 
+  }
+}
+
+@keyframes cosmic-rotate {
+  0% { 
+    transform: rotate(0deg); 
+  }
+  100% { 
+    transform: rotate(360deg); 
+  }
+}
+
+@keyframes neo-rotate {
+  from { 
+    transform: rotate(0deg); 
+  }
+  to { 
+    transform: rotate(360deg); 
+  }
+}
+
+@keyframes spinGalaxy {
+  from { 
+    transform: rotate(0deg); 
+  }
+  to { 
+    transform: rotate(360deg); 
+  }
+}
+
+@keyframes spinGradient {
+  0% { 
+    transform: rotate(0deg); 
+  }
+  100% { 
+    transform: rotate(360deg); 
+  }
+}
+
+/* -------------------- PULSE ANIMATIONS -------------------- */
+
+@keyframes pulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(165, 154, 209, 0.4);
+  }
+  70% {
+    box-shadow: 0 0 0 10px rgba(165, 154, 209, 0);
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(165, 154, 209, 0);
+  }
+}
+
+@keyframes cosmic-pulse {
+  0%, 100% { 
+    opacity: 0.8; 
+    transform: scale(1); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.05); 
+  }
+}
+
+@keyframes cosmicPulse {
+  0%, 100% { 
+    transform: scale(0.3); 
+    opacity: 0.3; 
+  }
+  50% { 
+    transform: scale(1); 
+    opacity: 1; 
+  }
+}
+
+@keyframes neo-pulse {
+  0% { 
+    transform: scale(0.8); 
+    opacity: 0.7; 
+  }
+  50% { 
+    transform: scale(1.1); 
+    opacity: 1; 
+  }
+  100% { 
+    transform: scale(0.8); 
+    opacity: 0.7; 
+  }
+}
+
+@keyframes neo-pulse-reverse {
+  0% { 
+    transform: scale(1.1); 
+    opacity: 0.7; 
+  }
+  50% { 
+    transform: scale(0.9); 
+    opacity: 0.3; 
+  }
+  100% { 
+    transform: scale(1.1); 
+    opacity: 0.7; 
+  }
+}
+
+@keyframes pulse1 {
+  0% { 
+    box-shadow: 0 0 0 0 rgba(192, 181, 250, 0.3); 
+  }
+  70% { 
+    box-shadow: 0 0 0 10px rgba(210, 201, 255, 0.5); 
+  }
+  100% { 
+    box-shadow: 0 0 0 0 rgba(168, 151, 253, 0.2); 
+  }
+}
+
+@keyframes pulse2 {
+  0% { 
+    box-shadow: 0 0 0 0 rgba(173, 103, 45, 0.4); 
+  }
+  70% { 
+    box-shadow: 0 0 0 10px rgba(244, 163, 97, 0.3); 
+  }
+  100% { 
+    box-shadow: 0 0 0 0 rgba(244, 163, 97, 0.2); 
+  }
+}
+
+@keyframes pulse3 {
+  0% { 
+    box-shadow: 0 0 0 0 rgba(181, 250, 205, 0.3); 
+  }
+  70% { 
+    box-shadow: 0 0 0 10px rgba(201, 255, 232, 0.5); 
+  }
+  100% { 
+    box-shadow: 0 0 0 0 rgba(151, 253, 221, 0.2); 
+  }
+}
+
+@keyframes pulseOrange {
+  0% { 
+    box-shadow: 0 0 0 0 rgba(255, 140, 59, 0.4); 
+  }
+  70% { 
+    box-shadow: 0 0 0 10px rgba(255, 140, 59, 0.3); 
+  }
+  100% { 
+    box-shadow: 0 0 0 0 rgba(255, 140, 59, 0.2); 
+  }
+}
+
+@keyframes neo-success-pulse {
+  0% { 
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.4); 
+  }
+  70% { 
+    box-shadow: 0 0 0 10px rgba(76, 175, 80, 0); 
+  }
+  100% { 
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0); 
+  }
+}
+
+/* -------------------- GLOW ANIMATIONS -------------------- */
+
+@keyframes glowPulse {
+  0% { 
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3)); 
+  }
+  50% { 
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.5)); 
+  }
+  100% { 
+    filter: drop-shadow(0 0 8px rgba(255, 255, 255, 0.3)); 
+  }
+}
+
+@keyframes cosmic-glow {
+  0% { 
+    box-shadow: 
+      inset 0 0 5px 1px rgba(165, 154, 209, 0.1),
+      0 0 10px 1px var(--neo-glow-color-soft); 
+  }
+  50% { 
+    box-shadow: 
+      inset 0 0 5px 1px rgba(165, 154, 209, 0.15),
+      0 0 15px 2px var(--neo-glow-color-soft); 
+  }
+  100% { 
+    box-shadow: 
+      inset 0 0 5px 1px rgba(165, 154, 209, 0.1),
+      0 0 10px 1px var(--neo-glow-color-soft); 
+  }
+}
+
+@keyframes preRevealGlow {
+  0% {
+    box-shadow: 0 0 10px rgba(165, 154, 209, 0.3);
+    transform: scale(1);
+  }
+  50% {
+    box-shadow: 0 0 50px rgba(165, 154, 209, 0.8),
+                0 0 100px rgba(244, 162, 97, 0.5);
+    transform: scale(1.02);
+  }
+  100% {
+    box-shadow: 0 0 30px rgba(165, 154, 209, 0.5);
+    transform: scale(1);
+  }
+}
+
+/* -------------------- CARD ANIMATIONS -------------------- */
+
+@keyframes spinCard {
+  0% { 
+    transform: rotateY(0deg); 
+  }
+  100% { 
+    transform: rotateY(180deg); 
+  }
+}
+
+@keyframes cosmic-card-pulse {
+  0%, 100% { 
+    transform: scale(1);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4), 0 0 0 1px rgba(165, 154, 209, 0.2);
+  }
+  50% { 
+    transform: scale(1.02);
+    box-shadow: 0 25px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(165, 154, 209, 0.4);
+  }
+}
+
+@keyframes cardRevealGalactic {
+  0% {
+    transform: rotateY(0deg);
+    box-shadow: 0 0 10px rgba(165, 154, 209, 0.3);
+  }
+  25% {
+    transform: rotateY(0deg);
+    box-shadow: 0 0 80px rgba(165, 154, 209, 0.8), 
+                0 0 100px rgba(244, 162, 97, 0.5);
+  }
+  100% {
+    transform: rotateY(180deg);
+    box-shadow: 0 0 30px rgba(165, 154, 209, 0.5);
+  }
+}
+
+@keyframes cardNameAppear {
+  from { 
+    opacity: 0; 
+    transform: translateY(10px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+@keyframes sectionAppear {
+  from { 
+    opacity: 0; 
+    transform: translateY(15px); 
+  }
+  to { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+}
+
+/* -------------------- BOUNCE ANIMATIONS -------------------- */
+
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% { 
+    transform: translateY(0); 
+  }
+  40% { 
+    transform: translateY(-10px); 
+  }
+  60% { 
+    transform: translateY(-5px); 
+  }
+}
+
+@keyframes cosmic-bounce {
+  0%, 100% { 
+    transform: translateY(-50%) scale(1); 
+  }
+  50% { 
+    transform: translateY(-50%) scale(1.2); 
+  }
+}
+
+@keyframes cosmicBounce {
+  0%, 100% { 
+    transform: translateY(0); 
+  }
+  50% { 
+    transform: translateY(-4px); 
+  }
+}
+
+@keyframes trial3Bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: rotate(45deg) translateY(0);
+  }
+  40% {
+    transform: rotate(45deg) translateY(-10px);
+  }
+  60% {
+    transform: rotate(45deg) translateY(-5px);
+  }
+}
+
+/* -------------------- SHAKE ANIMATIONS -------------------- */
+
+@keyframes shake {
+  0%, 100% { 
+    transform: translateX(0); 
+  }
+  25% { 
+    transform: translateX(-10px); 
+  }
+  75% { 
+    transform: translateX(10px); 
+  }
+}
+
+@keyframes cosmic-shake {
+  0%, 100% { 
+    transform: translateX(0); 
+  }
+  25% { 
+    transform: translateX(-5px); 
+  }
+  75% { 
+    transform: translateX(5px); 
+  }
+}
+
+@keyframes neo-shake {
+  0%, 100% { 
+    transform: translateX(0); 
+  }
+  10%, 30%, 50%, 70%, 90% { 
+    transform: translateX(-5px); 
+  }
+  20%, 40%, 60%, 80% { 
+    transform: translateX(5px); 
+  }
+}
+
+@keyframes cosmicShake {
+  0%, 100% { 
+    transform: translateX(0); 
+  }
+  25% { 
+    transform: translateX(-10px); 
+  }
+  75% { 
+    transform: translateX(10px); 
+  }
+}
+
+/* -------------------- FLOAT ANIMATIONS -------------------- */
+
+@keyframes float {
+  0%, 100% { 
+    transform: rotate(0deg) translateY(0); 
+  }
+  25% { 
+    transform: rotate(90deg) translateY(-5px); 
+  }
+  50% { 
+    transform: rotate(180deg) translateY(0); 
+  }
+  75% { 
+    transform: rotate(270deg) translateY(5px); 
+  }
+}
+
+@keyframes cosmic-float {
+  0%, 100% { 
+    transform: translateY(0) translateX(0); 
+  }
+  25% { 
+    transform: translateY(-20px) translateX(10px); 
+  }
+  50% { 
+    transform: translateY(-10px) translateX(-5px); 
+  }
+  75% { 
+    transform: translateY(-30px) translateX(-10px); 
+  }
+}
+
+@keyframes cosmicFloat {
+  0%, 100% { 
+    transform: translateY(0); 
+  }
+  50% { 
+    transform: translateY(-10px); 
+  }
+}
+
+/* -------------------- SPECIAL EFFECTS -------------------- */
+
+@keyframes sparkle {
+  0% {
+    transform: scale(0) rotate(0deg);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1) rotate(180deg);
+    opacity: 0;
+  }
+}
+
+@keyframes ripple {
+  to {
+    transform: scale(4);
+    opacity: 0;
+  }
+}
+
+@keyframes neo-ripple {
+  to {
+    transform: scale(2);
+    opacity: 0;
+  }
+}
+
+@keyframes typing {
+  0%, 100% { 
+    transform: translateY(0); 
+  }
+  50% { 
+    transform: translateY(-5px); 
+  }
+}
+
+@keyframes cosmic-twinkle {
+  0%, 100% { 
+    opacity: 0.3; 
+    transform: scale(1); 
+  }
+  50% { 
+    opacity: 1; 
+    transform: scale(1.2); 
+  }
+}
+
+@keyframes cosmic-wiggle {
+  0%, 100% { 
+    transform: rotate(15deg) scale(1); 
+  }
+  25% { 
+    transform: rotate(18deg) scale(1.05); 
+  }
+  75% { 
+    transform: rotate(12deg) scale(0.95); 
+  }
+}
+
+/* -------------------- GRADIENT ANIMATIONS -------------------- */
+
+@keyframes cosmicGradient {
+  0% { 
+    background-position: 0% 50%; 
+  }
+  50% { 
+    background-position: 100% 50%; 
+  }
+  100% { 
+    background-position: 0% 50%; 
+  }
+}
+
+@keyframes neo-gradient-animation {
+  0% { 
+    background-position: 0% 50%; 
+  }
+  50% { 
+    background-position: 100% 50%; 
+  }
+  100% { 
+    background-position: 0% 50%; 
+  }
+}
+
+@keyframes cosmic-aurora-animation {
+  0% { 
+    transform: rotate(0deg); 
+  }
+  100% { 
+    transform: rotate(360deg); 
+  }
+}
+
+/* -------------------- LOGO ANIMATIONS -------------------- */
+
+@keyframes cosmic-spin {
+  0% {
+    transform: rotate(0deg) scale(1);
+  }
+  25% {
+    transform: rotate(180deg) scale(1.1);
+  }
+  50% {
+    transform: rotate(270deg) scale(1);
+  }
+  75% {
+    transform: rotate(315deg) scale(1.1);
+  }
+  100% {
+    transform: rotate(360deg) scale(1);
+  }
+}
+
+/* -------------------- PROGRESS/LOADING ANIMATIONS -------------------- */
+
+@keyframes progress {
+  0% { 
+    transform: translateX(-100%); 
+  }
+  100% { 
+    transform: translateX(100%); 
+  }
+}
+
+@keyframes orbRotate {
+  0% { 
+    transform: rotate(0deg); 
+  }
+  100% { 
+    transform: rotate(360deg); 
+  }
+}
+
+@keyframes iconFloat {
+  0%, 100% { 
+    transform: translateY(0); 
+  }
+  50% { 
+    transform: translateY(-5px); 
+  }
+}
+
+@keyframes textFade {
+  0% { 
+    opacity: 0; 
+    transform: translateY(5px); 
+  }
+  20% { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+  80% { 
+    opacity: 1; 
+    transform: translateY(0); 
+  }
+  100% { 
+    opacity: 0; 
+    transform: translateY(-5px); 
+  }
+}
+
+/* -------------------- UTILITY ANIMATION CLASSES -------------------- */
+
+.fade-in { 
+  animation: fadeIn var(--neo-transition-slow) ease forwards; 
+}
+
+.fade-out { 
+  opacity: 0; 
+  transition: opacity var(--neo-transition-slow); 
+}
+
+.neo-fade-in {
+  animation: neo-fade-in 0.5s ease forwards;
+}
+
+.neo-fade-out {
+  animation: neo-fade-out 0.5s ease forwards;
+}
+
+.shake-animation {
+  animation: shake 0.5s ease-in-out;
+}
+
+.success-animation {
+  animation: neo-success-pulse 1s ease-in-out;
+}
+
+.neo-input-shake {
+  animation: neo-shake 0.5s;
+}
+
+.neo-input-valid {
+  border-color: var(--neo-success) !important;
+  animation: neo-success-pulse 1s;
+}

@@ -632,7 +632,7 @@ const handleSubmit = async (userData) => {
     try {
       setIsSubmitting(true);
       // API call to register NFC user
-      const response = await fetch('${API_BASE_URL}/api/nfc/register', {
+      const response = await fetch(`${API_BASE_URL}/api/nfc/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(userData)

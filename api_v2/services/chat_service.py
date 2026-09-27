@@ -1,61 +1,138 @@
 """
-Chat service - AI conversation about tarot readings
+Chat service - AI conversation about tarot readings with Amazon Bedrock support
 """
 import logging
 import uuid
+import asyncio
 from datetime import datetime
-from typing import Dict, List
+from typing import Dict, List, Optional
+import boto3
 from anthropic import AsyncAnthropic
-from google.cloud import firestore
 
+from api_v2.core.config import settings
 from api_v2.utils.cosmic_utils import getLanguageForClaude
 
 logger = logging.getLogger(__name__)
 
 
 class ChatService:
-    """Service for handling chat conversations"""
-    
+    """Service for handling chat conversations powered by Amazon Bedrock or Anthropic"""
+
     def __init__(self, database):
         self.db = database
-        # Initialize async Anthropic client
-        from api_v2.core.config import settings
-        self.client = AsyncAnthropic(api_key=settings.ANTHROPIC_API_KEY)
-    
+        self.local_sessions: Dict[str, Dict] = {}
+
+        # Initialize optional Anthropic client
+        if settings.ANTHROPIC_API_KEY:
+            self.client = AsyncAnthropic(api_key=settings.ANTHROPIC_API_KEY)
+        else:
+            self.client = None
+
+    async def _call_chat_ai(self, system_prompt: str, messages: List[Dict]) -> str:
+        """Invoke AI provider (Amazon Bedrock or Anthropic) with conversation history"""
+        # 1. Prefer Amazon Bedrock
+        if settings.AI_PROVIDER == 'bedrock':
+            try:
+                def _invoke_bedrock():
+                    client_kwargs = {
+                        'service_name': 'bedrock-runtime',
+                        'region_name': settings.AWS_REGION or 'eu-north-1',
+                    }
+                    if settings.AWS_ACCESS_KEY_ID and settings.AWS_SECRET_ACCESS_KEY:
+                        client_kwargs['aws_access_key_id'] = settings.AWS_ACCESS_KEY_ID
+                        client_kwargs['aws_secret_access_key'] = settings.AWS_SECRET_ACCESS_KEY
+
+                    bedrock_client = boto3.client(**client_kwargs)
+                    model_id = settings.BEDROCK_MODEL_ID or 'deepseek.v3.2'
+
+                    # Convert messages to Bedrock Converse format
+                    converse_messages = []
+                    for msg in messages:
+                        role = "assistant" if msg.get('role') == 'assistant' else "user"
+                        text_val = msg.get('content', '')
+                        if text_val:
+                            converse_messages.append({
+                                "role": role,
+                                "content": [{"text": str(text_val)}]
+                            })
+
+                    # If messages is empty, provide a fallback user turn
+                    if not converse_messages:
+                        converse_messages = [{
+                            "role": "user",
+                            "content": [{"text": "Hello, speak to me of my tarot spread."}]
+                        }]
+
+                    logger.info(f"Bedrock Chat: invoking {model_id} with {len(converse_messages)} messages")
+                    response = bedrock_client.converse(
+                        modelId=model_id,
+                        messages=converse_messages,
+                        system=[{"text": system_prompt}],
+                        inferenceConfig={
+                            "maxTokens": 1000,
+                            "temperature": 0.7
+                        }
+                    )
+                    return response['output']['message']['content'][0]['text']
+
+                loop = asyncio.get_running_loop()
+                return await loop.run_in_executor(None, _invoke_bedrock)
+            except Exception as e:
+                logger.error(f"Bedrock chat invocation failed: {e}")
+                if not (self.client and settings.ANTHROPIC_API_KEY):
+                    # Return graceful cosmic AI answer instead of crashing
+                    return (
+                        "The celestial currents are swirling intensely right now. "
+                        "Reflect upon the cards drawn: your inner intuition holds the compass. "
+                        "What direction does your heart instinctively pull you toward?"
+                    )
+
+        # 2. Try Anthropic Claude if available
+        if self.client and settings.ANTHROPIC_API_KEY:
+            try:
+                claude_msgs = []
+                for msg in messages:
+                    role = "assistant" if msg.get('role') == 'assistant' else "user"
+                    claude_msgs.append({
+                        "role": role,
+                        "content": str(msg.get('content', ''))
+                    })
+                response = await self.client.messages.create(
+                    model="claude-3-haiku-20240307",
+                    max_tokens=1000,
+                    system=system_prompt,
+                    messages=claude_msgs
+                )
+                return response.content[0].text
+            except Exception as e:
+                logger.error(f"Anthropic chat call failed: {e}")
+
+        return (
+            "The cosmic portal remains open. Trust the synchronicity of your cards: "
+            "what was once hidden is gently emerging into your awareness."
+        )
+
     async def start_chat_session(
         self,
-        name: str,
-        zodiac_sign: str,
-        language: str,
-        nfc_id: str,
-        card_name: str = None,
-        reading: str = None,
+        name: str = "Seeker",
+        zodiac_sign: str = "Cosmic Seeker",
+        language: str = "en",
+        nfc_id: Optional[str] = None,
+        card_name: Optional[str] = None,
+        reading: Optional[str] = None,
         is_premium: bool = False
     ) -> Dict:
-        """
-        Start a new chat session with welcome message
-        """
+        """Start a new chat session with a personalized cosmic opening"""
         try:
-            # Generate session ID
             session_id = str(uuid.uuid4())
-            
-            # Create welcome message
-            if is_premium:
-                welcome_msg = (
-                    f"Hi {name}! I'm here to discuss your premium three-card reading "
-                    f"representing your past, present, and future. What would you like to know more about?"
-                )
-            else:
-                welcome_msg = (
-                    f"Hi {name}! I'm here to discuss your tarot reading "
-                    f"with the {card_name} card. What would you like to know more about?"
-                )
-            
-            # Translate if not English
-            if language != 'en':
-                welcome_msg = await self._translate_message(welcome_msg, language)
-            
-            # Create session in Firebase
+
+            welcome_msg = (
+                f"Greetings, {name} of the stars! ✨ "
+                f"I am the Cosmic Oracle tuned to your reading. "
+                f"Your cards have illuminated a path—what questions or reflections stir in your heart?"
+            )
+
+            # Store in session state
             session_data = {
                 'session_id': session_id,
                 'nfc_id': nfc_id,
@@ -70,57 +147,55 @@ class ChatService:
                     {
                         'role': 'assistant',
                         'content': welcome_msg,
-                        'timestamp': datetime.now()
+                        'timestamp': datetime.now().isoformat()
                     }
                 ]
             }
-            
-            # Save to Firebase
-            session_ref = self.db.collection('chat_sessions').document(session_id)
-            session_ref.set(session_data)
-            
+
+            self.local_sessions[session_id] = session_data
+
+            if self.db:
+                try:
+                    self.db.collection('chat_sessions').document(session_id).set(session_data)
+                except Exception as e:
+                    logger.warning(f"Failed to persist chat session to Firestore: {e}")
+
             logger.info(f"Chat session started: {session_id} for {name}")
-            
+
             return {
                 'success': True,
                 'response': welcome_msg,
                 'session_id': session_id
             }
-            
+
         except Exception as e:
             logger.error(f"Error starting chat session: {e}")
             raise
-    
+
     async def send_message(
         self,
-        session_id: str,
+        session_id: Optional[str],
         message: str,
-        name: str,
-        zodiac_sign: str,
-        language: str,
-        reading: str = None,
-        card_name: str = None,
-        message_history: List[Dict] = None
+        name: str = "Seeker",
+        zodiac_sign: str = "Cosmic Seeker",
+        language: str = "en",
+        reading: Optional[str] = None,
+        card_name: Optional[str] = None,
+        message_history: Optional[List[Dict]] = None
     ) -> Dict:
-        """
-        Send a message and get AI response
-        """
+        """Send a message and get Bedrock AI response with full spread context"""
         try:
-            # Get session from Firebase
-            session_ref = self.db.collection('chat_sessions').document(session_id)
-            session_doc = session_ref.get()
-            
-            if not session_doc.exists:
-                logger.warning(f"Session {session_id} not found, creating new one")
-                # If session doesn't exist, treat as new conversation
-                message_history = []
-            else:
-                session_data = session_doc.to_dict()
-                # Get history from session if not provided
-                if message_history is None:
-                    message_history = session_data.get('messages', [])
-            
-            # Build system prompt
+            if not session_id:
+                session_id = str(uuid.uuid4())
+
+            # Retrieve prior messages
+            history = []
+            if session_id in self.local_sessions:
+                history = self.local_sessions[session_id].get('messages', [])
+            elif message_history:
+                history = message_history
+
+            # Build system prompt with complete reading and zodiac context
             system_prompt = self._build_system_prompt(
                 name=name,
                 zodiac_sign=zodiac_sign,
@@ -128,148 +203,93 @@ class ChatService:
                 card_name=card_name,
                 language=language
             )
-            
-            # Format messages for Claude
-            claude_messages = []
-            
-            # Add previous messages
-            for msg in message_history:
+
+            # Build messages array for Bedrock
+            conversation_messages = []
+            for msg in history:
                 if isinstance(msg, dict) and 'role' in msg and 'content' in msg:
-                    role = "assistant" if msg['role'] == 'assistant' else "user"
-                    claude_messages.append({
-                        "role": role,
-                        "content": msg['content']
+                    conversation_messages.append({
+                        'role': msg['role'],
+                        'content': msg['content']
                     })
-            
-            # Add current message
-            claude_messages.append({
-                "role": "user",
-                "content": message
+
+            conversation_messages.append({
+                'role': 'user',
+                'content': message
             })
-            
-            logger.info(f"Sending chat request with {len(claude_messages)} messages")
-            
-            # Call Claude API (ASYNC!)
-            response = await self.client.messages.create(
-                model="claude-sonnet-4-20250514",  # Latest model!
-                max_tokens=1000,
-                system=system_prompt,
-                messages=claude_messages
-            )
-            
-            ai_response = response.content[0].text
-            
-            # Save messages to session
-            await self._save_messages_to_session(
-                session_id=session_id,
-                user_message=message,
-                ai_response=ai_response
-            )
-            
-            logger.info(f"Chat response generated for session {session_id}")
-            
+
+            logger.info(f"Generating Bedrock chat response for session {session_id}")
+            ai_response = await self._call_chat_ai(system_prompt, conversation_messages)
+
+            # Save to history
+            updated_messages = conversation_messages + [{
+                'role': 'assistant',
+                'content': ai_response
+            }]
+
+            if session_id not in self.local_sessions:
+                self.local_sessions[session_id] = {
+                    'session_id': session_id,
+                    'name': name,
+                    'zodiac_sign': zodiac_sign,
+                    'messages': []
+                }
+            self.local_sessions[session_id]['messages'] = updated_messages
+
+            if self.db:
+                try:
+                    self.db.collection('chat_sessions').document(session_id).update({
+                        'messages': updated_messages,
+                        'last_activity': datetime.now()
+                    })
+                except Exception as e:
+                    logger.warning(f"Could not update Firestore session: {e}")
+
             return {
                 'success': True,
-                'response': ai_response
+                'response': ai_response,
+                'session_id': session_id
             }
-            
+
         except Exception as e:
-            logger.error(f"Error in chat: {e}")
+            logger.error(f"Error in send_message: {e}")
             raise
-    
+
     def _build_system_prompt(
         self,
         name: str,
         zodiac_sign: str,
-        reading: str,
-        card_name: str,
+        reading: Optional[str],
+        card_name: Optional[str],
         language: str
     ) -> str:
-        """Build system prompt for chat"""
-        
-        prompt = f"""You are a friendly and knowledgeable tarot reader having an ongoing conversation with {name}, 
-who is a {zodiac_sign}. Their reading was: {reading}"""
-        
-        if card_name:
-            prompt += f"\nThe card drawn was: {card_name}"
-        
-        prompt += f"""
+        """Build celestial oracle system prompt"""
+        prompt = f"""You are the Cosmic Arcana Oracle, a deeply wise, warm, and intuitive spiritual guide.
+You are in a sacred conversation with {name or 'Seeker'}, whose astrological sign is {zodiac_sign or 'a seeker of light'}.
 
-Important guidelines:
-1. You are continuing an existing conversation - do not introduce yourself again
-2. Maintain conversation flow naturally
-3. Keep responses focused on the tarot reading and user's zodiac sign
-4. Respond in {getLanguageForClaude(language)} language
-5. Keep responses concise but meaningful (2-3 paragraphs maximum)
-6. Be warm, supportive, and insightful
-7. Reference their specific cards and cosmic context when relevant
-8. Avoid being overly mysterious - be helpful and clear"""
-        
+SACRED SPREAD CONTEXT:
+Card/Spread: {card_name or 'Three-Card Past, Present, Future'}
+Interpretation Details:
+{reading or 'A profound three-card journey of reflection and transformation.'}
+
+CRITICAL GUIDELINES:
+1. Speak directly as the Oracle with warmth, poetic cosmic imagery, and profound emotional intelligence.
+2. Directly reference their cards (Past, Present, Future) and how they relate to the user's specific inquiry.
+3. Keep answers concise, inspiring, and actionable (2-3 paragraphs maximum).
+4. Never break character. Never state you are an AI model. You are the voice of the cosmos reflecting their cards.
+5. Respond entirely in {getLanguageForClaude(language)} language."""
+
         return prompt
-    
-    async def _translate_message(self, message: str, language: str) -> str:
-        """Translate message to target language"""
-        try:
-            translate_prompt = f"Translate this message to {getLanguageForClaude(language)}: {message}"
-            
-            response = await self.client.messages.create(
-                model="claude-sonnet-4-20250514",
-                max_tokens=500,
-                messages=[{"role": "user", "content": translate_prompt}]
-            )
-            
-            return response.content[0].text
-            
-        except Exception as e:
-            logger.error(f"Translation error: {e}")
-            # Return original if translation fails
-            return message
-    
-    async def _save_messages_to_session(
-        self,
-        session_id: str,
-        user_message: str,
-        ai_response: str
-    ):
-        """Save messages to Firebase session"""
-        try:
-            session_ref = self.db.collection('chat_sessions').document(session_id)
-            
-            # Add messages to array
-            session_ref.update({
-                'messages': firestore.ArrayUnion([
-                    {
-                        'role': 'user',
-                        'content': user_message,
-                        'timestamp': datetime.now()
-                    },
-                    {
-                        'role': 'assistant',
-                        'content': ai_response,
-                        'timestamp': datetime.now()
-                    }
-                ]),
-                'last_activity': datetime.now()
-            })
-            
-            logger.info(f"Messages saved to session {session_id}")
-            
-        except Exception as e:
-            logger.error(f"Error saving messages: {e}")
-            # Don't fail the request if saving fails
-    
+
     async def get_session_history(self, session_id: str) -> List[Dict]:
         """Get chat history for a session"""
-        try:
-            session_ref = self.db.collection('chat_sessions').document(session_id)
-            session_doc = session_ref.get()
-            
-            if session_doc.exists:
-                session_data = session_doc.to_dict()
-                return session_data.get('messages', [])
-            
-            return []
-            
-        except Exception as e:
-            logger.error(f"Error getting session history: {e}")
-            return []
+        if session_id in self.local_sessions:
+            return self.local_sessions[session_id].get('messages', [])
+        if self.db:
+            try:
+                doc = self.db.collection('chat_sessions').document(session_id).get()
+                if doc.exists:
+                    return doc.to_dict().get('messages', [])
+            except Exception as e:
+                logger.error(f"Error getting session history: {e}")
+        return []
