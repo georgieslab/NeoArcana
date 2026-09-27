@@ -32,10 +32,12 @@ body {
   position: relative;
 }
 
-/* Prevent horizontal scroll */
+/* Prevent horizontal scroll while enabling smooth vertical scrolling */
 body, html {
   max-width: 100%;
   overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
 }
 
 /* -------------------- SELECTION STYLING -------------------- */

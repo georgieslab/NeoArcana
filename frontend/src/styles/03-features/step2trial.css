@@ -3,13 +3,7 @@
    FIXED: Proper card flip + EXCITING animations!
    ======================================== */
 
-/* -------------------- PREVENT SCROLL (DESKTOP) -------------------- */
-@media (min-width: 769px) {
-  body {
-    overflow: hidden !important;
-    height: 100vh !important;
-  }
-}
+/* -------------------- STEP 2 DESKTOP CONTAINER -------------------- */
 
 /* -------------------- MAIN CONTAINER -------------------- */
 .trial-step2-reveal {
@@ -393,11 +387,6 @@
 
 /* -------------------- MOBILE (SCROLLABLE) -------------------- */
 @media (max-width: 768px) {
-  body {
-    overflow: auto !important;
-    height: auto !important;
-  }
-
   .trial-step2-reveal {
     height: auto;
     min-height: 100vh;

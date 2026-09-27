@@ -8,10 +8,11 @@
 .nfc-registration-wrapper {
   width: 100%;
   min-height: 100vh;
+  min-height: 100dvh;
   display: flex;
-  align-items: center;
+  align-items: flex-start;
   justify-content: center;
-  padding: 2.5rem 1rem;
+  padding: clamp(1.5rem, 3vh, 2.5rem) 1rem clamp(6rem, 12vh, 9rem) 1rem;
   box-sizing: border-box;
   position: relative;
   z-index: 1;
@@ -20,6 +21,7 @@
 .nfc-registration-container {
   width: 100%;
   max-width: 680px;
+  margin: 1.5rem auto 5rem auto;
   background: rgba(14, 10, 30, 0.78);
   backdrop-filter: blur(28px);
   -webkit-backdrop-filter: blur(28px);
@@ -622,8 +624,13 @@
 /* -------------------- MOBILE RESPONSIVE -------------------- */
 
 @media (max-width: 768px) {
+  .nfc-registration-wrapper {
+    padding: max(1.25rem, env(safe-area-inset-top)) max(0.75rem, env(safe-area-inset-right)) calc(env(safe-area-inset-bottom) + 7rem) max(0.75rem, env(safe-area-inset-left));
+  }
+
   .nfc-registration-container {
     width: 95%;
+    margin: 1rem auto 5rem auto;
     padding: var(--neo-space-lg);
   }
 

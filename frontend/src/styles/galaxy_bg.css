@@ -1,6 +1,7 @@
 body {
     margin: 0;
     overflow-x: hidden;
+    overflow-y: auto;
     width: 100%;
     min-height: 100vh;
     min-height: 100dvh;
@@ -10,6 +11,7 @@ body {
     background-position: center;
     background-repeat: no-repeat;
     box-sizing: border-box;
+    -webkit-overflow-scrolling: touch;
 }
 
 #canvas_container {
@@ -36,7 +38,7 @@ canvas {
     min-height: 100vh;
     min-height: 100dvh;
     display: flex;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
     flex-direction: column;
     box-sizing: border-box;
