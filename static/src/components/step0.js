@@ -43,14 +43,28 @@ const Step0 = ({ onTryFree, onExplore, onPosterRegistration, onShowStory }) => {
         // Primary Button - Try Free
         React.createElement("button", {
           onClick: onTryFree,
-          className: "cosmic-button cosmic-button--primary cosmic-button--large"
-        }, "✨ Galactic Trial"),
+          className: "cosmic-button cosmic-button--primary cosmic-button--trial cosmic-button--large",
+          title: "Begin your personalized cosmic reading for free"
+        },
+          React.createElement("span", { className: "cosmic-btn-inner" },
+            React.createElement("span", { className: "cosmic-btn-icon cosmic-btn-icon--trial" }, "✨"),
+            React.createElement("span", { className: "cosmic-btn-label" }, "Galactic Trial"),
+            React.createElement("span", { className: "cosmic-btn-tag cosmic-btn-tag--free" }, "FREE")
+          )
+        ),
         
         // Secondary Button - Register Poster
         React.createElement("button", {
           onClick: handlePosterRegistration,
-          className: "cosmic-button cosmic-button--secondary cosmic-button--large"
-        }, "🎴 Register Poster"),
+          className: "cosmic-button cosmic-button--secondary cosmic-button--poster cosmic-button--large",
+          title: "Connect your physical NFC poster or smart card"
+        },
+          React.createElement("span", { className: "cosmic-btn-inner" },
+            React.createElement("span", { className: "cosmic-btn-icon" }, "🎴"),
+            React.createElement("span", { className: "cosmic-btn-label" }, "Register Poster"),
+            React.createElement("span", { className: "cosmic-btn-nfc-tag" }, "NFC")
+          )
+        ),
         
         // Ghost Button - Story Behind (NOW WORKS!)
         React.createElement("button", {

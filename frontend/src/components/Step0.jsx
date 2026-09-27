@@ -30,9 +30,14 @@ export default function Step0({ onTryFree, onPosterRegistration, onShowStory }) 
           <button
             onClick={onTryFree}
             type="button"
-            className="cosmic-button cosmic-button--primary cosmic-button--large"
+            className="cosmic-button cosmic-button--primary cosmic-button--trial cosmic-button--large"
+            title="Begin your personalized cosmic reading for free"
           >
-            <span>✨ Galactic Trial</span>
+            <span className="cosmic-btn-inner">
+              <span className="cosmic-btn-icon cosmic-btn-icon--trial">✨</span>
+              <span className="cosmic-btn-label">Galactic Trial</span>
+              <span className="cosmic-btn-tag cosmic-btn-tag--free">FREE</span>
+            </span>
           </button>
 
           <button
