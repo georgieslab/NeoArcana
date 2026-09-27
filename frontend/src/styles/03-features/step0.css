@@ -536,61 +536,152 @@
   }
 }
 
-/* Mobile: Scrollable, centered content */
+/* Mobile: Fluid, centered content with dynamic viewport & safe areas */
 @media (max-width: 768px) {
   .cosmic-landing {
     min-height: 100vh;
-    max-height: none; /* Allow scroll */
+    min-height: 100dvh;
+    max-height: none;
     overflow-y: auto;
-    padding: var(--neo-space-lg);
+    overflow-x: hidden;
+    padding: max(1.25rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) max(1.25rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
   }
 
   .cosmic-landing-inner {
-    padding: var(--neo-space-xl);
-    max-width: 100%;
-    max-height: none; /* No height restriction */
-    margin: 2rem 0; /* Vertical spacing */
-    gap: 1.5rem; /* Fixed gap on mobile */
+    padding: clamp(1.75rem, 5vw, 2.5rem) clamp(1.25rem, 4vw, 2rem);
+    max-width: 440px;
+    width: 100%;
+    max-height: none;
+    margin: auto 0;
+    gap: clamp(1rem, 2.5vh, 1.5rem);
+    border-radius: 24px;
+    box-sizing: border-box;
   }
 
   .cosmic-logo {
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
   }
 
   .cosmic-landing-title {
-    font-size: 2rem;
+    font-size: clamp(2rem, 6vw, 2.5rem);
+    margin-bottom: 0.25rem;
   }
 
   .cosmic-landing-subtitle {
-    font-size: 1rem;
+    font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+    line-height: 1.45;
+  }
+
+  .cosmic-buttons {
+    width: 100%;
+    max-width: 340px;
+    gap: 0.85rem;
+    margin-top: 0.5rem;
   }
 
   .cosmic-button--large {
-    padding: 1rem 1.5rem;
+    padding: 0.9rem 1.25rem;
     font-size: 1rem;
-    min-height: 48px;
+    min-height: 50px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .cosmic-btn-inner {
+    gap: 0.55rem;
+  }
+}
+
+/* Small mobile (smartphones) */
+@media (max-width: 480px) {
+  .cosmic-landing {
+    padding: max(1rem, env(safe-area-inset-top)) max(0.75rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom)) max(0.75rem, env(safe-area-inset-left));
+  }
+
+  .cosmic-landing-inner {
+    padding: 1.75rem 1.15rem;
+    margin: auto 0;
+    gap: 1.15rem;
+    border-radius: 20px;
+    max-width: 100%;
+  }
+
+  .cosmic-logo {
+    width: 76px;
+    height: 76px;
+  }
+
+  .cosmic-landing-title {
+    font-size: 1.85rem;
+  }
+
+  .cosmic-landing-subtitle {
+    font-size: 0.9rem;
+    line-height: 1.4;
   }
 
   .cosmic-buttons {
     max-width: 100%;
-    gap: 1rem;
+    gap: 0.75rem;
+  }
+
+  .cosmic-button--large {
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
+    min-height: 48px;
+  }
+
+  .cosmic-btn-inner {
+    gap: 0.5rem;
+  }
+
+  .cosmic-btn-icon {
+    font-size: 1.1rem;
+  }
+
+  .cosmic-btn-label {
+    font-size: 0.92rem;
+  }
+
+  .cosmic-btn-tag--free,
+  .cosmic-btn-nfc-tag {
+    font-size: 0.6rem;
+    padding: 0.1rem 0.4rem;
   }
 }
 
-/* Small mobile */
-@media (max-width: 480px) {
+/* Ultra-compact mobile (< 360px) */
+@media (max-width: 360px) {
   .cosmic-landing-inner {
-    padding: var(--neo-space-lg);
+    padding: 1.35rem 0.85rem;
+    gap: 1rem;
   }
 
   .cosmic-logo {
-    width: 80px;
-    height: 80px;
+    width: 64px;
+    height: 64px;
   }
 
   .cosmic-landing-title {
-    font-size: 1.75rem;
+    font-size: 1.6rem;
+  }
+
+  .cosmic-landing-subtitle {
+    font-size: 0.82rem;
+  }
+
+  .cosmic-button--large {
+    padding: 0.75rem 0.75rem;
+    min-height: 44px;
+  }
+
+  .cosmic-btn-label {
+    font-size: 0.86rem;
   }
 }
 

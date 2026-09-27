@@ -492,22 +492,78 @@
 /* -------------------- RESPONSIVE -------------------- */
 @media (max-width: 600px) {
   .trial-step1-screen {
-    padding: 1.5rem 0.75rem;
+    min-height: 100vh;
+    min-height: 100dvh;
+    padding: max(1.25rem, env(safe-area-inset-top)) max(0.75rem, env(safe-area-inset-right)) max(1.5rem, env(safe-area-inset-bottom)) max(0.75rem, env(safe-area-inset-left));
+    box-sizing: border-box;
   }
   
   .trial-step1-card {
-    padding: 1.25rem;
-    border-radius: 20px;
+    padding: 1.5rem 1.15rem;
+    border-radius: 22px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .trial-step1-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .trial-step1-title {
+    font-size: clamp(1.4rem, 5vw, 1.8rem);
+  }
+
+  .trial-step1-subtitle {
+    font-size: 0.85rem;
+    line-height: 1.45;
+  }
+
+  /* Sleek 1-row compact stepper */
+  .trial-stepper {
+    flex-wrap: nowrap;
+    justify-content: space-between;
+    width: 100%;
+    gap: 0.25rem;
+    margin-bottom: 1.25rem;
+  }
+
+  .stepper-item {
+    gap: 0.35rem;
+  }
+
+  .stepper-circle {
+    width: 28px;
+    height: 28px;
+    font-size: 0.8rem;
+    flex-shrink: 0;
+  }
+
+  .stepper-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.2px;
+  }
+
+  .stepper-line {
+    max-width: 25px;
+    min-width: 10px;
+    flex: 1;
   }
 
   .trial-step1-grid {
     grid-template-columns: 1fr;
     gap: 1rem;
+    margin-bottom: 1.25rem;
   }
 
   .trial-field-group--dob,
   .trial-field-group--lang {
     grid-column: 1;
+  }
+
+  .trial-cosmic-input {
+    height: 46px;
+    font-size: 0.9rem;
+    border-radius: 12px;
   }
 
   .zodiac-banner-content {
@@ -516,11 +572,67 @@
     gap: 0.75rem;
   }
 
+  .zodiac-glyph-ring {
+    width: 48px;
+    height: 48px;
+  }
+
+  .zodiac-glyph {
+    font-size: 1.6rem;
+  }
+
   .zodiac-header-row {
     justify-content: center;
   }
 
-  .trial-stepper {
-    flex-wrap: wrap;
+  .trial-focus-chips {
+    gap: 0.5rem;
+  }
+
+  .focus-chip {
+    padding: 0.55rem 0.85rem;
+    font-size: 0.8rem;
+    min-height: 38px;
+    box-sizing: border-box;
+  }
+
+  .trial-cosmic-button {
+    height: 52px;
+    font-size: 0.88rem;
+    letter-spacing: 0.5px;
+    padding: 0 1rem;
+  }
+}
+
+/* Small mobile (<= 380px) */
+@media (max-width: 380px) {
+  .trial-step1-card {
+    padding: 1.25rem 0.85rem;
+    border-radius: 18px;
+  }
+
+  .stepper-label {
+    font-size: 0.65rem;
+  }
+
+  .stepper-circle {
+    width: 24px;
+    height: 24px;
+    font-size: 0.75rem;
+  }
+
+  .stepper-line {
+    min-width: 6px;
+    max-width: 14px;
+  }
+
+  .focus-chip {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .trial-cosmic-button {
+    font-size: 0.82rem;
+    letter-spacing: 0.3px;
   }
 }

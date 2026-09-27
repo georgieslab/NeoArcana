@@ -28,8 +28,27 @@
 
 @media (max-width: 500px) {
   .cosmic-date-selectors {
-    grid-template-columns: 75px 1fr 85px 44px;
-    gap: 0.4rem;
+    grid-template-columns: 70px 1fr 78px 42px;
+    gap: 0.35rem;
+  }
+  .cosmic-date-select {
+    padding: 0 1.25rem 0 0.55rem;
+    font-size: 0.84rem;
+    height: 44px;
+  }
+  .cosmic-calendar-toggle-btn {
+    height: 44px;
+  }
+}
+
+@media (max-width: 360px) {
+  .cosmic-date-selectors {
+    grid-template-columns: 62px 1fr 70px 38px;
+    gap: 0.25rem;
+  }
+  .cosmic-date-select {
+    font-size: 0.8rem;
+    padding: 0 1rem 0 0.4rem;
   }
 }
 
