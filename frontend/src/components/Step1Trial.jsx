@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { calculateZodiacSign, zodiacDetails } from '../utils/zodiac';
 import { supportedLanguages } from '../utils/languages';
 import CosmicDatePicker from './CosmicDatePicker';
+import soundManager from '../services/sound';
 
 export default function Step1Trial({ onComplete, onBack, isSubmitting }) {
   const [name, setName] = useState('');
@@ -40,6 +41,8 @@ export default function Step1Trial({ onComplete, onBack, isSubmitting }) {
       setError('Please enter a valid email address.');
       return;
     }
+
+    soundManager.playCelestialChime();
 
     const userData = {
       name: name.trim(),
@@ -211,7 +214,10 @@ export default function Step1Trial({ onComplete, onBack, isSubmitting }) {
                     key={opt.id}
                     type="button"
                     className={`focus-chip ${isSelected ? 'selected' : ''}`}
-                    onClick={() => setFocusArea(opt.label)}
+                    onClick={() => {
+                      soundManager.playStarSparkle();
+                      setFocusArea(opt.label);
+                    }}
                   >
                     <span className="chip-icon">{opt.icon}</span>
                     <span className="chip-text">{opt.label}</span>

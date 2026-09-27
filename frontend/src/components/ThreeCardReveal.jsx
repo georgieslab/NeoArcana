@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { getPersonalMessage } from '../utils/zodiac';
+import soundManager from '../services/sound';
 
 export default function ThreeCardReveal({ name, readingData, onComplete, zodiacSign, language = 'en' }) {
   const [isVisible] = useState(true);
@@ -25,6 +26,7 @@ export default function ThreeCardReveal({ name, readingData, onComplete, zodiacS
   // Proceed to interpretation when all 3 cards are flipped
   useEffect(() => {
     if (flippedCards.every((f) => f)) {
+      soundManager.playCelestialChime();
       const timer = setTimeout(() => {
         if (onComplete) {
           onComplete();
@@ -36,6 +38,8 @@ export default function ThreeCardReveal({ name, readingData, onComplete, zodiacS
 
   const handleCardClick = (index) => {
     if (!canClick[index] || revealingCards[index] || flippedCards[index]) return;
+
+    soundManager.playCardFlip();
 
     setCanClick((prev) => {
       const updated = [...prev];

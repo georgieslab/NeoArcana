@@ -1,0 +1,152 @@
+/* ==========================================================================
+   NEOARCANA - COSMIC AUDIO CONTROLLER
+   Floating ambient soundscape & celestial SFX toggle
+   ========================================================================== */
+
+.cosmic-audio-toggle {
+  position: fixed;
+  top: max(1.25rem, env(safe-area-inset-top));
+  right: max(1.25rem, env(safe-area-inset-right));
+  z-index: 9000;
+  height: 40px;
+  padding: 0 0.95rem;
+  border-radius: 100px;
+  background: rgba(18, 12, 34, 0.78);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  border: 1px solid rgba(165, 154, 209, 0.32);
+  color: #cdc0f2;
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 
+    0 4px 18px rgba(0, 0, 0, 0.4),
+    0 0 15px rgba(165, 154, 209, 0.15);
+  user-select: none;
+  outline: none;
+}
+
+.cosmic-audio-toggle:hover {
+  transform: translateY(-2px) scale(1.03);
+  border-color: rgba(244, 162, 97, 0.6);
+  color: #ffffff;
+  box-shadow: 
+    0 6px 22px rgba(0, 0, 0, 0.5),
+    0 0 20px rgba(244, 162, 97, 0.3);
+}
+
+.audio-toggle-inner {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+}
+
+.audio-toggle-label {
+  font-family: inherit;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* --- Muted State --- */
+.cosmic-audio-toggle.sound-muted {
+  opacity: 0.75;
+}
+
+.cosmic-audio-toggle.sound-muted:hover {
+  opacity: 1;
+}
+
+.audio-muted-icon {
+  font-size: 0.95rem;
+  line-height: 1;
+  display: inline-block;
+  transition: transform 0.2s ease;
+}
+
+.cosmic-audio-toggle.sound-muted:hover .audio-muted-icon {
+  transform: scale(1.15);
+}
+
+/* --- Active State with Animated Soundwaves --- */
+.cosmic-audio-toggle.sound-active {
+  background: linear-gradient(
+    135deg,
+    rgba(28, 18, 54, 0.88) 0%,
+    rgba(45, 25, 65, 0.88) 100%
+  );
+  border-color: #f4a261;
+  color: #ffd700;
+  box-shadow: 
+    0 4px 20px rgba(0, 0, 0, 0.5),
+    0 0 25px rgba(244, 162, 97, 0.4),
+    inset 0 0 12px rgba(244, 162, 97, 0.15);
+}
+
+.audio-soundwaves {
+  display: flex;
+  align-items: flex-end;
+  gap: 2.5px;
+  height: 14px;
+  padding-bottom: 1px;
+}
+
+.wave-bar {
+  width: 2.5px;
+  background: linear-gradient(180deg, #ffd700, #f4a261);
+  border-radius: 2px;
+  display: inline-block;
+  animation: waveDance 1.2s ease-in-out infinite alternate;
+}
+
+.bar-1 {
+  height: 6px;
+  animation-delay: 0s;
+}
+
+.bar-2 {
+  height: 13px;
+  animation-delay: 0.3s;
+}
+
+.bar-3 {
+  height: 8px;
+  animation-delay: 0.15s;
+}
+
+.bar-4 {
+  height: 11px;
+  animation-delay: 0.45s;
+}
+
+@keyframes waveDance {
+  0% {
+    height: 3px;
+    opacity: 0.5;
+  }
+  50% {
+    height: 13px;
+    opacity: 1;
+  }
+  100% {
+    height: 6px;
+    opacity: 0.7;
+  }
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 600px) {
+  .cosmic-audio-toggle {
+    top: max(0.85rem, env(safe-area-inset-top));
+    right: max(0.85rem, env(safe-area-inset-right));
+    height: 36px;
+    padding: 0 0.75rem;
+  }
+
+  .audio-toggle-label {
+    font-size: 0.72rem;
+  }
+}

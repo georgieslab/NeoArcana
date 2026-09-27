@@ -21,6 +21,7 @@
 @import './galaxy_bg.css';
 @import './CosmicButton.css';
 @import './02-components/cosmic-date-picker.css';
+@import './02-components/cosmic-audio.css';
 
 /* PHASE 3: FEATURES */
 @import './03-features/step0.css';

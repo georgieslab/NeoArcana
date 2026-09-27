@@ -8,6 +8,7 @@ import ThreeCardReveal from './components/ThreeCardReveal';
 import ThreeCardInterpretation from './components/ThreeCardInterpretation';
 import ChatInterface from './components/ChatInterface';
 import StoryBehind from './components/StoryBehind';
+import CosmicAudioControl from './components/CosmicAudioControl';
 import api from './services/api';
 import './styles/main.css';
 
@@ -157,6 +158,9 @@ export default function App() {
 
       {/* 3D Three.js Galaxy Background */}
       <GalaxyBackground />
+
+      {/* Floating Cosmic Audio Controller (Ambient & SFX) */}
+      <CosmicAudioControl />
 
       {/* Main Content Viewport */}
       <main className="neoarcana-viewport">
