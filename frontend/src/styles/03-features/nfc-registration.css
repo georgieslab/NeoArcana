@@ -3,20 +3,263 @@
    Poster registration and user onboarding
    ======================================== */
 
-/* -------------------- NFC REGISTRATION CONTAINER -------------------- */
+/* -------------------- NFC REGISTRATION WRAPPER & CONTAINER -------------------- */
+
+.nfc-registration-wrapper {
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2.5rem 1rem;
+  box-sizing: border-box;
+  position: relative;
+  z-index: 1;
+}
 
 .nfc-registration-container {
-  width: 80%;
-  min-height: 70%;
-  padding: var(--neo-space-xl);
+  width: 100%;
+  max-width: 680px;
+  background: rgba(14, 10, 30, 0.78);
+  backdrop-filter: blur(28px);
+  -webkit-backdrop-filter: blur(28px);
+  border: 1px solid rgba(165, 154, 209, 0.32);
+  border-radius: 28px;
+  padding: clamp(1.5rem, 3.5vw, 2.5rem);
+  box-shadow: 
+    0 24px 64px rgba(0, 0, 0, 0.65),
+    0 0 35px rgba(165, 154, 209, 0.18),
+    inset 0 1px 1px rgba(255, 255, 255, 0.25);
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  box-sizing: border-box;
+  animation: cosmicCardEntry 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes cosmicCardEntry {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.cosmic-back-btn {
+  align-self: flex-start;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(165, 154, 209, 0.25);
+  color: #cdc0f2;
+  padding: 0.45rem 1rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  margin-bottom: 1.25rem;
+}
+
+.cosmic-back-btn:hover {
+  background: rgba(165, 154, 209, 0.2);
+  color: #ffffff;
+  border-color: #a59ad1;
+  transform: translateX(-3px);
+}
+
+.nfc-substep {
   display: flex;
   flex-direction: column;
   align-items: center;
-  background: rgba(0, 0, 0, 0.6);
-  backdrop-filter: var(--neo-blur-md);
-  border-radius: var(--neo-radius-xl);
-  border: 3px solid rgba(165, 154, 209, 0.29);
-  animation: fadeIn 0.5s ease-in-out;
+  width: 100%;
+  text-align: center;
+}
+
+.nfc-icon-header {
+  font-size: 3rem;
+  margin-bottom: 0.75rem;
+  filter: drop-shadow(0 0 15px rgba(244, 162, 97, 0.5));
+  animation: floatIcon 3s ease-in-out infinite;
+}
+
+@keyframes floatIcon {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-6px); }
+}
+
+.nfc-title {
+  font-size: clamp(1.6rem, 3.5vw, 2.2rem);
+  font-weight: 700;
+  margin: 0 0 0.5rem 0;
+  background: linear-gradient(135deg, #ffffff 30%, #a59ad1 70%, #ffd700 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: 0.5px;
+}
+
+.nfc-desc {
+  font-size: clamp(0.9rem, 2vw, 1rem);
+  color: rgba(255, 255, 255, 0.75);
+  max-width: 480px;
+  margin: 0 auto 1.5rem auto;
+  line-height: 1.5;
+}
+
+.nfc-code-form {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin: 0 auto;
+}
+
+/* -------------------- BUY POSTER PROMO CARD -------------------- */
+.nfc-buy-divider {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  max-width: 480px;
+  margin: 2rem auto 1.25rem auto;
+  gap: 1rem;
+}
+
+.nfc-divider-line {
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(165, 154, 209, 0.35), transparent);
+}
+
+.nfc-divider-text {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  color: rgba(244, 162, 97, 0.85);
+  text-transform: uppercase;
+}
+
+.nfc-buy-card {
+  width: 100%;
+  max-width: 480px;
+  background: linear-gradient(135deg, rgba(244, 162, 97, 0.12) 0%, rgba(165, 154, 209, 0.1) 50%, rgba(20, 16, 38, 0.6) 100%);
+  border: 1.5px solid rgba(244, 162, 97, 0.45);
+  border-radius: 20px;
+  padding: 1.5rem;
+  box-shadow: 
+    0 12px 30px rgba(0, 0, 0, 0.4),
+    0 0 25px rgba(244, 162, 97, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.15);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0.85rem;
+  transition: all 0.3s ease;
+  box-sizing: border-box;
+  margin: 0 auto;
+}
+
+.nfc-buy-card:hover {
+  border-color: #FFD700;
+  box-shadow: 
+    0 16px 36px rgba(0, 0, 0, 0.5),
+    0 0 35px rgba(255, 215, 0, 0.25);
+  transform: translateY(-2px);
+}
+
+.nfc-buy-card-top {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.nfc-buy-badge {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: #ffd700;
+  background: rgba(255, 215, 0, 0.12);
+  border: 1px solid rgba(255, 215, 0, 0.35);
+  padding: 0.2rem 0.6rem;
+  border-radius: 12px;
+}
+
+.nfc-buy-sparkle {
+  font-size: 0.9rem;
+}
+
+.nfc-buy-card-title {
+  font-size: 1.35rem;
+  font-weight: 700;
+  margin: 0;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+
+.nfc-buy-card-desc {
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.78);
+  margin: 0;
+}
+
+.nfc-buy-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  background: linear-gradient(135deg, #f4a261 0%, #e76f51 50%, #ffd700 100%);
+  color: #160e29 !important;
+  font-weight: 700;
+  font-size: 0.95rem;
+  letter-spacing: 0.5px;
+  padding: 0.75rem 1.6rem;
+  border-radius: 14px;
+  text-decoration: none;
+  box-shadow: 0 4px 18px rgba(244, 162, 97, 0.45);
+  transition: all 0.25s ease;
+  margin-top: 0.35rem;
+}
+
+.nfc-buy-btn:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: 0 6px 26px rgba(255, 215, 0, 0.6);
+  color: #0b0716 !important;
+}
+
+.nfc-buy-arrow {
+  font-size: 1.1rem;
+  transition: transform 0.2s ease;
+}
+
+.nfc-buy-btn:hover .nfc-buy-arrow {
+  transform: translate(2px, -2px);
+}
+
+/* Footer Link in SubStep 1 */
+.nfc-buy-footer {
+  margin-top: 1.25rem;
+  text-align: center;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.65);
+}
+
+.nfc-buy-footer-link {
+  color: #f4a261;
+  font-weight: 600;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.nfc-buy-footer-link:hover {
+  color: #ffd700;
+  text-decoration: underline;
 }
 
 /* -------------------- NFC FORM OVERLAY -------------------- */

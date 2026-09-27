@@ -107,7 +107,7 @@ export default function NFCRegistration({
       <div className="nfc-registration-container">
         {onBack && (
           <button className="cosmic-back-btn" onClick={onBack} type="button">
-            ← Return
+            ← Return to Cosmos
           </button>
         )}
 
@@ -143,6 +143,33 @@ export default function NFCRegistration({
                 <span>{isVerifying ? 'Verifying Portal...' : '✨ Verify Code'}</span>
               </button>
             </form>
+
+            {/* Buy Poster Callout */}
+            <div className="nfc-buy-divider">
+              <span className="nfc-divider-line" />
+              <span className="nfc-divider-text">DON'T HAVE A POSTER YET?</span>
+              <span className="nfc-divider-line" />
+            </div>
+
+            <div className="nfc-buy-card">
+              <div className="nfc-buy-card-top">
+                <span className="nfc-buy-badge">Physical Hardware Art</span>
+                <span className="nfc-buy-sparkle">✨</span>
+              </div>
+              <h3 className="nfc-buy-card-title">The Magician NFC Poster</h3>
+              <p className="nfc-buy-card-desc">
+                Handcrafted cosmic art with an embedded, encrypted smart NFC chip. Tap with any smartphone for daily divination, ephemeris alignment, and direct cosmic dialogues.
+              </p>
+              <a
+                href="https://georgieslab.wixsite.com/georgies/product-page/the-magician-poster"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="nfc-buy-btn"
+              >
+                <span>🛍️ Buy The Magician Poster</span>
+                <span className="nfc-buy-arrow">↗</span>
+              </a>
+            </div>
           </div>
         )}
 
@@ -245,6 +272,18 @@ export default function NFCRegistration({
             >
               <span>{isSubmitting ? 'Attuning Energies...' : '🌟 Activate Portal & Draw Cards'}</span>
             </button>
+
+            <div className="nfc-buy-footer">
+              <span>Want another physical portal? </span>
+              <a
+                href="https://georgieslab.wixsite.com/georgies/product-page/the-magician-poster"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="nfc-buy-footer-link"
+              >
+                Order The Magician Poster ↗
+              </a>
+            </div>
           </form>
         )}
       </div>

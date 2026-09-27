@@ -38,9 +38,14 @@ export default function Step0({ onTryFree, onPosterRegistration, onShowStory }) 
           <button
             onClick={onPosterRegistration}
             type="button"
-            className="cosmic-button cosmic-button--secondary cosmic-button--large"
+            className="cosmic-button cosmic-button--secondary cosmic-button--poster cosmic-button--large"
+            title="Connect your physical NFC poster or smart card"
           >
-            <span>🎴 Register Poster</span>
+            <span className="cosmic-btn-inner">
+              <span className="cosmic-btn-icon">🎴</span>
+              <span className="cosmic-btn-label">Register Poster</span>
+              <span className="cosmic-btn-nfc-tag">NFC</span>
+            </span>
           </button>
 
           <button
