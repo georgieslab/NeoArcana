@@ -485,86 +485,40 @@
   75% { transform: translateX(4px); }
 }
 
-/* -------------------- ACTION BUTTON -------------------- */
+/* -------------------- ACTION BUTTON (COSMIC BUTTON) -------------------- */
 .trial-action-wrap {
-  margin-top: 0.25rem;
+  margin-top: 0.35rem;
+  display: flex;
+  justify-content: center;
+  width: 100%;
 }
 
 .trial-cosmic-submit-btn {
-  position: relative;
-  width: 100%;
-  height: 48px;
-  background: linear-gradient(135deg, #a59ad1 0%, #6b4e71 50%, #f4a261 100%);
-  border: none;
-  border-radius: 14px;
-  color: #ffffff;
-  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-  font-size: 0.95rem;
-  font-weight: 600;
-  letter-spacing: 0.35px;
-  cursor: pointer;
-  overflow: hidden;
-  box-shadow: 
-    0 8px 22px rgba(107, 78, 113, 0.45),
-    0 0 25px rgba(244, 162, 97, 0.28);
-  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  outline: none;
+  max-width: 100% !important;
+  width: 100% !important;
+  min-height: 52px !important;
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif !important;
+  font-size: 0.96rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.35px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
 }
 
-.trial-cosmic-submit-btn:hover:not(:disabled) {
-  transform: translateY(-2px);
-  box-shadow: 
-    0 12px 28px rgba(107, 78, 113, 0.55),
-    0 0 35px rgba(244, 162, 97, 0.45);
-}
-
-.trial-cosmic-submit-btn:active:not(:disabled) {
-  transform: translateY(-1px);
-}
-
-.trial-cosmic-submit-btn:disabled {
-  opacity: 0.65;
-  cursor: not-allowed;
-  filter: grayscale(0.2);
-}
-
-.btn-shimmer {
-  position: absolute;
-  top: 0;
-  left: -100%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(
-    90deg,
-    transparent 0%,
-    rgba(255, 255, 255, 0.32) 50%,
-    transparent 100%
-  );
-  transform: skewX(-25deg);
-  animation: shimmerMove 3.5s infinite;
-}
-
-@keyframes shimmerMove {
-  0% { left: -100%; }
-  60%, 100% { left: 200%; }
-}
-
-.btn-content {
-  position: relative;
-  z-index: 1;
+.trial-btn-content {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
+  position: relative;
+  z-index: 2;
 }
 
-.btn-content svg {
+.trial-btn-content svg {
   display: block;
   flex-shrink: 0;
-  filter: drop-shadow(0 0 6px rgba(244, 162, 97, 0.8));
+  filter: drop-shadow(0 0 6px rgba(244, 162, 97, 0.85));
 }
 
 /* -------------------- RESPONSIVE REFINEMENTS -------------------- */
@@ -620,9 +574,10 @@
   }
 
   .trial-cosmic-submit-btn {
-    height: 46px;
-    font-size: 0.86rem;
+    min-height: 48px !important;
+    font-size: 0.88rem !important;
     letter-spacing: 0.3px;
+    padding: 0.4rem 1rem !important;
   }
 }
 

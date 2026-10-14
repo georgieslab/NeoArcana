@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { calculateZodiacSign, zodiacDetails } from '../utils/zodiac';
 import { supportedLanguages } from '../utils/languages';
 import CosmicDatePicker from './CosmicDatePicker';
+import CosmicButton from './CosmicButton';
 import soundManager from '../services/sound';
 
 /* --- Clean Celestial SVG Icons (No Emojis) --- */
@@ -295,22 +296,23 @@ export default function Step1Trial({ onComplete, onBack, isSubmitting }) {
 
           {error && <div className="trial-error-glass">{error}</div>}
 
-          {/* Action Button */}
+          {/* Action Button (CosmicButton with particles & stars) */}
           <div className="trial-action-wrap">
-            <button
+            <CosmicButton
               type="submit"
               disabled={isSubmitting}
+              isAnimating={isSubmitting}
+              variant="cosmic"
               className="trial-cosmic-submit-btn"
+              title="Align With Cosmos & Draw Cards"
             >
-              <span className="btn-glow-layer" />
-              <span className="btn-shimmer" />
-              <span className="btn-content">
+              <span className="trial-btn-content">
                 <SparkleIcon />
                 <span>
                   {isSubmitting ? 'Channeling Cosmic Energies...' : 'Align With Cosmos & Draw Cards'}
                 </span>
               </span>
-            </button>
+            </CosmicButton>
           </div>
         </form>
       </div>

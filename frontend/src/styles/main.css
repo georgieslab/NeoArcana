@@ -20,6 +20,7 @@
 @import './02-components/navigation.css';
 @import './galaxy_bg.css';
 @import './CosmicButton.css';
+@import './03-features/cosmic-button.css';
 @import './02-components/cosmic-date-picker.css';
 @import './02-components/cosmic-audio.css';
 
