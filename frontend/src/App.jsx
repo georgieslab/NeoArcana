@@ -9,6 +9,7 @@ import ThreeCardInterpretation from './components/ThreeCardInterpretation';
 import ChatInterface from './components/ChatInterface';
 import StoryBehind from './components/StoryBehind';
 import CosmicAudioControl from './components/CosmicAudioControl';
+import CelestialAttunementPortal from './components/CelestialAttunementPortal';
 import api from './services/api';
 import './styles/main.css';
 
@@ -220,15 +221,12 @@ export default function App() {
         )}
       </main>
 
-      {/* Cosmic Loading Overlay */}
-      {isLoading && (
-        <div className="cosmic-loading-overlay fade-in">
-          <div className="cosmic-spinner-wrapper">
-            <div className="cosmic-spinner" />
-            <p className="cosmic-loading-text">{loadingMessage}</p>
-          </div>
-        </div>
-      )}
+      {/* Enchanted Celestial Attunement Portal */}
+      <CelestialAttunementPortal
+        isVisible={isLoading}
+        userData={userData}
+        language={userData?.language || 'en'}
+      />
 
       {/* Story Behind Lore Modal */}
       {showStory && <StoryBehind onBack={() => setShowStory(false)} />}

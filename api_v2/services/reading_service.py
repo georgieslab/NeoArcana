@@ -429,40 +429,36 @@ CARDS DRAWN:
 REQUIRED READING STRUCTURE AND DEPTH:
 
 [PAST]
-Write 3-4 substantial, richly detailed paragraphs (220-280 words) interpreting {card_names[0]} in the Past position:
-- Explore the karmic roots, spiritual foundation, and lived experiences that brought {name} to this threshold.
-- Explain the soul lessons, wisdom, and inner resilience forged through past challenges.
-- How the lingering echoes of {card_names[0]} continue to shape their instincts and perceptions today.
-- Direct resonance with their focus on {focus_area}.
+Write 2 substantial, evocative, deeply poetic paragraphs (110-140 words) interpreting {card_names[0]} in the Past position:
+- Karmic roots, spiritual foundation, and lived experiences that brought {name} to this threshold.
+- The soul lessons and resilience forged through past challenges that still echo today.
+- Direct resonance with their inquiry on {focus_area}.
 
 [PRESENT]
-Write 3-4 substantial, richly detailed paragraphs (220-280 words) interpreting {card_names[1]} in the Present position:
-- Detail the active energetic currents, psychological truths, and cosmic catalysts at play right now.
-- What {name} must confront, accept, or embody at this exact moment under the {moon_phase} moon in {season}.
+Write 2 substantial, evocative, deeply poetic paragraphs (110-140 words) interpreting {card_names[1]} in the Present position:
+- Active energetic currents and psychological truths at play right now under the {moon_phase} moon in {season}.
 - The hidden strengths, untapped resources, and actionable guidance offered by {card_names[1]}.
 - Practical and spiritual advice tailored to their inquiry about {focus_area}.
 
 [FUTURE]
-Write 3-4 substantial, richly detailed paragraphs (220-280 words) interpreting {card_names[2]} in the Future position:
-- Illuminate the emerging horizon, destiny trajectory, and transformative potential unlocking ahead.
-- How conscious choices made today in alignment with {card_names[1]} will manifest the highest blessings of {card_names[2]}.
-- Synchronicities, signs, and opportunities to watch for on this unfolding path.
-- An empowering, uplifting message of hope and sovereignty regarding {focus_area}.
+Write 2 substantial, evocative, deeply poetic paragraphs (110-140 words) interpreting {card_names[2]} in the Future position:
+- The emerging horizon, destiny trajectory, and transformative potential unlocking ahead.
+- How conscious choices made today in alignment with {card_names[1]} will manifest the blessings of {card_names[2]}.
+- Empowering, uplifting message of hope and sovereignty regarding {focus_area}.
 
 [INTEGRATION]
-Write 2-3 substantial paragraphs (150-200 words) weaving all three cards into a unified spiritual tapestry:
+Write 1-2 powerful paragraphs (90-120 words) weaving all three cards into a unified spiritual tapestry:
 - Trace the sacred narrative arc from {card_names[0]} through {card_names[1]} into {card_names[2]}.
-- How the celestial backdrop of the {moon_phase} and {season} anchors this cosmic revelation for {name}.
-- A profound, memorable closing blessing and philosophical reflection to anchor their soul's journey.
+- A profound closing blessing and philosophical reflection to anchor {name}'s soul journey.
 
 LENGTH & TONE:
-- TOTAL WORD COUNT: 850-1100 words. Provide a rich, immersive, literary-grade esoteric reading that leaves the seeker feeling deeply seen, understood, and enlightened.
-- TONE: Mystical yet grounded, compassionate, empowering, poetic, and wise. Speak directly to {name} as "you". Do NOT produce a short or brief summary. Ensure all sections are fully fleshed out."""
+- TOTAL WORD COUNT: 450-550 words. Provide a rich, punchy, literary-grade esoteric reading that leaves the seeker feeling deeply seen and empowered.
+- TONE: Mystical yet grounded, compassionate, empowering, poetic, and wise. Speak directly to {name} as "you"."""
 
             # Call AI provider (AWS Bedrock or Anthropic)
             try:
-                logger.info(f"Calling AI provider for three-card interpretation (language={language}, max_tokens=3500)...")
-                interpretation = await self._call_ai_api(prompt, max_tokens=3500)
+                logger.info(f"Calling AI provider for three-card interpretation (language={language}, max_tokens=1500)...")
+                interpretation = await self._call_ai_api(prompt, max_tokens=1500)
                 logger.info(f"AI interpretation generated: {len(interpretation)} characters")
             except Exception as ai_err:
                 logger.warning(f"AI call failed ({ai_err}), using rich dynamic cosmic interpretation")
@@ -544,7 +540,7 @@ LENGTH & TONE:
             
             # Call AI provider (AWS Bedrock or Anthropic)
             try:
-                interpretation = await self._call_ai_api(prompt, max_tokens=3500)
+                interpretation = await self._call_ai_api(prompt, max_tokens=1500)
             except Exception as ai_err:
                 logger.warning(f"AI call failed ({ai_err}), falling back to dynamic cosmic interpretation")
                 card_images = [get_card_image(card['name']) for card in cards]
@@ -651,18 +647,18 @@ Personal Energy:
 Structure with these EXACT markers:
 
 [PAST]
-Detailed interpretation of {cards[0]['name']} - foundations and lessons from the past. 3-4 substantial paragraphs, 220-280 words.
+Detailed interpretation of {cards[0]['name']} - foundations and lessons from the past. 2 rich paragraphs, 110-140 words.
 
 [PRESENT]
-Detailed interpretation of {cards[1]['name']} - current energies and situation. 3-4 substantial paragraphs, 220-280 words.
+Detailed interpretation of {cards[1]['name']} - current energies and situation. 2 rich paragraphs, 110-140 words.
 
 [FUTURE]
-Detailed interpretation of {cards[2]['name']} - path ahead and transformative potential. 3-4 substantial paragraphs, 220-280 words.
+Detailed interpretation of {cards[2]['name']} - path ahead and transformative potential. 2 rich paragraphs, 110-140 words.
 
 [INTEGRATION]
-Weaving all three cards into a cohesive spiritual narrative and cosmic blessing. 2-3 paragraphs, 150-200 words.
+Weaving all three cards into a cohesive spiritual narrative and cosmic blessing. 1-2 paragraphs, 90-120 words.
 
-Maintain a mystical yet practical tone, deeply personalized to {name}'s journey. Total length: 850-1100 words."""
+Maintain a mystical yet practical tone, deeply personalized to {name}'s journey. Total length: 450-550 words."""
         
         return prompt
     
