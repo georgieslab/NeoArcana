@@ -13,11 +13,11 @@ export default function Step1Trial({ onComplete, onBack, isSubmitting }) {
   const [error, setError] = useState(null);
 
   const focusOptions = [
-    { id: 'destiny', label: 'General Destiny', icon: '💫' },
-    { id: 'love', label: 'Love & Soul Connections', icon: '💖' },
-    { id: 'career', label: 'Career & Calling', icon: '🚀' },
-    { id: 'healing', label: 'Inner Healing & Peace', icon: '🌿' },
-    { id: 'spiritual', label: 'Spiritual Awakening', icon: '🔮' },
+    { id: 'destiny', label: 'General Destiny', short: 'Destiny', icon: '💫' },
+    { id: 'love', label: 'Love & Soul Connections', short: 'Love & Soul', icon: '💖' },
+    { id: 'career', label: 'Career & Calling', short: 'Career', icon: '🚀' },
+    { id: 'healing', label: 'Inner Healing & Peace', short: 'Healing', icon: '🌿' },
+    { id: 'spiritual', label: 'Spiritual Awakening', short: 'Spiritual', icon: '🔮' },
   ];
 
   const zodiacSign = calculateZodiacSign(dateOfBirth);
@@ -60,89 +60,82 @@ export default function Step1Trial({ onComplete, onBack, isSubmitting }) {
 
   return (
     <div className="trial-step1-screen">
-      <div className="trial-step1-card">
-        {/* Navigation */}
-        {onBack && (
-          <button className="trial-step1-back-btn" onClick={onBack} type="button">
-            <span className="back-arrow">←</span> Return to Cosmos
-          </button>
-        )}
+      <div className="trial-step1-card trial-glass-window">
+        {/* Sleek Glass Window Top Bar */}
+        <div className="trial-window-topbar">
+          {onBack ? (
+            <button
+              className="trial-window-back"
+              onClick={onBack}
+              type="button"
+              title="Return to start"
+            >
+              <span className="back-arrow">←</span> Cosmos
+            </button>
+          ) : (
+            <div />
+          )}
 
-        {/* Ethereal Stepper */}
-        <div className="trial-stepper">
-          <div className="stepper-item active">
-            <div className="stepper-circle">
-              <span className="stepper-icon">🔮</span>
-            </div>
-            <span className="stepper-label">1. Attunement</span>
-          </div>
-          <div className="stepper-line" />
-          <div className="stepper-item">
-            <div className="stepper-circle">
-              <span className="stepper-icon">🎴</span>
-            </div>
-            <span className="stepper-label">2. Divination</span>
-          </div>
-          <div className="stepper-line" />
-          <div className="stepper-item">
-            <div className="stepper-circle">
-              <span className="stepper-icon">✨</span>
-            </div>
-            <span className="stepper-label">3. Oracle</span>
+          <div className="trial-window-badge">
+            <span className="badge-dots">
+              <span className="dot active" />
+              <span className="dot" />
+              <span className="dot" />
+            </span>
+            <span className="badge-text">1. Attunement</span>
           </div>
         </div>
 
-        {/* Header */}
-        <div className="trial-step1-header">
-          <h1 className="trial-step1-title">Tune Your Frequency</h1>
-          <p className="trial-step1-subtitle">
-            Anchor your astrological vibration before consulting the sacred cards
+        {/* Compact Window Header */}
+        <div className="trial-window-header">
+          <h1 className="trial-window-title">Tune Your Frequency</h1>
+          <p className="trial-window-subtitle">
+            Anchor your personal vibration before consulting the sacred cards
           </p>
         </div>
 
-        <form onSubmit={handleSubmit} className="trial-step1-form">
-          {/* Main 2-Column Inputs Grid */}
-          <div className="trial-step1-grid">
-            {/* Name Field */}
-            <div className="trial-field-group">
-              <label className="trial-label" htmlFor="seeker-name">
-                <span className="label-icon">👤</span> Your Sacred Name
+        <form onSubmit={handleSubmit} className="trial-compact-form">
+          {/* Main 2-Col Field Group (Name & Email) */}
+          <div className="trial-compact-grid">
+            {/* Sacred Name */}
+            <div className="trial-input-block">
+              <label className="trial-compact-label" htmlFor="seeker-name">
+                <span className="label-ico">👤</span> Name
               </label>
-              <div className="trial-input-wrap">
-                <input
-                  id="seeker-name"
-                  type="text"
-                  placeholder="What may the universe call you?"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  className="trial-cosmic-input"
-                  required
-                />
-              </div>
+              <input
+                id="seeker-name"
+                type="text"
+                placeholder="What may the cosmos call you?"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                className="trial-glass-input"
+                required
+              />
             </div>
 
-            {/* Email Field */}
-            <div className="trial-field-group">
-              <label className="trial-label" htmlFor="seeker-email">
-                <span className="label-icon">✉️</span> Reading Delivery Email
+            {/* Delivery Email */}
+            <div className="trial-input-block">
+              <label className="trial-compact-label" htmlFor="seeker-email">
+                <span className="label-ico">✉️</span> Delivery Email
               </label>
-              <div className="trial-input-wrap">
-                <input
-                  id="seeker-email"
-                  type="email"
-                  placeholder="your.aura@example.com"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="trial-cosmic-input"
-                  required
-                />
-              </div>
+              <input
+                id="seeker-email"
+                type="email"
+                placeholder="your.aura@example.com"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                className="trial-glass-input"
+                required
+              />
             </div>
+          </div>
 
-            {/* Date of Birth Field */}
-            <div className="trial-field-group trial-field-group--dob">
-              <label className="trial-label">
-                <span className="label-icon">📅</span> Date of Birth
+          {/* Date of Birth & Language Grid */}
+          <div className="trial-compact-grid trial-dob-lang-row">
+            {/* Date of Birth */}
+            <div className="trial-input-block trial-dob-block">
+              <label className="trial-compact-label">
+                <span className="label-ico">📅</span> Date of Birth
               </label>
               <CosmicDatePicker
                 value={dateOfBirth}
@@ -152,92 +145,87 @@ export default function Step1Trial({ onComplete, onBack, isSubmitting }) {
             </div>
 
             {/* Language Selection */}
-            <div className="trial-field-group trial-field-group--lang">
-              <label className="trial-label" htmlFor="seeker-lang">
-                <span className="label-icon">🌐</span> Divine Tongue
+            <div className="trial-input-block trial-lang-block">
+              <label className="trial-compact-label" htmlFor="seeker-lang">
+                <span className="label-ico">🌐</span> Divine Tongue
               </label>
-              <div className="trial-input-wrap">
-                <select
-                  id="seeker-lang"
-                  value={language}
-                  onChange={(e) => setLanguage(e.target.value)}
-                  className="trial-cosmic-input trial-cosmic-select"
-                >
-                  {supportedLanguages.map((lang) => (
-                    <option key={lang.code} value={lang.code}>
-                      {lang.native} ({lang.name}) {lang.flag}
-                    </option>
-                  ))}
-                </select>
-              </div>
+              <select
+                id="seeker-lang"
+                value={language}
+                onChange={(e) => setLanguage(e.target.value)}
+                className="trial-glass-input trial-glass-select"
+              >
+                {supportedLanguages.map((lang) => (
+                  <option key={lang.code} value={lang.code}>
+                    {lang.flag} {lang.native} ({lang.name})
+                  </option>
+                ))}
+              </select>
             </div>
           </div>
 
-          {/* Dynamic Zodiac Bloom Banner */}
-          <div className={`trial-zodiac-banner ${zodiacInfo ? 'revealed' : 'waiting'}`}>
+          {/* Zodiac Inline Attunement Pill */}
+          <div className="trial-zodiac-inline">
             {zodiacInfo ? (
-              <div className="zodiac-banner-content">
-                <div className="zodiac-glyph-ring" style={{ borderColor: zodiacInfo.color }}>
-                  <span className="zodiac-glyph">{zodiacInfo.symbol}</span>
-                </div>
-                <div className="zodiac-details">
-                  <div className="zodiac-header-row">
-                    <span className="zodiac-name">{zodiacSign}</span>
-                    <span className="zodiac-element-pill">
-                      {zodiacInfo.elementIcon} {zodiacInfo.element} Sign
-                    </span>
-                    <span className="zodiac-ruler-pill">
-                      🪐 {zodiacInfo.ruler}
-                    </span>
-                  </div>
-                  <p className="zodiac-trait">Energy: {zodiacInfo.trait}</p>
-                </div>
+              <div className="zodiac-pill-active" style={{ borderColor: zodiacInfo.color }}>
+                <span className="zodiac-glyph">{zodiacInfo.symbol}</span>
+                <span className="zodiac-name">{zodiacSign}</span>
+                <span className="zodiac-divider">•</span>
+                <span className="zodiac-meta">{zodiacInfo.elementIcon} {zodiacInfo.element}</span>
+                <span className="zodiac-divider">•</span>
+                <span className="zodiac-meta">🪐 {zodiacInfo.ruler}</span>
+                <span className="zodiac-divider">•</span>
+                <span className="zodiac-trait-pill">{zodiacInfo.trait}</span>
               </div>
             ) : (
-              <div className="zodiac-placeholder">
-                <span className="placeholder-sparkle">✨</span>
-                <span>Enter your date of birth to reveal your celestial guardian sign</span>
+              <div className="zodiac-pill-idle">
+                <span className="sparkle-ico">✨</span>
+                <span>Enter birth date to reveal your astrological sign</span>
               </div>
             )}
           </div>
 
-          {/* Focus Area Inquiry Chips */}
-          <div className="trial-focus-section">
-            <label className="trial-label">
-              <span className="label-icon">🧭</span> What Sphere of Life Seeks Illumination?
-            </label>
-            <div className="trial-focus-chips">
+          {/* Compact Focus Area Ribbon */}
+          <div className="trial-focus-compact">
+            <div className="focus-header-row">
+              <span className="trial-compact-label">
+                <span className="label-ico">🧭</span> Sphere of Illumination
+              </span>
+              <span className="focus-current-name">{focusArea}</span>
+            </div>
+            <div className="trial-pills-row">
               {focusOptions.map((opt) => {
                 const isSelected = focusArea === opt.label;
                 return (
                   <button
                     key={opt.id}
                     type="button"
-                    className={`focus-chip ${isSelected ? 'selected' : ''}`}
+                    className={`trial-focus-pill ${isSelected ? 'selected' : ''}`}
                     onClick={() => {
                       soundManager.playStarSparkle();
                       setFocusArea(opt.label);
                     }}
                   >
-                    <span className="chip-icon">{opt.icon}</span>
-                    <span className="chip-text">{opt.label}</span>
+                    <span className="pill-ico">{opt.icon}</span>
+                    <span className="pill-title">{opt.short}</span>
                   </button>
                 );
               })}
             </div>
           </div>
 
-          {error && <div className="trial-error-alert">{error}</div>}
+          {error && <div className="trial-error-glass">{error}</div>}
 
-          {/* Cosmic Submit Button */}
-          <div className="trial-submit-wrap">
+          {/* Action Button */}
+          <div className="trial-action-wrap">
             <button
               type="submit"
               disabled={isSubmitting}
-              className="trial-cosmic-button"
+              className="trial-cosmic-submit-btn"
             >
-              <span className="button-shimmer" />
-              <span className="button-text">
+              <span className="btn-glow-layer" />
+              <span className="btn-shimmer" />
+              <span className="btn-content">
                 {isSubmitting ? '✨ Channeling Cosmic Energies...' : '🌟 Align With Cosmos & Draw Cards'}
               </span>
             </button>
