@@ -19,8 +19,8 @@
 /* --- Trio Segmented Selectors --- */
 .cosmic-date-selectors {
   display: grid;
-  grid-template-columns: 85px 1fr 100px 48px;
-  gap: 0.6rem;
+  grid-template-columns: 66px 1fr 82px 42px;
+  gap: 0.5rem;
   align-items: center;
   width: 100%;
   min-width: 0;
@@ -28,13 +28,17 @@
 
 @media (max-width: 500px) {
   .cosmic-date-selectors {
-    grid-template-columns: 70px 1fr 78px 42px;
+    grid-template-columns: 56px 1fr 72px 40px;
     gap: 0.35rem;
+  }
+  .cosmic-date-select,
+  .cosmic-date-input {
+    padding: 0 0.4rem;
+    font-size: 0.84rem;
+    height: 44px;
   }
   .cosmic-date-select {
     padding: 0 1.25rem 0 0.55rem;
-    font-size: 0.84rem;
-    height: 44px;
   }
   .cosmic-calendar-toggle-btn {
     height: 44px;
@@ -43,13 +47,53 @@
 
 @media (max-width: 360px) {
   .cosmic-date-selectors {
-    grid-template-columns: 62px 1fr 70px 38px;
+    grid-template-columns: 50px 1fr 64px 36px;
     gap: 0.25rem;
   }
-  .cosmic-date-select {
+  .cosmic-date-select,
+  .cosmic-date-input {
     font-size: 0.8rem;
+    padding: 0 0.3rem;
+  }
+  .cosmic-date-select {
     padding: 0 1rem 0 0.4rem;
   }
+}
+
+.cosmic-date-input {
+  height: 48px;
+  min-width: 0;
+  width: 100%;
+  box-sizing: border-box;
+  background: rgba(25, 16, 45, 0.75);
+  border: 1px solid rgba(165, 154, 209, 0.3);
+  border-radius: 12px;
+  padding: 0 0.45rem;
+  color: #ffffff;
+  font-family: inherit;
+  font-size: 0.92rem;
+  font-weight: 600;
+  text-align: center;
+  letter-spacing: 0.5px;
+  outline: none;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+.cosmic-date-input:hover {
+  border-color: rgba(205, 192, 242, 0.55);
+  background-color: rgba(35, 24, 60, 0.85);
+}
+
+.cosmic-date-input:focus {
+  border-color: #f4a261;
+  box-shadow: 0 0 16px rgba(244, 162, 97, 0.35);
+  background-color: rgba(40, 26, 70, 0.9);
+}
+
+.cosmic-date-input::placeholder {
+  color: rgba(205, 192, 242, 0.4);
+  font-weight: 500;
 }
 
 .cosmic-date-select {

@@ -261,16 +261,27 @@
 }
 
 /* Ensure DatePicker elements match the 42px compact height seamlessly */
-.trial-dob-block .cosmic-date-select {
+.trial-dob-block .cosmic-date-select,
+.trial-dob-block .cosmic-date-input {
   height: 42px !important;
   font-size: 0.84rem !important;
-  padding: 0 1.25rem 0 0.55rem !important;
   border-radius: 12px !important;
   background: rgba(22, 14, 42, 0.65) !important;
   border: 1px solid rgba(165, 154, 209, 0.24) !important;
+  color: #ffffff !important;
 }
 
-.trial-dob-block .cosmic-date-select:focus {
+.trial-dob-block .cosmic-date-select {
+  padding: 0 1.25rem 0 0.55rem !important;
+}
+
+.trial-dob-block .cosmic-date-input {
+  padding: 0 0.4rem !important;
+  text-align: center !important;
+}
+
+.trial-dob-block .cosmic-date-select:focus,
+.trial-dob-block .cosmic-date-input:focus {
   border-color: #f4a261 !important;
   box-shadow: 0 0 16px rgba(244, 162, 97, 0.28) !important;
 }

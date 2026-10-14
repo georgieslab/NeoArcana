@@ -17,7 +17,6 @@ const MONTH_DATA = [
 ];
 
 const CURRENT_YEAR = new Date().getFullYear();
-const YEARS = Array.from({ length: CURRENT_YEAR - 1920 + 1 }, (_, i) => CURRENT_YEAR - i);
 
 export default function CosmicDatePicker({ value, onChange, required = false, showBadge = false }) {
   // Parse incoming value 'YYYY-MM-DD'
@@ -77,23 +76,48 @@ export default function CosmicDatePicker({ value, onChange, required = false, sh
   };
 
   const maxDays = daysInMonth(year, month);
-  const daysList = Array.from({ length: maxDays }, (_, i) => String(i + 1).padStart(2, '0'));
-
   // Trigger parent onChange when all 3 values are selected
   const handleUpdate = (newD, newM, newY) => {
     setDay(newD);
     setMonth(newM);
     setYear(newY);
 
-    if (newD && newM && newY) {
-      const iso = `${newY}-${newM}-${newD}`;
+    const dNum = parseInt(newD, 10);
+    const yNum = parseInt(newY, 10);
+
+    if (
+      newD &&
+      newM &&
+      newY &&
+      newY.length === 4 &&
+      dNum >= 1 &&
+      dNum <= 31 &&
+      yNum >= 1900 &&
+      yNum <= CURRENT_YEAR
+    ) {
+      const paddedD = String(dNum).padStart(2, '0');
+      const iso = `${newY}-${newM}-${paddedD}`;
       onChange(iso);
     } else {
       onChange('');
     }
   };
 
-  const onDayChange = (e) => handleUpdate(e.target.value, month, year);
+  const onDayChange = (e) => {
+    let val = e.target.value.replace(/\D/g, '').slice(0, 2);
+    if (val !== '' && parseInt(val, 10) > 31) {
+      val = '31';
+    }
+    handleUpdate(val, month, year);
+  };
+
+  const onDayBlur = () => {
+    if (day && day.length === 1 && parseInt(day, 10) >= 1) {
+      const padded = day.padStart(2, '0');
+      handleUpdate(padded, month, year);
+    }
+  };
+
   const onMonthChange = (e) => {
     const newM = e.target.value;
     let newD = day;
@@ -103,7 +127,11 @@ export default function CosmicDatePicker({ value, onChange, required = false, sh
     }
     handleUpdate(newD, newM, year);
   };
-  const onYearChange = (e) => handleUpdate(day, month, e.target.value);
+
+  const onYearChange = (e) => {
+    const val = e.target.value.replace(/\D/g, '').slice(0, 4);
+    handleUpdate(day, month, val);
+  };
 
   // Calendar Day Click Handler
   const handleCalendarDayClick = (dNum) => {
@@ -155,25 +183,24 @@ export default function CosmicDatePicker({ value, onChange, required = false, sh
 
   return (
     <div className={`cosmic-date-picker-wrap ${showCalendar ? 'calendar-open' : ''}`} ref={containerRef}>
-      {/* Trio Segmented Selectors */}
+      {/* Trio Segmented Selectors: Day (keyboard), Month (dropdown), Year (keyboard) */}
       <div className="cosmic-date-selectors">
-        {/* Day Select */}
-        <select
+        {/* Day Keyboard Input */}
+        <input
+          type="text"
+          inputMode="numeric"
+          pattern="[0-9]*"
+          placeholder="DD"
+          maxLength={2}
           value={day}
           onChange={onDayChange}
-          className="cosmic-date-select"
+          onBlur={onDayBlur}
+          className="cosmic-date-input"
           required={required}
           aria-label="Day of birth"
-        >
-          <option value="">Day</option>
-          {daysList.map((d) => (
-            <option key={d} value={d}>
-              {d}
-            </option>
-          ))}
-        </select>
+        />
 
-        {/* Month Select */}
+        {/* Month Dropdown Select */}
         <select
           value={month}
           onChange={onMonthChange}
@@ -189,21 +216,19 @@ export default function CosmicDatePicker({ value, onChange, required = false, sh
           ))}
         </select>
 
-        {/* Year Select */}
-        <select
+        {/* Year Keyboard Input */}
+        <input
+          type="text"
+          inputMode="numeric"
+          pattern="[0-9]*"
+          placeholder="YYYY"
+          maxLength={4}
           value={year}
           onChange={onYearChange}
-          className="cosmic-date-select"
+          className="cosmic-date-input"
           required={required}
           aria-label="Year of birth"
-        >
-          <option value="">Year</option>
-          {YEARS.map((y) => (
-            <option key={y} value={String(y)}>
-              {y}
-            </option>
-          ))}
-        </select>
+        />
 
         {/* Calendar Popup Button */}
         <button
