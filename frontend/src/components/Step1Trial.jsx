@@ -4,6 +4,84 @@ import { supportedLanguages } from '../utils/languages';
 import CosmicDatePicker from './CosmicDatePicker';
 import soundManager from '../services/sound';
 
+/* --- Clean Celestial SVG Icons (No Emojis) --- */
+const DestinyIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
+  </svg>
+);
+
+const LoveIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" />
+  </svg>
+);
+
+const CareerIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <polyline points="22 7 13.5 15.5 8.5 10.5 2 17" />
+    <polyline points="16 7 22 7 22 13" />
+  </svg>
+);
+
+const HealingIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" />
+    <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+  </svg>
+);
+
+const SpiritualIcon = () => (
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z" />
+    <circle cx="12" cy="12" r="3" />
+  </svg>
+);
+
+const UserIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2" />
+    <circle cx="12" cy="7" r="4" />
+  </svg>
+);
+
+const MailIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect width="20" height="16" x="2" y="4" rx="2" />
+    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+  </svg>
+);
+
+const CalendarIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <rect width="18" height="18" x="3" y="4" rx="2" ry="2" />
+    <line x1="16" x2="16" y1="2" y2="6" />
+    <line x1="8" x2="8" y1="2" y2="6" />
+    <line x1="3" x2="21" y1="10" y2="10" />
+  </svg>
+);
+
+const GlobeIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="10" />
+    <line x1="2" x2="22" y1="12" y2="12" />
+    <path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z" />
+  </svg>
+);
+
+const CompassIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="10" />
+    <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" />
+  </svg>
+);
+
+const SparkleIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+    <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
+  </svg>
+);
+
 export default function Step1Trial({ onComplete, onBack, isSubmitting }) {
   const [name, setName] = useState('');
   const [dateOfBirth, setDateOfBirth] = useState('');
@@ -13,11 +91,11 @@ export default function Step1Trial({ onComplete, onBack, isSubmitting }) {
   const [error, setError] = useState(null);
 
   const focusOptions = [
-    { id: 'destiny', label: 'General Destiny', short: 'Destiny', icon: '💫' },
-    { id: 'love', label: 'Love & Soul Connections', short: 'Love & Soul', icon: '💖' },
-    { id: 'career', label: 'Career & Calling', short: 'Career', icon: '🚀' },
-    { id: 'healing', label: 'Inner Healing & Peace', short: 'Healing', icon: '🌿' },
-    { id: 'spiritual', label: 'Spiritual Awakening', short: 'Spiritual', icon: '🔮' },
+    { id: 'destiny', label: 'General Destiny', title: 'Destiny', icon: <DestinyIcon /> },
+    { id: 'love', label: 'Love & Soul Connections', title: 'Love & Soul', icon: <LoveIcon /> },
+    { id: 'career', label: 'Career & Calling', title: 'Career', icon: <CareerIcon /> },
+    { id: 'healing', label: 'Inner Healing & Peace', title: 'Healing', icon: <HealingIcon /> },
+    { id: 'spiritual', label: 'Spiritual Awakening', title: 'Spiritual', icon: <SpiritualIcon /> },
   ];
 
   const zodiacSign = calculateZodiacSign(dateOfBirth);
@@ -100,7 +178,7 @@ export default function Step1Trial({ onComplete, onBack, isSubmitting }) {
             {/* Sacred Name */}
             <div className="trial-input-block">
               <label className="trial-compact-label" htmlFor="seeker-name">
-                <span className="label-ico">👤</span> Name
+                <span className="label-ico"><UserIcon /></span> Name
               </label>
               <input
                 id="seeker-name"
@@ -116,7 +194,7 @@ export default function Step1Trial({ onComplete, onBack, isSubmitting }) {
             {/* Delivery Email */}
             <div className="trial-input-block">
               <label className="trial-compact-label" htmlFor="seeker-email">
-                <span className="label-ico">✉️</span> Delivery Email
+                <span className="label-ico"><MailIcon /></span> Delivery Email
               </label>
               <input
                 id="seeker-email"
@@ -135,7 +213,7 @@ export default function Step1Trial({ onComplete, onBack, isSubmitting }) {
             {/* Date of Birth */}
             <div className="trial-input-block trial-dob-block">
               <label className="trial-compact-label">
-                <span className="label-ico">📅</span> Date of Birth
+                <span className="label-ico"><CalendarIcon /></span> Date of Birth
               </label>
               <CosmicDatePicker
                 value={dateOfBirth}
@@ -147,7 +225,7 @@ export default function Step1Trial({ onComplete, onBack, isSubmitting }) {
             {/* Language Selection */}
             <div className="trial-input-block trial-lang-block">
               <label className="trial-compact-label" htmlFor="seeker-lang">
-                <span className="label-ico">🌐</span> Divine Tongue
+                <span className="label-ico"><GlobeIcon /></span> Divine Tongue
               </label>
               <select
                 id="seeker-lang"
@@ -179,17 +257,17 @@ export default function Step1Trial({ onComplete, onBack, isSubmitting }) {
               </div>
             ) : (
               <div className="zodiac-pill-idle">
-                <span className="sparkle-ico">✨</span>
+                <span className="sparkle-ico"><SparkleIcon /></span>
                 <span>Enter birth date to reveal your astrological sign</span>
               </div>
             )}
           </div>
 
-          {/* Compact Focus Area Ribbon */}
+          {/* Single-Line Focus Area Ribbon */}
           <div className="trial-focus-compact">
             <div className="focus-header-row">
               <span className="trial-compact-label">
-                <span className="label-ico">🧭</span> Sphere of Illumination
+                <span className="label-ico"><CompassIcon /></span> Sphere of Illumination
               </span>
               <span className="focus-current-name">{focusArea}</span>
             </div>
@@ -205,9 +283,10 @@ export default function Step1Trial({ onComplete, onBack, isSubmitting }) {
                       soundManager.playStarSparkle();
                       setFocusArea(opt.label);
                     }}
+                    title={opt.label}
                   >
                     <span className="pill-ico">{opt.icon}</span>
-                    <span className="pill-title">{opt.short}</span>
+                    <span className="pill-title">{opt.title}</span>
                   </button>
                 );
               })}
@@ -226,7 +305,10 @@ export default function Step1Trial({ onComplete, onBack, isSubmitting }) {
               <span className="btn-glow-layer" />
               <span className="btn-shimmer" />
               <span className="btn-content">
-                {isSubmitting ? '✨ Channeling Cosmic Energies...' : '🌟 Align With Cosmos & Draw Cards'}
+                <SparkleIcon />
+                <span>
+                  {isSubmitting ? 'Channeling Cosmic Energies...' : 'Align With Cosmos & Draw Cards'}
+                </span>
               </span>
             </button>
           </div>

@@ -214,7 +214,14 @@
 }
 
 .label-ico {
-  font-size: 0.84rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  color: #f4a261;
+}
+
+.label-ico svg {
+  display: block;
 }
 
 .trial-glass-input {
@@ -396,25 +403,25 @@
 
 .trial-pills-row {
   display: flex;
-  flex-wrap: wrap;
-  gap: 0.45rem;
-  justify-content: space-between;
+  flex-wrap: nowrap;
+  gap: 6px;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .trial-focus-pill {
-  flex: 1 1 auto;
-  height: 35px;
+  flex: 1 1 0;
+  min-width: 0;
+  height: 36px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  gap: 0.35rem;
-  padding: 0 0.75rem;
+  gap: 5px;
+  padding: 0 4px;
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid rgba(165, 154, 209, 0.22);
-  border-radius: 100px;
+  border-radius: 10px;
   color: #cdc0f2;
-  font-size: 0.78rem;
-  font-weight: 500;
   cursor: pointer;
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
   white-space: nowrap;
@@ -437,12 +444,26 @@
 }
 
 .pill-ico {
-  font-size: 0.88rem;
-  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: inherit;
+}
+
+.pill-ico svg {
+  width: 13px;
+  height: 13px;
+  display: block;
 }
 
 .pill-title {
+  font-size: clamp(0.68rem, 1.8vw, 0.78rem);
+  font-weight: 500;
   letter-spacing: 0.2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 /* -------------------- ERROR ALERT -------------------- */
@@ -534,6 +555,16 @@
 .btn-content {
   position: relative;
   z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.btn-content svg {
+  display: block;
+  flex-shrink: 0;
+  filter: drop-shadow(0 0 6px rgba(244, 162, 97, 0.8));
 }
 
 /* -------------------- RESPONSIVE REFINEMENTS -------------------- */
@@ -567,15 +598,25 @@
   }
 
   .trial-pills-row {
-    gap: 0.35rem;
+    flex-wrap: nowrap !important;
+    gap: 4px;
   }
 
   .trial-focus-pill {
-    flex: 1 1 calc(50% - 0.35rem);
-    min-width: calc(50% - 0.35rem);
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
     height: 34px;
-    font-size: 0.75rem;
-    padding: 0 0.5rem;
+    padding: 0 3px;
+    gap: 3px;
+  }
+
+  .pill-title {
+    font-size: 0.68rem;
+  }
+
+  .pill-ico svg {
+    width: 11px;
+    height: 11px;
   }
 
   .trial-cosmic-submit-btn {
@@ -595,8 +636,25 @@
     font-size: 1.22rem;
   }
 
+  .trial-pills-row {
+    flex-wrap: nowrap !important;
+    gap: 3px;
+  }
+
   .trial-focus-pill {
-    flex: 1 1 100%;
-    min-width: 100%;
+    flex: 1 1 0 !important;
+    min-width: 0 !important;
+    padding: 0 2px;
+    gap: 2px;
+  }
+
+  .pill-title {
+    font-size: 0.62rem;
+    letter-spacing: 0;
+  }
+
+  .pill-ico svg {
+    width: 10px;
+    height: 10px;
   }
 }
