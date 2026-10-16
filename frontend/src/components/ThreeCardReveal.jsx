@@ -2,6 +2,53 @@ import { useState, useEffect } from 'react';
 import { getPersonalMessage } from '../utils/zodiac';
 import soundManager from '../services/sound';
 
+/* --- Handcrafted Position SVGs (No Emojis) --- */
+const PastGlyph = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="url(#revPastGrad)" stroke="#ffd700" strokeWidth="1.2" />
+    <defs>
+      <linearGradient id="revPastGrad" x1="3" y1="3" x2="21" y2="21" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#cdc0f2" />
+        <stop offset="1" stopColor="#6b4e71" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
+const PresentGlyph = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="4.5" fill="url(#revPresGrad)" stroke="#ffd700" strokeWidth="1.2" />
+    <line x1="12" y1="2" x2="12" y2="4.5" stroke="#f4a261" strokeWidth="1.8" strokeLinecap="round" />
+    <line x1="12" y1="19.5" x2="12" y2="22" stroke="#f4a261" strokeWidth="1.8" strokeLinecap="round" />
+    <line x1="4.93" y1="4.93" x2="6.7" y2="6.7" stroke="#f4a261" strokeWidth="1.8" strokeLinecap="round" />
+    <line x1="17.3" y1="17.3" x2="19.07" y2="19.07" stroke="#f4a261" strokeWidth="1.8" strokeLinecap="round" />
+    <line x1="2" y1="12" x2="4.5" y2="12" stroke="#f4a261" strokeWidth="1.8" strokeLinecap="round" />
+    <line x1="19.5" y1="12" x2="22" y2="12" stroke="#f4a261" strokeWidth="1.8" strokeLinecap="round" />
+    <line x1="4.93" y1="19.07" x2="6.7" y2="17.3" stroke="#f4a261" strokeWidth="1.8" strokeLinecap="round" />
+    <line x1="17.3" y1="6.7" x2="19.07" y2="4.93" stroke="#f4a261" strokeWidth="1.8" strokeLinecap="round" />
+    <defs>
+      <linearGradient id="revPresGrad" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#ffd700" />
+        <stop offset="1" stopColor="#f4a261" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
+const FutureGlyph = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M12 2L14.4 8.6L21 11L14.4 13.4L12 20L9.6 13.4L3 11L9.6 8.6L12 2Z" fill="url(#revFutGrad)" stroke="#ffd700" strokeWidth="1.2" strokeLinejoin="round" />
+    <circle cx="12" cy="11" r="1.5" fill="#ffffff" />
+    <defs>
+      <linearGradient id="revFutGrad" x1="2" y1="1" x2="22" y2="20" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#ffd700" />
+        <stop offset="0.5" stopColor="#f4a261" />
+        <stop offset="1" stopColor="#a59ad1" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
 export default function ThreeCardReveal({ name, readingData, onComplete, zodiacSign, language = 'en' }) {
   const [isVisible] = useState(true);
   const [showInstruction] = useState(true);
@@ -15,7 +62,7 @@ export default function ThreeCardReveal({ name, readingData, onComplete, zodiacS
 
   const isKa = language === 'ka';
   const positions = isKa ? ['წარსული', 'აწმყო', 'მომავალი'] : ['Past', 'Present', 'Future'];
-  const positionIcons = ['🌙', '⭐', '✨'];
+  const positionIcons = [<PastGlyph key="past" />, <PresentGlyph key="pres" />, <FutureGlyph key="fut" />];
 
   useEffect(() => {
     if (typeof window !== 'undefined' && window.zoomBackground) {

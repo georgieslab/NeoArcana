@@ -13,6 +13,110 @@ const ChatStarIcon = () => (
   </svg>
 );
 
+/* --- Handcrafted Celestial SVG Icons (Zero Emojis) --- */
+const PastGlyph = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="url(#interpPastGrad)" stroke="#ffd700" strokeWidth="1.2" />
+    <defs>
+      <linearGradient id="interpPastGrad" x1="3" y1="3" x2="21" y2="21" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#cdc0f2" />
+        <stop offset="1" stopColor="#6b4e71" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
+const PresentGlyph = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="4.5" fill="url(#interpPresGrad)" stroke="#ffd700" strokeWidth="1.2" />
+    <line x1="12" y1="2" x2="12" y2="4.5" stroke="#f4a261" strokeWidth="1.8" strokeLinecap="round" />
+    <line x1="12" y1="19.5" x2="12" y2="22" stroke="#f4a261" strokeWidth="1.8" strokeLinecap="round" />
+    <line x1="4.93" y1="4.93" x2="6.7" y2="6.7" stroke="#f4a261" strokeWidth="1.8" strokeLinecap="round" />
+    <line x1="17.3" y1="17.3" x2="19.07" y2="19.07" stroke="#f4a261" strokeWidth="1.8" strokeLinecap="round" />
+    <line x1="2" y1="12" x2="4.5" y2="12" stroke="#f4a261" strokeWidth="1.8" strokeLinecap="round" />
+    <line x1="19.5" y1="12" x2="22" y2="12" stroke="#f4a261" strokeWidth="1.8" strokeLinecap="round" />
+    <line x1="4.93" y1="19.07" x2="6.7" y2="17.3" stroke="#f4a261" strokeWidth="1.8" strokeLinecap="round" />
+    <line x1="17.3" y1="6.7" x2="19.07" y2="4.93" stroke="#f4a261" strokeWidth="1.8" strokeLinecap="round" />
+    <defs>
+      <linearGradient id="interpPresGrad" x1="0" y1="0" x2="24" y2="24" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#ffd700" />
+        <stop offset="1" stopColor="#f4a261" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
+const FutureGlyph = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M12 2L14.4 8.6L21 11L14.4 13.4L12 20L9.6 13.4L3 11L9.6 8.6L12 2Z" fill="url(#interpFutGrad)" stroke="#ffd700" strokeWidth="1.2" strokeLinejoin="round" />
+    <circle cx="12" cy="11" r="1.5" fill="#ffffff" />
+    <defs>
+      <linearGradient id="interpFutGrad" x1="2" y1="1" x2="22" y2="20" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#ffd700" />
+        <stop offset="0.5" stopColor="#f4a261" />
+        <stop offset="1" stopColor="#a59ad1" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
+const CompassIcon = () => (
+  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <circle cx="12" cy="12" r="10" />
+    <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="currentColor" />
+  </svg>
+);
+
+const MoonIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" fill="#ffd700" stroke="#ffd700" strokeWidth="1" />
+  </svg>
+);
+
+const SeasonLeafIcon = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#34d399" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z" fill="rgba(52, 211, 153, 0.25)" />
+    <path d="M2 21c0-3 1.85-5.36 5.08-6C9.5 14.52 12 13 13 12" />
+  </svg>
+);
+
+const EnergyGlyph = () => (
+  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#f4a261" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" fill="rgba(244, 162, 97, 0.4)" />
+  </svg>
+);
+
+const ZoomIcon = () => (
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <circle cx="11" cy="11" r="8" />
+    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+    <line x1="11" y1="8" x2="11" y2="14" />
+    <line x1="8" y1="11" x2="14" y2="11" />
+  </svg>
+);
+
+const CrystalOrbIcon = () => (
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <circle cx="12" cy="11" r="8" fill="url(#orbGrad)" stroke="#ffd700" strokeWidth="1.2" />
+    <path d="M7 21h10M9 19h6" stroke="#a59ad1" strokeWidth="2" />
+    <path d="M9 8c1.5-2 4.5-2 6 0" stroke="rgba(255, 255, 255, 0.6)" strokeWidth="1.2" strokeLinecap="round" />
+    <defs>
+      <radialGradient id="orbGrad" cx="35%" cy="30%" r="70%">
+        <stop stopColor="#ffd700" stopOpacity="0.8" />
+        <stop offset="0.6" stopColor="#a59ad1" stopOpacity="0.4" />
+        <stop offset="1" stopColor="#1a1033" stopOpacity="0.9" />
+      </radialGradient>
+    </defs>
+  </svg>
+);
+
+const RefreshIcon = () => (
+  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+    <path d="M23 4v6h-6M1 20v-6h6" />
+    <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+  </svg>
+);
+
 export default function ThreeCardInterpretation({
   readingData,
   name,
@@ -26,7 +130,7 @@ export default function ThreeCardInterpretation({
 
   const isKa = language === 'ka';
   const positions = isKa ? ['წარსული', 'აწმყო', 'მომავალი'] : ['Past', 'Present', 'Future'];
-  const positionIcons = ['🌙', '⭐', '✨'];
+  const positionIcons = [<PastGlyph key="p" />, <PresentGlyph key="pr" />, <FutureGlyph key="f" />];
   const positionColors = ['#a78bfa', '#38bdf8', '#f59e0b']; // Amethyst, Luminous Cyan/Lavender, Radiant Amber
 
   // Helper to sanitize markdown artifacts from AI generation
@@ -46,7 +150,7 @@ export default function ThreeCardInterpretation({
       return [
         {
           title: isKa ? 'წარსული: ფესვები და გაკვეთილები' : 'The Past: Foundations & Lessons',
-          icon: '🌙',
+          icon: <PastGlyph />,
           content: isKa
             ? 'თქვენი სულის გზის განმსაზღვრელი წმინდა საფუძვლები და გამოცდილებები.'
             : 'The sacred foundations and experiences that shaped the path of your soul.',
@@ -55,7 +159,7 @@ export default function ThreeCardInterpretation({
         },
         {
           title: isKa ? 'აწმყო: მიმდინარე ენერგეტიკული ნაკადები' : 'The Present: Active Energetic Influences',
-          icon: '⭐',
+          icon: <PresentGlyph />,
           content: isKa
             ? 'ზეციური ძალები და შინაგანი სიბრძნე, რომელიც ამჟამად თქვენს განკარგულებაშია.'
             : 'The celestial forces and inner wisdom available to you in the current moment.',
@@ -64,7 +168,7 @@ export default function ThreeCardInterpretation({
         },
         {
           title: isKa ? 'მომავალი: ბედისწერის ჰორიზონტი და პოტენციალი' : 'The Future: Unfolding Destiny & Potential',
-          icon: '✨',
+          icon: <FutureGlyph />,
           content: isKa
             ? 'უმაღლესი შესაძლებლობები, რომლებიც იხსნება თქვენი შეგნებული არჩევანის კვალდაკვალ.'
             : 'The highest possibilities opening as your deliberate choices align with the cosmos.',
@@ -90,7 +194,7 @@ export default function ThreeCardInterpretation({
     if (pastMatch && cleanSectionText(pastMatch[1])) {
       sections.push({
         title: isKa ? 'წარსული: ფესვები და მეხსიერება' : 'The Past: Foundations & Memory',
-        icon: '🌙',
+        icon: <PastGlyph />,
         content: cleanSectionText(pastMatch[1]),
         position: 'past',
         color: positionColors[0],
@@ -99,7 +203,7 @@ export default function ThreeCardInterpretation({
     if (presMatch && cleanSectionText(presMatch[1])) {
       sections.push({
         title: isKa ? 'აწმყო: მიმდინარე ენერგიები' : 'The Present: Currents of Now',
-        icon: '⭐',
+        icon: <PresentGlyph />,
         content: cleanSectionText(presMatch[1]),
         position: 'present',
         color: positionColors[1],
@@ -108,7 +212,7 @@ export default function ThreeCardInterpretation({
     if (futMatch && cleanSectionText(futMatch[1])) {
       sections.push({
         title: isKa ? 'მომავალი: მომავლის ჰორიზონტი' : 'The Future: Horizon of Becoming',
-        icon: '✨',
+        icon: <FutureGlyph />,
         content: cleanSectionText(futMatch[1]),
         position: 'future',
         color: positionColors[2],
@@ -117,7 +221,7 @@ export default function ThreeCardInterpretation({
     if (intMatch && cleanSectionText(intMatch[1])) {
       sections.push({
         title: isKa ? 'კოსმოსური სინთეზი და ინტეგრაცია' : 'Cosmic Synthesis & Spiritual Integration',
-        icon: '🔮',
+        icon: <CrystalOrbIcon />,
         content: cleanSectionText(intMatch[1]),
         position: 'integration',
         color: '#ffd700',
@@ -128,7 +232,7 @@ export default function ThreeCardInterpretation({
     if (sections.length === 0) {
       sections.push({
         title: isKa ? 'ღვთაებრივი არკანას გაშლა' : 'Divine Arcana Reading',
-        icon: '🌌',
+        icon: <CrystalOrbIcon />,
         content: text.trim(),
         position: 'overview',
         color: '#a59ad1',
@@ -195,7 +299,11 @@ export default function ThreeCardInterpretation({
               <strong>{name || (isKa ? 'მაძიებლისთვის' : 'Seeker')}</strong>
             </span>
             {zodiacSign && <span className="subtitle-badge">✦ {zodiacSign}</span>}
-            {focusArea && <span className="subtitle-badge">🧭 {focusArea}</span>}
+            {focusArea && (
+              <span className="subtitle-badge">
+                <CompassIcon /> {focusArea}
+              </span>
+            )}
           </p>
         </div>
 
@@ -204,21 +312,21 @@ export default function ThreeCardInterpretation({
           <div className="cosmic-info-bar">
             {moonPhase && (
               <div className="cosmic-info-item">
-                <span className="cosmic-icon">🌕</span>
+                <span className="cosmic-icon"><MoonIcon /></span>
                 <span>{moonPhase}</span>
               </div>
             )}
             {moonPhase && season && <span className="cosmic-info-sep">•</span>}
             {season && (
               <div className="cosmic-info-item">
-                <span className="cosmic-icon">🌿</span>
+                <span className="cosmic-icon"><SeasonLeafIcon /></span>
                 <span>{season}</span>
               </div>
             )}
             {(moonPhase || season) && dayEnergy && <span className="cosmic-info-sep">•</span>}
             {dayEnergy && (
               <div className="cosmic-info-item">
-                <span className="cosmic-icon">⚡</span>
+                <span className="cosmic-icon"><EnergyGlyph /></span>
                 <span>{dayEnergy}</span>
               </div>
             )}
@@ -277,7 +385,9 @@ export default function ThreeCardInterpretation({
                         className="open-card-img"
                         loading="eager"
                       />
-                      <span className="open-card-zoom-badge">{isKa ? '🔍 გადიდება' : '🔍 Zoom'}</span>
+                      <span className="open-card-zoom-badge">
+                        <ZoomIcon /> {isKa ? 'გადიდება' : 'Zoom'}
+                      </span>
                     </div>
                   )}
 
@@ -325,7 +435,9 @@ export default function ThreeCardInterpretation({
               }}
             >
               <div className="synthesis-header">
-                <div className="synthesis-icon-bubble">🔮</div>
+                <div className="synthesis-icon-bubble">
+                  <CrystalOrbIcon />
+                </div>
                 <div>
                   <span className="synthesis-eyebrow">{isKa ? 'კოსმოსური ქსოვა' : 'Cosmic Weaving'}</span>
                   <h2 className="synthesis-title">{synthesisSection.title}</h2>
@@ -347,7 +459,7 @@ export default function ThreeCardInterpretation({
               className="restart-reading-btn"
               type="button"
             >
-              <span>🔄</span>
+              <span><RefreshIcon /></span>
               <span>{isKa ? 'ახალი გაშლა' : 'Draw Another Spread'}</span>
             </button>
           </div>

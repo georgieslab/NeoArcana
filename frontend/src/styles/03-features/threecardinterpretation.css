@@ -181,6 +181,9 @@
 }
 
 .cosmic-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   font-size: 1.15rem;
 }
 
@@ -273,6 +276,9 @@
   position: absolute;
   bottom: 8px;
   right: 8px;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
   background: rgba(15, 10, 25, 0.85);
   border: 1px solid rgba(165, 154, 209, 0.4);
   border-radius: 999px;
