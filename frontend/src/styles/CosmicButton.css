@@ -11,8 +11,8 @@
 }
 
 .cosmic-button {
-  max-width: 284px!important;
-  width: 100%!important;
+  max-width: 100%;
+  width: 100%;
   padding: 10px 30px;
   font-size: 18px;
  min-height:48px;
