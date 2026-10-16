@@ -1,15 +1,132 @@
 import { useState, useEffect, useRef } from 'react';
+import soundManager from '../services/sound';
 
-/**
- * CosmicLoader Component
- * Runs on initial app boot for 8 seconds while textures, shaders,
- * and background geometry are loaded and stabilized in the background.
- */
+/* --- Handcrafted Celestial Vector Glyphs (Zero Emojis) --- */
+const AwakenForcesGlyph = () => (
+  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <circle cx="12" cy="12" r="9.5" stroke="rgba(244, 162, 97, 0.45)" strokeWidth="1.2" strokeDasharray="2 2" />
+    <path
+      d="M13 2L3 14H12L11 22L21 10H12L13 2Z"
+      fill="url(#loaderForceGrad)"
+      stroke="#ffd700"
+      strokeWidth="1.2"
+      strokeLinejoin="round"
+    />
+    <circle cx="12" cy="12" r="1.5" fill="#ffffff" />
+    <defs>
+      <linearGradient id="loaderForceGrad" x1="3" y1="2" x2="21" y2="22" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#ffd700" />
+        <stop offset="0.6" stopColor="#f4a261" />
+        <stop offset="1" stopColor="#e76f51" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
+const StarGatePortalGlyph = () => (
+  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <circle cx="12" cy="12" r="10" stroke="rgba(100, 223, 223, 0.4)" strokeWidth="1.2" />
+    <circle cx="12" cy="12" r="6.5" stroke="rgba(165, 154, 209, 0.6)" strokeWidth="1.2" strokeDasharray="3 2" />
+    <path
+      d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z"
+      fill="url(#loaderGateGrad)"
+      stroke="#64dfdf"
+      strokeWidth="1.2"
+      strokeLinejoin="round"
+    />
+    <circle cx="12" cy="12" r="2.2" fill="#ffffff" />
+    <defs>
+      <linearGradient id="loaderGateGrad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#64dfdf" />
+        <stop offset="0.5" stopColor="#a78bfa" />
+        <stop offset="1" stopColor="#38bdf8" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
+const CelestialEnergiesGlyph = () => (
+  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <circle cx="12" cy="12" r="10" stroke="rgba(244, 162, 97, 0.35)" strokeWidth="1" strokeDasharray="2 2" />
+    <path
+      d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z"
+      fill="url(#loaderMoonGrad)"
+      stroke="#ffd700"
+      strokeWidth="1.2"
+    />
+    <circle cx="18" cy="6" r="2" fill="#ffd700" />
+    <path d="M18 2v2M18 8v2M14 6h2M20 6h2" stroke="#f4a261" strokeWidth="1.2" strokeLinecap="round" />
+    <defs>
+      <linearGradient id="loaderMoonGrad" x1="3" y1="3" x2="21" y2="21" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#cdc0f2" />
+        <stop offset="0.6" stopColor="#a59ad1" />
+        <stop offset="1" stopColor="#6b4e71" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
+const SacredJourneyGlyph = () => (
+  <svg width="34" height="34" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <circle cx="12" cy="12" r="10" stroke="rgba(255, 215, 0, 0.3)" strokeWidth="1.2" />
+    <polygon points="16.24 7.76 14.12 14.12 7.76 16.24 9.88 9.88 16.24 7.76" fill="url(#loaderCompassGrad)" stroke="#ffd700" strokeWidth="1" />
+    <circle cx="12" cy="12" r="2" fill="#ffffff" />
+    <path d="M12 2v3M12 19v3M2 12h3M19 12h3" stroke="#f4a261" strokeWidth="1.4" strokeLinecap="round" />
+    <defs>
+      <linearGradient id="loaderCompassGrad" x1="7" y1="7" x2="17" y2="17" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#ffd700" />
+        <stop offset="0.5" stopColor="#f4a261" />
+        <stop offset="1" stopColor="#a59ad1" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
+const LoaderCenterStarGlyph = () => (
+  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <path
+      d="M12 2L14.2 8.8L21 11L14.2 13.2L12 20L9.8 13.2L3 11L9.8 8.8L12 2Z"
+      fill="url(#loaderCenterStarGrad)"
+      stroke="#ffd700"
+      strokeWidth="1.2"
+      strokeLinejoin="round"
+    />
+    <circle cx="12" cy="11" r="1.8" fill="#ffffff" />
+    <defs>
+      <linearGradient id="loaderCenterStarGrad" x1="3" y1="2" x2="21" y2="20" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#ffd700" />
+        <stop offset="0.5" stopColor="#f4a261" />
+        <stop offset="1" stopColor="#a59ad1" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
 const COSMIC_PHRASES = [
-  { text: 'Awakening Cosmic Forces', icon: '⚡' },
-  { text: 'Opening Star Gates', icon: '🌌' },
-  { text: 'Calibrating Celestial Energies', icon: '✨' },
-  { text: 'Preparing Your Sacred Journey', icon: '🔮' },
+  {
+    id: 'awakening',
+    title: 'Awakening Cosmic Forces',
+    subtitle: 'Calibrating 528Hz Solfeggio Vibration',
+    glyph: <AwakenForcesGlyph />,
+  },
+  {
+    id: 'stargate',
+    title: 'Opening Star Gates',
+    subtitle: 'Aligning Astral Portals & Etheric Meridians',
+    glyph: <StarGatePortalGlyph />,
+  },
+  {
+    id: 'energies',
+    title: 'Calibrating Celestial Energies',
+    subtitle: 'Harmonizing Planetary Tides & Sacred Arcana',
+    glyph: <CelestialEnergiesGlyph />,
+  },
+  {
+    id: 'journey',
+    title: 'Preparing Your Sacred Journey',
+    subtitle: 'Unfolding the Sacred Geometry of Destiny',
+    glyph: <SacredJourneyGlyph />,
+  },
 ];
 
 export default function CosmicLoader({
@@ -20,9 +137,11 @@ export default function CosmicLoader({
   const [progress, setProgress] = useState(0);
   const [isFading, setIsFading] = useState(false);
   const mountedRef = useRef(true);
+  const lastPhaseRef = useRef(0);
 
   useEffect(() => {
     mountedRef.current = true;
+    lastPhaseRef.current = 0;
     const startTime = Date.now();
 
     // High-resolution progress update
@@ -38,6 +157,17 @@ export default function CosmicLoader({
         phaseCount - 1,
         Math.floor((elapsed / (duration * 0.9)) * phaseCount)
       );
+
+      // Play subtle chime on phase advance
+      if (currentPhase !== lastPhaseRef.current) {
+        lastPhaseRef.current = currentPhase;
+        if (currentPhase === phaseCount - 1) {
+          soundManager.playCelestialChime();
+        } else {
+          soundManager.playStarSparkle();
+        }
+      }
+
       setPhaseIndex(currentPhase);
     }, 40);
 
@@ -63,158 +193,56 @@ export default function CosmicLoader({
     };
   }, [duration, onLoadingComplete]);
 
+  const currentPhaseData = COSMIC_PHRASES[phaseIndex] || COSMIC_PHRASES[0];
+
   return (
     <div
       className={`cosmic-loader-container ${isFading ? 'fade-out' : ''}`}
-      style={{
-        position: 'fixed',
-        top: 0,
-        left: 0,
-        width: '100vw',
-        height: '100vh',
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        background: 'radial-gradient(circle at center, #09001f 0%, #02000c 80%)',
-        backdropFilter: 'blur(16px)',
-        zIndex: 99999,
-        gap: '1.75rem',
-        opacity: isFading ? 0 : 1,
-        transition: 'opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1)',
-        pointerEvents: isFading ? 'none' : 'auto',
-      }}
+      role="status"
+      aria-live="polite"
+      aria-label="Loading sacred cosmos"
     >
-      {/* Mystical Gyroscope Cosmic Orb */}
-      <div
-        className="cosmic-loader-orb-box"
-        style={{
-          position: 'relative',
-          width: '110px',
-          height: '110px',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}
-      >
-        <div className="cosmic-orb" />
-        
-        {/* Pulsing Core Glow */}
-        <div
-          style={{
-            position: 'absolute',
-            width: '45px',
-            height: '45px',
-            borderRadius: '50%',
-            background: 'radial-gradient(circle, rgba(205, 192, 242, 0.9) 0%, rgba(165, 154, 209, 0.4) 60%, transparent 100%)',
-            boxShadow: '0 0 25px rgba(165, 154, 209, 0.7)',
-            filter: 'blur(3px)',
-            pointerEvents: 'none',
-          }}
-        />
-
-        {/* Ambient Orbiting Particles */}
-        <div
-          style={{
-            position: 'absolute',
-            width: '95px',
-            height: '95px',
-            borderRadius: '50%',
-            border: '1.5px solid rgba(244, 162, 97, 0.45)',
-            borderTopColor: '#f4a261',
-            borderBottomColor: 'transparent',
-            animation: 'spin 3s linear infinite',
-            pointerEvents: 'none',
-          }}
-        />
-        <div
-          style={{
-            position: 'absolute',
-            width: '120px',
-            height: '120px',
-            borderRadius: '50%',
-            border: '1.5px dashed rgba(165, 154, 209, 0.35)',
-            animation: 'spin 6s linear infinite reverse',
-            pointerEvents: 'none',
-          }}
-        />
+      {/* 3D Astrolabe Gyroscope Core */}
+      <div className="cosmic-loader-arena">
+        <div className="loader-astrolabe-ring loader-ring-outer" />
+        <div className="loader-astrolabe-ring loader-ring-mid" />
+        <div className="loader-astrolabe-ring loader-ring-inner" />
+        <div className="loader-core-gem">
+          <span className="loader-core-glow" />
+          <LoaderCenterStarGlyph />
+        </div>
       </div>
 
-      {/* Dynamic Astral Phase Messages */}
-      <div
-        className="phase-message"
-        style={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: '0.6rem',
-          minHeight: '80px',
-          textAlign: 'center',
-        }}
-      >
-        <span
-          className="phase-icon"
-          style={{
-            fontSize: '2.5rem',
-            filter: 'drop-shadow(0 0 12px rgba(244, 162, 97, 0.6))',
-            transition: 'all 0.3s ease',
-          }}
-        >
-          {COSMIC_PHRASES[phaseIndex].icon}
-        </span>
-        <span
-          className="phase-text"
-          style={{
-            fontSize: '1.15rem',
-            fontFamily: "'Orbitron', sans-serif",
-            fontWeight: 600,
-            letterSpacing: '0.08em',
-            background: 'linear-gradient(135deg, #ffffff 0%, #cdc0f2 50%, #f4a261 100%)',
-            WebkitBackgroundClip: 'text',
-            WebkitTextFillColor: 'transparent',
-            textShadow: '0 0 20px rgba(165, 154, 209, 0.3)',
-          }}
-        >
-          {COSMIC_PHRASES[phaseIndex].text}
-        </span>
+      {/* Phase Badge & Typography */}
+      <div className="loader-phase-card">
+        <div className="loader-icon-gem" key={phaseIndex}>
+          {currentPhaseData.glyph}
+        </div>
+        <h2 className="loader-phase-title" key={`title-${phaseIndex}`}>
+          {currentPhaseData.title}
+        </h2>
+        <p className="loader-phase-subtitle" key={`sub-${phaseIndex}`}>
+          {currentPhaseData.subtitle}
+        </p>
       </div>
 
-      {/* Timed Progress Bar */}
-      <div
-        className="loading-progress"
-        style={{
-          width: '240px',
-          height: '4px',
-          background: 'rgba(165, 154, 209, 0.15)',
-          borderRadius: '4px',
-          overflow: 'hidden',
-          boxShadow: 'inset 0 1px 3px rgba(0, 0, 0, 0.5)',
-        }}
-      >
-        <div
-          style={{
-            width: `${progress}%`,
-            height: '100%',
-            background: 'linear-gradient(90deg, #a59ad1, #f4a261, #e0b0ff)',
-            boxShadow: '0 0 12px rgba(165, 154, 209, 0.8)',
-            transition: 'width 0.05s linear',
-            borderRadius: '4px',
-          }}
-        />
-      </div>
-
-      {/* Subtitle Percentage */}
-      <div
-        style={{
-          fontSize: '0.75rem',
-          letterSpacing: '0.2em',
-          color: 'rgba(205, 192, 242, 0.6)',
-          textTransform: 'uppercase',
-          fontFamily: "'Orbitron', sans-serif",
-          fontWeight: 500,
-        }}
-      >
-        Aligning Cosmos {progress}%
+      {/* Enhanced Progress Bar & Telemetry */}
+      <div className="loader-progress-wrap">
+        <div className="loader-progress-track">
+          <div
+            className="loader-progress-fill"
+            style={{ width: `${progress}%` }}
+          >
+            <span className="loader-progress-head" />
+          </div>
+        </div>
+        <div className="loader-telemetry-row">
+          <span className="loader-telemetry-caption">
+            <span className="loader-telemetry-spark">✦</span>
+            <span>Aligning Cosmos</span>
+          </span>
+          <span className="loader-telemetry-pct">{progress}%</span>
+        </div>
       </div>
     </div>
   );
