@@ -211,7 +211,7 @@ export default function CosmicDatePicker({ value, onChange, required = false, sh
           <option value="">Month</option>
           {MONTH_DATA.map((m) => (
             <option key={m.value} value={m.value}>
-              {m.name} ({m.glyph})
+              {m.name}
             </option>
           ))}
         </select>

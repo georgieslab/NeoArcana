@@ -20,7 +20,7 @@
 .trial-glass-window {
   position: relative;
   width: 100%;
-  max-width: 580px;
+  max-width: 620px;
   margin: auto;
   
   /* Luminous Deep Cosmic Glass */
@@ -176,7 +176,7 @@
 }
 
 .trial-dob-lang-row {
-  grid-template-columns: 1.35fr 1fr;
+  grid-template-columns: 1.85fr 1fr;
 }
 
 .trial-input-block {

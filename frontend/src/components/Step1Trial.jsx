@@ -93,7 +93,7 @@ export default function Step1Trial({ onComplete, onBack, isSubmitting }) {
 
   const focusOptions = [
     { id: 'destiny', label: 'General Destiny', title: 'Destiny', icon: <DestinyIcon /> },
-    { id: 'love', label: 'Love & Soul Connections', title: 'Love & Soul', icon: <LoveIcon /> },
+    { id: 'love', label: 'Love & Soul Connections', title: 'Love', icon: <LoveIcon /> },
     { id: 'career', label: 'Career & Calling', title: 'Career', icon: <CareerIcon /> },
     { id: 'healing', label: 'Inner Healing & Peace', title: 'Healing', icon: <HealingIcon /> },
     { id: 'spiritual', label: 'Spiritual Awakening', title: 'Spiritual', icon: <SpiritualIcon /> },
