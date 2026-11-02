@@ -126,6 +126,28 @@ class SoundManager {
     }
   }
 
+  /**
+   * Smoothly duck ambient music volume when speech/oracle is speaking
+   */
+  duckAmbient(duck = true) {
+    if (!this.ambientAudio || !this.isEnabled) return;
+    const target = duck ? 0.08 : 0.28;
+    let current = this.ambientAudio.volume;
+    const step = duck ? -0.04 : 0.04;
+    
+    if (this._duckTimer) clearInterval(this._duckTimer);
+    this._duckTimer = setInterval(() => {
+      if ((duck && current > target) || (!duck && current < target)) {
+        current += step;
+        this.ambientAudio.volume = Math.max(0.04, Math.min(0.28, current));
+      } else {
+        this.ambientAudio.volume = target;
+        clearInterval(this._duckTimer);
+        this._duckTimer = null;
+      }
+    }, 40);
+  }
+
   // --- PROCEDURAL CELESTIAL SFX (Web Audio API) ---
 
   /**

@@ -24,6 +24,7 @@
 @import './02-components/cosmic-date-picker.css';
 @import './02-components/cosmic-audio.css';
 @import './02-components/celestial-attunement-portal.css';
+@import './02-components/oracle-voice.css';
 
 /* PHASE 3: FEATURES */
 @import './03-features/step0.css';
