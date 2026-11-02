@@ -468,7 +468,7 @@ const DevPanel = ({ step, setStep, isPremium, setIsPremium, resetState, onClose,
                     <div className="poster-details">
                       <small>Owner: {poster.owner || 'N/A'}</small>
                       <small>Rebust: {poster.rebust || 'N/A'}</small>
-                      <small>Created: {new Date(poster.created_at?.seconds * 1000 || Date.now()).toLocaleDateString()}</small>
+                      <small>Created: {new Date((poster.created_at && poster.created_at.seconds ? poster.created_at.seconds * 1000 : null) || Date.now()).toLocaleDateString()}</small>
                     </div>
                     <div className="poster-actions">
                       <button 

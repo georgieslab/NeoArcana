@@ -75,7 +75,7 @@ self.addEventListener('fetch', event => {
         return fetch(event.request)
           .then(response => {
             if (!response || response.status !== 200 || response.type !== 'basic') {
-              console.log(`Failed request: ${event.request.url} - Status: ${response?.status}`);
+              console.log(`Failed request: ${event.request.url} - Status: ${response ? response.status : 'undefined'}`);
               return response;
             }
 

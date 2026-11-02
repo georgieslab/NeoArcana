@@ -63,8 +63,10 @@ app.add_middleware(
         # Production domains
         "https://app.neoarcana.cloud",
         "https://neoarcana-dmoy.onrender.com",
+        "https://neoarcana-2.onrender.com",
     ],
     allow_credentials=True,
+    allow_origin_regex=r"https://.*\.onrender\.com",
     allow_methods=["*"],  # Allow all HTTP methods
     allow_headers=["*"],  # Allow all headers
 )

@@ -1,9 +1,9 @@
 const TarotApp = ({ language = 'en' }) => {
 
   // API Configuration - Add this RIGHT HERE!
-  const API_BASE_URL = window.location.hostname === 'localhost'
+  const API_BASE_URL = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1')
     ? 'http://localhost:8000'
-    :'';  // Local development
+    : '';  // Production API (relative paths)
 
   // UI State
   const mountedRef = React.useRef(true);

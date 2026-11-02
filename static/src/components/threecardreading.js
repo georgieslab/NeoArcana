@@ -43,8 +43,8 @@ const ThreeCardReading = ({ userData, onError, onComplete }) => {
     const selectedCards = shuffled.slice(0, 3);
     
     // Get user's name and zodiac sign for personalization
-    const userName = userData&&user_data&&name || 'Seeker';
-    const zodiacSign = userData&&user_data&&zodiacSign || 'cosmic traveler';
+    const userName = (userData && userData.user_data && userData.user_data.name) || (userData && userData.name) || 'Seeker';
+    const zodiacSign = (userData && userData.user_data && userData.user_data.zodiacSign) || (userData && userData.zodiacSign) || 'cosmic traveler';
     
     // Generate an interpretation
     const interpretation = `
@@ -134,7 +134,7 @@ Trust in your intuition as you navigate these energies, and remember that you ha
         // OLD: Mock data generated locally
         // NEW: Real API call to FastAPI three_card_reading endpoint
         console.log('🎴 Fetching three-card reading from FastAPI:', window.API_CONFIG.BASE_URL);
-        console.log('📤 User data:', { nfc_id: userData&&nfc_id });
+        console.log('📤 User data:', { nfc_id: (userData && userData.nfc_id) });
         
         const data = await window.API_CONFIG.post(
           window.API_CONFIG.ENDPOINTS.THREE_CARD_READING,

@@ -31,8 +31,9 @@ const CardManager = {
     },
   
     getImagePath(cardName) {
-      const filename = Object.entries(this.cardMap)
-        .find(([_, info]) => info.name === cardName)?.[0];
+      const found = Object.entries(this.cardMap)
+        .find(([_, info]) => info.name === cardName);
+      const filename = found ? found[0] : null;
       return filename ? `/static/images/cards/${filename}` : '/static/images/cards/default.jpg';
     },
   
