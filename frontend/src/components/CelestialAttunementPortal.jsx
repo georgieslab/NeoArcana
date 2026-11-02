@@ -58,13 +58,28 @@ const SacredStarGlyph = () => (
   </svg>
 );
 
+const PortalCompleteGlyph = () => (
+  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+    <circle cx="12" cy="12" r="10" stroke="rgba(100, 223, 223, 0.5)" strokeWidth="1.2" />
+    <path d="M12 2L14.5 9.5L22 12L14.5 14.5L12 22L9.5 14.5L2 12L9.5 9.5L12 2Z" fill="url(#portalCompleteGrad)" stroke="#64dfdf" strokeWidth="1.2" strokeLinejoin="round" />
+    <circle cx="12" cy="12" r="2.2" fill="#ffffff" />
+    <defs>
+      <linearGradient id="portalCompleteGrad" x1="2" y1="2" x2="22" y2="22" gradientUnits="userSpaceOnUse">
+        <stop stopColor="#64dfdf" />
+        <stop offset="0.5" stopColor="#ffd700" />
+        <stop offset="1" stopColor="#a78bfa" />
+      </linearGradient>
+    </defs>
+  </svg>
+);
+
 const SparkleTiny = () => (
   <svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
     <path d="M12 0L14.59 9.41L24 12L14.59 14.59L12 24L9.41 14.59L0 12L9.41 9.41L12 0Z" />
   </svg>
 );
 
-/* --- Orbiting Card Artwork & Filigree SVGs (Replaces Emojis) --- */
+/* --- Orbiting Card Artwork & Filigree SVGs (Zero Emojis) --- */
 const CardBackFiligree = () => (
   <svg viewBox="0 0 48 74" fill="none" className="card-filigree-bg" aria-hidden="true">
     <rect x="3" y="3" width="42" height="68" rx="5" stroke="rgba(255, 215, 0, 0.45)" strokeWidth="1" />
@@ -121,16 +136,26 @@ const FutureCardGlyph = () => (
   </svg>
 );
 
+const MIN_RITUAL_DURATION = 7400; // 7.4 seconds minimum ritual duration
+
 export default function CelestialAttunementPortal({
   isVisible,
   userData,
   language = 'en',
+  isReady = true,
+  onComplete,
 }) {
   const [stageIndex, setStageIndex] = useState(0);
   const [progress, setProgress] = useState(12);
   const [quoteIndex, setQuoteIndex] = useState(0);
+  const [isFadingOut, setIsFadingOut] = useState(false);
+  const [isCompleted, setIsCompleted] = useState(false);
+
   const soundPlayedRef = useRef(new Set());
   const startTimeRef = useRef(null);
+  const completionTriggeredRef = useRef(false);
+  const isReadyRef = useRef(isReady);
+  isReadyRef.current = isReady;
 
   const isKa = language === 'ka';
   const name = userData?.name || (isKa ? 'მაძიებელი' : 'Seeker');
@@ -143,27 +168,33 @@ export default function CelestialAttunementPortal({
       return [
         {
           id: 0,
-          title: 'ვიბრაციის ჰარმონიზაცია',
-          desc: `თქვენი ენერგეტიკული ველის დაკალიბრება კოსმოსურ სიხშირეებთან...`,
+          title: 'სიხშირის ჰარმონიზაცია',
+          desc: 'თქვენი ენერგეტიკული ველის დაკალიბრება 528Hz სოლფეჯიოს წმინდა სიხშირესთან...',
           icon: <HarmonicsGlyph />,
         },
         {
           id: 1,
           title: 'ასტროლოგიური შეერთება',
-          desc: `${zodiacSign} ნიშნის აურის დაკავშირება ციურ ტალღებთან...`,
+          desc: `${zodiacSign ? `${zodiacSign} ნიშნის აურის` : 'თქვენი ციური ნიშნის'} დაკავშირება სამყაროს პლანეტარულ დინებებთან...`,
           icon: <MoonZodiacGlyph />,
         },
         {
           id: 2,
-          title: '78 წმინდა არკანას არჩევა',
-          desc: 'ბედისწერის სამი კარტი კვეთს დროისა და სივრცის ზღვარს...',
+          title: 'წმინდა არკანას გამოხმობა',
+          desc: 'ბედისწერის სამი კარტი კვეთს ასტრალურ ზღვარს თქვენს გზაზე...',
           icon: <ShuffleCardsGlyph />,
         },
         {
           id: 3,
-          title: 'კოსმოსური წინასწარმეტყველება',
-          desc: 'არქეტიპული სიბრძნის გაცხადება თქვენს პირად გზაზე...',
+          title: 'გაცხადების სინთეზი',
+          desc: 'უძველესი ჰერმეტული არქეტიპების გარდაქმნა პირად წინასწარმეტყველებად...',
           icon: <SacredStarGlyph />,
+        },
+        {
+          id: 4,
+          title: 'კოსმოსური შეერთება დასრულდა',
+          desc: 'ასტრალური პორტალი გაიხსნა. წმინდა არკანა მზადაა...',
+          icon: <PortalCompleteGlyph />,
         },
       ];
     }
@@ -171,26 +202,32 @@ export default function CelestialAttunementPortal({
       {
         id: 0,
         title: 'Harmonizing Frequency',
-        desc: `Calibrating your personal energetic vibration with the cosmos...`,
+        desc: 'Calibrating your personal energetic field with the sacred 528Hz Solfeggio frequency...',
         icon: <HarmonicsGlyph />,
       },
       {
         id: 1,
         title: 'Astrological Alignment',
-        desc: `Weaving your ${zodiacSign} aura into today's celestial tides...`,
+        desc: `Weaving your ${zodiacSign} aura into today's celestial planetary currents...`,
         icon: <MoonZodiacGlyph />,
       },
       {
         id: 2,
         title: 'Drawing Sacred Arcana',
-        desc: 'Three destiny cards are stepping forward through the astral ether...',
+        desc: 'Three destiny cards are stepping forward across the astral threshold...',
         icon: <ShuffleCardsGlyph />,
       },
       {
         id: 3,
         title: 'Synthesizing Revelation',
-        desc: 'Translating ancient archetypes into personal prophecy...',
+        desc: 'Translating ancient Hermetic archetypes into your personal prophecy...',
         icon: <SacredStarGlyph />,
+      },
+      {
+        id: 4,
+        title: 'Cosmic Alignment Complete',
+        desc: 'The astral portal opens. Revealing your sacred cards...',
+        icon: <PortalCompleteGlyph />,
       },
     ];
   }, [isKa, zodiacSign]);
@@ -203,6 +240,8 @@ export default function CelestialAttunementPortal({
         '„კარტები აცხადებენ იმას, რაც თქვენს სულს უკვე ახსოვს.“',
         '„წარსული, აწმყო და მომავალი ერთი უსასრულო სინათლის ანარეკლია.“',
         '„ენდეთ ნიშნებსა და სინქრონულობას თქვენს წმინდა გზაზე.“',
+        '„ყოველი არკანა სარკეა, რომელშიც სამყარო საკუთარ თავს ჭვრეტს.“',
+        '„კოსმოსური გონება პასუხობს მათ, ვინც გულწრფელად ეძებს.“',
       ];
     }
     return [
@@ -210,6 +249,8 @@ export default function CelestialAttunementPortal({
       '"The cards reveal what your soul already remembers."',
       '"Past, Present, and Future are reflections of the same sacred flame."',
       '"Trust the cosmic synchronicities unfolding before you."',
+      '"Every arcana is a mirror through which the cosmos contemplates itself."',
+      '"The celestial mind responds to those who seek with reverence."',
     ];
   }, [isKa]);
 
@@ -218,8 +259,11 @@ export default function CelestialAttunementPortal({
     if (!isVisible) {
       setStageIndex(0);
       setProgress(12);
+      setIsFadingOut(false);
+      setIsCompleted(false);
       soundPlayedRef.current.clear();
       startTimeRef.current = null;
+      completionTriggeredRef.current = false;
       return;
     }
 
@@ -231,18 +275,28 @@ export default function CelestialAttunementPortal({
       let currentStage = 0;
       let targetProgress = 15;
 
-      if (elapsed < 2000) {
+      if (elapsed < 1900) {
         currentStage = 0;
-        targetProgress = Math.min(32, 12 + (elapsed / 2000) * 20);
-      } else if (elapsed < 4200) {
+        targetProgress = Math.min(35, 12 + (elapsed / 1900) * 23);
+      } else if (elapsed < 3800) {
         currentStage = 1;
-        targetProgress = Math.min(58, 32 + ((elapsed - 2000) / 2200) * 26);
-      } else if (elapsed < 6800) {
+        targetProgress = Math.min(62, 35 + ((elapsed - 1900) / 1900) * 27);
+      } else if (elapsed < 5700) {
         currentStage = 2;
-        targetProgress = Math.min(84, 58 + ((elapsed - 4200) / 2600) * 26);
-      } else {
+        targetProgress = Math.min(86, 62 + ((elapsed - 3800) / 1900) * 24);
+      } else if (elapsed < MIN_RITUAL_DURATION) {
         currentStage = 3;
-        targetProgress = Math.min(97, 84 + ((elapsed - 6800) / 3000) * 13);
+        targetProgress = Math.min(97, 86 + ((elapsed - 5700) / 1700) * 11);
+      } else {
+        // Minimum time has elapsed
+        if (isReadyRef.current) {
+          currentStage = 4;
+          targetProgress = 100;
+        } else {
+          // Keep hovering at 97-98% until data is ready
+          currentStage = 3;
+          targetProgress = 98;
+        }
       }
 
       setStageIndex(currentStage);
@@ -258,32 +312,50 @@ export default function CelestialAttunementPortal({
       } else if (currentStage === 3 && !soundPlayedRef.current.has(3)) {
         soundManager.playCelestialChime();
         soundPlayedRef.current.add(3);
-      }
-    }, 100);
+      } else if (currentStage === 4 && !soundPlayedRef.current.has(4)) {
+        soundManager.playCelestialChime();
+        soundPlayedRef.current.add(4);
+        setIsCompleted(true);
 
-    // Rotate quotes every 3.2 seconds
+        // Smooth exit sequence
+        if (!completionTriggeredRef.current) {
+          completionTriggeredRef.current = true;
+          setTimeout(() => {
+            setIsFadingOut(true);
+          }, 450);
+          setTimeout(() => {
+            if (onComplete) {
+              onComplete();
+            }
+          }, 1050);
+        }
+      }
+    }, 60);
+
+    // Rotate quotes every 3 seconds
     const quoteTimer = setInterval(() => {
       setQuoteIndex((prev) => (prev + 1) % quotes.length);
-    }, 3200);
+    }, 3000);
 
     return () => {
       clearInterval(stageTimer);
       clearInterval(quoteTimer);
     };
-  }, [isVisible, quotes.length]);
+  }, [isVisible, quotes.length, onComplete]);
 
-  if (!isVisible) return null;
+  if (!isVisible && !isFadingOut) return null;
 
   const currentStage = stages[stageIndex] || stages[0];
 
   return (
     <div
-      className="celestial-portal-overlay"
+      className={`celestial-portal-overlay ${isFadingOut ? 'fade-out' : ''} ${isCompleted ? 'portal-completed' : ''}`}
       role="dialog"
       aria-modal="true"
       aria-live="polite"
+      aria-label={isKa ? 'წმინდა კოსმოსური შეერთება' : 'Sacred Celestial Attunement'}
     >
-      <div className="celestial-portal-window">
+      <div className={`celestial-portal-window stage-${stageIndex}-active`}>
         {/* Ambient Nebula Halo */}
         <div className="portal-ambient-halo" />
 
@@ -299,7 +371,7 @@ export default function CelestialAttunementPortal({
         </div>
 
         {/* 3D Astrolabe & Orbiting Tarot Cards Core */}
-        <div className="portal-astrolabe-arena">
+        <div className={`portal-astrolabe-arena ${stageIndex >= 2 ? 'cards-attuned' : ''}`}>
           {/* Rotating Celestial Astrolabe Rings */}
           <div className="astrolabe-ring ring-outer" />
           <div className="astrolabe-ring ring-mid" />
@@ -309,14 +381,14 @@ export default function CelestialAttunementPortal({
           <div className="portal-solfeggio-core">
             <span className="core-flare flare-1" />
             <span className="core-flare flare-2" />
-            <div className="core-center-gem">
+            <div className="core-center-gem" key={stageIndex}>
               {currentStage.icon}
             </div>
           </div>
 
-          {/* 3 Mystical Floating Orbiting Cards (Past, Present, Future) - Zero Emojis, Pure SVG Vectors */}
+          {/* 3 Mystical Floating Orbiting Cards (Past, Present, Future) */}
           <div className="portal-orbiting-cards">
-            <div className="orbit-card card-past">
+            <div className={`orbit-card card-past ${stageIndex >= 2 ? 'illuminated' : ''}`}>
               <CardBackFiligree />
               <div className="card-inner">
                 <span className="card-glyph"><PastCardGlyph /></span>
@@ -324,7 +396,7 @@ export default function CelestialAttunementPortal({
               </div>
             </div>
 
-            <div className="orbit-card card-present">
+            <div className={`orbit-card card-present ${stageIndex >= 2 ? 'illuminated' : ''}`}>
               <CardBackFiligree />
               <div className="card-inner">
                 <span className="card-glyph"><PresentCardGlyph /></span>
@@ -332,7 +404,7 @@ export default function CelestialAttunementPortal({
               </div>
             </div>
 
-            <div className="orbit-card card-future">
+            <div className={`orbit-card card-future ${stageIndex >= 2 ? 'illuminated' : ''}`}>
               <CardBackFiligree />
               <div className="card-inner">
                 <span className="card-glyph"><FutureCardGlyph /></span>
@@ -345,18 +417,22 @@ export default function CelestialAttunementPortal({
         {/* Stage Milestone Information */}
         <div className="portal-stage-info">
           <div className="stage-milestone-indicator">
-            {stages.map((stg, i) => (
+            {stages.slice(0, 4).map((stg, i) => (
               <span
                 key={stg.id}
                 className={`milestone-dot ${i === stageIndex ? 'active' : ''} ${
-                  i < stageIndex ? 'completed' : ''
+                  i < stageIndex || stageIndex === 4 ? 'completed' : ''
                 }`}
               />
             ))}
           </div>
 
-          <h3 className="portal-stage-title">{currentStage.title}</h3>
-          <p className="portal-stage-desc">{currentStage.desc}</p>
+          <h3 className="portal-stage-title" key={`title-${stageIndex}`}>
+            {currentStage.title}
+          </h3>
+          <p className="portal-stage-desc" key={`desc-${stageIndex}`}>
+            {currentStage.desc}
+          </p>
         </div>
 
         {/* Luminous Progress Ribbon */}
@@ -371,7 +447,9 @@ export default function CelestialAttunementPortal({
           </div>
           <div className="portal-progress-meta">
             <span className="progress-status-caption">
-              {isKa ? 'ეთერული პორტალი გააქტიურებულია' : 'Etheric portal active'}
+              {progress >= 100
+                ? (isKa ? 'კოსმოსური პორტალი გახსნილია' : 'Cosmic portal unlocked')
+                : (isKa ? 'ეთერული პორტალი გააქტიურებულია' : 'Etheric portal active')}
             </span>
             <span className="progress-percentage">{progress}%</span>
           </div>

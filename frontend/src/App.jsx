@@ -58,24 +58,22 @@ export default function App() {
   // Fetch 3-card reading from backend
   const fetchReading = useCallback(async (nfcId = null, focus = 'General Cosmic Guidance', user = null) => {
     setIsLoading(true);
+    setReadingData(null);
     setLoadingMessage(user?.language === 'ka' ? 'წმინდა არკანას გამოხმობა ეთერიდან...' : 'Drawing sacred Arcana from the ether...');
 
     try {
       const res = await api.getThreeCardReading(nfcId, focus, user);
       if (res?.success && res.data) {
         setReadingData(res.data);
-        setStep(2); // Jump to Card Reveal
+
       } else {
         // Fallback demo data if backend offline
         setReadingData(getDemoReading(user?.language));
-        setStep(2);
+
       }
     } catch (err) {
       console.warn('API error, loading fallback cosmic reading:', err);
       setReadingData(getDemoReading(user?.language));
-      setStep(2);
-    } finally {
-      setIsLoading(false);
     }
   }, []);
 
@@ -89,6 +87,7 @@ export default function App() {
       console.log('NFC ID detected via URL:', nfcIdParam);
       setFlowType('nfc');
       setIsLoading(true);
+
       setLoadingMessage('Recognizing your NFC energy...');
 
       api.getUser(nfcIdParam)
@@ -224,8 +223,13 @@ export default function App() {
       {/* Enchanted Celestial Attunement Portal */}
       <CelestialAttunementPortal
         isVisible={isLoading}
+        isReady={!!readingData}
         userData={userData}
         language={userData?.language || 'en'}
+        onComplete={() => {
+          setIsLoading(false);
+          setStep(2);
+        }}
       />
 
       {/* Story Behind Lore Modal */}
