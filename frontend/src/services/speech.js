@@ -259,3 +259,4 @@ class SpeechOracle {
 
 const speechOracle = new SpeechOracle();
 export default speechOracle;
+

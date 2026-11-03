@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import soundManager from '../services/sound';
 
 /* --- Handcrafted Celestial Vector Glyphs (Zero Emojis) --- */
 const AwakenForcesGlyph = () => (
@@ -137,11 +136,9 @@ export default function CosmicLoader({
   const [progress, setProgress] = useState(0);
   const [isFading, setIsFading] = useState(false);
   const mountedRef = useRef(true);
-  const lastPhaseRef = useRef(0);
 
   useEffect(() => {
     mountedRef.current = true;
-    lastPhaseRef.current = 0;
     const startTime = Date.now();
 
     // High-resolution progress update
@@ -157,16 +154,6 @@ export default function CosmicLoader({
         phaseCount - 1,
         Math.floor((elapsed / (duration * 0.9)) * phaseCount)
       );
-
-      // Play subtle chime on phase advance
-      if (currentPhase !== lastPhaseRef.current) {
-        lastPhaseRef.current = currentPhase;
-        if (currentPhase === phaseCount - 1) {
-          soundManager.playCelestialChime();
-        } else {
-          soundManager.playStarSparkle();
-        }
-      }
 
       setPhaseIndex(currentPhase);
     }, 40);

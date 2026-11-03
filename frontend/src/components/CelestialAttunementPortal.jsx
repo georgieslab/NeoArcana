@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef, useMemo } from 'react';
-import soundManager from '../services/sound';
 
 /* --- Handcrafted Celestial Vector Glyphs (Zero Emojis) --- */
 const HarmonicsGlyph = () => (
@@ -151,7 +150,6 @@ export default function CelestialAttunementPortal({
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
 
-  const soundPlayedRef = useRef(new Set());
   const startTimeRef = useRef(null);
   const completionTriggeredRef = useRef(false);
   const isReadyRef = useRef(isReady);
@@ -254,14 +252,13 @@ export default function CelestialAttunementPortal({
     ];
   }, [isKa]);
 
-  // Stage progression & sound manager effects
+  // Stage progression
   useEffect(() => {
     if (!isVisible) {
       setStageIndex(0);
       setProgress(12);
       setIsFadingOut(false);
       setIsCompleted(false);
-      soundPlayedRef.current.clear();
       startTimeRef.current = null;
       completionTriggeredRef.current = false;
       return;
@@ -302,33 +299,20 @@ export default function CelestialAttunementPortal({
       setStageIndex(currentStage);
       setProgress(Math.round(targetProgress));
 
-      // Trigger SFX on stage entry
-      if (currentStage === 1 && !soundPlayedRef.current.has(1)) {
-        soundManager.playStarSparkle();
-        soundPlayedRef.current.add(1);
-      } else if (currentStage === 2 && !soundPlayedRef.current.has(2)) {
-        soundManager.playCardFlip();
-        soundPlayedRef.current.add(2);
-      } else if (currentStage === 3 && !soundPlayedRef.current.has(3)) {
-        soundManager.playCelestialChime();
-        soundPlayedRef.current.add(3);
-      } else if (currentStage === 4 && !soundPlayedRef.current.has(4)) {
-        soundManager.playCelestialChime();
-        soundPlayedRef.current.add(4);
+      // Handle completion sequence on reaching stage 4
+      if (currentStage === 4 && !completionTriggeredRef.current) {
+        completionTriggeredRef.current = true;
         setIsCompleted(true);
 
         // Smooth exit sequence
-        if (!completionTriggeredRef.current) {
-          completionTriggeredRef.current = true;
-          setTimeout(() => {
-            setIsFadingOut(true);
-          }, 450);
-          setTimeout(() => {
-            if (onComplete) {
-              onComplete();
-            }
-          }, 1050);
-        }
+        setTimeout(() => {
+          setIsFadingOut(true);
+        }, 450);
+        setTimeout(() => {
+          if (onComplete) {
+            onComplete();
+          }
+        }, 1050);
       }
     }, 60);
 
