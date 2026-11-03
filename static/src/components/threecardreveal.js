@@ -143,8 +143,6 @@ const ThreeCardReveal = ({ name, readingData, onComplete, zodiacSign }) => {
             },
               // Position Label
               React.createElement("div", { className: "card-position-label" },
-                React.createElement("span", { className: "position-icon" }, positionIcons[index]),
-                ' ',
                 positions[index]
               ),
 

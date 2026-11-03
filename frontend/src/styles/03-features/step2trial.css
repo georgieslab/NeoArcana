@@ -27,31 +27,31 @@
 
 /* -------------------- GLASS CONTAINER -------------------- */
 .trial-step2-reveal-inner {
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1.5px solid rgba(255, 179, 125, 0.18);
-  border-radius: 20px;
+  background: rgba(14, 10, 30, 0.72);
+  backdrop-filter: blur(28px) saturate(180%);
+  -webkit-backdrop-filter: blur(28px) saturate(180%);
+  border: 1.5px solid rgba(255, 179, 125, 0.22);
+  border-top: 1.5px solid rgba(255, 255, 255, 0.35);
+  border-radius: 24px;
   box-shadow: 
-    0 12px 40px rgba(0, 0, 0, 0.5),
-    0 0 60px rgba(165, 154, 209, 0.18);
+    0 16px 48px rgba(0, 0, 0, 0.6),
+    0 0 50px rgba(165, 154, 209, 0.16);
   
-  padding: clamp(1.5rem, 3vh, 2.5rem) clamp(2rem, 4vw, 3.75rem);
-  max-width: min(1080px, 95vw);
-  width: 95%;
-  max-height: 92vh;
+  padding: clamp(1rem, 2vh, 1.6rem) clamp(1.5rem, 3vw, 2.5rem);
+  max-width: min(940px, 94vw);
+  width: 94%;
+  max-height: 94vh;
   box-sizing: border-box;
   
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: flex-start;
-  gap: clamp(0.5rem, 1.5vh, 1.25rem);
+  justify-content: center;
+  gap: clamp(0.35rem, 1vh, 0.75rem);
   
   animation: fadeInUp 0.8s ease-out;
   position: relative;
-  overflow-y: auto;
-  overflow-x: hidden;
+  overflow: hidden; /* Desktop non-scrollable */
 }
 
 /* Cosmic glow effect */
@@ -110,7 +110,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: clamp(0.5rem, 1.2vh, 1rem);
+  gap: clamp(0.35rem, 0.8vh, 0.65rem);
   position: relative;
   z-index: 1;
   flex-shrink: 0;
@@ -118,7 +118,7 @@
 
 /* -------------------- TITLE -------------------- */
 .trial-step2-title {
-  font-size: clamp(1.5rem, 3.5vh, 2.5rem);
+  font-size: clamp(1.35rem, 2.6vh, 1.95rem);
   font-weight: 700;
   text-align: center;
   margin: 0;
@@ -134,10 +134,10 @@
 
 /* -------------------- ZODIAC MESSAGE -------------------- */
 .trial-step2-zodiac-message {
-  padding: clamp(0.5rem, 1vh, 0.75rem) clamp(1rem, 2vh, 1.5rem);
+  padding: clamp(0.25rem, 0.6vh, 0.42rem) clamp(0.75rem, 1.5vw, 1.25rem);
   background: rgba(244, 162, 97, 0.1);
   border: 1px solid rgba(244, 162, 97, 0.3);
-  border-radius: 12px;
+  border-radius: 20px;
   text-align: center;
   flex-shrink: 0;
 }
@@ -145,18 +145,19 @@
 .trial-step2-zodiac-message p {
   margin: 0;
   color: #F4A261;
-  font-size: clamp(0.85rem, 1.6vh, 1rem);
+  font-size: clamp(0.78rem, 1.3vh, 0.9rem);
   font-style: italic;
 }
 
 /* -------------------- INSTRUCTION -------------------- */
 .trial-step2-instruction {
-  font-size: clamp(0.95rem, 1.8vh, 1.1rem);
+  font-size: clamp(0.82rem, 1.4vh, 0.92rem);
   text-align: center;
-  color: rgba(255, 255, 255, 0.9);
+  color: rgba(255, 255, 255, 0.85);
   margin: 0;
   font-style: italic;
   flex-shrink: 0;
+  max-width: 600px;
 }
 
 /* -------------------- CARD SECTION & THREE-CARD LAYOUT -------------------- */
@@ -173,25 +174,89 @@
   display: flex;
   justify-content: center;
   align-items: flex-start;
-  gap: clamp(1.25rem, 2.5vw, 2.5rem);
-  margin-top: clamp(0.75rem, 1.5vh, 1.5rem);
+  gap: clamp(1.2rem, 2.5vw, 2.2rem);
+  margin-top: clamp(0.35rem, 1vh, 0.75rem);
   width: 100%;
-  max-width: 980px;
-  padding: 0.5rem clamp(0.5rem, 1.5vw, 1.5rem);
+  max-width: 900px;
+  padding: 0.25rem clamp(0.25rem, 1vw, 1rem);
   box-sizing: border-box;
   perspective: 1500px;
+}
+
+.three-card-column {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  animation: cardFadeIn 0.8s ease-out calc(var(--card-index, 0) * 0.2s) both;
+}
+
+/* -------------------- POSITION LABELS (ICON-FREE CELESTIAL PILLS) -------------------- */
+.card-position-label {
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 0.22rem 0.85rem;
+  border-radius: 14px;
+  margin-bottom: 0.2rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+}
+
+.card-position-label.position-past {
+  color: #d8b4fe;
+  background: rgba(168, 85, 247, 0.12);
+  border: 1px solid rgba(168, 85, 247, 0.35);
+  box-shadow: 0 0 12px rgba(168, 85, 247, 0.15);
+}
+
+.card-position-label.position-present {
+  color: #ffd700;
+  background: rgba(255, 215, 0, 0.12);
+  border: 1px solid rgba(255, 215, 0, 0.4);
+  box-shadow: 0 0 12px rgba(255, 215, 0, 0.15);
+}
+
+.card-position-label.position-future {
+  color: #f4a261;
+  background: rgba(244, 162, 97, 0.12);
+  border: 1px solid rgba(244, 162, 97, 0.4);
+  box-shadow: 0 0 12px rgba(244, 162, 97, 0.15);
 }
 
 /* -------------------- CARD WRAPPER -------------------- */
 .trial-step2-card-wrapper {
   position: relative;
-  width: clamp(170px, 20vw, 235px);
-  height: clamp(265px, 31vw, 365px);
-  max-height: clamp(265px, 40vh, 375px);
+  width: clamp(145px, 14vw, 190px);
+  height: clamp(225px, 22vw, 296px);
+  max-height: clamp(225px, 34vh, 305px);
   perspective: 1000px;
   cursor: pointer;
-  transition: transform 0.3s ease;
+  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease;
   flex-shrink: 0;
+  border-radius: 12px;
+}
+
+/* -------------------- CARD NAME LABEL -------------------- */
+.card-name-label {
+  font-size: clamp(0.88rem, 1.5vh, 1.05rem);
+  font-weight: 700;
+  color: #fff;
+  text-align: center;
+  margin-top: 0.35rem;
+  text-shadow: 0 2px 8px rgba(0, 0, 0, 0.8);
+  min-height: 1.4em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-name-label.placeholder {
+  visibility: hidden;
+  user-select: none;
 }
 
 .trial-step2-card-wrapper:hover:not(.revealing) {
@@ -1732,4 +1797,18 @@
     .mini-card:active {
         transform: scale(0.98);
     }
+}
+/* Desktop: Guaranteed non-scrollable, perfectly fitted viewport */
+@media (min-width: 769px) {
+  .trial-step2-reveal {
+    height: 100vh !important;
+    min-height: 100vh !important;
+    max-height: 100vh !important;
+    overflow: hidden !important;
+  }
+
+  .trial-step2-reveal-inner {
+    overflow: hidden !important;
+    max-height: 94vh !important;
+  }
 }
