@@ -16,17 +16,19 @@
 /* -------------------- MAIN CONTAINER -------------------- */
 
 .cosmic-landing {
-  /* DESKTOP: Fill viewport, no scroll */
+  /* Fill viewport, perfectly centered */
+  flex: 1;
   min-height: 100vh;
-  max-height: 100vh;
+  min-height: 100dvh;
   width: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--neo-space-xl);
+  padding: clamp(1rem, 3vh, 2rem) 1rem;
   position: relative;
   z-index: var(--z-content);
-  overflow: hidden; /* Prevent scroll */
+  box-sizing: border-box;
+  margin: 0 auto;
 }
 
 /* -------------------- GLASS CONTAINER -------------------- */
@@ -41,21 +43,25 @@
     0 8px 32px rgba(0, 0, 0, 0.4),
     0 0 60px rgba(165, 154, 209, 0.15);
   
-  /* DESKTOP: Fit content within viewport */
-  padding: clamp(1.5rem, 4vh, 3rem);
-  max-width: 500px;
+  /* Universal centered card */
+  padding: clamp(1.25rem, 3vh, 2rem) clamp(1.25rem, 3vw, 2.25rem);
+  max-width: 420px;
   width: 100%;
-  max-height: 90vh; /* Never exceed 90% of viewport */
+  max-height: 90vh;
+  max-height: 90dvh;
+  margin: auto;
   
   display: flex;
   flex-direction: column;
   align-items: center;
-  justify-content: center; /* Center vertically */
-  gap: clamp(1rem, 2.5vh, 2rem); /* Responsive gap */
+  justify-content: center;
+  text-align: center;
+  gap: clamp(0.75rem, 1.8vh, 1.25rem);
   
   animation: fadeInUp 0.8s ease-out;
   position: relative;
   overflow: hidden;
+  box-sizing: border-box;
 }
 
 /* Cosmic glow effect */
@@ -143,26 +149,31 @@
 .cosmic-buttons {
   display: flex;
   flex-direction: column;
-  gap: clamp(0.75rem, 1.5vh, 1rem);
+  align-items: center;
+  gap: clamp(0.6rem, 1.2vh, 0.75rem);
   width: 100%;
-  max-width: 300px;
-  margin-top: clamp(0.5rem, 2vh, 1.5rem);
+  max-width: 330px;
+  margin: clamp(0.4rem, 1.5vh, 0.75rem) auto 0 auto;
   position: relative;
   z-index: 1;
   flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 /* -------------------- BUTTON VARIANTS FOR LANDING -------------------- */
 
 .cosmic-button--large {
   /* Responsive padding and font size */
-  padding: clamp(0.75rem, 2vh, 1.25rem) clamp(1rem, 3vh, 2rem);
-  font-size: clamp(0.9rem, 2vh, 1.1rem);
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: clamp(0.7rem, 1.5vh, 0.85rem) clamp(1rem, 2vh, 1.4rem);
+  font-size: clamp(0.9rem, 1.5vh, 1rem);
   font-weight: var(--neo-font-semibold);
-  min-height: clamp(44px, 7vh, 56px);
+  min-height: clamp(46px, 5.5vh, 50px);
   position: relative;
   overflow: hidden;
   flex-shrink: 0;
+  box-sizing: border-box;
 }
 
 /* Primary Button (Main CTA) */
@@ -217,6 +228,202 @@
     0 0 25px rgba(244, 162, 97, 0.4),
     inset 0 0 25px rgba(244, 162, 97, 0.1);
   transform: translateY(-2px);
+}
+
+/* Enhanced Galactic Trial Button (Primary Hero Gateway) */
+.cosmic-button--trial {
+  background: linear-gradient(
+    135deg,
+    rgba(147, 112, 219, 0.45) 0%,
+    rgba(64, 224, 208, 0.28) 45%,
+    rgba(123, 44, 191, 0.42) 100%
+  ) !important;
+  border: 1.5px solid rgba(100, 223, 223, 0.85) !important;
+  box-shadow: 
+    0 0 24px rgba(100, 223, 223, 0.35),
+    0 0 12px rgba(147, 112, 219, 0.4),
+    inset 0 0 18px rgba(100, 223, 223, 0.15) !important;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  position: relative;
+  overflow: hidden;
+  animation: cosmicTrialPulse 4s ease-in-out infinite;
+}
+
+.cosmic-button--trial::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.35),
+    rgba(100, 223, 223, 0.45),
+    transparent
+  );
+  transition: left 0.7s ease;
+  pointer-events: none;
+}
+
+.cosmic-button--trial:hover::before {
+  left: 100%;
+}
+
+.cosmic-button--trial:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(147, 112, 219, 0.62) 0%,
+    rgba(64, 224, 208, 0.45) 45%,
+    rgba(123, 44, 191, 0.58) 100%
+  ) !important;
+  border-color: #64dfdf !important;
+  box-shadow: 
+    0 0 38px rgba(100, 223, 223, 0.65),
+    0 0 20px rgba(147, 112, 219, 0.5),
+    inset 0 0 24px rgba(100, 223, 223, 0.25) !important;
+  transform: translateY(-2px) scale(1.02) !important;
+}
+
+.cosmic-btn-icon--trial {
+  filter: drop-shadow(0 0 8px rgba(100, 223, 223, 0.85)) !important;
+  display: inline-block;
+  animation: starSparkle 3s ease-in-out infinite;
+}
+
+.cosmic-btn-tag--free {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #0b071a;
+  background: linear-gradient(135deg, #64dfdf, #a59ad1);
+  padding: 0.12rem 0.48rem;
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(100, 223, 223, 0.75);
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1.2;
+}
+
+@keyframes cosmicTrialPulse {
+  0%, 100% {
+    box-shadow: 
+      0 0 24px rgba(100, 223, 223, 0.35),
+      0 0 12px rgba(147, 112, 219, 0.4),
+      inset 0 0 18px rgba(100, 223, 223, 0.15);
+  }
+  50% {
+    box-shadow: 
+      0 0 34px rgba(100, 223, 223, 0.6),
+      0 0 18px rgba(147, 112, 219, 0.6),
+      inset 0 0 22px rgba(100, 223, 223, 0.25);
+  }
+}
+
+@keyframes starSparkle {
+  0%, 100% {
+    transform: scale(1) rotate(0deg);
+  }
+  50% {
+    transform: scale(1.2) rotate(10deg);
+  }
+}
+
+/* Enhanced Register Poster Button (Physical NFC Hardware Portal) */
+.cosmic-button--poster {
+  background: linear-gradient(
+    135deg,
+    rgba(244, 162, 97, 0.28) 0%,
+    rgba(165, 154, 209, 0.22) 50%,
+    rgba(255, 215, 0, 0.16) 100%
+  ) !important;
+  border: 1.5px solid rgba(244, 162, 97, 0.8) !important;
+  box-shadow: 
+    0 0 22px rgba(244, 162, 97, 0.3),
+    0 0 10px rgba(255, 215, 0, 0.2),
+    inset 0 0 16px rgba(244, 162, 97, 0.12) !important;
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1) !important;
+  position: relative;
+  overflow: hidden;
+}
+
+.cosmic-button--poster::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.25),
+    transparent
+  );
+  transition: left 0.7s ease;
+  pointer-events: none;
+}
+
+.cosmic-button--poster:hover::before {
+  left: 100%;
+}
+
+.cosmic-button--poster:hover {
+  background: linear-gradient(
+    135deg,
+    rgba(244, 162, 97, 0.44) 0%,
+    rgba(165, 154, 209, 0.32) 50%,
+    rgba(255, 215, 0, 0.28) 100%
+  ) !important;
+  border-color: #FFD700 !important;
+  box-shadow: 
+    0 0 35px rgba(255, 215, 0, 0.5),
+    0 0 18px rgba(244, 162, 97, 0.4),
+    inset 0 0 22px rgba(255, 215, 0, 0.2) !important;
+  transform: translateY(-2px) scale(1.02) !important;
+}
+
+.cosmic-btn-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  width: 100%;
+}
+
+.cosmic-btn-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.15rem;
+  filter: drop-shadow(0 0 6px rgba(244, 162, 97, 0.6));
+}
+
+.cosmic-btn-icon svg {
+  display: block;
+}
+
+.cosmic-btn-label {
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  white-space: nowrap;
+}
+
+.cosmic-btn-nfc-tag {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 1px;
+  color: #1a102f;
+  background: linear-gradient(135deg, #FFD700, #F4A261);
+  padding: 0.12rem 0.45rem;
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(255, 215, 0, 0.6);
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  line-height: 1.2;
 }
 
 /* Ghost Button (Tertiary) */
@@ -338,131 +545,299 @@
 @media (max-width: 1024px) and (min-width: 769px) {
   .cosmic-landing {
     min-height: 100vh;
-    max-height: none; /* Allow scroll on smaller desktops if needed */
+    min-height: 100dvh;
+    max-height: none;
     overflow-y: auto;
   }
   
   .cosmic-landing-inner {
-    max-height: none; /* Allow content to expand */
-    margin: 2rem 0; /* Add vertical margin */
+    max-height: none;
+    margin: auto;
   }
 }
 
-/* Mobile: Scrollable, centered content */
+/* Mobile: Fluid, centered content with dynamic viewport & safe areas */
 @media (max-width: 768px) {
   .cosmic-landing {
     min-height: 100vh;
-    max-height: none; /* Allow scroll */
+    min-height: 100dvh;
+    max-height: none;
     overflow-y: auto;
-    padding: var(--neo-space-lg);
+    overflow-x: hidden;
+    padding: max(1.25rem, env(safe-area-inset-top)) max(1rem, env(safe-area-inset-right)) max(1.25rem, env(safe-area-inset-bottom)) max(1rem, env(safe-area-inset-left));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-sizing: border-box;
   }
 
   .cosmic-landing-inner {
-    padding: var(--neo-space-xl);
-    max-width: 100%;
-    max-height: none; /* No height restriction */
-    margin: 2rem 0; /* Vertical spacing */
-    gap: 1.5rem; /* Fixed gap on mobile */
+    padding: clamp(1.75rem, 5vw, 2.5rem) clamp(1.25rem, 4vw, 2rem);
+    max-width: 440px;
+    width: 100%;
+    max-height: none;
+    margin: auto;
+    gap: clamp(1rem, 2.5vh, 1.5rem);
+    border-radius: 24px;
+    box-sizing: border-box;
   }
 
   .cosmic-logo {
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
   }
 
   .cosmic-landing-title {
-    font-size: 2rem;
+    font-size: clamp(2rem, 6vw, 2.5rem);
+    margin-bottom: 0.25rem;
   }
 
   .cosmic-landing-subtitle {
-    font-size: 1rem;
+    font-size: clamp(0.95rem, 2.5vw, 1.1rem);
+    line-height: 1.45;
+  }
+
+  .cosmic-buttons {
+    width: 100%;
+    max-width: 340px;
+    gap: 0.85rem;
+    margin-top: 0.5rem;
   }
 
   .cosmic-button--large {
-    padding: 1rem 1.5rem;
+    padding: 0.9rem 1.25rem;
     font-size: 1rem;
+    min-height: 50px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .cosmic-btn-inner {
+    gap: 0.55rem;
+  }
+}
+
+/* Small mobile (smartphones) */
+@media (max-width: 480px) {
+  .cosmic-landing {
+    padding: max(1rem, env(safe-area-inset-top)) max(0.75rem, env(safe-area-inset-right)) max(1rem, env(safe-area-inset-bottom)) max(0.75rem, env(safe-area-inset-left));
+  }
+
+  .cosmic-landing-inner {
+    padding: 1.75rem 1.15rem;
+    margin: auto;
+    gap: 1.15rem;
+    border-radius: 20px;
+    max-width: 100%;
+  }
+
+  .cosmic-logo {
+    width: 76px;
+    height: 76px;
+  }
+
+  .cosmic-landing-title {
+    font-size: 1.85rem;
+  }
+
+  .cosmic-landing-subtitle {
+    font-size: 0.9rem;
+    line-height: 1.4;
+  }
+
+  .cosmic-buttons {
+    max-width: 100%;
+    gap: 0.75rem;
+  }
+
+  .cosmic-button--large {
+    padding: 0.8rem 1rem;
+    font-size: 0.95rem;
     min-height: 48px;
   }
 
-  .cosmic-buttons {
-    max-width: 100%;
+  .cosmic-btn-inner {
+    gap: 0.5rem;
+  }
+
+  .cosmic-btn-icon {
+    font-size: 1.1rem;
+  }
+
+  .cosmic-btn-label {
+    font-size: 0.92rem;
+  }
+
+  .cosmic-btn-tag--free,
+  .cosmic-btn-nfc-tag {
+    font-size: 0.6rem;
+    padding: 0.1rem 0.4rem;
+  }
+}
+
+/* Ultra-compact mobile (< 360px) */
+@media (max-width: 360px) {
+  .cosmic-landing-inner {
+    padding: 1.35rem 0.85rem;
+    margin: auto;
     gap: 1rem;
   }
-}
-
-/* Small mobile */
-@media (max-width: 480px) {
-  .cosmic-landing-inner {
-    padding: var(--neo-space-lg);
-  }
 
   .cosmic-logo {
-    width: 80px;
-    height: 80px;
+    width: 64px;
+    height: 64px;
   }
 
   .cosmic-landing-title {
-    font-size: 1.75rem;
-  }
-}
-
-/* -------------------- VERY SMALL SCREENS (DESKTOP) -------------------- */
-/* For desktops with small height (like 1366x768) */
-@media (min-width: 769px) and (max-height: 800px) {
-  .cosmic-landing-inner {
-    padding: 1.5rem;
-    gap: 0.75rem;
-    max-height: 95vh;
-  }
-
-  .cosmic-logo {
-    width: 70px;
-    height: 70px;
-  }
-
-  .cosmic-landing-title {
-    font-size: 2rem;
+    font-size: 1.6rem;
   }
 
   .cosmic-landing-subtitle {
-    font-size: 0.95rem;
-  }
-
-  .cosmic-buttons {
-    gap: 0.5rem;
-    margin-top: 0.75rem;
+    font-size: 0.82rem;
   }
 
   .cosmic-button--large {
-    padding: 0.75rem 1.5rem;
-    font-size: 0.95rem;
+    padding: 0.75rem 0.75rem;
     min-height: 44px;
   }
 
+  .cosmic-btn-label {
+    font-size: 0.86rem;
+  }
+}
+
+/* -------------------- DESKTOP SCREENS (COMPACT & REFINED) -------------------- */
+@media (min-width: 769px) {
+  .cosmic-landing-inner {
+    max-width: 410px;
+    padding: 1.75rem 2rem;
+    gap: 1rem;
+    border-radius: 20px;
+  }
+
+  .cosmic-logo {
+    width: 76px;
+    height: 76px;
+  }
+
+  .cosmic-landing-title {
+    font-size: 2.1rem;
+    letter-spacing: 1.5px;
+  }
+
+  .cosmic-landing-subtitle {
+    font-size: 0.92rem;
+    letter-spacing: 0.5px;
+    max-width: 320px;
+    line-height: 1.35;
+  }
+
+  .cosmic-buttons {
+    max-width: 320px;
+    gap: 0.7rem;
+    margin-top: 0.45rem;
+  }
+
+  .cosmic-button--large {
+    width: 100% !important;
+    max-width: 320px !important;
+    min-height: 48px;
+    padding: 0.72rem 1.25rem;
+    font-size: 0.95rem;
+    border-radius: 12px;
+  }
+
+  .cosmic-btn-inner {
+    gap: 0.65rem;
+  }
+
+  .cosmic-btn-icon {
+    font-size: 1.15rem;
+  }
+
+  .cosmic-btn-label {
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
+
   .cosmic-footer-text {
-    margin-top: 0.75rem;
+    margin-top: 0.35rem;
     font-size: 0.8rem;
   }
 }
 
-/* -------------------- LARGE SCREENS -------------------- */
-@media (min-width: 1920px) {
+/* -------------------- COMPACT HEIGHT DESKTOP (e.g. 1366x768) -------------------- */
+@media (min-width: 769px) and (max-height: 800px) {
   .cosmic-landing-inner {
-    max-width: 600px;
-    padding: 4rem;
+    max-width: 380px;
+    padding: 1.25rem 1.65rem;
+    gap: 0.65rem;
+    max-height: 92vh;
   }
 
   .cosmic-logo {
-    width: 140px;
-    height: 140px;
+    width: 62px;
+    height: 62px;
   }
 
   .cosmic-landing-title {
-    font-size: 3.5rem;
+    font-size: 1.85rem;
   }
 
   .cosmic-landing-subtitle {
-    font-size: 1.4rem;
+    font-size: 0.85rem;
+  }
+
+  .cosmic-buttons {
+    max-width: 290px;
+    gap: 0.55rem;
+    margin-top: 0.35rem;
+  }
+
+  .cosmic-button--large {
+    padding: 0.62rem 1.1rem;
+    font-size: 0.88rem;
+    min-height: 44px;
+  }
+
+  .cosmic-footer-text {
+    margin-top: 0.25rem;
+    font-size: 0.75rem;
+  }
+}
+
+/* -------------------- LARGE SCREENS (MAINTAIN PROPORTIONAL COMPACT SCALE) -------------------- */
+@media (min-width: 1920px) {
+  .cosmic-landing-inner {
+    max-width: 440px;
+    padding: 2.1rem 2.25rem;
+    gap: 1.15rem;
+  }
+
+  .cosmic-logo {
+    width: 82px;
+    height: 82px;
+  }
+
+  .cosmic-landing-title {
+    font-size: 2.3rem;
+  }
+
+  .cosmic-landing-subtitle {
+    font-size: 0.96rem;
+    max-width: 340px;
+  }
+
+  .cosmic-buttons {
+    max-width: 340px;
+    gap: 0.75rem;
+    margin-top: 0.55rem;
+  }
+
+  .cosmic-button--large {
+    min-height: 50px;
+    padding: 0.78rem 1.3rem;
+    font-size: 0.98rem;
   }
 }
 
